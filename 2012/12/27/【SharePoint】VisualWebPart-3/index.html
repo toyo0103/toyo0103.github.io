@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="SharePoint," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="建立VisualWebPart(後面簡稱vwp)後會產生以下檔案結構 .XML檔中可以設定vwp佈署後歸類在哪個群組裡面VWP的CS檔中可以增加可設定的參數namespace ScinoPharm.EIP.vwpSurveys   {        [ToolboxItemAttribute(false)]        public class vwpSurveys : WebPart">
+<meta name="keywords" content="SharePoint">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【SharePoint】VisualWebPart">
+<meta property="og:url" content="http://yoursite.com/2012/12/27/【SharePoint】VisualWebPart-3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="建立VisualWebPart(後面簡稱vwp)後會產生以下檔案結構 .XML檔中可以設定vwp佈署後歸類在哪個群組裡面VWP的CS檔中可以增加可設定的參數namespace ScinoPharm.EIP.vwpSurveys   {        [ToolboxItemAttribute(false)]        public class vwpSurveys : WebPart">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://1.bp.blogspot.com/-BbJDYNJ9yJQ/UNu49lR8hFI/AAAAAAAAAeA/ETeG2o2Gs4M/s640/111.png">
+<meta property="og:image" content="http://4.bp.blogspot.com/-sj79ZvE6lH4/UNu5jeqCYrI/AAAAAAAAAeI/stuhIeBL11k/s1600/111.png">
+<meta property="og:image" content="http://4.bp.blogspot.com/-Vv3Q5WgnzGo/UNu68vKX92I/AAAAAAAAAeg/l0j6pcw1oLY/s640/111.png">
+<meta property="og:image" content="http://4.bp.blogspot.com/-8K_6ifqFwTw/UNu7eFJb4gI/AAAAAAAAAeo/uMqpnmtiMNc/s320/111.png">
+<meta property="og:image" content="http://4.bp.blogspot.com/-vNWquvR2rzs/UNu9Aq_nY_I/AAAAAAAAAe4/lNd-Ro9x2Z4/s1600/111.png">
+<meta property="og:updated_time" content="2018-05-11T03:18:14.420Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【SharePoint】VisualWebPart">
+<meta name="twitter:description" content="建立VisualWebPart(後面簡稱vwp)後會產生以下檔案結構 .XML檔中可以設定vwp佈署後歸類在哪個群組裡面VWP的CS檔中可以增加可設定的參數namespace ScinoPharm.EIP.vwpSurveys   {        [ToolboxItemAttribute(false)]        public class vwpSurveys : WebPart">
+<meta name="twitter:image" content="http://1.bp.blogspot.com/-BbJDYNJ9yJQ/UNu49lR8hFI/AAAAAAAAAeA/ETeG2o2Gs4M/s640/111.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2012/12/27/【SharePoint】VisualWebPart-3/"/>
+
+
+
+
+
+  <title>【SharePoint】VisualWebPart | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/27/【SharePoint】VisualWebPart-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【SharePoint】VisualWebPart</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-12-27T11:17:00+08:00">
+                2012-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-BbJDYNJ9yJQ/UNu49lR8hFI/AAAAAAAAAeA/ETeG2o2Gs4M/s1600/111.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-BbJDYNJ9yJQ/UNu49lR8hFI/AAAAAAAAAeA/ETeG2o2Gs4M/s640/111.png" alt=""></a></div>
+
+<p><span style="background-color: white;"><strong>建立VisualWebPart(後面簡稱vwp)後會產生以下檔案結構</strong></span></p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-sj79ZvE6lH4/UNu5jeqCYrI/AAAAAAAAAeI/stuhIeBL11k/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-sj79ZvE6lH4/UNu5jeqCYrI/AAAAAAAAAeI/stuhIeBL11k/s1600/111.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><strong>.XML檔中可以設定vwp佈署後歸類在哪個群組裡面</strong></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-Vv3Q5WgnzGo/UNu68vKX92I/AAAAAAAAAeg/l0j6pcw1oLY/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-Vv3Q5WgnzGo/UNu68vKX92I/AAAAAAAAAeg/l0j6pcw1oLY/s640/111.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-8K_6ifqFwTw/UNu7eFJb4gI/AAAAAAAAAeo/uMqpnmtiMNc/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-8K_6ifqFwTw/UNu7eFJb4gI/AAAAAAAAAeo/uMqpnmtiMNc/s320/111.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><strong>VWP的CS檔中可以增加可設定的參數</strong></div><pre class="brush:csharp"><br>namespace ScinoPharm.EIP.vwpSurveys<br>   {<br>        [ToolboxItemAttribute(false)]<br>        public class vwpSurveys : WebPart<br>        {<br>            //增加可設定的參數<br>            [Category(&quot;MySetting&quot;),<br>             Personalizable(PersonalizationScope.Shared), //共用設定<br>             WebBrowsable(true), //是否顯示在面板上<br>             WebDisplayName(&quot;來源清單名稱&quot;),<br>             WebDescription(&quot;請填寫Survey資料來源的清單名稱&quot;) //描述<br>            ]</pre></p>
+<pre><code>    public string ListName{get;set;}
+
+    //當您變更視覺 Web 組件專案項目時，Visual Studio 可能會自動更新此路徑
+    private const string _ascxPath = @&amp;quot;~/_CONTROLTEMPLATES/ScinoPharm.EIP/vwpSurveys/vwpSurveysUserControl.ascx&amp;quot;;
+
+    protected override void CreateChildControls()
+    {
+        Control control = Page.LoadControl(_ascxPath);
+        ControlSkin.Add(control);
+    }
+}
+</code></pre><p>   }<br><div class="separator" style="clear: both; text-align: left;"><strong>
+</strong></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-vNWquvR2rzs/UNu9Aq_nY_I/AAAAAAAAAe4/lNd-Ro9x2Z4/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-vNWquvR2rzs/UNu9Aq_nY_I/AAAAAAAAAe4/lNd-Ro9x2Z4/s1600/111.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><strong>在UserControl中要抓到VWP的參數設定，需要透過以下的方法</strong></p>
+<p><pre class="brush:csharp"><br>public vwpSurveys SurveyParameter;</pre></p>
+<pre><code>protected void Page_Load(object sender, EventArgs e) 
+{
+    if (!Page.IsPostBack) 
+    {
+        SurveyParameter = this.Parent as vwpSurveys;
+    }
+}
+</code></pre><p><strong>
+</strong></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/SharePoint/" rel="tag"># SharePoint</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2012/12/27/【SharePoint】VisualWebPart-1/" rel="next" title="【SharePoint】VisualWebPart">
+                <i class="fa fa-chevron-left"></i> 【SharePoint】VisualWebPart
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2012/12/27/【SharePoint】VisualWebPart-2/" rel="prev" title="【SharePoint】VisualWebPart">
+                【SharePoint】VisualWebPart <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">204</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

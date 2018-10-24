@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-tw">
+<head>
+  ﻿<meta charset="UTF-8"/>
+<meta name="google-site-verification" content="a-sIQSCKPw8MyRi4iUo9hmDiL3P1Txg2Ri8zx8Wk0G0" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MVC教學," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Demo範例 ：Git位置 上一篇簡介了Controller如何安排程式邏輯流程、驗證參數，卻也發現了驗證參數導致程式寫得冗長不易維護，這一篇要介紹【FluentValidation】這個套件來解決這個問題。 安裝 設定把之前的程式碼稍作整理，將Account與Password新建一個類型(Class)來封裝起來，原本Controller裡面的程式整理一下   自定義驗證Class建立一個Clas">
+<meta name="keywords" content="MVC教學">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【MVC教學】6.驗證參數- 透過FluentValidation">
+<meta property="og:url" content="http://yoursite.com/2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="Demo範例 ：Git位置 上一篇簡介了Controller如何安排程式邏輯流程、驗證參數，卻也發現了驗證參數導致程式寫得冗長不易維護，這一篇要介紹【FluentValidation】這個套件來解決這個問題。 安裝 設定把之前的程式碼稍作整理，將Account與Password新建一個類型(Class)來封裝起來，原本Controller裡面的程式整理一下   自定義驗證Class建立一個Clas">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://1.bp.blogspot.com/-xZDktMEHvG4/WvAKIceF2VI/AAAAAAAAIuQ/psmk0OXE26sun-H3XramjrzcSCNrD3QgACLcBGAs/s400/1.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-uGUzfrokFpI/WvAKaNzXTKI/AAAAAAAAIuY/1O8SMAL7FgkP5wX5l2BBYOKhcPSAF_o_gCLcBGAs/s400/2.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-kfFy1Iqdl1M/WvALDvzwBKI/AAAAAAAAIug/YO4AjyC_No42Xg24hCgC02nf1Qjwb1ZeACLcBGAs/s320/3.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-7bpU-eurJAI/WvANP8ghptI/AAAAAAAAIus/ayYDM6pHzhwgsRgEigXWwUNGCRGIc7X6wCLcBGAs/s400/4.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-eIdaQ522IWo/WvAOfKE3BBI/AAAAAAAAIu0/wUYV51Bv-qAP5Dl-vmOAd_fNomrKCjFYwCLcBGAs/s640/5.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-CGzCYQgNgpI/WvAQfRjh6rI/AAAAAAAAIvA/W__122acCJg4ivhkTljIzoKdeB3JYM0jwCLcBGAs/s640/6.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-znw_JXDtBNI/WvARI9F6b8I/AAAAAAAAIvI/D4GtFgo5dQc06aEnUhlKjE503vuXegEmgCLcBGAs/s400/7.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-ZEqu3b-BvNc/WvARv5EsieI/AAAAAAAAIvQ/PZO_L_04kLsABp9rYw6dnXYYnKAymKEwACLcBGAs/s400/8.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-xebs-1HJ_Xo/WvAT_qTPsOI/AAAAAAAAIvc/PNSq-SW_qdczF4pHIZCzu8hhnsQdpMN1gCLcBGAs/s400/9.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-Qd2w4MEWlFk/WvAV24u79OI/AAAAAAAAIvo/ZUAMLs0fn6kx07JMLchQHKYOsP_fKCwvQCLcBGAs/s320/10.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-KmJSyZdiGb0/WvAWiccBedI/AAAAAAAAIvw/17gYP6xPzgIUFII1ptocXolNHkBXfGeegCLcBGAs/s400/11.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-VBKP-msTxnE/WvAYvl0-HBI/AAAAAAAAIv8/tgh1Rp_cN0cyjKsFKbOnefX9VsBI5HPWQCLcBGAs/s400/12.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-MtTiRt-qd-0/WvAjEv49mHI/AAAAAAAAIwM/cAcBsXbIuCEgOlfsPQVCMMB58ne84x8uQCLcBGAs/s400/13.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-eQpSlQBWHTE/WvAoYn_ChaI/AAAAAAAAIwk/C-Y7_RCGGuIvOHE8u-VhS8OPriHmspgpgCLcBGAs/s400/15.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-yVOQuBNw_cM/WvAoYoDVp_I/AAAAAAAAIwg/aGZLbMDSrTgCcZS2TwFEfFzGMiYktMsXACLcBGAs/s400/16.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-Qyvaso2H-qg/WvAoYTtzkxI/AAAAAAAAIwc/wILEhIgySEExN0Wy-V33ohsrwpIKpG-JACLcBGAs/s400/14.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-3mLUKzjO55A/WvArsPEl3hI/AAAAAAAAIw0/8AidDEBX-jwgO7iFO3nyt7ENHCg8xd7PwCLcBGAs/s640/17.png">
+<meta property="og:updated_time" content="2018-10-18T08:50:52.856Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【MVC教學】6.驗證參數- 透過FluentValidation">
+<meta name="twitter:description" content="Demo範例 ：Git位置 上一篇簡介了Controller如何安排程式邏輯流程、驗證參數，卻也發現了驗證參數導致程式寫得冗長不易維護，這一篇要介紹【FluentValidation】這個套件來解決這個問題。 安裝 設定把之前的程式碼稍作整理，將Account與Password新建一個類型(Class)來封裝起來，原本Controller裡面的程式整理一下   自定義驗證Class建立一個Clas">
+<meta name="twitter:image" content="https://1.bp.blogspot.com/-xZDktMEHvG4/WvAKIceF2VI/AAAAAAAAIuQ/psmk0OXE26sun-H3XramjrzcSCNrD3QgACLcBGAs/s400/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/"/>
+
+
+
+
+
+  <title>【MVC教學】6.驗證參數- 透過FluentValidation | 程式隨筆</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA\-119162267\-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">程式隨筆</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜尋
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【MVC教學】6.驗證參數- 透過FluentValidation</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-05-07T18:23:00+08:00">
+                2018-05-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/學習MVC/" itemprop="url" rel="index">
+                    <span itemprop="name">學習MVC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <div class="note info"><p>Demo範例 ：<a href="https://github.com/toyo0103/HelloDotNetMVC" target="_blank" rel="noopener">Git位置</a></p></div>
+<p>上一篇簡介了Controller如何安排程式邏輯流程、驗證參數，卻也發現了驗證參數導致程式寫得冗長不易維護，這一篇要介紹【FluentValidation】這個套件來解決這個問題。</p>
+<h1 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h1><p><a href="https://1.bp.blogspot.com/-xZDktMEHvG4/WvAKIceF2VI/AAAAAAAAIuQ/psmk0OXE26sun-H3XramjrzcSCNrD3QgACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-xZDktMEHvG4/WvAKIceF2VI/AAAAAAAAIuQ/psmk0OXE26sun-H3XramjrzcSCNrD3QgACLcBGAs/s400/1.png" alt=""></a><br><a href="https://2.bp.blogspot.com/-uGUzfrokFpI/WvAKaNzXTKI/AAAAAAAAIuY/1O8SMAL7FgkP5wX5l2BBYOKhcPSAF_o_gCLcBGAs/s1600/2.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-uGUzfrokFpI/WvAKaNzXTKI/AAAAAAAAIuY/1O8SMAL7FgkP5wX5l2BBYOKhcPSAF_o_gCLcBGAs/s400/2.png" alt=""></a><br><a href="https://3.bp.blogspot.com/-kfFy1Iqdl1M/WvALDvzwBKI/AAAAAAAAIug/YO4AjyC_No42Xg24hCgC02nf1Qjwb1ZeACLcBGAs/s1600/3.png" title="安裝完後應該會在參考中看到多出兩個FluentValidation的組件" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-kfFy1Iqdl1M/WvALDvzwBKI/AAAAAAAAIug/YO4AjyC_No42Xg24hCgC02nf1Qjwb1ZeACLcBGAs/s320/3.png" alt=""></a></p>
+<h1 id="設定"><a href="#設定" class="headerlink" title="設定"></a>設定</h1><p>把之前的程式碼稍作整理，將Account與Password新建一個類型(Class)來封裝起來，原本Controller裡面的程式整理一下</p>
+<p><a href="https://3.bp.blogspot.com/-7bpU-eurJAI/WvANP8ghptI/AAAAAAAAIus/ayYDM6pHzhwgsRgEigXWwUNGCRGIc7X6wCLcBGAs/s1600/4.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-7bpU-eurJAI/WvANP8ghptI/AAAAAAAAIus/ayYDM6pHzhwgsRgEigXWwUNGCRGIc7X6wCLcBGAs/s400/4.png" alt=""></a></p>
+<p><a href="https://4.bp.blogspot.com/-eIdaQ522IWo/WvAOfKE3BBI/AAAAAAAAIu0/wUYV51Bv-qAP5Dl-vmOAd_fNomrKCjFYwCLcBGAs/s1600/5.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-eIdaQ522IWo/WvAOfKE3BBI/AAAAAAAAIu0/wUYV51Bv-qAP5Dl-vmOAd_fNomrKCjFYwCLcBGAs/s640/5.png" alt=""></a></p>
+<h2 id="自定義驗證Class"><a href="#自定義驗證Class" class="headerlink" title="自定義驗證Class"></a>自定義驗證Class</h2><p>建立一個Class命名為UserSignUpParameterValidation</p>
+<p><a href="https://2.bp.blogspot.com/-CGzCYQgNgpI/WvAQfRjh6rI/AAAAAAAAIvA/W__122acCJg4ivhkTljIzoKdeB3JYM0jwCLcBGAs/s1600/6.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-CGzCYQgNgpI/WvAQfRjh6rI/AAAAAAAAIvA/W__122acCJg4ivhkTljIzoKdeB3JYM0jwCLcBGAs/s640/6.png" alt=""></a></p>
+<p>將UserSignUpParameter掛上Validator Attribute，意思是UserSignUpParameter請幫我用UserSignUpParameterValidation裡面的邏輯來驗證</p>
+<p><a href="https://4.bp.blogspot.com/-znw_JXDtBNI/WvARI9F6b8I/AAAAAAAAIvI/D4GtFgo5dQc06aEnUhlKjE503vuXegEmgCLcBGAs/s1600/7.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-znw_JXDtBNI/WvARI9F6b8I/AAAAAAAAIvI/D4GtFgo5dQc06aEnUhlKjE503vuXegEmgCLcBGAs/s400/7.png" alt=""></a></p>
+<h2 id="帳號密碼不能為空值"><a href="#帳號密碼不能為空值" class="headerlink" title="帳號密碼不能為空值"></a>帳號密碼不能為空值</h2><p><a href="https://1.bp.blogspot.com/-ZEqu3b-BvNc/WvARv5EsieI/AAAAAAAAIvQ/PZO_L_04kLsABp9rYw6dnXYYnKAymKEwACLcBGAs/s1600/8.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-ZEqu3b-BvNc/WvARv5EsieI/AAAAAAAAIvQ/PZO_L_04kLsABp9rYw6dnXYYnKAymKEwACLcBGAs/s400/8.png" alt=""></a></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Validation UserSignUpParameter</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;seealso cref="FluentValidation.AbstractValidator&#123;HelloDotNetMVC.Parameters.UserSignUpParameter&#125;" /&gt;</span></span></span><br><span class="line">public class UserSignUpParameterValidation:AbstractValidator&lt;UserSignUpParameter&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserSignUpParameterValidation</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//AbstractValidator為FluentValidation提供的抽象類別</span></span><br><span class="line">        <span class="comment">//目的是讓使用者可以透過繼承這個抽象類別後，實作自己的驗證邏輯</span></span><br><span class="line">        <span class="comment">//而泛型T， AbstractValidator&lt;T&gt; ，則帶入你想驗證的類別</span></span><br><span class="line">        <span class="comment">//所以這邊帶入UserSignUpParameter，這個我們剛剛製作的Class</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Account</span></span><br><span class="line">        RuleFor(x =&gt; x.Account)</span><br><span class="line">        .NotEmpty()</span><br><span class="line">        .WithMessage(<span class="string">"帳號不能為Empty"</span>)</span><br><span class="line">        .NotNull()</span><br><span class="line">        .WithMessage(<span class="string">"帳號不能為Null"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Password</span></span><br><span class="line">        RuleFor(x=&gt;x.Password)</span><br><span class="line">        .NotEmpty()</span><br><span class="line">        .WithMessage(<span class="string">"密碼不能為Empty"</span>)</span><br><span class="line">        .NotNull()</span><br><span class="line">        .WithMessage(<span class="string">"密碼不能為Null"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>RuleFor是FluentValidation提供的方法，意思是我為Account這個屬性建立驗證的Rule，而Rule分別是，NotEmpty(不能為空值)、NotNull(不能為Null)，而緊接在每個驗證邏輯下面的WithMessage則是表示，當發生它上面的錯誤時，錯誤訊息請回傳這行。</p>
+<p>接著我們可以將Controller的這塊驗證邏輯拿掉，交給<strong>UserSignUpParameterValidation</strong>專責處理就好。</p>
+<p><a href="https://2.bp.blogspot.com/-xebs-1HJ_Xo/WvAT_qTPsOI/AAAAAAAAIvc/PNSq-SW_qdczF4pHIZCzu8hhnsQdpMN1gCLcBGAs/s1600/9.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-xebs-1HJ_Xo/WvAT_qTPsOI/AAAAAAAAIvc/PNSq-SW_qdczF4pHIZCzu8hhnsQdpMN1gCLcBGAs/s400/9.png" alt=""></a></p>
+<h2 id="帳號必須包含-字元，Password必須大於6個字"><a href="#帳號必須包含-字元，Password必須大於6個字" class="headerlink" title="帳號必須包含@字元，Password必須大於6個字"></a>帳號必須包含@字元，Password必須大於6個字</h2><p>因為判斷字元@並不像判斷空值與Null一樣，官方有實做好的方法，必須自己透過Must來定義，這邊提供兩種寫法給讀者參考</p>
+<p><a href="https://4.bp.blogspot.com/-Qd2w4MEWlFk/WvAV24u79OI/AAAAAAAAIvo/ZUAMLs0fn6kx07JMLchQHKYOsP_fKCwvQCLcBGAs/s1600/10.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-Qd2w4MEWlFk/WvAV24u79OI/AAAAAAAAIvo/ZUAMLs0fn6kx07JMLchQHKYOsP_fKCwvQCLcBGAs/s320/10.png" alt=""></a></p>
+<p>上面是匿名方法的寫法，但如果你對於匿名委派還不是很熟悉，也可以用比較簡單的方式寫</p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-KmJSyZdiGb0/WvAWiccBedI/AAAAAAAAIvw/17gYP6xPzgIUFII1ptocXolNHkBXfGeegCLcBGAs/s1600/11.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-KmJSyZdiGb0/WvAWiccBedI/AAAAAAAAIvw/17gYP6xPzgIUFII1ptocXolNHkBXfGeegCLcBGAs/s400/11.png" alt=""></a></div><br>先寫好驗證的方法，然後在Must中帶入方法。</p>
+<div class="note info"><p>延伸閱讀 :<br><a href="https://msdn.microsoft.com/zh-tw/library/bb549151(v=vs.110" target="_blank" rel="noopener">MSDN : Func&lt;T,TResult&gt; 委派</a>.aspx)<br><a href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/statements-expressions-operators/anonymous-methods" target="_blank" rel="noopener">MSDN : 匿名方法</a></p></div>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Validation UserSignUpParameter</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;seealso cref="FluentValidation.AbstractValidator&#123;HelloDotNetMVC.Parameters.UserSignUpParameter&#125;" /&gt;</span></span></span><br><span class="line">public class UserSignUpParameterValidation:AbstractValidator&lt;UserSignUpParameter&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserSignUpParameterValidation</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//AbstractValidator為FluentValidation提供的抽象類別</span></span><br><span class="line">        <span class="comment">//目的是讓使用者可以透過繼承這個抽象類別後，實作自己的驗證邏輯</span></span><br><span class="line">        <span class="comment">//而泛型T， AbstractValidator&lt;T&gt; ，則帶入你想驗證的類別</span></span><br><span class="line">        <span class="comment">//所以這邊帶入UserSignUpParameter，這個我們剛剛製作的Class</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Account</span></span><br><span class="line">        RuleFor(x =&gt; x.Account)</span><br><span class="line">        .NotEmpty()</span><br><span class="line">        .WithMessage(<span class="string">"帳號不能為Empty"</span>)</span><br><span class="line">        .NotNull()</span><br><span class="line">        .WithMessage(<span class="string">"帳號不能為Null"</span>)</span><br><span class="line">        .Must(IncludeAccountKeyword)</span><br><span class="line">        .WithMessage(<span class="string">"帳號不符合格式"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Password</span></span><br><span class="line">        RuleFor(x=&gt;x.Password)</span><br><span class="line">        .NotEmpty()</span><br><span class="line">        .WithMessage(<span class="string">"密碼不能為Empty"</span>)</span><br><span class="line">        .NotNull()</span><br><span class="line">        .WithMessage(<span class="string">"密碼不能為Null"</span>)</span><br><span class="line">        .MinimumLength(<span class="number">7</span>)</span><br><span class="line">        .WithMessage(<span class="string">"密碼必須大於6個字元"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Accounts 必須包含@.</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="account"&gt;</span>The account.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">IncludeAccountKeyword</span>(<span class="params"><span class="keyword">string</span> account</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">string</span>.IsNullOrWhiteSpace(account))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> account.Contains(<span class="string">"@"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>整理後的Controller</p>
+<p><a href="https://3.bp.blogspot.com/-VBKP-msTxnE/WvAYvl0-HBI/AAAAAAAAIv8/tgh1Rp_cN0cyjKsFKbOnefX9VsBI5HPWQCLcBGAs/s1600/12.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-VBKP-msTxnE/WvAYvl0-HBI/AAAAAAAAIv8/tgh1Rp_cN0cyjKsFKbOnefX9VsBI5HPWQCLcBGAs/s400/12.png" alt=""></a></p>
+<h2 id="透過ModelState得知驗證結果"><a href="#透過ModelState得知驗證結果" class="headerlink" title="透過ModelState得知驗證結果"></a>透過ModelState得知驗證結果</h2><div class="note info"><p>ModelState是本來MVC就有提供的參數驗證方式，而使用方法這邊提供幾篇文章給有興趣的讀者參考<br><a href="https://www.exceptionnotfound.net/asp-net-mvc-demystified-modelstate/" target="_blank" rel="noopener">What is the ModelState? - ASP.NET MVC Demystified</a><br><a href="https://blog.miniasp.com/post/2016/03/14/ASPNET-MVC-Developer-Note-Part-28-Understanding-ModelState.aspx" target="_blank" rel="noopener">保哥 : ASP.NET MVC 開發心得分享 (28)：深入了解 ModelState 內部細節</a></p></div>
+<p>而因為開發習慣的關係，我習慣用FluentValidation的方式來取代原本ModelState驗證方法與設定方式，接著我們在Global.asax中呼叫FluentValidationModelValidatorProvider.Configure()</p>
+<p><a href="https://1.bp.blogspot.com/-MtTiRt-qd-0/WvAjEv49mHI/AAAAAAAAIwM/cAcBsXbIuCEgOlfsPQVCMMB58ne84x8uQCLcBGAs/s1600/13.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-MtTiRt-qd-0/WvAjEv49mHI/AAAAAAAAIwM/cAcBsXbIuCEgOlfsPQVCMMB58ne84x8uQCLcBGAs/s400/13.png" alt=""></a><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpPost</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">SignUp</span>(<span class="params">UserSignUpParameter parameter</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!ModelState.IsValid)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//IsValida為False時，表示驗證參數不過</span></span><br><span class="line">        <span class="comment">//取出第一筆錯誤訊息回傳</span></span><br><span class="line">        <span class="keyword">var</span> Error = ModelState.Values.SelectMany(x =&gt; x.Errors).First();</span><br><span class="line">        TempData[<span class="string">"Message"</span>] = Error.ErrorMessage;</span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"signup"</span>, <span class="string">"user"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//這邊沒有搬到FluentValidation去驗證的原因是</span></span><br><span class="line">    <span class="comment">//使用者存在與否比較屬於服務層的事情，通常需要讀取資料庫才能判斷</span></span><br><span class="line">    <span class="comment">//開發上習慣盡量讓驗證參數越乾淨簡單越好，而不是在裡面呼叫很多外部服務(例如資料庫)後做驗證</span></span><br><span class="line">    <span class="comment">//這會讓職責過於複雜</span></span><br><span class="line">    <span class="keyword">if</span> (parameter.Account != <span class="string">"steven@mymail.com"</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        TempData[<span class="string">"Message"</span>] = <span class="string">"註冊成功!!"</span>;</span><br><span class="line">        <span class="comment">//註冊成功,導到首頁 </span></span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"index"</span>, <span class="string">"home"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        TempData[<span class="string">"Message"</span>] = <span class="string">"帳號已經存在"</span>;</span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"signup"</span>, <span class="string">"user"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接著執行程式，驗證看看是否之前的驗證邏輯都還是正常運作。</p>
+<p><a href="https://2.bp.blogspot.com/-eQpSlQBWHTE/WvAoYn_ChaI/AAAAAAAAIwk/C-Y7_RCGGuIvOHE8u-VhS8OPriHmspgpgCLcBGAs/s1600/15.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-eQpSlQBWHTE/WvAoYn_ChaI/AAAAAAAAIwk/C-Y7_RCGGuIvOHE8u-VhS8OPriHmspgpgCLcBGAs/s400/15.png" alt=""></a> <a href="https://3.bp.blogspot.com/-yVOQuBNw_cM/WvAoYoDVp_I/AAAAAAAAIwg/aGZLbMDSrTgCcZS2TwFEfFzGMiYktMsXACLcBGAs/s1600/16.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-yVOQuBNw_cM/WvAoYoDVp_I/AAAAAAAAIwg/aGZLbMDSrTgCcZS2TwFEfFzGMiYktMsXACLcBGAs/s400/16.png" alt=""></a><br><a href="https://2.bp.blogspot.com/-Qyvaso2H-qg/WvAoYTtzkxI/AAAAAAAAIwc/wILEhIgySEExN0Wy-V33ohsrwpIKpG-JACLcBGAs/s1600/14.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-Qyvaso2H-qg/WvAoYTtzkxI/AAAAAAAAIwc/wILEhIgySEExN0Wy-V33ohsrwpIKpG-JACLcBGAs/s400/14.png" alt=""></a></p>
+<p>比較一下最一開始與套用FluentValidation後的程式碼，應該可以明顯感受到差異，這不僅僅只是讓程式變乾淨，更重要的是驗證參數的職責被分離到UserSignUpParameterValidation這個類別中，以後要改參數驗證的邏輯只要到這調整即可，不用再擔心Controller會被不小心改壞。</p>
+<p><a href="https://4.bp.blogspot.com/-3mLUKzjO55A/WvArsPEl3hI/AAAAAAAAIw0/8AidDEBX-jwgO7iFO3nyt7ENHCg8xd7PwCLcBGAs/s1600/17.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-3mLUKzjO55A/WvArsPEl3hI/AAAAAAAAIw0/8AidDEBX-jwgO7iFO3nyt7ENHCg8xd7PwCLcBGAs/s640/17.png" alt=""></a></p>
+<h1 id="延伸閱讀"><a href="#延伸閱讀" class="headerlink" title="延伸閱讀"></a>延伸閱讀</h1><p><a href="https://github.com/JeremySkinner/FluentValidation/wiki" target="_blank" rel="noopener">FluentValidation : 官方文件、各種API使用方法</a><br><a href="https://toyo0103.blogspot.tw/2016/10/fluentvalidation-webapi.html" target="_blank" rel="noopener">FluentValidation : 擴充驗證方法</a><br><a href="https://toyo0103.blogspot.tw/2016/11/fluentvalidation.html" target="_blank" rel="noopener">FluentValidation : 繼承父類別的驗證</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MVC教學/" rel="tag"># MVC教學</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/25/【MVC教學】5.Controller簡介/" rel="next" title="【MVC教學】5.Controller簡介">
+                <i class="fa fa-chevron-left"></i> 【MVC教學】5.Controller簡介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/04/【演算法】Counting Sort/" rel="prev" title="【演算法】Counting Sort">
+                【演算法】Counting Sort <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Toyo" />
+            
+              <p class="site-author-name" itemprop="name">Toyo</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">167</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/toyo0103" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://tw.linkedin.com/in/steven-tsai-096580110" target="_blank" title="Linkedin">
+                      
+                        <i class="fa fa-fw fa-linkedin"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-folder-open"></i>
+                系列文章
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/categories/學習MVC" title="MVC" target="_blank">MVC</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/categories/學習單元測試" title="單元測試" target="_blank">單元測試</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/categories/VSTS建置CI-CD" title="VSTS建置CI/CD" target="_blank">VSTS建置CI/CD</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/categories/LeetCode" title="LeetCode" target="_blank">LeetCode</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安裝"><span class="nav-number">1.</span> <span class="nav-text">安裝</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#設定"><span class="nav-number">2.</span> <span class="nav-text">設定</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定義驗證Class"><span class="nav-number">2.1.</span> <span class="nav-text">自定義驗證Class</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#帳號密碼不能為空值"><span class="nav-number">2.2.</span> <span class="nav-text">帳號密碼不能為空值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#帳號必須包含-字元，Password必須大於6個字"><span class="nav-number">2.3.</span> <span class="nav-text">帳號必須包含@字元，Password必須大於6個字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#透過ModelState得知驗證結果"><span class="nav-number">2.4.</span> <span class="nav-text">透過ModelState得知驗證結果</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#延伸閱讀"><span class="nav-number">3.</span> <span class="nav-text">延伸閱讀</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://toyo0103.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/';
+          this.page.identifier = '2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/';
+          this.page.title = '【MVC教學】6.驗證參數- 透過FluentValidation';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://toyo0103.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
