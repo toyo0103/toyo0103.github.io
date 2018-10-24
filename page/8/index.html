@@ -1144,141 +1144,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/14/【SQL】遞迴/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/12/14/【SQL】遞迴/" itemprop="url">【SQL】遞迴</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+08:00">
-                2015-12-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/12/14/【SQL】遞迴/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/12/14/【SQL】遞迴/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>有張表格如下，Parent欄位代表他的父層的RegionID，所以裡面包含所有縣市、行政區、鄉里等資料，那要如何用SQL遞迴的方式把台北市用階層的方式表列出來呢?<br>台北市 &gt; 信義區、大安區、中正區…. &gt;&nbsp;港華里、老泉里…..</p>
-<p><a href="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" alt=""></a></p>
-<p>用CTE的寫法可以解決，把台北市當做茅點，然後Join自己即可達到遞迴的效果</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">with 遞迴 as(</span><br><span class="line"><span class="comment">------茅點 start-------</span></span><br><span class="line"><span class="keyword">SELECT</span> RegionID , <span class="keyword">Name</span></span><br><span class="line"><span class="keyword">FROM</span> Region a</span><br><span class="line"><span class="keyword">WHERE</span> RegionID = <span class="number">1</span> <span class="comment">--台北市</span></span><br><span class="line"><span class="comment">------茅點 end ---------</span></span><br><span class="line"><span class="keyword">union</span> all</span><br><span class="line"><span class="keyword">select</span> b.RegionID , b.name</span><br><span class="line"><span class="keyword">from</span> Region b</span><br><span class="line"><span class="keyword">join</span> 遞迴 <span class="keyword">on</span>  b.Parent = 遞迴.RegionID</span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 遞迴</span><br></pre></td></tr></table></figure>
-<p>搜尋出來的結果<br><a href="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" alt=""></a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/14/【WebAPI】Custom-ActionFilter-Order/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1381,6 +1246,141 @@
 <p><img src="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png" alt="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png"></p>
 <p>可以看到Four排在Three的前面了</p>
 <p><img src="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png" alt="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/14/【SQL】遞迴/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/12/14/【SQL】遞迴/" itemprop="url">【SQL】遞迴</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+08:00">
+                2015-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/14/【SQL】遞迴/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/14/【SQL】遞迴/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>有張表格如下，Parent欄位代表他的父層的RegionID，所以裡面包含所有縣市、行政區、鄉里等資料，那要如何用SQL遞迴的方式把台北市用階層的方式表列出來呢?<br>台北市 &gt; 信義區、大安區、中正區…. &gt;&nbsp;港華里、老泉里…..</p>
+<p><a href="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" alt=""></a></p>
+<p>用CTE的寫法可以解決，把台北市當做茅點，然後Join自己即可達到遞迴的效果</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">with 遞迴 as(</span><br><span class="line"><span class="comment">------茅點 start-------</span></span><br><span class="line"><span class="keyword">SELECT</span> RegionID , <span class="keyword">Name</span></span><br><span class="line"><span class="keyword">FROM</span> Region a</span><br><span class="line"><span class="keyword">WHERE</span> RegionID = <span class="number">1</span> <span class="comment">--台北市</span></span><br><span class="line"><span class="comment">------茅點 end ---------</span></span><br><span class="line"><span class="keyword">union</span> all</span><br><span class="line"><span class="keyword">select</span> b.RegionID , b.name</span><br><span class="line"><span class="keyword">from</span> Region b</span><br><span class="line"><span class="keyword">join</span> 遞迴 <span class="keyword">on</span>  b.Parent = 遞迴.RegionID</span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 遞迴</span><br></pre></td></tr></table></figure>
+<p>搜尋出來的結果<br><a href="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" alt=""></a></p>
 
           
         

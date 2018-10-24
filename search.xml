@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[【英文】Down the line]]></title>
     <url>%2F2018%2F10%2F24%2F%E8%8B%B1%E6%96%87%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98%2F</url>
-    <content type="text"><![CDATA[幾天前聽強者我同事上課提到寫部落格跟筆記的重要，想一想的確自己這樣斷斷續續也寫了 5~6 年左右，漸漸也陷入了一種迷失之中 這篇的內容隨便google就有答案了還需要寫嗎？ 但忘了最初寫部落格的初衷不是為了給誰看，而是想記錄遇到的難題跟解決的方法，幫助自己能快速查找並系統的學習解。我的部落格其實也沒啥人看，不知道有啥好包袱的 重點一直都不在有沒有人想看，而是我從中又學到了什麼，所以打算來寫幾篇會長期更新的學習筆記，可能包含 AWS、英文、日文..等。希望幾年後，這些會成為自己的能量與成長的基石。 Down the line從字面解釋就是「沿著線往下」，有過段時間、未來的意思， 例句 ： Pick one OS for your production set-up. No need to get master of every OS out there. It would make your job diffcult down the line. 選一種 OS 做為你生產的設置，你不需要精通每一種 OS ，這只會讓你之後的工作變得困難。 If you don’t learn English now , you will get many problems down the line. 如果你現在不學習英文, 那你將來會碰到許多問題的 徹底、始終 例句 ： Errors are to be found down the line. 錯誤總有一天會被找到的 If something should be yours , that will be yours down the line. 屬於你的,終究會是你的]]></content>
+    <content type="text"><![CDATA[幾天前聽強者我同事上課提到寫部落格跟筆記的重要，想一想的確自己這樣斷斷續續也寫了 5~6 年左右，漸漸也陷入了一種迷失之中 這篇的內容隨便google就有答案了還需要寫嗎？ 但忘了最初寫部落格的初衷不是為了給誰看，而是想記錄遇到的難題跟解決的方法，幫助自己能快速查找並系統的學習解。我的部落格其實也沒啥人看，不知道有啥好包袱的 重點一直都不在有沒有人想看，而是我從中又學到了什麼，所以打算來寫幾篇會長期更新的學習筆記，可能包含 AWS、英文、日文..等。希望幾年後，這些會成為自己的能量與成長的基石。 Down the line未來從字面解釋就是「沿著線往下」，有過段時間、未來的意思， 例句 ： Pick one OS for your production set-up. No need to get master of every OS out there. It would make your job diffcult down the line. 選一種 OS 做為你生產的設置，你不需要精通每一種 OS ，這只會讓你之後的工作變得困難。 If you don’t learn English now , you will get many problems down the line. 如果你現在不學習英文, 那你將來會碰到許多問題的 徹底、始終例句 ： Errors are to be found down the line. 錯誤總有一天會被找到的 If something should be yours , that will be yours down the line. 屬於你的,終究會是你的]]></content>
       <tags>
         <tag>英文學習</tag>
       </tags>
@@ -654,8 +654,8 @@
     <content type="text"><![CDATA[【SQL】Group by and Top 1之前有寫一篇是如何將資料歸類完後，取得各個分類第一筆的文章，歲月如梭竟然已經是2013年的文章了。 最近碰到相同的問題，卻需要用Linq來解決，研究了一下後來把他順便筆記下來，狀況全部呈第一篇文章的資料結構 1234var WhatAreYouDoing = from t in this.timeline group t by new &#123;t.location, t.who &#125; into Group select Group.OrderByDescending(x=&gt;x.time).Take(1); 這樣就能達到一樣的效果了(騙文章數來著?)]]></content>
       <tags>
         <tag>SQL</tag>
-        <tag>LINQ</tag>
         <tag>LINQ TO SQL</tag>
+        <tag>LINQ</tag>
       </tags>
   </entry>
   <entry>
@@ -709,19 +709,19 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[【SQL】遞迴]]></title>
-    <url>%2F2015%2F12%2F14%2F%E3%80%90SQL%E3%80%91%E9%81%9E%E8%BF%B4%2F</url>
-    <content type="text"><![CDATA[有張表格如下，Parent欄位代表他的父層的RegionID，所以裡面包含所有縣市、行政區、鄉里等資料，那要如何用SQL遞迴的方式把台北市用階層的方式表列出來呢?台北市 &gt; 信義區、大安區、中正區…. &gt;&nbsp;港華里、老泉里….. 用CTE的寫法可以解決，把台北市當做茅點，然後Join自己即可達到遞迴的效果 123456789101112with 遞迴 as(------茅點 start-------SELECT RegionID , NameFROM Region aWHERE RegionID = 1 --台北市------茅點 end ---------union allselect b.RegionID , b.namefrom Region bjoin 遞迴 on b.Parent = 遞迴.RegionID)select * from 遞迴 搜尋出來的結果]]></content>
-      <tags>
-        <tag>SQL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[【WebAPI】Custom ActionFilter Order]]></title>
     <url>%2F2015%2F12%2F14%2F%E3%80%90WebAPI%E3%80%91Custom-ActionFilter-Order%2F</url>
     <content type="text"><![CDATA[ActionAttribute環境 : WebAPI 2.2 詳細 在WebAPI中，通常都繪有需要客製化ActionFilter的情況發生 執行順序不固定ActionFilter的執行順序並非在上面的就優先執行，Filter有個FilterScope來表示他屬於何種層級的ActionFilter，執行順序依次是 Global , Controller , Action 。但如果是在同一層級的ActionFilter順序則未必按照固定。 ] 測試 裡面全部都一樣繼承ActionFilterAttribute即可1public class FourAttribute :ActionFilterAttribute&#123; &#125; 註冊OneAttribute到Global 將其它Attribute分別註冊到Controller與Action 在Get中補上以下程式然後執行看看12345678910111213141516171819[HttpGet][Three][Four]public IEnumerable&lt;Tuple&lt;string,string&gt;&gt; Get()&#123; IHttpActionSelector actionSelector = this.Configuration.Services.GetActionSelector(); HttpActionDescriptor actionDescriptor = actionSelector.SelectAction(this.ControllerContext); foreach (FilterInfo filterInfo in actionDescriptor.GetFilterPipeline()) &#123; yield return new Tuple&lt;string, string&gt;( filterInfo.Instance.GetType().Name, filterInfo.Scope.ToString() ); &#125;&#125; 測試結果 排序依據所對應的層級，雖然這邊排序與我們在程式上的排序相同。但實際上順序同層級的順序未必是由上而下，為了避免這樣的問題，最好的方法就是在ActionFilter加上排序的屬性來解決。 實作Order屬性定義IOrderAttribute123456789public interface IOrderAttribute&#123; int Order &#123; get; set; &#125;&#125;public class FourAttribute : ActionFilterAttribute, IOrderAttribute&#123; public int Order &#123; get; set; &#125;&#125; 實做IComparable介面123456789101112131415161718192021222324252627282930313233public class CustomFilterInfo : IComparable &#123; public IFilter Instance &#123; get; set; &#125; public FilterScope Scope &#123; get; set; &#125; //FilterInfo public CustomFilterInfo(IFilter instance, FilterScope scope) &#123; this.Instance = instance; this.Scope = scope; &#125; public int CompareTo(object obj) &#123; if (obj is CustomFilterInfo) &#123; var item = obj as CustomFilterInfo; if (item.Instance is IAttribute) &#123; var attr = item.Instance as IAttribute; return (this.Instance as IAttribute).Order.CompareTo(attr.Order); &#125; &#125; return 0; &#125; public FilterInfo ConvertToFilterInfo() &#123; return new FilterInfo(this.Instance, this.Scope); &#125; &#125; 實做IFilterProvider介面123456789101112131415161718192021public class CustomFilterProvider : IFilterProvider&#123; public IEnumerable&lt;FilterInfo&gt; GetFilters( HttpConfiguration configuration, HttpActionDescriptor actionDescriptor) &#123; IEnumerable&lt;CustomFilterInfo&gt; customActionFilters = actionDescriptor.GetFilters() .Select(i =&gt; new CustomFilterInfo(i, FilterScope.Controller)); IEnumerable&lt;CustomFilterInfo&gt; customControllerFilters = actionDescriptor.ControllerDescriptor .GetFilters() .Select(i =&gt; new CustomFilterInfo(i, FilterScope.Controller)); return customControllerFilters.Concat(customActionFilters) .OrderBy(i =&gt; i) .Select(i =&gt; i.ConvertToFilterInfo()); &#125;&#125; Global註冊1234567891011121314151617181920212223protected void Application_Start()&#123; AreaRegistration.RegisterAllAreas(); GlobalConfiguration.Configure(WebApiConfig.Register); FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters); GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear(); //註冊Global Attribute GlobalConfiguration.Configuration.Filters.Add(new OneAttribute()); //新增CustomFilterProvider GlobalConfiguration.Configuration.Services.Add( typeof(System.Web.Http.Filters.IFilterProvider), new CustomFilterProvider()); var providers = GlobalConfiguration.Configuration.Services.GetFilterProviders(); var defaultprovider = providers.First(i =&gt; i is ActionDescriptorFilterProvider); //移除DefaultProvider GlobalConfiguration.Configuration.Services.Remove( typeof(System.Web.Http.Filters.IFilterProvider), defaultprovider);&#125; 測試將Attibute補上Order再執行看看得到的順序 可以看到Four排在Three的前面了]]></content>
       <tags>
         <tag>WebAPI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[【SQL】遞迴]]></title>
+    <url>%2F2015%2F12%2F14%2F%E3%80%90SQL%E3%80%91%E9%81%9E%E8%BF%B4%2F</url>
+    <content type="text"><![CDATA[有張表格如下，Parent欄位代表他的父層的RegionID，所以裡面包含所有縣市、行政區、鄉里等資料，那要如何用SQL遞迴的方式把台北市用階層的方式表列出來呢?台北市 &gt; 信義區、大安區、中正區…. &gt;&nbsp;港華里、老泉里….. 用CTE的寫法可以解決，把台北市當做茅點，然後Join自己即可達到遞迴的效果 123456789101112with 遞迴 as(------茅點 start-------SELECT RegionID , NameFROM Region aWHERE RegionID = 1 --台北市------茅點 end ---------union allselect b.RegionID , b.namefrom Region bjoin 遞迴 on b.Parent = 遞迴.RegionID)select * from 遞迴 搜尋出來的結果]]></content>
+      <tags>
+        <tag>SQL</tag>
       </tags>
   </entry>
   <entry>
