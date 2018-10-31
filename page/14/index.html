@@ -295,6 +295,139 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/07/11/GridView-加入空白行/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/07/11/GridView-加入空白行/" itemprop="url">GridView 加入空白行</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-07-11T11:20:00+08:00">
+                2013-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/07/11/GridView-加入空白行/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/07/11/GridView-加入空白行/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>Function如下 <figure class="highlight vb"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">'''</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">'''</span><span class="doctag">'''</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">'''</span> <span class="doctag">&lt;param name="gv"&gt;</span>要新增空白行的GridView<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">'''</span> <span class="doctag">&lt;param name="count"&gt;</span>要加入幾行<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">'''</span> <span class="doctag">&lt;remarks&gt;</span><span class="doctag">&lt;/remarks&gt;</span></span></span><br><span class="line"><span class="keyword">Public</span> <span class="keyword">Shared</span> <span class="keyword">Sub</span> GridView_AddEmptyRow(gv <span class="keyword">As</span> GridView, count <span class="keyword">As</span> <span class="built_in">Integer</span>)</span><br><span class="line">    <span class="keyword">Dim</span> dt <span class="keyword">As</span> DataTable = <span class="keyword">New</span> DataTable()</span><br><span class="line">    <span class="keyword">Dim</span> dr <span class="keyword">As</span> DataRow</span><br><span class="line">    <span class="keyword">For</span> i = <span class="number">0</span> <span class="keyword">To</span> gv.Columns.Count - <span class="number">1</span> <span class="keyword">Step</span> <span class="number">1</span></span><br><span class="line">        dt.Columns.Add(<span class="keyword">New</span> DataColumn(gv.Columns(i).HeaderText, System.Type.<span class="built_in">GetType</span>(<span class="string">"System.String"</span>)))</span><br><span class="line">    <span class="keyword">Next</span></span><br><span class="line">    <span class="keyword">For</span> i = <span class="number">1</span> <span class="keyword">To</span> count <span class="keyword">Step</span> <span class="number">1</span></span><br><span class="line">        dr = dt.NewRow()</span><br><span class="line">        <span class="keyword">For</span> x = <span class="number">0</span> <span class="keyword">To</span> gv.Columns.Count - <span class="number">1</span> <span class="keyword">Step</span> <span class="number">1</span></span><br><span class="line">            dr(gv.Columns(x).HeaderText) = <span class="built_in">String</span>.Empty</span><br><span class="line">        <span class="keyword">Next</span></span><br><span class="line">        dt.Rows.Add(dr)</span><br><span class="line">    <span class="keyword">Next</span></span><br><span class="line">    gv.DataSource = dt</span><br><span class="line">    gv.DataBind()</span><br><span class="line"><span class="keyword">End</span> <span class="keyword">Sub</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/06/13/【ASP】-動態新增GridView的-TemplateField欄位/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1539,138 +1672,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/07/【MVC】回傳Json格式，並用JQuery解讀/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/05/07/【MVC】回傳Json格式，並用JQuery解讀/" itemprop="url">【MVC】回傳Json格式，並用JQuery解讀</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-07T23:13:00+08:00">
-                2013-05-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/05/07/【MVC】回傳Json格式，並用JQuery解讀/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/05/07/【MVC】回傳Json格式，並用JQuery解讀/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>View中回傳Json格式的物件 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> jsonObject = JsonConvert.SerializeObject(Repository.GetExhibitionList().OrderBy(o =&gt; o.CreateDate).ToArray());</span><br><span class="line"><span class="keyword">return</span> Json(jsonObject);</span><br></pre></td></tr></table></figure></p>
-<p>JQuery中解讀 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> List = $.parseJSON(returnvalue);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> tr = [];</span><br><span class="line"><span class="comment">//轉換日期格式</span></span><br><span class="line">$.each(List, <span class="function"><span class="keyword">function</span> (<span class="params">index, val</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    tr.push(<span class="string">'&lt;tr class="exhibitionItem"&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;td&gt;'</span> + (index + <span class="number">1</span>) + <span class="string">'&lt;/td&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;td&gt;'</span> + val.ExhibitionName + <span class="string">'&lt;/td&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;td&gt;'</span> + val.CreateDate + <span class="string">'&lt;/td&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;td&gt;'</span> + val.EditDate + <span class="string">'&lt;/td&gt;'</span> +</span><br><span class="line">           <span class="string">'&lt;/tr&gt;'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1725,7 +1726,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">167</span>
+                  <span class="site-state-item-count">168</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>

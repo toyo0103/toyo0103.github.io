@@ -295,6 +295,140 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/04/【SQL】Group-by-and-Top-1-用Linq實做/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/06/04/【SQL】Group-by-and-Top-1-用Linq實做/" itemprop="url">【SQL】Group by and Top 1 (用Linq實做)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-06-04T17:25:00+08:00">
+                2016-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/06/04/【SQL】Group-by-and-Top-1-用Linq實做/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/06/04/【SQL】Group-by-and-Top-1-用Linq實做/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="http://toyo0103.blogspot.tw/2013/05/sqlgroup-by-and-top-1.html" target="_blank" rel="noopener">【SQL】Group by and Top 1</a><br>之前有寫一篇是如何將資料歸類完後，取得各個分類第一筆的文章，歲月如梭竟然已經是2013年的文章了。</p>
+<p>最近碰到相同的問題，卻需要用Linq來解決，研究了一下後來把他順便筆記下來，狀況全部呈第一篇文章的資料結構</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> WhatAreYouDoing = <span class="keyword">from</span> t <span class="keyword">in</span> <span class="keyword">this</span>.timeline</span><br><span class="line">        <span class="keyword">group</span> t <span class="keyword">by</span> <span class="keyword">new</span> &#123;t.location, t.who &#125;</span><br><span class="line">        <span class="keyword">into</span> Group</span><br><span class="line">        <span class="keyword">select</span> Group.OrderByDescending(x=&gt;x.time).Take(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>這樣就能達到一樣的效果了(騙文章數來著?)</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/08/【SQL】PIVOT-讓搜尋結果橫式表現/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1144,6 +1278,141 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/14/【SQL】遞迴/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/12/14/【SQL】遞迴/" itemprop="url">【SQL】遞迴</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+08:00">
+                2015-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/14/【SQL】遞迴/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/14/【SQL】遞迴/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>有張表格如下，Parent欄位代表他的父層的RegionID，所以裡面包含所有縣市、行政區、鄉里等資料，那要如何用SQL遞迴的方式把台北市用階層的方式表列出來呢?<br>台北市 &gt; 信義區、大安區、中正區…. &gt;&nbsp;港華里、老泉里…..</p>
+<p><a href="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" alt=""></a></p>
+<p>用CTE的寫法可以解決，把台北市當做茅點，然後Join自己即可達到遞迴的效果</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">with 遞迴 as(</span><br><span class="line"><span class="comment">------茅點 start-------</span></span><br><span class="line"><span class="keyword">SELECT</span> RegionID , <span class="keyword">Name</span></span><br><span class="line"><span class="keyword">FROM</span> Region a</span><br><span class="line"><span class="keyword">WHERE</span> RegionID = <span class="number">1</span> <span class="comment">--台北市</span></span><br><span class="line"><span class="comment">------茅點 end ---------</span></span><br><span class="line"><span class="keyword">union</span> all</span><br><span class="line"><span class="keyword">select</span> b.RegionID , b.name</span><br><span class="line"><span class="keyword">from</span> Region b</span><br><span class="line"><span class="keyword">join</span> 遞迴 <span class="keyword">on</span>  b.Parent = 遞迴.RegionID</span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 遞迴</span><br></pre></td></tr></table></figure>
+<p>搜尋出來的結果<br><a href="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" alt=""></a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/14/【WebAPI】Custom-ActionFilter-Order/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1246,141 +1515,6 @@
 <p><img src="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png" alt="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png"></p>
 <p>可以看到Four排在Three的前面了</p>
 <p><img src="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png" alt="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/14/【SQL】遞迴/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/12/14/【SQL】遞迴/" itemprop="url">【SQL】遞迴</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+08:00">
-                2015-12-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/12/14/【SQL】遞迴/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/12/14/【SQL】遞迴/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>有張表格如下，Parent欄位代表他的父層的RegionID，所以裡面包含所有縣市、行政區、鄉里等資料，那要如何用SQL遞迴的方式把台北市用階層的方式表列出來呢?<br>台北市 &gt; 信義區、大安區、中正區…. &gt;&nbsp;港華里、老泉里…..</p>
-<p><a href="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" alt=""></a></p>
-<p>用CTE的寫法可以解決，把台北市當做茅點，然後Join自己即可達到遞迴的效果</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">with 遞迴 as(</span><br><span class="line"><span class="comment">------茅點 start-------</span></span><br><span class="line"><span class="keyword">SELECT</span> RegionID , <span class="keyword">Name</span></span><br><span class="line"><span class="keyword">FROM</span> Region a</span><br><span class="line"><span class="keyword">WHERE</span> RegionID = <span class="number">1</span> <span class="comment">--台北市</span></span><br><span class="line"><span class="comment">------茅點 end ---------</span></span><br><span class="line"><span class="keyword">union</span> all</span><br><span class="line"><span class="keyword">select</span> b.RegionID , b.name</span><br><span class="line"><span class="keyword">from</span> Region b</span><br><span class="line"><span class="keyword">join</span> 遞迴 <span class="keyword">on</span>  b.Parent = 遞迴.RegionID</span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 遞迴</span><br></pre></td></tr></table></figure>
-<p>搜尋出來的結果<br><a href="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" alt=""></a></p>
 
           
         
@@ -1559,153 +1693,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/03/【MVC】EditorTemplate-二-動態新增欄位/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/12/03/【MVC】EditorTemplate-二-動態新增欄位/" itemprop="url">【MVC】EditorTemplate (二) 動態新增欄位</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-03T17:08:00+08:00">
-                2015-12-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/12/03/【MVC】EditorTemplate-二-動態新增欄位/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/12/03/【MVC】EditorTemplate-二-動態新增欄位/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>此篇範例程式 :&nbsp;<a href="https://github.com/toyo0103/Demo_EditTemplate_1" target="_blank" rel="noopener">下載</a>&nbsp; (此範例在DynamicController之中)</p>
-<p>呈上一篇，<a href="http://toyo0103.blogspot.tw/2015/11/mvceditortemplate.html" target="_blank" rel="noopener">EditorTemplate (一)</a>&nbsp;我們可以來看到產生的原始碼如下</p>
-<p><a href="http://4.bp.blogspot.com/-d6YKMUo8KHw/Vl_i8moc4SI/AAAAAAAAHpY/3TmepPGrLM0/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-d6YKMUo8KHw/Vl_i8moc4SI/AAAAAAAAHpY/3TmepPGrLM0/s640/1.png" alt=""></a></p>
-<p>Name的部分是由 <strong>productList[<span style="color: red;">index</span>].屬性名</strong>組成，換句話說，如果今天要由前端動態新增一筆書籍資料，則必須按照這個規則編排下去，後端才能透過ViewModel的方式取得書籍資料</p>
-<p><a href="http://2.bp.blogspot.com/-1JBalONSmnM/Vl_rHHO8ZtI/AAAAAAAAHpo/m25Vs9XyOQs/s1600/1.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-1JBalONSmnM/Vl_rHHO8ZtI/AAAAAAAAHpo/m25Vs9XyOQs/s640/1.png" alt=""></a></p>
-<p><a href="http://3.bp.blogspot.com/-dHvZHH7TzU8/Vl_sLZzIAbI/AAAAAAAAHp0/zbw9eAreaLY/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-dHvZHH7TzU8/Vl_sLZzIAbI/AAAAAAAAHp0/zbw9eAreaLY/s640/1.png" alt=""></a></p>
-<p>看起來一切美好圓滿，但如果今天的列表是可以新增之外，還要能動態刪除呢?<br>是不是我的[<span style="color: red;">index</span>]就要一直重新計算，不然送到後端就會不見了<br><div class="note info"><p>*如果今天有4個textbox但是name分別是<br>productList[0].id<br>productList[1].id<br>productList[2].id<br>productList[5].id<br>這樣後端只會拿到0~2的ID,不按照順序編排的就會消失</p></div></p>
-<p>還好.NET其實提供另外一種方式來繫結ViewModel<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"productList.Index"</span> <span class="attr">value</span>=<span class="string">"0072b890-0e1a-4c93-a5a7-9cafe84b65f8"</span> /&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">input</span>  <span class="attr">id</span>=<span class="string">"productList_0072b890-0e1a-4c93-a5a7-9cafe84b65f8__id"</span> <span class="attr">name</span>=<span class="string">"productList[0072b890-0e1a-4c93-a5a7-9cafe84b65f8].id"</span> <span class="attr">type</span>=<span class="string">"text"</span> &gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>這樣的話就可以不用管排序，自由的新增刪除List的項目，但EditorTemplate也需要改一改，不然EditTemplate產出的是[0]這種格是,但是前端產出的格是是[Guid],這樣會有問題。</p>
-<p>所以EditTemplate改成用這個方法產出<br><strong><span style="color: #134f5c;">*</span></strong><span style="color: red;"><strong><span style="color: #134f5c;">以下程式碼轉載自:</span></strong><span style="color: red;"> &nbsp;</span></span><br>搞搞就懂 - 點部落 :<strong><span style="color: #38761d;"><a href="https://www.dotblogs.com.tw/wasichris/2014/11/15/147320" target="_blank" rel="noopener">[ASP Net MVC] 如何綁定可動態新增或移除之資料集合(EditorTemplate)</a></span></strong></p>
-<ul>
-<li><p>新增一組HtmlHelper <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> MvcHtmlString EditorForMany&lt;TModel, TValue&gt;(</span><br><span class="line">            <span class="keyword">this</span> HtmlHelper&lt;TModel&gt; html,</span><br><span class="line">            Expression&lt;Func&lt;TModel, IEnumerable&lt;TValue&gt;&gt;&gt; expression,</span><br><span class="line">            <span class="keyword">string</span> htmlFieldName = <span class="literal">null</span>) <span class="keyword">where</span> TModel : <span class="keyword">class</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> items = expression.Compile()(html.ViewData.Model);</span><br><span class="line">            <span class="keyword">var</span> sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">            <span class="keyword">var</span> hasPrefix = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (String.IsNullOrEmpty(htmlFieldName))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> prefix = html.ViewContext.ViewData.TemplateInfo.HtmlFieldPrefix;</span><br><span class="line">                hasPrefix = !String.IsNullOrEmpty(prefix);</span><br><span class="line">                htmlFieldName = (prefix.Length &gt; <span class="number">0</span> ? (prefix + <span class="string">"."</span>) : String.Empty) + ExpressionHelper.GetExpressionText(expression);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (items != <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> items)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> dummy = <span class="keyword">new</span> &#123; Item = item &#125;;</span><br><span class="line">                    <span class="keyword">var</span> guid = Guid.NewGuid().ToString();</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">var</span> memberExp = Expression.MakeMemberAccess(Expression.Constant(dummy), dummy.GetType().GetProperty(<span class="string">"Item"</span>));</span><br><span class="line">                    <span class="keyword">var</span> singleItemExp = Expression.Lambda&lt;Func&lt;TModel, TValue&gt;&gt;(memberExp, expression.Parameters);</span><br><span class="line"></span><br><span class="line">                        sb.Append(String.Format(<span class="string">@"&lt;input type=""hidden"" name=""&#123;0&#125;.Index"" value=""&#123;1&#125;"" /&gt;"</span>, htmlFieldName, guid));</span><br><span class="line">                    sb.Append(html.EditorFor(singleItemExp, <span class="literal">null</span>, String.Format(<span class="string">"&#123;0&#125;[&#123;1&#125;]"</span>, hasPrefix ? ExpressionHelper.GetExpressionText(expression) : htmlFieldName, guid)));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MvcHtmlString(sb.ToString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>原本EditorFor改成自訂的EditorForMany <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Html.EditorFor(x =&gt; x.productList)</span><br><span class="line">@Html.EditorForMany(x =&gt; x.productList)</span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-<p>這樣產出來的格式就會是帶Guid的方式了，可以正常跟前端結合了<br><a href="http://4.bp.blogspot.com/-MWd6XGNYWKk/VmAD0shPP6I/AAAAAAAAHqE/0sgP3d0uidU/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-MWd6XGNYWKk/VmAD0shPP6I/AAAAAAAAHqE/0sgP3d0uidU/s640/1.png" alt=""></a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1760,7 +1747,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">167</span>
+                  <span class="site-state-item-count">168</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>

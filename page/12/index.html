@@ -295,6 +295,153 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/02/swift-製作IOS-Table-3-點擊時展開cell/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/02/swift-製作IOS-Table-3-點擊時展開cell/" itemprop="url">[swift] 製作IOS Table (3)點擊時展開cell</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-02T15:08:00+08:00">
+                2015-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/02/swift-製作IOS-Table-3-點擊時展開cell/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/03/02/swift-製作IOS-Table-3-點擊時展開cell/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>常常看到一些APP可以點擊TableCell時會動態展開看到更多的內容<br>製作方式如下 </p>
+<ul>
+<li>在Storyboard將cell的高度調整後,把要顯示的更多資料擺進去,此例子是多了兩顆按鈕 <a href="http://2.bp.blogspot.com/-CwqQyzRq7yk/VPQKNbHa4iI/AAAAAAAAEW8/Ci7nqGxKF1I/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%882.56.35.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-CwqQyzRq7yk/VPQKNbHa4iI/AAAAAAAAEW8/Ci7nqGxKF1I/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%882.56.35.png" alt=""></a></li>
+<li><span style="color: red;">[重要]</span>記得要將tablecell的Clip Subviews打勾,這樣才能呈現擇疊的效果,如果沒打勾隱藏起來的按鈕都會跑出來並且蓋到其他cell上面<br><a href="http://2.bp.blogspot.com/-pT8srgBPCuk/VPQS-rhAmYI/AAAAAAAAEXM/Oo91l9nvB14/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%883.33.38.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-pT8srgBPCuk/VPQS-rhAmYI/AAAAAAAAEXM/Oo91l9nvB14/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%883.33.38.png" alt=""></a></li>
+<li><p>新增一個CellsValue Class <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CellsValue</span></span>&#123;</span><br><span class="line">   <span class="keyword">var</span> title:<span class="type">String</span>!;<span class="comment">//標題</span></span><br><span class="line">   <span class="keyword">var</span> expand:<span class="type">Bool</span> = <span class="literal">false</span>;<span class="comment">//cell是否展開,預設為false</span></span><br><span class="line">   <span class="keyword">init</span>()&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>將controller改寫如下</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span> , <span class="title">UITableViewDelegate</span> , <span class="title">UITableViewDataSource</span></span>&#123;</span><br><span class="line">   <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> uitable: <span class="type">UITableView</span>!</span><br><span class="line">   <span class="keyword">var</span> data : [<span class="type">CellsValue</span>]!;</span><br><span class="line">   <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">      <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">      uitable.dataSource = <span class="keyword">self</span>;</span><br><span class="line">      uitable.delegate = <span class="keyword">self</span>;</span><br><span class="line">      data = [];</span><br><span class="line">      <span class="keyword">var</span> <span class="built_in">c</span> = <span class="type">CellsValue</span>();</span><br><span class="line">      <span class="built_in">c</span>.title = <span class="string">"便當"</span>;</span><br><span class="line">      data.append(<span class="built_in">c</span>);</span><br><span class="line">      <span class="built_in">c</span> = <span class="type">CellsValue</span>();</span><br><span class="line">      <span class="built_in">c</span>.title = <span class="string">"雞腿便當"</span>;</span><br><span class="line">      data.append(<span class="built_in">c</span>);</span><br><span class="line">      <span class="built_in">c</span> = <span class="type">CellsValue</span>();</span><br><span class="line">      <span class="built_in">c</span>.title = <span class="string">"排骨便當"</span>;</span><br><span class="line">      data.append(<span class="built_in">c</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//這個table包含幾個section</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">numberOfSectionsInTableView</span><span class="params">(tableView: UITableView!)</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//每個section有幾個row</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, numberOfRowsInSection section: Int)</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">     <span class="keyword">return</span> data.<span class="built_in">count</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//每個row顯示的內容</span></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)</span></span> -&gt; <span class="type">UITableViewCell</span> &#123;</span><br><span class="line">     <span class="keyword">let</span> identifier = <span class="string">"Customer_Cell"</span>;</span><br><span class="line">     <span class="keyword">var</span> cell:<span class="type">CustomerCell</span>? = uitable.dequeueReusableCellWithIdentifier(identifier) <span class="keyword">as</span>? <span class="type">CustomerCell</span>;</span><br><span class="line">     <span class="keyword">if</span>(cell == <span class="literal">nil</span>)&#123;</span><br><span class="line">        cell = <span class="type">CustomerCell</span>(style: <span class="type">UITableViewCellStyle</span>.<span class="type">Default</span>, reuseIdentifier: identifier);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//indexPath.row 可以知道目前是要製作第幾列的view</span></span><br><span class="line">     cell?.lblTitle?.text = data[indexPath.row].title;</span><br><span class="line">     <span class="comment">//依據是第幾個row決定icon的圖片</span></span><br><span class="line">     <span class="keyword">switch</span> indexPath.row&#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">           cell?.imgIcon.image = <span class="type">UIImage</span>(named: <span class="string">"icon-factory"</span>);</span><br><span class="line">           <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">           cell?.imgIcon.image = <span class="type">UIImage</span>(named: <span class="string">"icon-location"</span>);</span><br><span class="line">           <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">           cell?.imgIcon.image = <span class="type">UIImage</span>(named: <span class="string">"icon-money"</span>);</span><br><span class="line">           <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">           <span class="keyword">break</span>;</span><br><span class="line">     &#125;</span><br><span class="line">        <span class="keyword">return</span> cell!;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>override cell高度的事件heightForRowAtIndexPath <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//每個cell的height</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath)</span></span> -&gt; <span class="type">CGFloat</span> &#123;</span><br><span class="line">   <span class="keyword">let</span> cellValue = data[indexPath.row];</span><br><span class="line">   <span class="comment">//如果cell是展開的話,回傳高度為120</span></span><br><span class="line">   <span class="keyword">if</span>(cellValue.expand)&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">120</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span>&#123;</span><br><span class="line">      <span class="comment">//否則回傳44</span></span><br><span class="line">      <span class="keyword">return</span> <span class="number">44</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p>override didSelectRowAtIndexPath事件 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//cell被選擇的狀況</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)</span></span> &#123;</span><br><span class="line">   data[indexPath.row].expand = !data[indexPath.row].expand; <span class="comment">//將目前狀態相反後存回去</span></span><br><span class="line">   <span class="keyword">var</span> cell = tableView.cellForRowAtIndexPath(indexPath) <span class="keyword">as</span>? <span class="type">CustomerCell</span>;</span><br><span class="line">   <span class="keyword">if</span>(cell != <span class="literal">nil</span>)&#123;</span><br><span class="line">      <span class="comment">//為了讓cell展開或閉合的效果能呈現,所以要呼叫reloadRowsAtIndexPaths讓cell重繪</span></span><br><span class="line">      uitable.reloadRowsAtIndexPaths([indexPath], withRowAnimation: <span class="type">UITableViewRowAnimation</span>.<span class="type">Automatic</span>)</span><br><span class="line">      <span class="comment">//不要讓cell有選擇起來的反黑的效果,用這這個語法可以取消選擇</span></span><br><span class="line">      uitable.deselectRowAtIndexPath(indexPath, animated: <span class="literal">false</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>大功告成,點擊後會展開跟收合的Cell就完成了<br><a href="http://1.bp.blogspot.com/-UsuiKXeY0X0/VPQVLpbKwlI/AAAAAAAAEXY/S2HfG1K_Db4/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%883.45.34.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-UsuiKXeY0X0/VPQVLpbKwlI/AAAAAAAAEXY/S2HfG1K_Db4/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%883.45.34.png" alt=""></a></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/02/swift-製作IOS-Table-2-客製化cell/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1502,138 +1649,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/11/20/【C-】取得dynamic的屬性/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/11/20/【C-】取得dynamic的屬性/" itemprop="url">【C#】取得dynamic的屬性</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-11-20T15:30:00+08:00">
-                2013-11-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/11/20/【C-】取得dynamic的屬性/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/11/20/【C-】取得dynamic的屬性/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>解析Json格式時取得dynamic型別的物件，但如果裡面的物件不是用陣列的方式回傳，而是像這樣<br><a href="http://2.bp.blogspot.com/-uxMwNj7wo9k/Uoxi5SKPf2I/AAAAAAAAEMQ/Urhtvp1rDag/s1600/1.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-uxMwNj7wo9k/Uoxi5SKPf2I/AAAAAAAAEMQ/Urhtvp1rDag/s1600/1.png" alt=""></a><br>我們不會知道.links底下究竟會link0、link1、link2….到幾，所以需要一個方法去try這個屬性是否存在<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">object</span> <span class="title">GetDynamicMember</span>(<span class="params"><span class="keyword">object</span> obj, <span class="keyword">string</span> memberName</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">try</span></span><br><span class="line"> &#123;</span><br><span class="line">     <span class="keyword">var</span> binder = Binder.GetMember(CSharpBinderFlags.None, memberName, obj.GetType(),</span><br><span class="line">                  <span class="keyword">new</span>[] &#123; CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, <span class="literal">null</span>) &#125;);</span><br><span class="line">     <span class="keyword">var</span> callsite = CallSite&lt;Func&lt;CallSite, <span class="keyword">object</span>, <span class="keyword">object</span>&gt;&gt;.Create(binder);</span><br><span class="line">     <span class="keyword">return</span> callsite.Target(callsite, obj);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">catch</span> (Exception ex)</span><br><span class="line"> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"> &#125;           </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>透過這個方法，我們就可以試著將屬性丟進去看看有無回傳值了 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">dynamic</span> trylink = GetDynamicMember(jsondata.links, <span class="string">"link"</span> + i);</span><br><span class="line">   <span class="keyword">if</span> (trylink != <span class="literal">null</span>) </span><br><span class="line">   &#123;</span><br><span class="line">      _urlclickcount += Convert.ToInt32(trylink.clicks);</span><br><span class="line">      i++;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1688,7 +1703,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">167</span>
+                  <span class="site-state-item-count">168</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>

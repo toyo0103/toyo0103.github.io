@@ -295,6 +295,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/17/【RazorEngine】套寄信、罐頭訊息內容的好幫手/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/17/【RazorEngine】套寄信、罐頭訊息內容的好幫手/" itemprop="url">【RazorEngine】套寄信、罐頭訊息內容的好幫手</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-17T11:33:00+08:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/17/【RazorEngine】套寄信、罐頭訊息內容的好幫手/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/17/【RazorEngine】套寄信、罐頭訊息內容的好幫手/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本篇使用套件 : <a href="https://github.com/Antaris/RazorEngine" target="_blank" rel="noopener">RazorEngine</a>&nbsp; &nbsp;【<a href="https://antaris.github.io/RazorEngine/" target="_blank" rel="noopener">官方文件&nbsp;</a>】</p>
+<p>遙想當年巷口寶之林還開著時，我這鄉野村夫每每需要套Email寄信格式以及一些罐頭訊息時，總是串一堆字串，既醜又難維護</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">Test</span>(<span class="params"><span class="keyword">string</span> name</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">            sb.AppendLine(<span class="keyword">string</span>.Format(<span class="string">@"Hello &#123;0&#125;, welcome to RazorEngine!"</span>,name));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Content(sb.ToString());</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>如果碰到麻煩一點的，像是什麼狀況要套表頭，某某狀況又要移除Footer，那整個字串的邏輯東拼西湊，最後不執行根本難以看出結果會變成如何，往往就變成維護的黑洞跟死角<strike>誰接手誰倒楣</strike>。</p>
+<p>自從我認識了RazorEngine這套件後，世界就變美好了，只要你會套.Net MVC的View，那基本上這個套件絕對是適合你的神兵利器，廢話不多說，我們先來將剛剛版本改成用RazorEngine處理</p>
+<p>先去Nuget安裝套件</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-C5_gHPnJWEc/Wl64J_9mh5I/AAAAAAAAISA/GiHxPzZP9Qs9OyY_eVI4FrxHeD7MELXxQCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-C5_gHPnJWEc/Wl64J_9mh5I/AAAAAAAAISA/GiHxPzZP9Qs9OyY_eVI4FrxHeD7MELXxQCLcBGAs/s400/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></div>
+
+<p>套上RazorEngine後，可以改成這樣<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">TestRazorEngine</span>(<span class="params"><span class="keyword">string</span> name</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">string</span> template = <span class="string">"Hello @Model.Name, welcome to RazorEngine!"</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> Result = Engine.Razor.RunCompile(</span><br><span class="line">                            templateSource: template,</span><br><span class="line">                            name: <span class="string">"HelloWorldTemplateKey"</span>, </span><br><span class="line">                            modelType: <span class="literal">null</span>,</span><br><span class="line">                            model: <span class="keyword">new</span> &#123; Name = name &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Content(Result);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>這邊解說一下程式碼，RazorEnginr提供了幾種方法來產生編譯過的Template，分別是</p>
+<p><strong>Run </strong>: 依據帶入的Name去尋找Cache中是否有編譯過的Template，如果Cache沒有這個Name的模板，則會跳Exception</p>
+<p><strong>Compile </strong>: 將帶入的模板內容編譯，並存進Cache</p>
+<p><strong>RunCompile </strong>: 等於上面兩者個結合，先去Cache中找看看有無這個Name的模板，有則直接回傳，沒有則先編譯後存入Cache，並回傳</p>
+<p>依據官方文件所提到的，Compile Template是很耗效能的，所以建議都要存入Cache，避免每次去Compile(預設行為就是如此，當然之後也會提到如何改寫)</p>
+<p>有了初步的認識後，應該會發現目前的做法跟拼湊字串一樣，如果只是這樣也就失去了使用RazorEngine的意義了，所以下一步是將這個Template內容變成.cshtml，可以大大的增加可讀性跟維護姓</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-pfz4iweMebY/Wl68R2ISmxI/AAAAAAAAISM/aEjP8lgBlY0krsOinpRLB1Q88251KecqQCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-pfz4iweMebY/Wl68R2ISmxI/AAAAAAAAISM/aEjP8lgBlY0krsOinpRLB1Q88251KecqQCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">新增_HelloWorld.cshtml Template</td></tr></tbody></table>將剛剛的字串貼進去，並且就像我們一般套版一樣，建立對應的ViewModel<br><div class="separator" style="clear: both; text-align: center;"><br></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-cEGoNuCIBPc/Wl68rMWc_6I/AAAAAAAAISQ/wECO1yhBn2My81LPW3lK9aKo9QfXMHnOACLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-cEGoNuCIBPc/Wl68rMWc_6I/AAAAAAAAISQ/wECO1yhBn2My81LPW3lK9aKo9QfXMHnOACLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></div><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HellowWorldRazorModel</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>原本的程式碼改寫成如下<br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">TestRazorEngine</span>(<span class="params"><span class="keyword">string</span> name</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> Result =  Engine.Razor.RunCompile(</span><br><span class="line">                            <span class="string">"_HelloWorld"</span>, </span><br><span class="line">                            <span class="keyword">typeof</span>(HellowWorldRazorModel), </span><br><span class="line">                            <span class="keyword">new</span> HellowWorldRazorModel &#123; Name = name &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Content(Result);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure><br><br>但執行之後就會出Exception，原因是”_HelloWorld”這個Template Name它不知道怎麼對應到哪個cshtml模板<br><div class="separator" style="clear: both; text-align: center;"></div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-8LQ2IYJBnmI/Wl6-F94TFFI/AAAAAAAAISg/FuId2F7jKVYBpu3wOMLY1UPSkOY2P5E2QCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-8LQ2IYJBnmI/Wl6-F94TFFI/AAAAAAAAISg/FuId2F7jKVYBpu3wOMLY1UPSkOY2P5E2QCLcBGAs/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></div><br><br>所以我們要自己寫RazorEngine的ITemplateManager :&nbsp; <a href="http://antaris.github.io/RazorEngine/TemplateManager.html#ITemplateManager-and-ICachingProvider" target="_blank" rel="noopener">官方文件參考</a><br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyTemplateManager</span> : <span class="title">ITemplateManager</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> ITemplateSource <span class="title">Resolve</span>(<span class="params">ITemplateKey key</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="comment">// Resolve your template here (ie read from disk)</span></span><br><span class="line">            <span class="comment">// if the same templates are often read from disk you propably want to do some caching here.</span></span><br><span class="line">            <span class="keyword">var</span> template = Tools.ChkCache(key.Name) <span class="keyword">as</span> <span class="keyword">string</span>;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">string</span>.IsNullOrWhiteSpace(template))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> FilePath = <span class="keyword">string</span>.Format(<span class="string">"~/Views/RazorTemplate/&#123;0&#125;.cshtml"</span>, key.Name);</span><br><span class="line">                template = File.ReadAllText(HttpContext.Current.Server.MapPath(FilePath));</span><br><span class="line"></span><br><span class="line">                Tools.SaveToCache(key.Name, template, <span class="number">3600</span>, CacheType.Absolute, <span class="literal">null</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// Provide a non-null file to improve debugging</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> LoadedTemplateSource(template, <span class="literal">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> ITemplateKey <span class="title">GetKey</span>(<span class="params"><span class="keyword">string</span> name, ResolveType resolveType, ITemplateKey context</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="comment">// If you can have different templates with the same name depending on the </span></span><br><span class="line">            <span class="comment">// context or the resolveType you need your own implementation here!</span></span><br><span class="line">            <span class="comment">// Otherwise you can just use NameOnlyTemplateKey.</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> NameOnlyTemplateKey(name, resolveType, context);</span><br><span class="line">            <span class="comment">// template is specified by full path</span></span><br><span class="line">            <span class="comment">//return new FullPathTemplateKey(name, fullPath, resolveType, context);</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddDynamic</span>(<span class="params">ITemplateKey key, ITemplateSource source</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="comment">// You can disable dynamic templates completely. </span></span><br><span class="line">            <span class="comment">// This just means all convenience methods (Compile and RunCompile) with</span></span><br><span class="line">            <span class="comment">// a TemplateSource will no longer work (they are not really needed anyway).</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NotImplementedException(<span class="string">"dynamic templates are not supported!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>這邊我只改寫Resolve這個方法，其他都沿用官方文件的範本，內容只要是依據帶入的Name去確認Cache是否已經有Template(<span style="font-size: x-small;">因為用公司的底層套件，所以確認Cache跟Save Cache可能跟一般認知的方法不同，請忽略或用.Net提供的Cache方法即可</span>)，如果沒有快取，則依據帶入的Name去對應的Folder位置讀取.cshtml並且Cache，然後透過RazorEngine提供的方法LoadedTemplateSource回傳TemplateSource。<br><br>這一段可以讓RazorEngine知道如何將Name對應到我們的cshtml，寫完客製的MyTemplateManager後接著是設定<br><br>Global.asax加上這段<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Application_Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            AreaRegistration.RegisterAllAreas();</span><br><span class="line">            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);</span><br><span class="line">            RouteConfig.RegisterRoutes(RouteTable.Routes);</span><br><span class="line">            BundleConfig.RegisterBundles(BundleTable.Bundles);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//RazorEngine Setting</span></span><br><span class="line">            <span class="keyword">var</span> config = <span class="keyword">new</span> TemplateServiceConfiguration();</span><br><span class="line">            config.TemplateManager = <span class="keyword">new</span> MyTemplateManager();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> service = RazorEngineService.Create(config);</span><br><span class="line">            Engine.Razor = service;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure><br><br>接著剛剛的程式就能執行了!!<br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-NWxWGypeAdo/Wl7AVFb9jRI/AAAAAAAAISs/24bA9qjOkTwoY1ca8SDc8_OXhuB3vI_2QCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-NWxWGypeAdo/Wl7AVFb9jRI/AAAAAAAAISs/24bA9qjOkTwoY1ca8SDc8_OXhuB3vI_2QCLcBGAs/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></div><br>RazorEngine也提供Layout的套版方法，可以在cshmtl上面設定對應的Layout，不用像先前提到的，拼字串拼得亂七八糟了<br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-lOts6puSj9Q/Wl7BYAAbwJI/AAAAAAAAIS0/E05MfohLLpgG0Cp2x63uJ8i6ZL-ifJdagCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-lOts6puSj9Q/Wl7BYAAbwJI/AAAAAAAAIS0/E05MfohLLpgG0Cp2x63uJ8i6ZL-ifJdagCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">新增_OurLayout.cshmtl</td></tr></tbody></table>
+
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-e3Q9NSlCVuk/Wl7Bsff9odI/AAAAAAAAIS4/J0XN1F7PPW0rqsRmvA9yw5cGcTeAjJiawCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-e3Q9NSlCVuk/Wl7Bsff9odI/AAAAAAAAIS4/J0XN1F7PPW0rqsRmvA9yw5cGcTeAjJiawCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Layout的內容</td></tr></tbody></table>
+
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-ugzdMhXnb3w/Wl7CFh0QMAI/AAAAAAAAITA/yxDlQmxK1f4X_4zjamWyCEJnoTUWgwfkgCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-ugzdMhXnb3w/Wl7CFh0QMAI/AAAAAAAAITA/yxDlQmxK1f4X_4zjamWyCEJnoTUWgwfkgCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></div>
+
+<p>執行結果</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-t8lTrthvFXQ/Wl7CXvDYDMI/AAAAAAAAITE/k4aTtPG7zsIUmvUG4U5hvI7nyOpV6JzmACLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-t8lTrthvFXQ/Wl7CXvDYDMI/AAAAAAAAITE/k4aTtPG7zsIUmvUG4U5hvI7nyOpV6JzmACLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></div>
+
+<p><strong>RazorEngine PartialView的用法</strong></p>
+<p>在一般套版，我們可能會把共用的區塊挖成PartialView重複使用，但這邊的用法比較特別，須改用Include這個方法取代</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-m5NwrfUZcMs/Wl7C11d-lnI/AAAAAAAAITM/AA-QS-UbaEgFXr8MUjx3olooVMgAEkLbwCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-m5NwrfUZcMs/Wl7C11d-lnI/AAAAAAAAITM/AA-QS-UbaEgFXr8MUjx3olooVMgAEkLbwCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">新增PartialView</td></tr></tbody></table>
+
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-NvEYUWh1nkw/Wl7DBfTkNOI/AAAAAAAAITQ/SBSCU6uWL2ck3U7nncXsEo4q5mdRFboiQCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-NvEYUWh1nkw/Wl7DBfTkNOI/AAAAAAAAITQ/SBSCU6uWL2ck3U7nncXsEo4q5mdRFboiQCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">PartialView的內容，而且也可以使用ViewBag傳遞參數</td></tr></tbody></table><br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-Ll9MHoSaYtM/Wl7Dk_WcOGI/AAAAAAAAITY/8CF1z0SXs2M21_tS3YCH5KrEY6WP6zAAgCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-Ll9MHoSaYtM/Wl7Dk_WcOGI/AAAAAAAAITY/8CF1z0SXs2M21_tS3YCH5KrEY6WP6zAAgCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">改寫原本的_HelloWorld.cshtml，套入PartialView</td></tr></tbody></table>
+
+<p>執行結果!!</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-osb6w9vTl8o/Wl7D2hzXn2I/AAAAAAAAITc/KpzyaZf08Fseqa10QxbEEaIdKAJDELv6gCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-osb6w9vTl8o/Wl7D2hzXn2I/AAAAAAAAITc/KpzyaZf08Fseqa10QxbEEaIdKAJDELv6gCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt=""></a></div>
+
+<p>希望對大家有幫助~</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/15/AutoMapper-Generic-對應/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1668,192 +1832,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/19/【Unit-Test】Day-3-專注於邏輯，隔離與外部的關聯/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/19/【Unit-Test】Day-3-專注於邏輯，隔離與外部的關聯/" itemprop="url">【Unit Test】Day 3 - 專注於邏輯，隔離與外部的關聯</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-19T15:59:00+08:00">
-                2017-04-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/學習單元測試/" itemprop="url" rel="index">
-                    <span itemprop="name">學習單元測試</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/04/19/【Unit-Test】Day-3-專注於邏輯，隔離與外部的關聯/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/04/19/【Unit-Test】Day-3-專注於邏輯，隔離與外部的關聯/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="note info"><p>Demo檔案 : <a href="https://github.com/toyo0103/UnitTest_Day3" target="_blank" rel="noopener">Git傳送門</a></p></div>
-<p>昨天有提到對於外部有關聯時該如何寫單元測試，例如API就是一個典型的例子，當在沒有網路環境時，對於要拿到API的結果做後續處理，這時候該怎麼辦？今天要來實作並且落實昨天提到的重要特性<br><div class="note info"><p>單元測試應該是隨時隨地都要能正確執行，只要它本身的邏輯是正確的！！</p></div><br><strong><br>**</strong>來看看今天的情境範例**<br>我們有一個需求，它要能夠讓我們帶入台北市的公車路線名稱，並取回該路線的站點資料，該資料來源從<a href="http://ptx.transportdata.tw/PTX/" target="_blank" rel="noopener">公共運輸整合資訊流通服務平台</a>的API取得。<br><div class="note info"><p>測試API : <a href="http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/Taipei/307?$top=1&amp;$format=JSON" target="_blank" rel="noopener">http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/Taipei/307?$top=1&amp;$format=JSON</a></p></div><br>從呼叫API看到的呼叫結果大致如下</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-te6lfBR6K44/WPb5BSAp1NI/AAAAAAAAIIE/lRXidmjjdE042MalNHIsNkgtogf_8gz-ACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25881.43.10.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-te6lfBR6K44/WPb5BSAp1NI/AAAAAAAAIIE/lRXidmjjdE042MalNHIsNkgtogf_8gz-ACLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25881.43.10.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><strong>開始寫程式</strong></div>首先我們準備了一個主控台專案，裡面有一個PTX的Class，希望他有個方法能帶入<strong>縣市</strong>、<strong>公車路線名稱</strong>，然後回傳該路線所有站牌名稱與ID<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 巴士路線(該方法要回傳的結果)</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BusRouteDTO</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 路線名稱</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 巴士站列表</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> List&lt;BusStop&gt; BusStops &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 巴士站</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BusStop</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> 站名</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">string</span> ID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>用來承接API回傳資料的DTO<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 取PTX BusRoute的結果</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTXBusRouteResult</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> NameDTO RouteName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> List&lt;StopDTO&gt; Stops &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 巴士路線名稱</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">NameDTO</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">string</span> Zh_tw &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">string</span> En &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 站點</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">StopDTO</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> 站點ID</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">string</span> StopUID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> 站點名稱</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">            <span class="keyword">public</span> NameDTO StopName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">NameDTO</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">string</span> Zh_tw &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">string</span> En &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>PTX的程式<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTX</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 取得巴士路線資料</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="city"&gt;</span>縣市名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="routeName"&gt;</span>巴士路線名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> BusRouteDTO <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> city,<span class="keyword">string</span> routeName</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            BusRouteDTO Result = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//Use RestSharp Call API</span></span><br><span class="line">            <span class="keyword">var</span> client = <span class="keyword">new</span> RestClient(<span class="string">$"http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/<span class="subst">&#123;city&#125;</span>/<span class="subst">&#123;routeName&#125;</span>?%24top=1&amp;%24format=JSON"</span>);</span><br><span class="line">            <span class="keyword">var</span> request = <span class="keyword">new</span> RestRequest(Method.GET);</span><br><span class="line">            request.AddHeader(<span class="string">"cache-control"</span>, <span class="string">"no-cache"</span>);</span><br><span class="line">            IRestResponse response = client.Execute(request);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (response.StatusCode == HttpStatusCode.OK)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> APIResult = JsonConvert.DeserializeObject&lt;List&lt;PTXBusRouteResult&gt;&gt;(response.Content);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (APIResult != <span class="literal">null</span> &amp;&amp; APIResult.Count &gt; <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Route = APIResult.First();</span><br><span class="line">                    Result = <span class="keyword">new</span> BusRouteDTO</span><br><span class="line">                    &#123;</span><br><span class="line">                        Name = Route.RouteName.Zh_tw,</span><br><span class="line">                        BusStops = <span class="keyword">new</span> List&lt;BusRouteDTO.BusStop&gt;()</span><br><span class="line">                    &#125;;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> stop <span class="keyword">in</span> Route.Stops)</span><br><span class="line">                    &#123;</span><br><span class="line">                        Result.BusStops.Add(<span class="keyword">new</span> BusRouteDTO.BusStop</span><br><span class="line">                        &#123;</span><br><span class="line">                            ID = stop.StopUID,</span><br><span class="line">                            Name = stop.StopName.Zh_tw</span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>這邊呼叫API用的套件為RestSharp<br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-NABAfYFPjgY/WPcA6MJCu5I/AAAAAAAAIIU/oMdlNWKwh4M7ZJ5vSuL4tkV10WoMUJzpACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.01.34.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-NABAfYFPjgY/WPcA6MJCu5I/AAAAAAAAIIU/oMdlNWKwh4M7ZJ5vSuL4tkV10WoMUJzpACLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.01.34.png" alt=""></a></div><br>將回傳的Json格式轉成DTO的套件是Newtonsoft.Json<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-opEwoBAjHF4/WPcBOB9kjhI/AAAAAAAAIIY/Ke3oAKptN_8zE9TQvYWpVa7rbylKfH_7QCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.18.08.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-opEwoBAjHF4/WPcBOB9kjhI/AAAAAAAAIIY/Ke3oAKptN_8zE9TQvYWpVa7rbylKfH_7QCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.18.08.png" alt=""></a></div>
-
-<p>OK，因為是範例程式，所以一些寫作風格或是是否會Null的問題我們就先擺一邊吧，還是專注在我們的怎麼寫單元測試上。</p>
-<p>接著我們來執行看看程式是否依照我們預期的可以取回結果</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> PTXFunction = <span class="keyword">new</span> PTX();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> Result = PTXFunction.Get(<span class="string">"Taipei"</span>,<span class="string">"307"</span>);</span><br><span class="line"></span><br><span class="line">            Console.Write(JsonConvert.SerializeObject(Result));</span><br><span class="line"></span><br><span class="line">            Console.ReadKey();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-OWf1ZOiTZ7E/WPcJ0i-lFFI/AAAAAAAAIIo/sEjugyqLlpQI9lVT6VMi6VbbvBATGEt8QCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.52.18.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-OWf1ZOiTZ7E/WPcJ0i-lFFI/AAAAAAAAIIo/sEjugyqLlpQI9lVT6VMi6VbbvBATGEt8QCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.52.18.png" alt=""></a></div>
-
-<p>程式正確執行也取得回資料，第一階段搞定！！接下來開始寫單元測試了</p>
-<h4 id="單元測試"><a href="#單元測試" class="headerlink" title="單元測試"></a>單元測試</h4><p>首先替它加上單元測試吧，老樣子在PTX的Get方法<strong>右鍵 &gt; 建立單元測試</strong></p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-Mte3C3QIeVI/WPcKsy_8lrI/AAAAAAAAIIw/ew6tzFNAUlAP3mb-D-2pCk3mEo9jd23ewCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.58.09.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-Mte3C3QIeVI/WPcKsy_8lrI/AAAAAAAAIIw/ew6tzFNAUlAP3mb-D-2pCk3mEo9jd23ewCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.58.09.png" alt=""></a></div>
-
-<p>寫單元測試，這邊稍微解釋一下，因為還沒說怎麼驗證整個Class的內容比對，所以這邊先驗證回傳結果名稱就好，之後的章節會講怎麼驗證整個回傳內容的數值</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass()</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTXTests</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> GetTest_傳入縣市和公車路線名稱_如果查的到資料_應回傳該路線的BusRouteDTO()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> PTX();</span><br><span class="line">            <span class="keyword">var</span> City = <span class="string">"Taipei"</span>;</span><br><span class="line">            <span class="keyword">var</span> RouteName = <span class="string">"307"</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> expected = <span class="string">"307"</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Get(City, RouteName);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(actual.Name, expected);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>執行看看，得到正確的結果！！</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-yA_Wv9OQc3U/WPcMSNtLG4I/AAAAAAAAII8/3j0wOx6UXeYfc8CC-P_j-H5B3hGPE_wfACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25883.05.31.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-yA_Wv9OQc3U/WPcMSNtLG4I/AAAAAAAAII8/3j0wOx6UXeYfc8CC-P_j-H5B3hGPE_wfACLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25883.05.31.png" alt=""></a></div>
-
-<p>但這邊我們都知道，如果今天網路斷掉或是對方API暫時提供服務，則我們的單元測試就會壞掉，因為他呼叫不到真實的API，而這其實違反我們之前說的「單元測試應該關注的是它的邏輯，而非外部的關聯」。如果今天因為環境就出錯，單元測試一多，可能我們常常都要花很多時間去找目前狀況是什麼，更可能的是查到最後才發現原來你的程式沒錯….</p>
-<p>所以回頭看看我們的PTX程式，它的外部關聯是什麼？它關注的邏輯又是什麼？</p>
-<div class="note info"><p>PTX.Get程式目前內部的邏輯如下<br>1.將帶入的參數組成API Url並進行呼叫<br>2.將取回的Json轉成DTO<br>3.判斷回傳的DTO是否有值？有則轉成我們要的結果回傳<br>3.1 否則直接回傳Null</p></div>
-<p>從這邊我會把它拆成<strong>1.呼叫外部API</strong>為外部行為，因為如果今天網路斷掉或是對方API壞掉、甚至是對方的API還沒開發好，理論上都不是我們程式的問題，而是網路或是對方要依照規格來處理。</p>
-<p>所以第一步是我們要把外部行為隔離出去，並且想辦法讓我們可以模擬它而不是真正去呼叫線上的API，當然這邊做法有很多種，我選擇將Call API的行為還是視為PTX這個物件的內部行為，所以沒有獨立到別的Class去處理，而是封裝起來<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTX</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 取得巴士路線資料</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="city"&gt;</span>縣市名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="routeName"&gt;</span>巴士路線名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> BusRouteDTO <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> city,<span class="keyword">string</span> routeName</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            BusRouteDTO Result = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> JsonResult = CallAPI(city, routeName);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">string</span>.IsNullOrEmpty(JsonResult))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> APIResult = JsonConvert.DeserializeObject&lt;List&lt;PTXBusRouteResult&gt;&gt;(JsonResult);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (APIResult != <span class="literal">null</span> &amp;&amp; APIResult.Count &gt; <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Route = APIResult.First();</span><br><span class="line">                    Result = <span class="keyword">new</span> BusRouteDTO</span><br><span class="line">                    &#123;</span><br><span class="line">                        Name = Route.RouteName.Zh_tw,</span><br><span class="line">                        BusStops = <span class="keyword">new</span> List&lt;BusRouteDTO.BusStop&gt;()</span><br><span class="line">                    &#125;;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> stop <span class="keyword">in</span> Route.Stops)</span><br><span class="line">                    &#123;</span><br><span class="line">                        Result.BusStops.Add(<span class="keyword">new</span> BusRouteDTO.BusStop</span><br><span class="line">                        &#123;</span><br><span class="line">                            ID = stop.StopUID,</span><br><span class="line">                            Name = stop.StopName.Zh_tw</span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Call API</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="city"&gt;</span>縣市<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="routeName"&gt;</span>巴士路線名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">string</span> <span class="title">CallAPI</span>(<span class="params"><span class="keyword">string</span> city, <span class="keyword">string</span> routeName</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="comment">//Use RestSharp Call API</span></span><br><span class="line">            <span class="keyword">var</span> client = <span class="keyword">new</span> RestClient(<span class="string">$"http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/<span class="subst">&#123;city&#125;</span>/<span class="subst">&#123;routeName&#125;</span>?%24top=1&amp;%24format=JSON"</span>);</span><br><span class="line">            <span class="keyword">var</span> request = <span class="keyword">new</span> RestRequest(Method.GET);</span><br><span class="line">            request.AddHeader(<span class="string">"cache-control"</span>, <span class="string">"no-cache"</span>);</span><br><span class="line">            IRestResponse response = client.Execute(request);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (response.StatusCode == HttpStatusCode.OK)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> response.Content;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">string</span>.Empty;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>這樣就達到分離了Call API這個外部行為，但是接下來的問題是我們該如何模擬CallAPI的行為，因為目前的程式還是會去呼叫外部API。</p>
-<p><strong>讓我們把CallAPI從private改成protect吧，並且把它改成可以virtual，讓繼承它的子類別都可以改寫它</strong></p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-5c0QoB53oMk/WPcSezyN0uI/AAAAAAAAIJM/Q-yAz7HaCEsF9035DvdLbpaAqnPx58YxgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25883.31.18.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-5c0QoB53oMk/WPcSezyN0uI/AAAAAAAAIJM/Q-yAz7HaCEsF9035DvdLbpaAqnPx58YxgCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25883.31.18.png" alt=""></a></div><strong>
-</strong>接著我們在單元測試專案中，然後開一個PTXStub的Class來繼承它並賦予他特殊屬性能改寫CallAPI的內部行為<br><div class="note info"><p>這邊提到Stub，在單元測試中還有一種叫做Ｍock，詳情定義跟討論可以參考<br><a href="http://stackoverflow.com/questions/3459287/whats-the-difference-between-a-mock-stub" target="_blank" rel="noopener">stackoverflow - What’s the difference between a mock &amp; stub?</a></p></div></p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-2F8TjU8dKmg/WPcTQ0NTwpI/AAAAAAAAIJU/aJUEa1WYgp4azwqfmuCQw6CRJAxwvN1DgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25883.35.13.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-2F8TjU8dKmg/WPcTQ0NTwpI/AAAAAAAAIJU/aJUEa1WYgp4azwqfmuCQw6CRJAxwvN1DgCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25883.35.13.png" alt=""></a></div><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTXStub</span> :<span class="title">PTX</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 用來模擬API回傳的Json Result</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> CallAPIResult;</span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">string</span> <span class="title">CallAPI</span>(<span class="params"><span class="keyword">string</span> city, <span class="keyword">string</span> routeName</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">string</span>.IsNullOrEmpty(CallAPIResult))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> CallAPIResult;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span>  <span class="keyword">base</span>.CallAPI(city, routeName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>我們將CallAPIResult的方法改寫掉，讓他回傳我們對外開放出來的CallAPIResult這個屬性，此屬性可以讓我們設定API應該回傳的結果。</p>
-<p>接下就回頭改單元測試的部分<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> GetTest_傳入縣市和公車路線名稱_如果查的到資料_應回傳該路線的BusRouteDTO()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> PTXStub(); <span class="comment">//改成PTXStub</span></span><br><span class="line">            <span class="keyword">var</span> City = <span class="string">"Taipei"</span>;</span><br><span class="line">            <span class="keyword">var</span> RouteName = <span class="string">"307"</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//API應該回傳的結果</span></span><br><span class="line">            <span class="keyword">var</span> sb = <span class="keyword">new</span> System.Text.StringBuilder(<span class="number">12766</span>);</span><br><span class="line">            sb.AppendLine(<span class="string">@"[&#123;""RouteUID"":""TPE16111"",""RouteID"":""16111"",""RouteName"":&#123;""Zh_tw"":""307"",""En"":""307""&#125;,""KeyPattern"":false,""SubRouteUID"":""TPE157462"",""SubRouteID"":""157462"",""SubRouteName"":&#123;""Zh_tw"":""307莒光經板橋前站"",""En"":""307""&#125;,""Direction"":0,""Stops"":[&#123;""StopUID"":""TPE15294"",""StopID"":""15294"",""StopName"":&#123;""Zh_tw"":""莊敬里"",]............"</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//設定CallAPI回傳結果</span></span><br><span class="line">            Sut.CallAPIResult = sb.ToString();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> expected = <span class="string">"307"</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Get(City, RouteName);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(actual.Name, expected);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>API應該回傳的結果那邊因為太長，所以省略部分回傳結果，但在實際程式是完整貼上，詳請看Git的Source Code。</p>
-<p>這樣就可以模擬CallAPI這個跟外部連結的結果，但依然可以測試我們所關注的邏輯，是否可卻轉成我們要的結果，執行後可以發現單元測試還是顯示綠燈的正確無誤。</p>
-<p>但這個方法也不是百分之百沒有缺點，你應該也可以觀察到其中一段在這單元測試中無法被涵蓋到，那就是組API Url那段，在這種透過繼承解耦合的方式中，因為回傳結果是自己設定的，實際上組成的URL正確與否我們並不知道，換句話說，如果我們今天這樣寫測試可能會過，但上線後才會發現錯誤，檢查之下發現原來是在串Url的時候錯字之類的。</p>
-<p>這是這種測試方法的缺點，但今天就先談到這邊，還有別種方法可以解決這個問題，只是通常有一好沒兩好，各自都會有優缺點，就看實際專案情形自行判斷跟取捨了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1908,7 +1886,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">167</span>
+                  <span class="site-state-item-count">168</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
