@@ -295,6 +295,284 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/14/【SQL】遞迴/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/12/14/【SQL】遞迴/" itemprop="url">【SQL】遞迴</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+08:00">
+                2015-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/14/【SQL】遞迴/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/14/【SQL】遞迴/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>有張表格如下，Parent欄位代表他的父層的RegionID，所以裡面包含所有縣市、行政區、鄉里等資料，那要如何用SQL遞迴的方式把台北市用階層的方式表列出來呢?<br>台北市 &gt; 信義區、大安區、中正區…. &gt;&nbsp;港華里、老泉里…..</p>
+<p><a href="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" alt=""></a></p>
+<p>用CTE的寫法可以解決，把台北市當做茅點，然後Join自己即可達到遞迴的效果</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">with 遞迴 as(</span><br><span class="line"><span class="comment">------茅點 start-------</span></span><br><span class="line"><span class="keyword">SELECT</span> RegionID , <span class="keyword">Name</span></span><br><span class="line"><span class="keyword">FROM</span> Region a</span><br><span class="line"><span class="keyword">WHERE</span> RegionID = <span class="number">1</span> <span class="comment">--台北市</span></span><br><span class="line"><span class="comment">------茅點 end ---------</span></span><br><span class="line"><span class="keyword">union</span> all</span><br><span class="line"><span class="keyword">select</span> b.RegionID , b.name</span><br><span class="line"><span class="keyword">from</span> Region b</span><br><span class="line"><span class="keyword">join</span> 遞迴 <span class="keyword">on</span>  b.Parent = 遞迴.RegionID</span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 遞迴</span><br></pre></td></tr></table></figure>
+<p>搜尋出來的結果<br><a href="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" alt=""></a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/08/AutoMapper與Json-NET-JObject對應問題/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/12/08/AutoMapper與Json-NET-JObject對應問題/" itemprop="url">AutoMapper與Json.NET JObject對應問題</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-08T16:42:00+08:00">
+                2015-12-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/08/AutoMapper與Json-NET-JObject對應問題/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/08/AutoMapper與Json-NET-JObject對應問題/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>使用套件:<br>Json.NET 7.0.1 :<a href="https://www.nuget.org/packages/Newtonsoft.Json/7.0.1" target="_blank" rel="noopener">&nbsp;https://www.nuget.org/packages/Newtonsoft.Json/7.0.1</a><br>AutoMapper 4.04 :&nbsp;<a href="https://www.nuget.org/packages/AutoMapper/4.0.4" target="_blank" rel="noopener">https://www.nuget.org/packages/AutoMapper/4.0.4</a></p>
+<p>今天碰到一個問題，就是有個API回傳值的欄位是不固定無法掌握的，所以只好在轉型成強型別時以object當做該屬性的類別，但JsonConvert碰到類別為Object的東西就會轉成JObject ,而AutoMapper對應JObject會炸掉。以下是簡單時間的範例Code</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> Mapper.CreateMap&lt;source, destination&gt;()</span><br><span class="line"> .ForMember(d =&gt; d.d_name, o =&gt; o.MapFrom(s =&gt; s.name))</span><br><span class="line"> .ForMember(d =&gt; d.d_obj, o =&gt; o.MapFrom(s =&gt; s.obj));</span><br><span class="line"></span><br><span class="line"> source test = <span class="keyword">new</span> source </span><br><span class="line"> &#123;</span><br><span class="line">  name = <span class="string">"test"</span>,</span><br><span class="line">  obj = <span class="keyword">new</span> &#123;code = <span class="number">100</span>&#125;,</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> result = Mapper.Map&lt;destination&gt;(test);</span><br><span class="line"> result.Dump();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">source</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">object</span> obj &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">destination</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> d_name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">object</span> d_obj &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Source與Destination都有個property為object的類別屬性，在Main()裡面也想好兩個類別的對應關係，並且先準備好Source 然後透過AutoMapper轉出Result,在以上的範例執行正確沒問題<br><a href="http://3.bp.blogspot.com/-C1ypPTW6LWE/VmaV1B7yBfI/AAAAAAAAHqc/M-ACZeUD5IU/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-C1ypPTW6LWE/VmaV1B7yBfI/AAAAAAAAHqc/M-ACZeUD5IU/s640/1.png" alt=""></a></p>
+<p>換個寫法</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> Mapper.CreateMap&lt;source, destination&gt;()</span><br><span class="line"> .ForMember(d =&gt; d.d_name, o =&gt; o.MapFrom(s =&gt; s.name))</span><br><span class="line"> .ForMember(d =&gt; d.d_obj, o =&gt; o.MapFrom(s =&gt; s.obj));</span><br><span class="line"></span><br><span class="line"> source test = JsonConvert.DeserializeObject&lt;source&gt;(<span class="string">"&#123;\"name\":\"test\",\"obj\" : &#123;\"code\":100&#125;&#125;"</span>);</span><br><span class="line"> <span class="keyword">var</span> result = Mapper.Map&lt;destination&gt;(test);</span><br><span class="line"> result.Dump();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">source</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">object</span> obj &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">destination</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> d_name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">object</span> d_obj &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>差別只在於原本Source改成透過Json.Net由字串轉回來而已，這時候只要執行到AutoMapper那一行就會爆炸，錯誤訊息如下<br><div class="note info"><p>AutoMapperMappingException: </p>
+<p>Mapping types:<br>JObject -&gt; JObject<br>Newtonsoft.Json.Linq.JObject -&gt; Newtonsoft.Json.Linq.JObject</p>
+<p>Destination path:<br>destination.d_obj.d_obj</p>
+<p>Source value:<br>{<br>  “code”: 100<br>}</p></div></p>
+<p>JsonConvert碰到目標為Object型別的欄位，會轉成JObject塞進去，AutoMapper用它來對應，<br>所以如果要解決這個問題需要做一些處理</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將Mapper改成如下</span></span><br><span class="line"> Mapper.CreateMap&lt;source, destination&gt;()</span><br><span class="line"> .ForMember(d =&gt; d.d_name, o =&gt; o.MapFrom(s =&gt; s.name))</span><br><span class="line"> .ForMember(d =&gt; d.d_obj, o =&gt; o.ResolveUsing(s =&gt;</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">if</span> (s.obj <span class="keyword">is</span> JObject)</span><br><span class="line">  &#123;</span><br><span class="line">   <span class="keyword">var</span> temp = s.obj <span class="keyword">as</span> JObject;</span><br><span class="line">   <span class="keyword">return</span> temp.ToObject&lt;Dictionary&lt;<span class="keyword">string</span>, <span class="keyword">object</span>&gt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> s.obj;</span><br><span class="line"> &#125;));</span><br></pre></td></tr></table></figure>
+<p>這樣就可以正確地取出了<br><a href="http://2.bp.blogspot.com/-pT-gamin7D4/VmaX7zqy8ZI/AAAAAAAAHqo/shVBh49fMgQ/s1600/1.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-pT-gamin7D4/VmaX7zqy8ZI/AAAAAAAAHqo/shVBh49fMgQ/s640/1.png" alt=""></a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/03/【MVC】EditorTemplate-二-動態新增欄位/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1444,284 +1722,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/" itemprop="url">[swift]  IOS地圖運用 (6) 透過CLGeocoder轉換經緯度與地址</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-12T11:03:00+08:00">
-                2015-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>IOS提供CLGeocoder將地址轉成經緯度,或是把經緯度轉換成地址,詳細語法如下 </p>
-<ul>
-<li>記得先Import MapKit</li>
-<li><p>地址轉經緯度(geocodeAddressString) <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> geoCoder = <span class="type">CLGeocoder</span>()</span><br><span class="line">geoCoder.geocodeAddressString(<span class="string">"這邊帶入地址"</span>, completionHandler: &#123;</span><br><span class="line">   (placemarks:[<span class="type">AnyObject</span>]!,error:<span class="type">NSError</span>!) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">   <span class="keyword">if</span> error != <span class="literal">nil</span>&#123;</span><br><span class="line">      <span class="built_in">println</span>(error)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> placemarks != <span class="literal">nil</span> &amp;&amp; placemarks.<span class="built_in">count</span> &gt; <span class="number">0</span>&#123;</span><br><span class="line">      <span class="keyword">let</span> placemark = placemarks[<span class="number">0</span>] <span class="keyword">as</span> <span class="type">CLPlacemark</span></span><br><span class="line">      <span class="comment">//placemark.location.coordinate 取得經緯度的參數   &#125;</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>經緯度轉地址的方法 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> geoCoder = <span class="type">CLGeocoder</span>()</span><br><span class="line">geoCoder.reverseGeocodeLocation(<span class="type">CLLocation</span>(latitude: <span class="number">25.024839</span> , longitude: <span class="number">121.549170</span>), completionHandler: &#123;</span><br><span class="line">   (placemarks:[<span class="type">AnyObject</span>]!,error:<span class="type">NSError</span>!) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">   <span class="keyword">if</span> error != <span class="literal">nil</span>&#123;</span><br><span class="line">      <span class="built_in">println</span>(error)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//name         街道地址</span></span><br><span class="line">   <span class="comment">//country      國家</span></span><br><span class="line">   <span class="comment">//province     省</span></span><br><span class="line">   <span class="comment">//locality     市</span></span><br><span class="line">   <span class="comment">//sublocality  縣.區</span></span><br><span class="line">   <span class="comment">//route        街道、路</span></span><br><span class="line">   <span class="comment">//streetNumber 門牌號碼</span></span><br><span class="line">   <span class="comment">//postalCode   郵遞區號</span></span><br><span class="line">   <span class="keyword">if</span> placemarks != <span class="literal">nil</span> &amp;&amp; placemarks.<span class="built_in">count</span> &gt; <span class="number">0</span>&#123;</span><br><span class="line">      <span class="keyword">let</span> placemark = placemarks[<span class="number">0</span>] <span class="keyword">as</span> <span class="type">CLPlacemark</span></span><br><span class="line">      <span class="comment">//這邊拼湊轉回來的地址</span></span><br><span class="line">      <span class="comment">//placemark.name</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/11/swift-製作動畫/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/11/swift-製作動畫/" itemprop="url">[swift] 製作動畫</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-11T17:33:00+08:00">
-                2015-03-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/11/swift-製作動畫/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/03/11/swift-製作動畫/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>目標結果如圖<br><a href="http://4.bp.blogspot.com/-fKXQDTPrOC8/VQALsuP92ZI/AAAAAAAAEjA/RTTpI5_XcNo/s1600/test.gif" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-fKXQDTPrOC8/VQALsuP92ZI/AAAAAAAAEjA/RTTpI5_XcNo/s400/test.gif" alt=""></a> </p>
-<ul>
-<li>首先先把最後所有按鈕要放的位置擺好<a href="http://2.bp.blogspot.com/-dYH-zlfMbWQ/VQAMMcsEqkI/AAAAAAAAEjI/lr2ibFIk0ho/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8B%E5%8D%885.33.36.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-dYH-zlfMbWQ/VQAMMcsEqkI/AAAAAAAAEjI/lr2ibFIk0ho/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8B%E5%8D%885.33.36.png" alt=""></a></li>
-<li><p>把每個按鈕跟ViewController做對應 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> backgroundImageView: <span class="type">UIImageView</span>!</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> fbButton: <span class="type">UIButton</span>!</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> twitterButton: <span class="type">UIButton</span>!</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> messageButton: <span class="type">UIButton</span>!</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> mailButton: <span class="type">UIButton</span>!</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>接著用CGAffineTransformMakeTranslation的方式將所有按鈕移到動畫的起始位置,<br>這邊解釋一下程式中那些數字怎麼決定的,CGAffineTransformMakeTranslation需要給定x y值,如果(0, -300)表示x軸不動,Y軸比原本你在StoryBoard放的位置還要<strong><span style="color: red;">往上</span></strong>移300個點的位置,反之(0, 300)則表示比原本擺放的位置<strong><span style="color: red;">往下</span></strong>移動300點 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        <span class="keyword">self</span>.fbButton.transform = <span class="type">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, -<span class="number">300</span>)</span><br><span class="line">        <span class="keyword">self</span>.messageButton.transform = <span class="type">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, -<span class="number">364</span>)</span><br><span class="line">        <span class="keyword">self</span>.mailButton.transform = <span class="type">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, <span class="number">300</span>)</span><br><span class="line">        <span class="keyword">self</span>.twitterButton.transform = <span class="type">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, <span class="number">364</span>)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>接著大家測試一下程式,應該會發現東西的確是跑出螢幕了,接著在viewDidAppear補上以下程式碼就大功告成了！！ <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidAppear</span><span class="params">(animated: Bool)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidAppear(animated)</span><br><span class="line"></span><br><span class="line">            <span class="comment">//動畫,分成兩個區塊是因為有快有慢,差別在於delay多久再發動,usingSpringWithDamping是彈跳的反作用力,越小越劇烈</span></span><br><span class="line">        <span class="type">UIView</span>.animateWithDuration(<span class="number">0.9</span>, delay: <span class="number">0</span>, usingSpringWithDamping: <span class="number">0.5</span>, initialSpringVelocity: <span class="number">0.5</span>, options: <span class="literal">nil</span>, animations: &#123;</span><br><span class="line">            <span class="comment">//跑回原來的點</span></span><br><span class="line">            <span class="keyword">let</span> translate = <span class="type">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">self</span>.messageButton.transform = translate</span><br><span class="line">            <span class="keyword">self</span>.twitterButton.transform = translate</span><br><span class="line">        &#125;, completion: <span class="literal">nil</span>)</span><br><span class="line">        <span class="type">UIView</span>.animateWithDuration(<span class="number">0.9</span>, delay: <span class="number">0.1</span>, usingSpringWithDamping: <span class="number">0.5</span>, initialSpringVelocity: <span class="number">0.5</span>, options: <span class="literal">nil</span>, animations: &#123;</span><br><span class="line">            <span class="keyword">let</span> translate = <span class="type">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">self</span>.fbButton.transform = translate</span><br><span class="line">            <span class="keyword">self</span>.mailButton.transform = translate</span><br><span class="line">        &#125;, completion: <span class="literal">nil</span>)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1776,7 +1776,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">168</span>
+                  <span class="site-state-item-count">170</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1798,7 +1798,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

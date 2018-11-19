@@ -295,6 +295,273 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/08/26/【MVC】PartialView傳值導致ViewBag的值變為null/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/08/26/【MVC】PartialView傳值導致ViewBag的值變為null/" itemprop="url">【MVC】PartialView傳值導致ViewBag的值變為null</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-08-26T17:39:00+08:00">
+                2013-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/08/26/【MVC】PartialView傳值導致ViewBag的值變為null/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/08/26/【MVC】PartialView傳值導致ViewBag的值變為null/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>如果在呼叫PartialView時用以下傳值方式 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//透過第三個參數用ViewDataDictionary的方式傳遞參數，會導致之前存的ViewBag的值在PartialView裡面變成Null讀不到</span></span><br><span class="line">@Html.Partial(<span class="string">"_at_article_endlink"</span>, linklist,<span class="keyword">new</span> ViewDataDictionary &#123; &#123; <span class="string">"linktitle"</span>, Model.LINKTITLE &#125; &#125;)</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>最後改良的方式變成在外面先存成ViewBag的值，接下來PartialView裡面就一切正常了 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@&#123;ViewBag.linktitle = na.LINKTITLE;&#125;</span><br><span class="line">@Html.Partial(<span class="string">"_at_article_endlink"</span>, linklist)</span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/07/14/【JavaScript】驗證上傳的附檔名/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/07/14/【JavaScript】驗證上傳的附檔名/" itemprop="url">【JavaScript】驗證上傳的附檔名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-07-14T12:27:00+08:00">
+                2013-07-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/07/14/【JavaScript】驗證上傳的附檔名/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/07/14/【JavaScript】驗證上傳的附檔名/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'input[type="file"]'</span>).on(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> file = $(<span class="keyword">this</span>).val();</span><br><span class="line">    <span class="keyword">if</span> (!file.match(<span class="regexp">/^([0-9a-zA-Z_\-~ :\\])+(.jpg|.JPG|.jpeg|.JPEG|.bmp|.BMP|.gif|.GIF|.png|.PNG)$/</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        alert(<span class="string">'只允許上傳圖檔'</span>);</span><br><span class="line">        <span class="keyword">var</span> control = $(<span class="keyword">this</span>);</span><br><span class="line">        <span class="comment">//如果上傳的檔案格式不符合，將該Control換成新的</span></span><br><span class="line">        control.replaceWith(control = control.clone(<span class="literal">true</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/07/11/GridView-加入空白行/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1381,297 +1648,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/13/【JQuery】透過-fn-Extend自製Alert-Function/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/05/13/【JQuery】透過-fn-Extend自製Alert-Function/" itemprop="url">【JQuery】透過$.fn.Extend自製Alert Function</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-13T17:19:14+08:00">
-                2013-05-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/05/13/【JQuery】透過-fn-Extend自製Alert-Function/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/05/13/【JQuery】透過-fn-Extend自製Alert-Function/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Google Drive新增修刪除後顯示訊息的方式，是在畫面上方跑出訊息一段時候後自動消失。<br>今天就來實作一下這個功能~</p>
-<p>首先請先去下載<a href="http://getbootstrap.com/2.3.2/" target="_blank" rel="noopener">bootstrap</a>，這裡面有個alert的class個人覺得滿漂亮的，所以就拿這個來改吧!!<br><img src="https://1.bp.blogspot.com/-aLkVe7wa0Cw/UZrmC7mMNJI/AAAAAAAADgA/k7d8QvVQ8VA/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt="https://1.bp.blogspot.com/-aLkVe7wa0Cw/UZrmC7mMNJI/AAAAAAAADgA/k7d8QvVQ8VA/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png"></p>
-<ul>
-<li>首先正確的載入<a href="http://getbootstrap.com/2.3.2/" target="_blank" rel="noopener">bootstrap</a>的CSS跟JavaScript</li>
-<li><p>寫一個自製的JavaScript，其中$.fn.extend是JQuery的擴充function</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// &lt;reference path="../jquery-1.9.1.min.js" /&gt;</span></span><br><span class="line"> </span><br><span class="line">$.fn.extend(&#123;</span><br><span class="line">    alert: <span class="function"><span class="keyword">function</span> (<span class="params">msg</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> parentElement = $(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">var</span> alertElement = $(<span class="string">'&lt;div class="alert"&gt;'</span>+</span><br><span class="line">                                <span class="string">'&lt;button type="button" class="close" data-dismiss="alert"&gt;&amp;times;&lt;/button&gt;'</span>+</span><br><span class="line">                                <span class="string">'&lt;span class="text-center"&gt;'</span> + msg + <span class="string">'&lt;/span&gt;'</span> +</span><br><span class="line">                            <span class="string">'&lt;/div&gt;'</span>);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//先加到容器內才能算長度</span></span><br><span class="line">        alertElement.appendTo(parentElement);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//alert區塊的寬度</span></span><br><span class="line">        <span class="keyword">var</span> alertWidth = alertElement.width();</span><br><span class="line">        <span class="comment">//容器的寬度</span></span><br><span class="line">        <span class="keyword">var</span> targetWidth = parentElement.width();</span><br><span class="line">        <span class="keyword">var</span> position = parentElement.position();</span><br><span class="line">        <span class="keyword">var</span> _left = position.left + (targetWidth / <span class="number">2</span>) - (alertWidth / <span class="number">2</span>);</span><br><span class="line"> </span><br><span class="line">        alertElement.css(&#123; <span class="attr">top</span>: position.top, <span class="attr">left</span>: _left &#125;).fadeIn(<span class="number">500</span>);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//時間到就清除掉</span></span><br><span class="line">        <span class="keyword">var</span> timer = setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; alertElement.fadeOut(); clearTimeout(timer); &#125;, <span class="number">5000</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>改一些bootstrap的CSS，通常我會將這段另外寫在自己的css檔案裡面，盡量避免直接改動官方的任何檔案</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* alert訊息 */</span></span><br><span class="line">.alert</span><br><span class="line">&#123;   </span><br><span class="line">    width:<span class="number">300</span>px;</span><br><span class="line">    z-index:<span class="number">3</span>;</span><br><span class="line">    display:none;</span><br><span class="line">    color:#0300FA;</span><br><span class="line">    position:absolute;</span><br><span class="line">    margin:<span class="number">0</span>px;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">.alert&gt;span</span><br><span class="line">&#123;</span><br><span class="line">    display:inline-block;</span><br><span class="line">    width:<span class="number">270</span>px;</span><br><span class="line">    word-<span class="keyword">break</span>:<span class="keyword">break</span>-all;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>之後呼叫這樣寫</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在這邊$('#BackStageBody')為要出現訊息方塊的區域，剛剛擴充的function會自動計算其寬高，並把訊息顯示在正確的位置</span></span><br><span class="line">$(<span class="string">'#BackStageBody'</span>).alert(<span class="string">'新增成功'</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>效果如下<br><img src="https://1.bp.blogspot.com/-4cGHu7f6cOM/UZrsAuCBNFI/AAAAAAAADgQ/0rOQOMCfDSw/s1600/XZxZx.gif" alt="https://1.bp.blogspot.com/-4cGHu7f6cOM/UZrsAuCBNFI/AAAAAAAADgQ/0rOQOMCfDSw/s1600/XZxZx.gif"></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/08/【MVC】擴充HtmlHelper/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/05/08/【MVC】擴充HtmlHelper/" itemprop="url">【MVC】擴充HtmlHelper</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-08T16:10:00+08:00">
-                2013-05-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/05/08/【MVC】擴充HtmlHelper/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/05/08/【MVC】擴充HtmlHelper/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><strong>第一個範例，讓ActionLink可以放HTML標籤進去</strong></li>
-<li><p>首先我先在專案中建立一個資料夾，並且在裡面新增一個類別檔案<br>   <a href="http://2.bp.blogspot.com/-NBhxVa8AExI/UYoHecX2TrI/AAAAAAAADIE/G9Hvt_r7t_4/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-NBhxVa8AExI/UYoHecX2TrI/AAAAAAAADIE/G9Hvt_r7t_4/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt=""></a>*   <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將命名空間改成System.Web.Mvc.Html，使用前不用修改~/Views/Web.config</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">System.Web.Mvc.Html</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">MyHtmlHelperExtensions</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> MvcHtmlString <span class="title">InsertHtmlTagActionLink</span>(<span class="params"><span class="keyword">this</span> AjaxHelper ajaxHelper,<span class="keyword">string</span> linkText ,<span class="keyword">string</span> actionName, <span class="keyword">string</span> controllerName, AjaxOptions ajaxOptions</span>)        </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> lnk = ajaxHelper.ActionLink(<span class="string">"[replaceme]"</span>, actionName, controllerName, ajaxOptions);</span><br><span class="line">            <span class="keyword">return</span> MvcHtmlString.Create(lnk.ToString().Replace(<span class="string">"[replaceme]"</span>, linkText));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>使用方式如下      <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Ajax.InsertHtmlTagActionLink(<span class="string">"&lt;i class='icon-file'&gt;&lt;/i&gt;"</span>+@childFunction.funname, action, controller, <span class="keyword">new</span> AjaxOptions &#123; UpdateTargetId=<span class="string">"BackStageBody"</span> &#125;);</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p><strong>第二個範例，將TextBoxFor固定塞入一個data-content的html屬性，並將值給這個屬性</strong></p>
-</li>
-<li><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> MvcHtmlString TextBoxFor_WithOriginData&lt;TModel, TProp&gt;(<span class="keyword">this</span> HtmlHelper&lt;TModel&gt; htmlHelper, Expression&lt;Func&lt;TModel, TProp&gt;&gt; expression,<span class="keyword">object</span> HtmlAttributes = <span class="literal">null</span>)&#123;</span><br><span class="line">    <span class="comment">//透過AnonymousObjectToHtmlAttributes將HtmlAttribute讀取出來</span></span><br><span class="line">    <span class="keyword">var</span> attrs = HtmlHelper.AnonymousObjectToHtmlAttributes(HtmlAttributes);</span><br><span class="line">    <span class="comment">//將expression的值抓出來放到data-content這個屬性中</span></span><br><span class="line">    attrs.Add(<span class="string">"data-content"</span>,ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData).Model);</span><br><span class="line">    <span class="keyword">var</span> txtBoxFor = htmlHelper.TextBoxFor(expression, attrs);</span><br><span class="line">    <span class="keyword">return</span> MvcHtmlString.Create(txtBoxFor.ToString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>第三個範例，加入Img這個Tag</strong></p>
-</li>
-<li><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> MvcHtmlString ImageFor_WithOriginData&lt;TModel, TProp&gt;(<span class="keyword">this</span> HtmlHelper&lt;TModel&gt; htmlHelper, Expression&lt;Func&lt;TModel, TProp&gt;&gt; expression, <span class="keyword">object</span> HtmlAttributes = <span class="literal">null</span>)&#123;</span><br><span class="line">    <span class="keyword">string</span> <span class="keyword">value</span> = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData).Model == <span class="literal">null</span> ? <span class="string">""</span> : ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData).Model.ToString();</span><br><span class="line">    <span class="comment">//屬性的值</span></span><br><span class="line">    <span class="keyword">string</span> propname = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData).PropertyName;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//透過AnonymousObjectToHtmlAttributes將HtmlAttribute讀取出來</span></span><br><span class="line">    <span class="keyword">var</span> attrs = HtmlHelper.AnonymousObjectToHtmlAttributes(HtmlAttributes);</span><br><span class="line">    attrs.Add(<span class="string">"data-content"</span>, <span class="keyword">value</span>);</span><br><span class="line">    attrs.Add(<span class="string">"src"</span>, <span class="keyword">value</span>);</span><br><span class="line">    attrs.Add(<span class="string">"name"</span>, propname);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> img = <span class="keyword">new</span> TagBuilder(<span class="string">"img"</span>);</span><br><span class="line">    img.MergeAttributes(attrs);</span><br><span class="line">    <span class="keyword">return</span> MvcHtmlString.Create(img.ToString(TagRenderMode.SelfClosing));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1726,7 +1702,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">168</span>
+                  <span class="site-state-item-count">170</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1748,7 +1724,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

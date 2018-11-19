@@ -295,6 +295,449 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/27/【LeetCode】Fraction to Recurring Decimal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/27/【LeetCode】Fraction to Recurring Decimal/" itemprop="url">【LeetCode】Fraction to Recurring Decimal</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-06-27T14:41:00+08:00">
+                2018-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/27/【LeetCode】Fraction to Recurring Decimal/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/27/【LeetCode】Fraction to Recurring Decimal/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="題目"><a href="#題目" class="headerlink" title="#題目"></a>#題目</h1><p>Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.</p>
+<p>If the fractional part is repeating, enclose the repeating part in parentheses.</p>
+<p>Example 1:</p>
+<div class="note info"><p>Input: numerator = 1, denominator = 2<br>Output: “0.5”</p></div>
+<p>Example 2:</p>
+<div class="note info"><p>Input: numerator = 2, denominator = 1<br>Output: “2”</p></div>
+<p>Example 3:</p>
+<div class="note info"><p>Input: numerator = 2, denominator = 3<br>Output: “0.(6)”</p></div>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Solution</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">FractionToDecimal</span>(<span class="params"><span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator</span>) </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="解題"><a href="#解題" class="headerlink" title="#解題"></a>#解題</h1><h2 id="案例一"><a href="#案例一" class="headerlink" title="案例一"></a>案例一</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> FractionToDecimalTest_輸入numerator_1_denominator_2()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">var</span> numerator = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">var</span> denominator = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"0.5"</span>;</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.FractionToDecimal(numerator, denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">FractionToDecimal</span>(<span class="params"><span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">decimal</span> result = Convert.ToDecimal(numerator) / Convert.ToDecimal(denominator);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="案例二"><a href="#案例二" class="headerlink" title="案例二"></a>案例二</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> FractionToDecimalTest_輸入numerator_2_denominator_1()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">var</span> numerator = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">var</span> denominator = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"2"</span>;</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.FractionToDecimal(numerator, denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>直接通過測試</strong></p>
+<h2 id="案例三"><a href="#案例三" class="headerlink" title="案例三"></a>案例三</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> FractionToDecimalTest_輸入numerator_2_denominator_3()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">var</span> numerator = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">var</span> denominator = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"0.(6)"</span>;</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.FractionToDecimal(numerator, denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">FractionToDecimal</span>(<span class="params"><span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">    sb.Append(numerator / denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//餘數</span></span><br><span class="line">    <span class="keyword">var</span> Remainder = (numerator % denominator);</span><br><span class="line">    <span class="keyword">if</span> (Remainder == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> sb.ToString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sb.Append(<span class="string">"."</span>);</span><br><span class="line">    <span class="keyword">var</span> Map = <span class="keyword">new</span> Dictionary&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;();</span><br><span class="line">    Map.Add(Remainder, sb.Length);</span><br><span class="line">    <span class="keyword">while</span> (Remainder != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sb.Append((Remainder *<span class="number">10</span>) / denominator);</span><br><span class="line">        Remainder = (Remainder * <span class="number">10</span>) % denominator;</span><br><span class="line">        <span class="keyword">if</span> (Map.ContainsKey(Remainder))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> Index = Map[Remainder];</span><br><span class="line">            <span class="comment">//開始重複</span></span><br><span class="line">            sb.Insert(Index, <span class="string">"("</span>);</span><br><span class="line">            sb.Append(<span class="string">")"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Map.Add(Remainder, sb.Length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sb.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>關鍵在找出<strong>餘數相同時的那一刻</strong>，餘數開始重複代表規律產生了，因為餘數乘10等於下次的被除數，除數永遠不變的情況下將開始循環。</p>
+<p>記錄下每次餘數當下字串的長度，當下次產生相同餘數，則從Dictionary取得上一次出現的位置補上括號即可</p>
+<h1 id="解析"><a href="#解析" class="headerlink" title="#解析"></a>#解析</h1><h2 id="溢位問題"><a href="#溢位問題" class="headerlink" title="溢位問題"></a>溢位問題</h2><p>LeetCode測試錯誤</p>
+<p><img src="/images/20180627/leetcode/1.jpg" alt="/images/20180627/leetcode/1.jpg"></p>
+<p><img src="/images/20180627/leetcode/2.jpg" alt="/images/20180627/leetcode/2.jpg"></p>
+<h3 id="補上案例"><a href="#補上案例" class="headerlink" title="補上案例"></a>補上案例</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> FractionToDecimalTest_輸入numerator_負<span class="number">2147483648</span>_denominator_負<span class="number">1</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">var</span> numerator = <span class="number">-2147483648</span>;</span><br><span class="line">    <span class="keyword">var</span> denominator = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"2147483648"</span>;</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.FractionToDecimal(numerator, denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">FractionToDecimal</span>(<span class="params"><span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> _numerator = Convert.ToInt64(numerator);</span><br><span class="line">    <span class="keyword">var</span> _denominator = Convert.ToInt64(denominator);</span><br><span class="line">    sb.Append(_numerator / _denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//餘數</span></span><br><span class="line">    <span class="keyword">var</span> Remainder = (_numerator % _denominator);</span><br><span class="line">    <span class="keyword">if</span> (Remainder == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> sb.ToString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sb.Append(<span class="string">"."</span>);</span><br><span class="line">    <span class="keyword">var</span> Map = <span class="keyword">new</span> Dictionary&lt;Int64, <span class="keyword">int</span>&gt;();</span><br><span class="line">    Map.Add(Remainder, sb.Length);</span><br><span class="line">    <span class="keyword">while</span> (Remainder != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sb.Append((Remainder *<span class="number">10</span>) / denominator);</span><br><span class="line">        Remainder = (Remainder * <span class="number">10</span>) % denominator;</span><br><span class="line">        <span class="keyword">if</span> (Map.ContainsKey(Remainder))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> Index = Map[Remainder];</span><br><span class="line">            <span class="comment">//開始重複</span></span><br><span class="line">            sb.Insert(Index, <span class="string">"("</span>);</span><br><span class="line">            sb.Append(<span class="string">")"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Map.Add(Remainder, sb.Length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sb.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="負數問題"><a href="#負數問題" class="headerlink" title="負數問題"></a>負數問題</h2><p><img src="/images/20180627/leetcode/3.jpg" alt="/images/20180627/leetcode/3.jpg"></p>
+<h3 id="補上案例-1"><a href="#補上案例-1" class="headerlink" title="補上案例"></a>補上案例</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> FractionToDecimalTest_輸入numerator_負<span class="number">50</span>_denominator_8()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">var</span> numerator = <span class="number">-50</span>;</span><br><span class="line">    <span class="keyword">var</span> denominator = <span class="number">8</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"-6.25"</span>;</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.FractionToDecimal(numerator, denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果運算之中有正負號時，則可能組出來的字串為 -6.-2-5，顯然這不是我們要的，要將負號在最前面優先處理，接著後面的計算都用正數來處理</p>
+<p>結果為<strong>負數</strong>，只有在兩個數為一正一負時，當兩正或兩負算出來的皆還是會正值，可以用^(XOR)來判別</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">FractionToDecimal</span>(<span class="params"><span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//考慮負數</span></span><br><span class="line">    sb.Append((numerator &gt;= <span class="number">0</span>) ^ (denominator &gt;= <span class="number">0</span>) ? <span class="string">"-"</span> : <span class="keyword">string</span>.Empty);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//只取正數</span></span><br><span class="line">    <span class="keyword">var</span> _numerator =Math.Abs(Convert.ToInt64(numerator));</span><br><span class="line">    <span class="keyword">var</span> _denominator = Math.Abs(Convert.ToInt64(denominator));</span><br><span class="line">    sb.Append(_numerator / _denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//餘數</span></span><br><span class="line">    <span class="keyword">var</span> Remainder = (_numerator % _denominator);</span><br><span class="line">    <span class="keyword">if</span> (Remainder == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> sb.ToString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sb.Append(<span class="string">"."</span>);</span><br><span class="line">    <span class="keyword">var</span> Map = <span class="keyword">new</span> Dictionary&lt;Int64, <span class="keyword">int</span>&gt;();</span><br><span class="line">    Map.Add(Remainder, sb.Length);</span><br><span class="line">    <span class="keyword">while</span> (Remainder != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sb.Append((Remainder *<span class="number">10</span>) / _denominator);</span><br><span class="line">        Remainder = (Remainder * <span class="number">10</span>) % _denominator;</span><br><span class="line">        <span class="keyword">if</span> (Map.ContainsKey(Remainder))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> Index = Map[Remainder];</span><br><span class="line">            <span class="comment">//開始重複</span></span><br><span class="line">            sb.Insert(Index, <span class="string">"("</span>);</span><br><span class="line">            sb.Append(<span class="string">")"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Map.Add(Remainder, sb.Length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sb.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="被除數為0問題"><a href="#被除數為0問題" class="headerlink" title="被除數為0問題"></a>被除數為0問題</h2><p>當被除數為0時，回傳結果應為0且無關正負</p>
+<p><img src="/images/20180627/leetcode/4.jpg" alt=""></p>
+<h3 id="補上案例-2"><a href="#補上案例-2" class="headerlink" title="補上案例"></a>補上案例</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> FractionToDecimalTest_輸入numerator_0_denominator_負<span class="number">5</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">var</span> numerator = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">var</span> denominator = <span class="number">-5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"0"</span>;</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.FractionToDecimal(numerator, denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">FractionToDecimal</span>(<span class="params"><span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (numerator == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"0"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//考慮負數</span></span><br><span class="line">    sb.Append((numerator &gt;= <span class="number">0</span>) ^ (denominator &gt;= <span class="number">0</span>) ? <span class="string">"-"</span> : <span class="keyword">string</span>.Empty);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//只取正數</span></span><br><span class="line">    <span class="keyword">var</span> _numerator =Math.Abs(Convert.ToInt64(numerator));</span><br><span class="line">    <span class="keyword">var</span> _denominator = Math.Abs(Convert.ToInt64(denominator));</span><br><span class="line">    sb.Append(_numerator / _denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//餘數</span></span><br><span class="line">    <span class="keyword">var</span> Remainder = (_numerator % _denominator);</span><br><span class="line">    <span class="keyword">if</span> (Remainder == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> sb.ToString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sb.Append(<span class="string">"."</span>);</span><br><span class="line">    <span class="keyword">var</span> Map = <span class="keyword">new</span> Dictionary&lt;Int64, <span class="keyword">int</span>&gt;();</span><br><span class="line">    Map.Add(Remainder, sb.Length);</span><br><span class="line">    <span class="keyword">while</span> (Remainder != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sb.Append((Remainder *<span class="number">10</span>) / _denominator);</span><br><span class="line">        Remainder = (Remainder * <span class="number">10</span>) % _denominator;</span><br><span class="line">        <span class="keyword">if</span> (Map.ContainsKey(Remainder))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> Index = Map[Remainder];</span><br><span class="line">            <span class="comment">//開始重複</span></span><br><span class="line">            sb.Insert(Index, <span class="string">"("</span>);</span><br><span class="line">            sb.Append(<span class="string">")"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Map.Add(Remainder, sb.Length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sb.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20180627/leetcode/5.jpg" alt="/images/20180627/leetcode/5.jpg"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/27/【MVC教學】8.View(一)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/27/【MVC教學】8.View(一)/" itemprop="url">【MVC教學】8.View(一)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-06-27T09:28:00+08:00">
+                2018-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/學習MVC/" itemprop="url" rel="index">
+                    <span itemprop="name">學習MVC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/27/【MVC教學】8.View(一)/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/27/【MVC教學】8.View(一)/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <div class="note info"><p>Demo範例 ：<a href="https://github.com/toyo0103/HelloDotNetMVC" target="_blank" rel="noopener">Git位置</a></p></div>
+<h1 id="目標"><a href="#目標" class="headerlink" title="#目標"></a>#目標</h1><p>將網路上下載來的免費漂亮版型套進專案中，從實作中瞭解如何<strong>套版</strong>跟應用.Net提供的一些API方法，過程中或許會有許多小地方不懂，例如Html結構，View Render的機制等等，沒關係，這會在後續的篇章中慢慢補足，而此篇主要是希望讓讀者知道套版原理，並享受網頁隨著套版變漂亮的過程。</p>
+<div class="note info"><p>在Google搜尋中輸入free template download可以找到一大堆免費授權的版型，而這次從這個<a href="https://templated.co/" target="_blank" rel="noopener">TEMPLATED</a>挑了一個喜歡的，有興趣可以先看一下該版型的<a href="https://templated.co/hielo" target="_blank" rel="noopener">Live Demo</a></p></div>
+<p><img src="/images/20180627/1.jpg" alt="/images/20180627/1.jpg"></p>
+<p>如果不方便從網路下載也無妨，我已經將下載好且解壓的版本放到Git的專案之中，如果要練習可以直接從裡面取得Source Code</p>
+<p><img src="/images/20180627/2.jpg" alt="/images/20180627/2.jpg"></p>
+<h1 id="實作"><a href="#實作" class="headerlink" title="#實作"></a>#實作</h1><h2 id="套版前準備"><a href="#套版前準備" class="headerlink" title="套版前準備"></a>套版前準備</h2><h3 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h3><p>通常我會用Chrome瀏覽器來輔助套版的工作，所以以下的操作都是針對Chrome撰寫，不過現在各家瀏覽器其實都大同小異了，只要有相對應的功能即可。</p>
+<div class="note info"><p><a href="https://www.google.com.tw/chrome/index.html" target="_blank" rel="noopener">Chrome下載</a></p></div>
+<h3 id="Web-Server-For-Chrome-非必要"><a href="#Web-Server-For-Chrome-非必要" class="headerlink" title="Web Server For Chrome(非必要)"></a>Web Server For Chrome(非必要)</h3><p>為了方便瀏覽下載的版型，可以安裝Web Server For Chrome這個套件</p>
+<p><img src="/images/20180627/3.jpg" alt="/images/20180627/3.jpg"></p>
+<p>安裝完後應該會在Chrome的<strong>應用程式</strong>中看到Web Server</p>
+<p><img src="/images/20180627/4.jpg" alt="/images/20180627/4.jpg"></p>
+<p>打開它並把資料夾選到版型的根目錄</p>
+<p><img src="/images/20180627/5.jpg" alt="/images/20180627/5.jpg"></p>
+<p><img src="/images/20180627/6.jpg" alt="/images/20180627/6.jpg"></p>
+<p>點擊<strong>Web Server URL(s)</strong>，應該就可以看到網站出現了</p>
+<p><img src="/images/20180627/7.jpg" alt="/images/20180627/7.jpg"></p>
+<p><img src="/images/20180627/8.jpg" alt="/images/20180627/8.jpg"></p>
+<h2 id="首頁套版"><a href="#首頁套版" class="headerlink" title="首頁套版"></a>首頁套版</h2><p>從Visual Studio中開啟Index.html</p>
+<p><img src="/images/20180627/9.jpg" alt="/images/20180627/9.jpg"></p>
+<p><img src="/images/20180627/10.jpg" alt="/images/20180627/10.jpg"></p>
+<p>將<strong>所有內容</strong>複製貼到我們的/Home/Index.cshtml之中</p>
+<p><img src="/images/20180627/11.jpg" alt="/images/20180627/11.jpg"></p>
+<p>這時候會發現第一個錯誤</p>
+<p><img src="/images/20180627/12.jpg" alt="/images/20180627/12.jpg"></p>
+<h3 id="跳脫字元"><a href="#跳脫字元" class="headerlink" title="跳脫字元"></a>跳脫字元</h3><p>原因是.Net MVC預設用的套版語法是Razor，而<strong>@</strong>是它的保留字，所以要用跳脫字元來解決，只要將<em>@</em>templatedco變成<strong>@@templatedco</strong>，它在顯示網頁的時候就會印出我們想要的@templatedco了</p>
+<p><img src="/images/20180627/13.jpg" alt="/images/20180627/13.jpg"></p>
+<p>執行網站看首頁結果會發現，它怪怪的…</p>
+<p><img src="/images/20180627/14.jpg" alt="/images/20180627/14.jpg"></p>
+<h3 id="Layout"><a href="#Layout" class="headerlink" title="Layout"></a>Layout</h3><p>首先網頁最上面那排黑黑的Header，明明我們版型的Header沒這塊，它是從哪邊長出來的?</p>
+<p>這邊就要瞭解<strong>Layout</strong>是什麼</p>
+<p><img src="/images/20180627/15.jpg" alt="/images/20180627/15.jpg"></p>
+<p>很多網頁都會有一個特性，那就是不管切換到哪個頁面都會有共用的區塊，以Sony頁面為例</p>
+<p><strong>PlayStation頁面</strong></p>
+<p><img src="/images/20180627/16.jpg" alt="/images/20180627/16.jpg"></p>
+<p><strong>消費性電子&gt;電視頁面</strong></p>
+<p><img src="/images/20180627/17.jpg" alt="/images/20180627/17.jpg"></p>
+<p>共通點就是Header不管到哪一頁都不會換</p>
+<p><img src="/images/20180627/18.jpg" alt="/images/20180627/18.jpg"></p>
+<p>而如果每頁都要重新把Header套版一次會衍伸一些問題</p>
+<ul>
+<li><strong>重工</strong> : 有一百頁就要把一樣的內容貼一百次</li>
+<li><strong>維護困難</strong> : 如果想在Header多一顆按鈕，就要打開一百個頁面調整一百次</li>
+</ul>
+<p>所以實務上會透過Layout來解決這問題，將全站幾乎都會共用的部分抽出來當Layout，而會變動的部分當作<strong>Body</strong>。</p>
+<p>所以套用了新的版型還會跑出Header，那是因為Layout裡面有這個區塊</p>
+<p><img src="/images/20180627/19.jpg" alt="/images/20180627/19.jpg"></p>
+<p>依照剛剛說的，我們把共用的區塊抽到Layout裡面去放</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE HTML&gt;</span></span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">    Hielo by TEMPLATED</span></span><br><span class="line"><span class="comment">    templated.co @@templatedco</span></span><br><span class="line"><span class="comment">    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hielo by TEMPLATED<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"assets/css/main.css"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        ....</span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>Layout調整成</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE HTML&gt;</span></span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">    Hielo by TEMPLATED</span></span><br><span class="line"><span class="comment">    templated.co @@templatedco</span></span><br><span class="line"><span class="comment">    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hielo by TEMPLATED<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"assets/css/main.css"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    @RenderBody()</span><br><span class="line"></span><br><span class="line">    @RenderSection("scripts", required: false)</span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">        @<span class="keyword">if</span> (TempData[<span class="string">"Message"</span>] != <span class="literal">null</span>)</span></span><br><span class="line"><span class="undefined">        &#123;</span></span><br><span class="line"><span class="xml">            <span class="tag">&lt;<span class="name">text</span>&gt;</span>alert('@TempData["Message"]')<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>Index調整成</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    ViewBag.Title = "Home Page";</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Header --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">header</span> <span class="attr">id</span>=<span class="string">"header"</span> <span class="attr">class</span>=<span class="string">"alt"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"logo"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"index.html"</span>&gt;</span>Hielo <span class="tag">&lt;<span class="name">span</span>&gt;</span>by TEMPLATED<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#menu"</span>&gt;</span>Menu<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Nav --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">id</span>=<span class="string">"menu"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"links"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"index.html"</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"generic.html"</span>&gt;</span>Generic<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"elements.html"</span>&gt;</span>Elements<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Banner --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"banner full"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/slide01.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"inner"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>A free responsive web site template by <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"https://templated.co"</span>&gt;</span>TEMPLATED<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hielo<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/slide02.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"inner"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>Lorem ipsum dolor sit amet nullam feugiat<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Magna etiam<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/slide03.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"inner"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>Sed cursus aliuam veroeros lorem ipsum nullam<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Tempus dolor<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/slide04.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"inner"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>Adipiscing lorem ipsum feugiat sed phasellus consequat<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Etiam feugiat<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/slide05.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"inner"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>Ipsum dolor sed magna veroeros lorem ipsum<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Lorem adipiscing<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- One --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">id</span>=<span class="string">"one"</span> <span class="attr">class</span>=<span class="string">"wrapper style2"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"inner"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"grid-style"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"image fit"</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/pic02.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">header</span> <span class="attr">class</span>=<span class="string">"align-center"</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">p</span>&gt;</span>maecenas sapien feugiat ex purus<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Lorem ipsum dolor<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">p</span>&gt;</span> Cras aliquet urna ut sapien tincidunt, quis malesuada elit facilisis. Vestibulum sit amet tortor velit. Nam elementum nibh a libero pharetra elementum. Maecenas feugiat ex purus, quis volutpat lacus placerat malesuada.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">footer</span> <span class="attr">class</span>=<span class="string">"align-center"</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"button alt"</span>&gt;</span>Learn More<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"image fit"</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/pic03.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">header</span> <span class="attr">class</span>=<span class="string">"align-center"</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">p</span>&gt;</span>mattis elementum sapien pretium tellus<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Vestibulum sit amet<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">p</span>&gt;</span> Cras aliquet urna ut sapien tincidunt, quis malesuada elit facilisis. Vestibulum sit amet tortor velit. Nam elementum nibh a libero pharetra elementum. Maecenas feugiat ex purus, quis volutpat lacus placerat malesuada.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">footer</span> <span class="attr">class</span>=<span class="string">"align-center"</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"button alt"</span>&gt;</span>Learn More<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Two --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">id</span>=<span class="string">"two"</span> <span class="attr">class</span>=<span class="string">"wrapper style3"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"inner"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">header</span> <span class="attr">class</span>=<span class="string">"align-center"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>Nam vel ante sit amet libero scelerisque facilisis eleifend vitae urna<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Morbi maximus justo<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Three --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">id</span>=<span class="string">"three"</span> <span class="attr">class</span>=<span class="string">"wrapper style2"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"inner"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">header</span> <span class="attr">class</span>=<span class="string">"align-center"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"special"</span>&gt;</span>Nam vel ante sit amet libero scelerisque facilisis eleifend vitae urna<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Morbi maximus justo<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"gallery"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"image fit"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/pic01.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"image fit"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/pic02.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"image fit"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/pic03.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"image fit"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images/pic04.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Footer --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">footer</span> <span class="attr">id</span>=<span class="string">"footer"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">"icons"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"icon fa-twitter"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"label"</span>&gt;</span>Twitter<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"icon fa-facebook"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"label"</span>&gt;</span>Facebook<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"icon fa-instagram"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"label"</span>&gt;</span>Instagram<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">class</span>=<span class="string">"icon fa-envelope-o"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"label"</span>&gt;</span>Email<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"copyright"</span>&gt;</span></span><br><span class="line">        &amp;copy; Untitled. All rights reserved.</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Scripts --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"assets/js/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"assets/js/jquery.scrollex.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"assets/js/skel.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"assets/js/util.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"assets/js/main.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="RenderBody"><a href="#RenderBody" class="headerlink" title="@RenderBody()"></a>@RenderBody()</h4><p>Layout中間有一行@RenderBody()這是Razor提供的方法，意思是所有套用這個Layout的頁面，它的內容會取代@RenderBody()。</p>
+<p>假設我們的Index內容為</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>I'm Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>那套上Layout後產生給使用者看到的完整Html就會是這樣</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE HTML&gt;</span></span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">    Hielo by TEMPLATED</span></span><br><span class="line"><span class="comment">    templated.co @@templatedco</span></span><br><span class="line"><span class="comment">    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hielo by TEMPLATED<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"assets/css/main.css"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>I'm Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    .....</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="RenderSection"><a href="#RenderSection" class="headerlink" title="@RenderSection()"></a>@RenderSection()</h4><p>實務上會希望Javascript或是CSS在特定的地方載入，如果只是單純放在Index中將會變成這樣</p>
+<p><strong>Index</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>I'm Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"assets/js/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>結果</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE HTML&gt;</span></span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">    Hielo by TEMPLATED</span></span><br><span class="line"><span class="comment">    templated.co @@templatedco</span></span><br><span class="line"><span class="comment">    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hielo by TEMPLATED<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"assets/css/main.css"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>I'm Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"assets/js/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    ....</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>此時就可以透過在Layout中挖<strong>@RenderSection()</strong>區塊來解決</p>
+<p><strong>Layout</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE HTML&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    ....</span><br><span class="line">    @RenderSection("css", required: false)</span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    @RenderBody()</span><br><span class="line"></span><br><span class="line">    @RenderSection("scripts", required: false)</span><br><span class="line">    ....</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>Index</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@section scripts&#123;</span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"assets/js/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">&#125;</span><br><span class="line">@section css&#123;</span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"assets/css/main.css"</span> /&gt;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>I'm Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>結果</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE HTML&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    ....</span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"assets/css/main.css"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>I'm Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"assets/js/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    ....</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<div class="note info"><p>@RenderSection(“scripts”, <strong>required: false</strong>)</p>
+<p>required參數意義為 </p>
+<p><strong>True</strong> :套用這個Layout的子版面一定要寫@section scripts{ }這個區段</p>
+<p><strong>False</strong> :套用這個Layout的子版面可以沒有@section scripts{ }區段</p></div>
+<h3 id="ViewStart"><a href="#ViewStart" class="headerlink" title="_ViewStart"></a>_ViewStart</h3><p>檢視Index頁面，為何它知道要套用Layout呢?其實這寫在_ViewStart.cshtml之中</p>
+<p><img src="/images/20180627/20.jpg" alt="/images/20180627/20.jpg"></p>
+<p><strong>_ViewStart.cshtml</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    Layout = "~/Views/Shared/_Layout.cshtml";</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所有頁面如果沒有特別指定Layout的情況下，預設套用這個設定。</p>
+<p>但這不意謂著不能自行修改，假設所有專案有兩三個頁面要套用_Layout2.cshtml，那我們可以在<strong>各自的頁面中</strong>指定Layout，而指定的Layout優先於預設。</p>
+<p><strong>Index</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    Layout = "~/Views/Shared/_Layout2.cshtml";</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>I'm Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="載入CSS、Javascript"><a href="#載入CSS、Javascript" class="headerlink" title="載入CSS、Javascript"></a>載入CSS、Javascript</h3><p>重新調整Layout與Index內容後，頁面依然沒有正常顯示</p>
+<p><img src="/images/20180627/21.jpg" alt="/images/20180627/21.jpg"></p>
+<p>在Chrome按下<strong>F12</strong>點擊右上角的錯誤可以得知是因為沒有載入CSS與Javascript</p>
+<p><img src="/images/20180627/22.jpg" alt="/images/20180627/22.jpg"></p>
+<p><strong>將Javascript與CSS移到專案之中</strong></p>
+<p><img src="/images/20180627/23.jpg" alt="/images/20180627/23.jpg"></p>
+<p><img src="/images/20180627/24.jpg" alt="/images/20180627/24.jpg"></p>
+<p>同時我們也刪除掉原本在專案內的Javascript與CSS</p>
+<p><strong>修改Index中Javascript的位置</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">....</span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Scripts --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"~/assets/js/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"~/assets/js/jquery.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"~/assets/js/jquery.scrollex.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"~/assets/js/skel.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"~/assets/js/util.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"~/assets/js/main.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>修改_Layout中CSS的位置</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hielo by TEMPLATED<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">"~/assets/css/main.css"</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>~/assets/css/main.css</p>
+<p>~/assets/js/main.js</p>
+<p>前面的 <strong>~</strong> 符號表示從根目錄開始算起</p></div>
+<p><strong>再次執行專案</strong></p>
+<p>發生錯誤，原因是BundleConfig的地方有抓原本放Javascript的資料夾但被我們砍掉了，Bundle基本上目前我們很少用到所以先暫時不理它，把內容清空不影響結果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class BundleConfig</span><br><span class="line">&#123;</span><br><span class="line">    // 如需統合的詳細資訊，請瀏覽 https://go.microsoft.com/fwlink/?LinkId=301862</span><br><span class="line">    public static void RegisterBundles(BundleCollection bundles)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>執行起來後</p>
+<p><img src="/images/20180627/25.jpg" alt="/images/20180627/25.jpg"></p>
+<p>看起來正常許多但圖片還是沒有出來，將圖片移入</p>
+<p><img src="/images/20180627/26.jpg" alt="/images/20180627/26.jpg"></p>
+<p><img src="/images/20180627/27.jpg" alt="/images/20180627/27.jpg"></p>
+<h1 id="小結"><a href="#小結" class="headerlink" title="#小結"></a>#小結</h1><p><img src="/images/20180627/28.jpg" alt="/images/20180627/28.jpg"></p>
+<p>已經成功將首頁移入專案之中，下一篇將來客製化將之前完成的登入頁面也套進這個漂亮的版型之中，中間將會碰到更多套版的Razor API與一些小技巧。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/19/【LeetCode】Poor Pigs/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1878,370 +2321,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/" itemprop="url">【MVC教學】6.驗證參數- 透過FluentValidation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-05-07T18:23:00+08:00">
-                2018-05-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/學習MVC/" itemprop="url" rel="index">
-                    <span itemprop="name">學習MVC</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="note info"><p>Demo範例 ：<a href="https://github.com/toyo0103/HelloDotNetMVC" target="_blank" rel="noopener">Git位置</a></p></div>
-<p>上一篇簡介了Controller如何安排程式邏輯流程、驗證參數，卻也發現了驗證參數導致程式寫得冗長不易維護，這一篇要介紹【FluentValidation】這個套件來解決這個問題。</p>
-<h1 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h1><p><a href="https://1.bp.blogspot.com/-xZDktMEHvG4/WvAKIceF2VI/AAAAAAAAIuQ/psmk0OXE26sun-H3XramjrzcSCNrD3QgACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-xZDktMEHvG4/WvAKIceF2VI/AAAAAAAAIuQ/psmk0OXE26sun-H3XramjrzcSCNrD3QgACLcBGAs/s400/1.png" alt=""></a><br><a href="https://2.bp.blogspot.com/-uGUzfrokFpI/WvAKaNzXTKI/AAAAAAAAIuY/1O8SMAL7FgkP5wX5l2BBYOKhcPSAF_o_gCLcBGAs/s1600/2.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-uGUzfrokFpI/WvAKaNzXTKI/AAAAAAAAIuY/1O8SMAL7FgkP5wX5l2BBYOKhcPSAF_o_gCLcBGAs/s400/2.png" alt=""></a><br><a href="https://3.bp.blogspot.com/-kfFy1Iqdl1M/WvALDvzwBKI/AAAAAAAAIug/YO4AjyC_No42Xg24hCgC02nf1Qjwb1ZeACLcBGAs/s1600/3.png" title="安裝完後應該會在參考中看到多出兩個FluentValidation的組件" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-kfFy1Iqdl1M/WvALDvzwBKI/AAAAAAAAIug/YO4AjyC_No42Xg24hCgC02nf1Qjwb1ZeACLcBGAs/s320/3.png" alt=""></a></p>
-<h1 id="設定"><a href="#設定" class="headerlink" title="設定"></a>設定</h1><p>把之前的程式碼稍作整理，將Account與Password新建一個類型(Class)來封裝起來，原本Controller裡面的程式整理一下</p>
-<p><a href="https://3.bp.blogspot.com/-7bpU-eurJAI/WvANP8ghptI/AAAAAAAAIus/ayYDM6pHzhwgsRgEigXWwUNGCRGIc7X6wCLcBGAs/s1600/4.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-7bpU-eurJAI/WvANP8ghptI/AAAAAAAAIus/ayYDM6pHzhwgsRgEigXWwUNGCRGIc7X6wCLcBGAs/s400/4.png" alt=""></a></p>
-<p><a href="https://4.bp.blogspot.com/-eIdaQ522IWo/WvAOfKE3BBI/AAAAAAAAIu0/wUYV51Bv-qAP5Dl-vmOAd_fNomrKCjFYwCLcBGAs/s1600/5.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-eIdaQ522IWo/WvAOfKE3BBI/AAAAAAAAIu0/wUYV51Bv-qAP5Dl-vmOAd_fNomrKCjFYwCLcBGAs/s640/5.png" alt=""></a></p>
-<h2 id="自定義驗證Class"><a href="#自定義驗證Class" class="headerlink" title="自定義驗證Class"></a>自定義驗證Class</h2><p>建立一個Class命名為UserSignUpParameterValidation</p>
-<p><a href="https://2.bp.blogspot.com/-CGzCYQgNgpI/WvAQfRjh6rI/AAAAAAAAIvA/W__122acCJg4ivhkTljIzoKdeB3JYM0jwCLcBGAs/s1600/6.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-CGzCYQgNgpI/WvAQfRjh6rI/AAAAAAAAIvA/W__122acCJg4ivhkTljIzoKdeB3JYM0jwCLcBGAs/s640/6.png" alt=""></a></p>
-<p>將UserSignUpParameter掛上Validator Attribute，意思是UserSignUpParameter請幫我用UserSignUpParameterValidation裡面的邏輯來驗證</p>
-<p><a href="https://4.bp.blogspot.com/-znw_JXDtBNI/WvARI9F6b8I/AAAAAAAAIvI/D4GtFgo5dQc06aEnUhlKjE503vuXegEmgCLcBGAs/s1600/7.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-znw_JXDtBNI/WvARI9F6b8I/AAAAAAAAIvI/D4GtFgo5dQc06aEnUhlKjE503vuXegEmgCLcBGAs/s400/7.png" alt=""></a></p>
-<h2 id="帳號密碼不能為空值"><a href="#帳號密碼不能為空值" class="headerlink" title="帳號密碼不能為空值"></a>帳號密碼不能為空值</h2><p><a href="https://1.bp.blogspot.com/-ZEqu3b-BvNc/WvARv5EsieI/AAAAAAAAIvQ/PZO_L_04kLsABp9rYw6dnXYYnKAymKEwACLcBGAs/s1600/8.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-ZEqu3b-BvNc/WvARv5EsieI/AAAAAAAAIvQ/PZO_L_04kLsABp9rYw6dnXYYnKAymKEwACLcBGAs/s400/8.png" alt=""></a></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Validation UserSignUpParameter</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;seealso cref="FluentValidation.AbstractValidator&#123;HelloDotNetMVC.Parameters.UserSignUpParameter&#125;" /&gt;</span></span></span><br><span class="line">public class UserSignUpParameterValidation:AbstractValidator&lt;UserSignUpParameter&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserSignUpParameterValidation</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//AbstractValidator為FluentValidation提供的抽象類別</span></span><br><span class="line">        <span class="comment">//目的是讓使用者可以透過繼承這個抽象類別後，實作自己的驗證邏輯</span></span><br><span class="line">        <span class="comment">//而泛型T， AbstractValidator&lt;T&gt; ，則帶入你想驗證的類別</span></span><br><span class="line">        <span class="comment">//所以這邊帶入UserSignUpParameter，這個我們剛剛製作的Class</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Account</span></span><br><span class="line">        RuleFor(x =&gt; x.Account)</span><br><span class="line">        .NotEmpty()</span><br><span class="line">        .WithMessage(<span class="string">"帳號不能為Empty"</span>)</span><br><span class="line">        .NotNull()</span><br><span class="line">        .WithMessage(<span class="string">"帳號不能為Null"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Password</span></span><br><span class="line">        RuleFor(x=&gt;x.Password)</span><br><span class="line">        .NotEmpty()</span><br><span class="line">        .WithMessage(<span class="string">"密碼不能為Empty"</span>)</span><br><span class="line">        .NotNull()</span><br><span class="line">        .WithMessage(<span class="string">"密碼不能為Null"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>RuleFor是FluentValidation提供的方法，意思是我為Account這個屬性建立驗證的Rule，而Rule分別是，NotEmpty(不能為空值)、NotNull(不能為Null)，而緊接在每個驗證邏輯下面的WithMessage則是表示，當發生它上面的錯誤時，錯誤訊息請回傳這行。</p>
-<p>接著我們可以將Controller的這塊驗證邏輯拿掉，交給<strong>UserSignUpParameterValidation</strong>專責處理就好。</p>
-<p><a href="https://2.bp.blogspot.com/-xebs-1HJ_Xo/WvAT_qTPsOI/AAAAAAAAIvc/PNSq-SW_qdczF4pHIZCzu8hhnsQdpMN1gCLcBGAs/s1600/9.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-xebs-1HJ_Xo/WvAT_qTPsOI/AAAAAAAAIvc/PNSq-SW_qdczF4pHIZCzu8hhnsQdpMN1gCLcBGAs/s400/9.png" alt=""></a></p>
-<h2 id="帳號必須包含-字元，Password必須大於6個字"><a href="#帳號必須包含-字元，Password必須大於6個字" class="headerlink" title="帳號必須包含@字元，Password必須大於6個字"></a>帳號必須包含@字元，Password必須大於6個字</h2><p>因為判斷字元@並不像判斷空值與Null一樣，官方有實做好的方法，必須自己透過Must來定義，這邊提供兩種寫法給讀者參考</p>
-<p><a href="https://4.bp.blogspot.com/-Qd2w4MEWlFk/WvAV24u79OI/AAAAAAAAIvo/ZUAMLs0fn6kx07JMLchQHKYOsP_fKCwvQCLcBGAs/s1600/10.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-Qd2w4MEWlFk/WvAV24u79OI/AAAAAAAAIvo/ZUAMLs0fn6kx07JMLchQHKYOsP_fKCwvQCLcBGAs/s320/10.png" alt=""></a></p>
-<p>上面是匿名方法的寫法，但如果你對於匿名委派還不是很熟悉，也可以用比較簡單的方式寫</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-KmJSyZdiGb0/WvAWiccBedI/AAAAAAAAIvw/17gYP6xPzgIUFII1ptocXolNHkBXfGeegCLcBGAs/s1600/11.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-KmJSyZdiGb0/WvAWiccBedI/AAAAAAAAIvw/17gYP6xPzgIUFII1ptocXolNHkBXfGeegCLcBGAs/s400/11.png" alt=""></a></div><br>先寫好驗證的方法，然後在Must中帶入方法。</p>
-<div class="note info"><p>延伸閱讀 :<br><a href="https://msdn.microsoft.com/zh-tw/library/bb549151(v=vs.110" target="_blank" rel="noopener">MSDN : Func&lt;T,TResult&gt; 委派</a>.aspx)<br><a href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/statements-expressions-operators/anonymous-methods" target="_blank" rel="noopener">MSDN : 匿名方法</a></p></div>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Validation UserSignUpParameter</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;seealso cref="FluentValidation.AbstractValidator&#123;HelloDotNetMVC.Parameters.UserSignUpParameter&#125;" /&gt;</span></span></span><br><span class="line">public class UserSignUpParameterValidation:AbstractValidator&lt;UserSignUpParameter&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserSignUpParameterValidation</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">//AbstractValidator為FluentValidation提供的抽象類別</span></span><br><span class="line">        <span class="comment">//目的是讓使用者可以透過繼承這個抽象類別後，實作自己的驗證邏輯</span></span><br><span class="line">        <span class="comment">//而泛型T， AbstractValidator&lt;T&gt; ，則帶入你想驗證的類別</span></span><br><span class="line">        <span class="comment">//所以這邊帶入UserSignUpParameter，這個我們剛剛製作的Class</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Account</span></span><br><span class="line">        RuleFor(x =&gt; x.Account)</span><br><span class="line">        .NotEmpty()</span><br><span class="line">        .WithMessage(<span class="string">"帳號不能為Empty"</span>)</span><br><span class="line">        .NotNull()</span><br><span class="line">        .WithMessage(<span class="string">"帳號不能為Null"</span>)</span><br><span class="line">        .Must(IncludeAccountKeyword)</span><br><span class="line">        .WithMessage(<span class="string">"帳號不符合格式"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Password</span></span><br><span class="line">        RuleFor(x=&gt;x.Password)</span><br><span class="line">        .NotEmpty()</span><br><span class="line">        .WithMessage(<span class="string">"密碼不能為Empty"</span>)</span><br><span class="line">        .NotNull()</span><br><span class="line">        .WithMessage(<span class="string">"密碼不能為Null"</span>)</span><br><span class="line">        .MinimumLength(<span class="number">7</span>)</span><br><span class="line">        .WithMessage(<span class="string">"密碼必須大於6個字元"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Accounts 必須包含@.</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="account"&gt;</span>The account.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">IncludeAccountKeyword</span>(<span class="params"><span class="keyword">string</span> account</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">string</span>.IsNullOrWhiteSpace(account))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> account.Contains(<span class="string">"@"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>整理後的Controller</p>
-<p><a href="https://3.bp.blogspot.com/-VBKP-msTxnE/WvAYvl0-HBI/AAAAAAAAIv8/tgh1Rp_cN0cyjKsFKbOnefX9VsBI5HPWQCLcBGAs/s1600/12.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-VBKP-msTxnE/WvAYvl0-HBI/AAAAAAAAIv8/tgh1Rp_cN0cyjKsFKbOnefX9VsBI5HPWQCLcBGAs/s400/12.png" alt=""></a></p>
-<h2 id="透過ModelState得知驗證結果"><a href="#透過ModelState得知驗證結果" class="headerlink" title="透過ModelState得知驗證結果"></a>透過ModelState得知驗證結果</h2><div class="note info"><p>ModelState是本來MVC就有提供的參數驗證方式，而使用方法這邊提供幾篇文章給有興趣的讀者參考<br><a href="https://www.exceptionnotfound.net/asp-net-mvc-demystified-modelstate/" target="_blank" rel="noopener">What is the ModelState? - ASP.NET MVC Demystified</a><br><a href="https://blog.miniasp.com/post/2016/03/14/ASPNET-MVC-Developer-Note-Part-28-Understanding-ModelState.aspx" target="_blank" rel="noopener">保哥 : ASP.NET MVC 開發心得分享 (28)：深入了解 ModelState 內部細節</a></p></div>
-<p>而因為開發習慣的關係，我習慣用FluentValidation的方式來取代原本ModelState驗證方法與設定方式，接著我們在Global.asax中呼叫FluentValidationModelValidatorProvider.Configure()</p>
-<p><a href="https://1.bp.blogspot.com/-MtTiRt-qd-0/WvAjEv49mHI/AAAAAAAAIwM/cAcBsXbIuCEgOlfsPQVCMMB58ne84x8uQCLcBGAs/s1600/13.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-MtTiRt-qd-0/WvAjEv49mHI/AAAAAAAAIwM/cAcBsXbIuCEgOlfsPQVCMMB58ne84x8uQCLcBGAs/s400/13.png" alt=""></a><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpPost</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">SignUp</span>(<span class="params">UserSignUpParameter parameter</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!ModelState.IsValid)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//IsValida為False時，表示驗證參數不過</span></span><br><span class="line">        <span class="comment">//取出第一筆錯誤訊息回傳</span></span><br><span class="line">        <span class="keyword">var</span> Error = ModelState.Values.SelectMany(x =&gt; x.Errors).First();</span><br><span class="line">        TempData[<span class="string">"Message"</span>] = Error.ErrorMessage;</span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"signup"</span>, <span class="string">"user"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//這邊沒有搬到FluentValidation去驗證的原因是</span></span><br><span class="line">    <span class="comment">//使用者存在與否比較屬於服務層的事情，通常需要讀取資料庫才能判斷</span></span><br><span class="line">    <span class="comment">//開發上習慣盡量讓驗證參數越乾淨簡單越好，而不是在裡面呼叫很多外部服務(例如資料庫)後做驗證</span></span><br><span class="line">    <span class="comment">//這會讓職責過於複雜</span></span><br><span class="line">    <span class="keyword">if</span> (parameter.Account != <span class="string">"steven@mymail.com"</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        TempData[<span class="string">"Message"</span>] = <span class="string">"註冊成功!!"</span>;</span><br><span class="line">        <span class="comment">//註冊成功,導到首頁 </span></span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"index"</span>, <span class="string">"home"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        TempData[<span class="string">"Message"</span>] = <span class="string">"帳號已經存在"</span>;</span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"signup"</span>, <span class="string">"user"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>接著執行程式，驗證看看是否之前的驗證邏輯都還是正常運作。</p>
-<p><a href="https://2.bp.blogspot.com/-eQpSlQBWHTE/WvAoYn_ChaI/AAAAAAAAIwk/C-Y7_RCGGuIvOHE8u-VhS8OPriHmspgpgCLcBGAs/s1600/15.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-eQpSlQBWHTE/WvAoYn_ChaI/AAAAAAAAIwk/C-Y7_RCGGuIvOHE8u-VhS8OPriHmspgpgCLcBGAs/s400/15.png" alt=""></a> <a href="https://3.bp.blogspot.com/-yVOQuBNw_cM/WvAoYoDVp_I/AAAAAAAAIwg/aGZLbMDSrTgCcZS2TwFEfFzGMiYktMsXACLcBGAs/s1600/16.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-yVOQuBNw_cM/WvAoYoDVp_I/AAAAAAAAIwg/aGZLbMDSrTgCcZS2TwFEfFzGMiYktMsXACLcBGAs/s400/16.png" alt=""></a><br><a href="https://2.bp.blogspot.com/-Qyvaso2H-qg/WvAoYTtzkxI/AAAAAAAAIwc/wILEhIgySEExN0Wy-V33ohsrwpIKpG-JACLcBGAs/s1600/14.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-Qyvaso2H-qg/WvAoYTtzkxI/AAAAAAAAIwc/wILEhIgySEExN0Wy-V33ohsrwpIKpG-JACLcBGAs/s400/14.png" alt=""></a></p>
-<p>比較一下最一開始與套用FluentValidation後的程式碼，應該可以明顯感受到差異，這不僅僅只是讓程式變乾淨，更重要的是驗證參數的職責被分離到UserSignUpParameterValidation這個類別中，以後要改參數驗證的邏輯只要到這調整即可，不用再擔心Controller會被不小心改壞。</p>
-<p><a href="https://4.bp.blogspot.com/-3mLUKzjO55A/WvArsPEl3hI/AAAAAAAAIw0/8AidDEBX-jwgO7iFO3nyt7ENHCg8xd7PwCLcBGAs/s1600/17.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-3mLUKzjO55A/WvArsPEl3hI/AAAAAAAAIw0/8AidDEBX-jwgO7iFO3nyt7ENHCg8xd7PwCLcBGAs/s640/17.png" alt=""></a></p>
-<h1 id="延伸閱讀"><a href="#延伸閱讀" class="headerlink" title="延伸閱讀"></a>延伸閱讀</h1><p><a href="https://github.com/JeremySkinner/FluentValidation/wiki" target="_blank" rel="noopener">FluentValidation : 官方文件、各種API使用方法</a><br><a href="https://toyo0103.blogspot.tw/2016/10/fluentvalidation-webapi.html" target="_blank" rel="noopener">FluentValidation : 擴充驗證方法</a><br><a href="https://toyo0103.blogspot.tw/2016/11/fluentvalidation.html" target="_blank" rel="noopener">FluentValidation : 繼承父類別的驗證</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/25/【MVC教學】5.Controller簡介/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/【MVC教學】5.Controller簡介/" itemprop="url">【MVC教學】5.Controller簡介</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-04-25T23:08:00+08:00">
-                2018-04-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/學習MVC/" itemprop="url" rel="index">
-                    <span itemprop="name">學習MVC</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/04/25/【MVC教學】5.Controller簡介/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/04/25/【MVC教學】5.Controller簡介/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="note info"><p>Demo範例 ： <a href="https://github.com/toyo0103/HelloDotNetMVC" target="_blank" rel="noopener">Git位置</a></p></div>
-<p>前面幾篇解說了Route設定，讓我們的程式能順利找到對應的Controller來執行，那今天要來談談Controller幫我們做些什麼？<br>我們通常會在Controller這層就將使用者的參數<strong>驗證</strong>完畢，並且依據傳入的參數，找到對應的商業邏輯去執行，並且回傳結果給使用者知道，已註冊頁面作為實際應用來解說。</p>
-<p><a href="https://4.bp.blogspot.com/-1s0A__te0ws/WuCCI7_4QvI/AAAAAAAAIq0/qwTcF7tfpGAajtSMNZ8FPKhw0q7ImxPrgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.26.31.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-1s0A__te0ws/WuCCI7_4QvI/AAAAAAAAIq0/qwTcF7tfpGAajtSMNZ8FPKhw0q7ImxPrgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.26.31.png" alt=""></a></p>
-<p>接著我們來實作上述的內容，但因為只是MVC初學，所以我們還不加入分層、資料庫溝通之類比較深的內容，只專注在Controller怎麼做。</p>
-<p>&nbsp;</p>
-<h1 id="建立Controller"><a href="#建立Controller" class="headerlink" title="建立Controller"></a>建立Controller</h1><p>&nbsp;<br>我們先建立一個UserController，專門處理User相關的服務跟邏輯</p>
-<p><a href="https://2.bp.blogspot.com/-y9ZNRe-qPbw/WuCDIfd8kUI/AAAAAAAAIq8/KA_bBs97zp8l7YrYxSwSNRqS14cqyA9KwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.30.36.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-y9ZNRe-qPbw/WuCDIfd8kUI/AAAAAAAAIq8/KA_bBs97zp8l7YrYxSwSNRqS14cqyA9KwCLcBGAs/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.30.36.png" alt=""></a></p>
-<p>接著寫一個SignUp的Action，這邊有看到我們掛HttpGet的Attribute，只是指定呼叫動詞必須是Get的方式才會執行到這個Action</p>
-<div class="note info"><p>如果不知道Http動詞的話可以參考 : <a href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Methods" target="_blank" rel="noopener">HTTP請求方法</a></p></div>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-KA_M1a5AopU/WuCDeRZvUuI/AAAAAAAAIrI/C66BwZf0wvw7Z2PDngjof-IgAzSwUE3bwCEwYBhgL/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.32.27.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-KA_M1a5AopU/WuCDeRZvUuI/AAAAAAAAIrI/C66BwZf0wvw7Z2PDngjof-IgAzSwUE3bwCEwYBhgL/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.32.27.png" alt=""></a></div>
-
-<p>&nbsp;</p>
-<h1 id="建立View"><a href="#建立View" class="headerlink" title="建立View"></a>建立View</h1><p>&nbsp;<br>而這個Action沒有任何內容，只有回傳一個View而已，接著我們來實作出回傳的頁面，在這個Action中點擊右鍵 &gt; 新增檢視</p>
-<p><a href="https://3.bp.blogspot.com/-qEISXaQUqlA/WuCFCh80daI/AAAAAAAAIrQ/k2MbagqBBpk_iw-y7YRUKoTOwjjeWnazwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.37.38.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-qEISXaQUqlA/WuCFCh80daI/AAAAAAAAIrQ/k2MbagqBBpk_iw-y7YRUKoTOwjjeWnazwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.37.38.png" alt=""></a><br><a href="https://1.bp.blogspot.com/-x2w81z28D6c/WuCFRqP49VI/AAAAAAAAIrU/c--eosiD0rU7Y_7j1c1ZZY3-k7YUGbeIQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.40.03.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-x2w81z28D6c/WuCFRqP49VI/AAAAAAAAIrU/c--eosiD0rU7Y_7j1c1ZZY3-k7YUGbeIQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.40.03.png" alt=""></a><br><a href="https://3.bp.blogspot.com/-RrarAQWIu6c/WuCFl5E-wvI/AAAAAAAAIrg/b6Lj5N-NGaU5dSZ3zM165O1zvvpzvA_gwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.41.30.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-RrarAQWIu6c/WuCFl5E-wvI/AAAAAAAAIrg/b6Lj5N-NGaU5dSZ3zM165O1zvvpzvA_gwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.41.30.png" alt=""></a><br><a href="https://4.bp.blogspot.com/-j3xcFnMknHg/WuCF98nE2SI/AAAAAAAAIro/HOo9hoZwb6wAUQOJBcIRTqAeXTMSv8vXwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.42.21.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-j3xcFnMknHg/WuCF98nE2SI/AAAAAAAAIro/HOo9hoZwb6wAUQOJBcIRTqAeXTMSv8vXwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.42.21.png" alt=""></a></p>
-<p>接著直接執行，應該就能看到我們剛剛做出來的SignUp頁面</p>
-<p><a href="https://3.bp.blogspot.com/-SED-4nfjecw/WuCNG2uok7I/AAAAAAAAIr4/nOzZXjfM_FETp1KLNMU6-aLcf20L-IKCgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.13.28.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-SED-4nfjecw/WuCNG2uok7I/AAAAAAAAIr4/nOzZXjfM_FETp1KLNMU6-aLcf20L-IKCgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.13.28.png" alt=""></a><br>而這邊網址是 /user/signup，我覺得不夠直覺，所以到RouteConfig改一下<br><a href="https://3.bp.blogspot.com/-Ci1v26GtXFs/WuCODEjjM2I/AAAAAAAAIsI/EzpX1P_LRGU278UAsSeZb6S4BBTo-FZOQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.16.53.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-Ci1v26GtXFs/WuCODEjjM2I/AAAAAAAAIsI/EzpX1P_LRGU278UAsSeZb6S4BBTo-FZOQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.16.53.png" alt=""></a><br><a href="https://3.bp.blogspot.com/-mB5dxE3pyMQ/WuCOPhH0dhI/AAAAAAAAIsM/SZiLCNuxCWoI78quWen_W5o97Dy_4qUlACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.18.20.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-mB5dxE3pyMQ/WuCOPhH0dhI/AAAAAAAAIsM/SZiLCNuxCWoI78quWen_W5o97Dy_4qUlACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.18.20.png" alt=""></a></p>
-<p>接著把頁面簡單做起來</p>
-<p><a href="https://2.bp.blogspot.com/-mBcGm-zF5Ac/WuCPANF6GMI/AAAAAAAAIsc/-GE55rw9U1Q2cnTS8lL8ou0jXsAecxLzgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.21.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-mBcGm-zF5Ac/WuCPANF6GMI/AAAAAAAAIsc/-GE55rw9U1Q2cnTS8lL8ou0jXsAecxLzgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.21.png" alt=""></a><br><a href="https://4.bp.blogspot.com/-pBkzKrxXseo/WuCPK5DBR6I/AAAAAAAAIsg/hpxvNjOdxQAczfyTuTyNsAC4OnRP7jYfwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.35.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-pBkzKrxXseo/WuCPK5DBR6I/AAAAAAAAIsg/hpxvNjOdxQAczfyTuTyNsAC4OnRP7jYfwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.35.png" alt=""></a><br>寫一個Action來接收傳過來的資料</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpPost</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">SignUp</span>(<span class="params"><span class="keyword">string</span> account,<span class="keyword">string</span> password</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> Result = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">//帳號密碼都不能為空值</span></span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">string</span>.IsNullOrWhiteSpace(account) &amp;amp;&amp;amp;</span><br><span class="line">        !<span class="keyword">string</span>.IsNullOrWhiteSpace(password))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//帳號必須要有@字元</span></span><br><span class="line">        <span class="comment">//密碼必須大於六個字元</span></span><br><span class="line">        <span class="keyword">if</span> (account.Contains(<span class="string">"@"</span>) &amp;amp;&amp;amp; password.Length &amp;gt; <span class="number">6</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//我們判斷是否有註冊過的帳號,因為還沒有連結資料庫</span></span><br><span class="line">            <span class="comment">//所以先假定steven@mymail.com被註冊過</span></span><br><span class="line">            <span class="keyword">if</span> (account != <span class="string">"steven@mymail.com"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                TempData[<span class="string">"Message"</span>] = <span class="string">"註冊成功!!"</span>;</span><br><span class="line">                Result = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                TempData[<span class="string">"Message"</span>] = <span class="string">"帳號已經存在"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            TempData[<span class="string">"Message"</span>] = <span class="string">"帳號密碼不符合格式"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        TempData[<span class="string">"Message"</span>] = <span class="string">"帳號密碼不能為空值"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (Result)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//註冊成功,導到首頁 </span></span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"index"</span>, <span class="string">"home"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"signup"</span>, <span class="string">"user"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>這邊注意到我們的Attribute就下了HttpPost，表示只有Post可以呼叫到這個Action，而我們在Form那邊也設定了方法用Post</p>
-<p><a href="https://2.bp.blogspot.com/-H9l67uz1TCk/WuCUxsRdhXI/AAAAAAAAIs4/SvdmC3Fc8nkKSVrlqhA6zSGoLOwfsvVkQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.45.44.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-H9l67uz1TCk/WuCUxsRdhXI/AAAAAAAAIs4/SvdmC3Fc8nkKSVrlqhA6zSGoLOwfsvVkQCLcBGAs/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.45.44.png" alt=""></a><br>接著你可能會注意到裡面有用到TempData，通常TempData是用來跨Action傳遞資料用的，底層其實是將資料存在Session之中，而且你只要取用過一次裡面的值就會被清掉。 而因為我們這個Action只是在處理註冊的相關邏輯，執行完後可以看到最後回傳的都是RedirectToAction，也就是導到我們指定的Action去回傳頁面，所以會跨兩個Action以上，存在TempData是個簡單的處理方式。</p>
-<p>接著執行看看你會發現，好像一切有照著我們的邏輯在執行，但唯獨訊息不會顯示出來，因為我們雖然將TempData之中，卻沒有寫顯示訊息的那一段，通常這一段邏輯我們會放在共用的_Layout裡面。</p>
-<p><a href="https://1.bp.blogspot.com/-ozg16dsOSrE/WuCd9w_QvKI/AAAAAAAAItw/vCUtqPBHZHwgPF4bVbw47tKhBfhEPIkNACLcBGAs/s1600/14.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-ozg16dsOSrE/WuCd9w_QvKI/AAAAAAAAItw/vCUtqPBHZHwgPF4bVbw47tKhBfhEPIkNACLcBGAs/s400/14.png" alt=""></a></p>
-<p><a href="https://2.bp.blogspot.com/-E1x50TUS8NQ/WuCXYxIgwPI/AAAAAAAAItI/aLOGjZ82wJ0Pjy-OxOBEdaa6kPXFmN9DQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.57.06.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-E1x50TUS8NQ/WuCXYxIgwPI/AAAAAAAAItI/aLOGjZ82wJ0Pjy-OxOBEdaa6kPXFmN9DQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.57.06.png" alt=""></a><br>因為還沒解說View的關係，這邊就先照著寫，之後會解說到。再次執行就會發現訊息會正確S顯示出來了。</p>
-<p><a href="https://1.bp.blogspot.com/-OFHFUMFcMwE/WuCX5I_64XI/AAAAAAAAItQ/FGMQUMK-RD4bq8lkfPJBI5aLPd_n2l2dgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.20.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-OFHFUMFcMwE/WuCX5I_64XI/AAAAAAAAItQ/FGMQUMK-RD4bq8lkfPJBI5aLPd_n2l2dgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.20.png" alt=""></a><br><a href="https://2.bp.blogspot.com/-XWHUszO3mxw/WuCX9g656vI/AAAAAAAAItU/DyrM8bb1848t9nO4xT8Pn4OgFGzhEEw2gCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.36.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-XWHUszO3mxw/WuCX9g656vI/AAAAAAAAItU/DyrM8bb1848t9nO4xT8Pn4OgFGzhEEw2gCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.36.png" alt=""></a></p>
-<p>上述的Controller撰寫方式，就是通常我們在Controller做的工作，驗證參數 、 依據使用者輸入的值執行對應的邏輯 、最後回傳結果。但你應該也會發現，整個Action邏輯裡面光是驗證參數就佔了大半的篇幅，這往往會讓程式碼複雜度提高，閱讀變得困難，這部分我們會在下一篇講解該如何把這類的邏輯分隔出去，讓程式碼更好維護美觀一些。另外Action其實還可以回傳很多種結果，前面範例用到了</p>
-<div class="note info"><p>View ： 回傳頁面<br>RedirectToAction ：回傳導頁結果</p></div>
-<p>底層還支援了一些回傳方式，靈活應用就可以達成大部分的功能了。詳細參考：&nbsp;<a href="https://msdn.microsoft.com/zh-tw/library/dd410269(v=vs.98).aspx" target="_blank" rel="noopener">ＭＳＤＮ</a></p>
-<p><a href="https://2.bp.blogspot.com/-68Q1RXjX860/WuCZYQn2b7I/AAAAAAAAItk/MkjLnK3AXeIj_LtiX_SUBJRJZUMpBzghwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258811.05.55.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-68Q1RXjX860/WuCZYQn2b7I/AAAAAAAAItk/MkjLnK3AXeIj_LtiX_SUBJRJZUMpBzghwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258811.05.55.png" alt=""></a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2296,7 +2375,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">168</span>
+                  <span class="site-state-item-count">170</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -2318,7 +2397,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

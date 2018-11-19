@@ -295,6 +295,347 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/25/【CI-CD】1-如何透過VSTS來達成CI的目標/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/25/【CI-CD】1-如何透過VSTS來達成CI的目標/" itemprop="url">【CI/CD】1. 如何透過VSTS來達成CI的目標</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-25T17:28:00+08:00">
+                2018-01-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/VSTS建置CI-CD/" itemprop="url" rel="index">
+                    <span itemprop="name">VSTS建置CI-CD</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/25/【CI-CD】1-如何透過VSTS來達成CI的目標/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/25/【CI-CD】1-如何透過VSTS來達成CI的目標/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>以下是Wiki對於CI的解釋</p>
+<div class="note info"><p>持續整合（英語：Continuous integration，縮寫CI）是一種軟體工程流程，是將所有軟體工程師對於軟體的工作副本持續整合到共用主線（mainline）的一種舉措。<br>該名稱最早由[1]葛來迪·布區（Grady Booch）在他的布區方法[2]中提出，不過他並沒有提到要每天整合數次。之後該舉措成為極限編程（extreme programming）的一部份時，其中建議每天應整合超過一次，甚至達到數十次。<br>[3]在測試驅動開發（TDD）的作法中，通常還會搭配自動單元測試。持續整合的提出主要是為解決軟體進行系統整合時面臨的各項問題，極限編程稱這些問題為整合地獄（integration hell）。</p></div>
+<p>而自己對CI的見解是，透過軟體版本控管機制，持續將每個分支每次修改進行整合，並且透過<strong>自動化</strong>的測試、佈署、執行報告來控管軟體品質。</p>
+<div class="note info"><p>參考 : <a href="https://dotblogs.com.tw/hatelove/archive/2011/12/25/introducing-continuous-integration.aspx" target="_blank" rel="noopener">[軟體工程]持續整合 (Continuous integration, CI) 簡介 - 91</a></p></div>
+<p>而這篇是要寫如何透過VSTS來達成此目標，跟整個設定的過程，先來整理要達成的目標項目。</p>
+<p>希望<br>1.<strong>版控更新時，自動建置</strong><br>2.<strong>自動執行單元測試</strong><br>3.<strong>將建置好的檔案放到佈署資料夾(</strong>之後讓CD接手，做自動化佈署到正式機、測試機..等<strong>)</strong><br>4.<strong>回報上述執行結果</strong></p>
+<h3 id="版控更新時，自動建置"><a href="#版控更新時，自動建置" class="headerlink" title="版控更新時，自動建置"></a>版控更新時，自動建置</h3><div><br><br>#### 1.<span style="font-weight: normal;">到VSTS網站頁面，選擇</span><strong>Build and Release&nbsp; &gt;&nbsp; +New</strong><br></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-XS-Ogl-wsag/WmmPVNrH_bI/AAAAAAAAIV8/cjl3VdVp6gsL11fiftfSCIcec9EsE_gGgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-XS-Ogl-wsag/WmmPVNrH_bI/AAAAAAAAIV8/cjl3VdVp6gsL11fiftfSCIcec9EsE_gGgCLcBGAs/s640/1.png" alt=""></a></div><div><strong>
+</strong></div><div><br></div><div><br><br>#### 2.<span style="font-weight: normal;">選擇</span><strong>Empty process</strong><br></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-qw_0GPoI3i4/WmmPmH3ClGI/AAAAAAAAIWA/pMV4k7v1uZQlucvGW5U0dy_Mu2MjwCVdQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-qw_0GPoI3i4/WmmPmH3ClGI/AAAAAAAAIWA/pMV4k7v1uZQlucvGW5U0dy_Mu2MjwCVdQCLcBGAs/s400/1.png" alt=""></a></div>
+
+<p>Process Agent queue設定</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-nv9FB-OKBu8/WmmiC6TnyPI/AAAAAAAAIYs/unfIYRSe9wgUs1490wBHMKwp9_bOsAC_QCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-nv9FB-OKBu8/WmmiC6TnyPI/AAAAAAAAIYs/unfIYRSe9wgUs1490wBHMKwp9_bOsAC_QCLcBGAs/s640/1.png" alt=""></a></div>
+
+<h4 id="3-加入Nuget-restore-Task，因為我們專案都有用Nuget，所以需要在建置之前先還原Nuget，設定如下"><a href="#3-加入Nuget-restore-Task，因為我們專案都有用Nuget，所以需要在建置之前先還原Nuget，設定如下" class="headerlink" title="3.加入Nuget restore Task，因為我們專案都有用Nuget，所以需要在建置之前先還原Nuget，設定如下"></a>3.<span style="font-weight: normal;">加入</span><strong>Nuget restore Task</strong>，<span style="font-weight: normal;">因為我們專案都有用Nuget，所以需要在建置之前先還原Nuget，設定如下</span></h4><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-hFBqYKbzhfI/WmmUkjd318I/AAAAAAAAIWc/VnQOMKDfOWUFlsdbTwtgOzDsuEo1HyDWwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-hFBqYKbzhfI/WmmUkjd318I/AAAAAAAAIWc/VnQOMKDfOWUFlsdbTwtgOzDsuEo1HyDWwCLcBGAs/s640/1.png" alt=""></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-8bU6NhV_axk/WmmSF6nLdzI/AAAAAAAAIWQ/xR8dyhcgSP8e9s4c5pukjKhgmiqKKmyYwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-8bU6NhV_axk/WmmSF6nLdzI/AAAAAAAAIWQ/xR8dyhcgSP8e9s4c5pukjKhgmiqKKmyYwCLcBGAs/s640/1.png" alt=""></a></div><br>這邊Feed to use 我選擇Feeds in my Nuget.config，原因是公司專案有用自己開發的Nuget套件，而那些Nuget放的位置就需要自訂的Config讓建置機器知道，否則抓不到那些套件，待會建置就會錯誤，如果專案沒有用內部Nuget Server的套件，就選第一個即可。<br><br><div class="note info"><p>通常如果我們有用私人的Nuget套件，一定會在VS設定套件來源，而這個設定檔就會放在底下這個位置<br>%appdata%\NuGet\NuGet.Config<br>把檔案放進版控中，就可以讓VSTS選的到了</p></div><br><br><br>#### 4.<span style="font-weight: normal;">加入</span><strong>Build Solution Task</strong><br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-P83wkuHiW_Q/WmmU9NttxhI/AAAAAAAAIWg/eKcneONO0H0amRUTTrN0KmMSpKnIHFaCgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-P83wkuHiW_Q/WmmU9NttxhI/AAAAAAAAIWg/eKcneONO0H0amRUTTrN0KmMSpKnIHFaCgCLcBGAs/s400/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-VpXPU2_Rkb8/WmmVvzSQSBI/AAAAAAAAIWs/Mpu-mZu4gqEzXQBfEqurgLBwRxTc2fp_ACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-VpXPU2_Rkb8/WmmVvzSQSBI/AAAAAAAAIWs/Mpu-mZu4gqEzXQBfEqurgLBwRxTc2fp_ACLcBGAs/s640/1.png" alt=""></a></div><strong><br>*</strong>這邊MSBuild Arguments裡面的PublishProfile=CICD，意思是說我們要用的發行檔名稱，而名稱就做CICD，所以等等我們會回VisualStudio建立一個名叫CICD的發行檔<br><br>*Configuration，是說我要用Debug的組態檔來建置，如果你不知道組態檔是什麼，請看<br><div class="note info"><p>參考 : <a href="http://kevintsengtw.blogspot.tw/2014/08/webconfig.html" target="_blank" rel="noopener">發佈網站時依據組態設定的不同而轉換 Web.Config   -  MRKT</a></p></div><br><br><br>#### 5.建立CICD發行檔<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-fXHi2n6VZFM/WmmYCGCjFAI/AAAAAAAAIW4/5zbkFrA19Fon58CJBVLTEUJR3Chqz50iQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-fXHi2n6VZFM/WmmYCGCjFAI/AAAAAAAAIW4/5zbkFrA19Fon58CJBVLTEUJR3Chqz50iQCLcBGAs/s400/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-l1gb4UnmpmM/WmmYYZTNDxI/AAAAAAAAIW8/0HjBNGwjRNMIErNyx8lrVf4Hy7TZ88x9ACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-l1gb4UnmpmM/WmmYYZTNDxI/AAAAAAAAIW8/0HjBNGwjRNMIErNyx8lrVf4Hy7TZ88x9ACLcBGAs/s400/1.png" alt=""></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-32aEvFZCe6g/WmmZW11jZ0I/AAAAAAAAIXI/2Ei-9zh3KhQx06veBMtbWEa7H4tc3idvgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-32aEvFZCe6g/WmmZW11jZ0I/AAAAAAAAIXI/2Ei-9zh3KhQx06veBMtbWEa7H4tc3idvgCLcBGAs/s400/1.png" alt=""></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-1RqfQqrD0C8/WmmZoZZViaI/AAAAAAAAIXM/34faHBlj3c4KF4xz7FwZnZmWayUpSodlwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-1RqfQqrD0C8/WmmZoZZViaI/AAAAAAAAIXM/34faHBlj3c4KF4xz7FwZnZmWayUpSodlwCLcBGAs/s320/1.png" alt=""></a></div><br>你可以先用VS發行看看，應該會在專案的Root資料夾底下長出一個Publish的資料夾，底下內容如下<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-PzHy8-PeILA/WmmaFi-990I/AAAAAAAAIXU/lms69Y9-8BcER7sAvGlMt2x38tEUFQcagCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-PzHy8-PeILA/WmmaFi-990I/AAAAAAAAIXU/lms69Y9-8BcER7sAvGlMt2x38tEUFQcagCLcBGAs/s640/1.png" alt=""></a></div>之後WebDeply就靠這些檔案了。 回到VSTS繼續設定<br><br>#### 6.<span style="font-weight: normal;">加入</span>Visual Studio Test Task<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-QBXq7Esdoro/WmmarbzFXlI/AAAAAAAAIXc/yTYh8E4y8Uwq1NX4NTjHjxUJFoxvAJKvACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-QBXq7Esdoro/WmmarbzFXlI/AAAAAAAAIXc/yTYh8E4y8Uwq1NX4NTjHjxUJFoxvAJKvACLcBGAs/s400/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-Ik2JJshPoNw/WmmbErAetqI/AAAAAAAAIXg/iBT1z4W5SfUMPIwsR6Cgk8O5FC2Ox-KjwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-Ik2JJshPoNw/WmmbErAetqI/AAAAAAAAIXg/iBT1z4W5SfUMPIwsR6Cgk8O5FC2Ox-KjwCLcBGAs/s400/1.png" alt=""></a></div><div><br></div><div>紅框處是告訴這個Task，如何找到你的單元測試Dll來執行，如果你建立單元測試專案都是用預設的方式，那單元測試的專案名稱應該都會是 xxxTest，所以建置出來的Dll也會是xxxTest.dll，符合紅框預設尋找的條件，所以不用調整</div><div><br></div><div><br></div><div><br><br>#### 7.<span style="font-weight: 400;">加入</span>Copy Files Task<br></div><div>目的是如果前面幾個Task都通過執行到這邊，表示建置沒有問題，且單元測試全部通過，所發行出來的檔案，加下來要把這些檔案複製出來，準備移到成品資料夾</div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-Tr8vDR0SmDU/WmmciCbYKwI/AAAAAAAAIXw/5i0cUOgtWDQLXiCveVshcpqSZa1ZQscNACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-Tr8vDR0SmDU/WmmciCbYKwI/AAAAAAAAIXw/5i0cUOgtWDQLXiCveVshcpqSZa1ZQscNACLcBGAs/s400/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-kmgOU-k_3jY/Wmmc_n-HXlI/AAAAAAAAIX0/0P0WAy6oXRUmGStC-upMnLfFPWck3ydFACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-kmgOU-k_3jY/Wmmc_n-HXlI/AAAAAAAAIX0/0P0WAy6oXRUmGStC-upMnLfFPWck3ydFACLcBGAs/s640/1.png" alt=""></a></div><div><br></div><div>黑框遮掉的部分就跟之前一樣是專案名稱，我的專案名稱是XXX.Application，所以那個區段請自行置換。</div><div><br></div><div>另外還記得Publish這個資料夾嗎?這就是我們剛剛在Visual Studio設定在CICD發行檔的建置發行檔存放的位置，套上預設VSTS建置專案的資料夾變數位置，就變成這行的值了</div><div><br></div><div class="note info"><p>參考 : <a href="https://docs.microsoft.com/en-us/vsts/build-release/concepts/definitions/build/variables?tabs=batch" target="_blank" rel="noopener">VSTS Build variables</a> </p></div><br><br><br>####<br><br>#### 8.將成品資料夾內容丟到Drop資料夾<br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-88XzfFqDwog/WmmeuQ9zKzI/AAAAAAAAIYE/oIV5xH2wEgADVD-jNi-boqu6ZySliBYnwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-88XzfFqDwog/WmmeuQ9zKzI/AAAAAAAAIYE/oIV5xH2wEgADVD-jNi-boqu6ZySliBYnwCLcBGAs/s400/1.png" alt=""></a></div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-RJHr9xJXX60/Wmme3l784sI/AAAAAAAAIYI/Az3zsxDNF38IududQuL3s8zkk7WEDpGmQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-RJHr9xJXX60/Wmme3l784sI/AAAAAAAAIYI/Az3zsxDNF38IududQuL3s8zkk7WEDpGmQCLcBGAs/s640/1.png" alt=""></a></div><div><br></div><div><br></div><div><br></div><div>到這邊CI的任務大致完成，已經能將專案自動建置、單元測試、將成品打包準備佈署到Server，接下來如何將這成品佈署到Server就是CD的議題了，留待之後在說。</div><div><br></div><div><br></div><div>這邊還有最重要的一點，既然是持續整合，那這些任務如何自動化的持續整合，如果每次版控有異動都還要人來操作這些任務，那就失去了持續整合的意義。</div><div><br></div>
+
+<h3 id="將CI任務加上Trigger條件"><a href="#將CI任務加上Trigger條件" class="headerlink" title="將CI任務加上Trigger條件"></a>將CI任務加上Trigger條件</h3><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-mpvJaiE8Apc/WmmgTg2yIJI/AAAAAAAAIYY/7FH7zn14ovMWFtsIKCMYhFcW4k4Hm3SSACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-mpvJaiE8Apc/WmmgTg2yIJI/AAAAAAAAIYY/7FH7zn14ovMWFtsIKCMYhFcW4k4Hm3SSACLcBGAs/s640/1.png" alt=""></a></div><div>這邊設定意思是說，當這個專案的Develop分支有新的Commit進來時，剛剛設定的那些任務就會被自動化的執行。</div><div><br></div><div>而每次執行的結果如下</div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-22JmmaFCkjs/Wmmg5b-NLhI/AAAAAAAAIYg/H9clp3fIeF0NQsHTs96xEr3uSkvnExEfwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-22JmmaFCkjs/Wmmg5b-NLhI/AAAAAAAAIYg/H9clp3fIeF0NQsHTs96xEr3uSkvnExEfwCLcBGAs/s400/1.png" alt=""></a></div><div><br></div><div>點擊每一次進去可以看到執行的狀況，或是以及錯誤的Log</div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-GNDMtKmEkwg/WmmhlqGuDTI/AAAAAAAAIYo/7tgSawThmfQw6sYKRu9B9k2TkyHwXBG2ACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-GNDMtKmEkwg/WmmhlqGuDTI/AAAAAAAAIYo/7tgSawThmfQw6sYKRu9B9k2TkyHwXBG2ACLcBGAs/s640/1.png" alt=""></a></div><div><br></div><div><br></div><div><br></div><div><br></div><div>也可以手動排Queue，讓他立即依據現在最新版本或是特定版本去執行</div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-EJjqIGXvgro/Wmmik_1pz3I/AAAAAAAAIY4/8QLNaTEmJrMhAK871kW4yf_YLSyUlMQ5QCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-EJjqIGXvgro/Wmmik_1pz3I/AAAAAAAAIY4/8QLNaTEmJrMhAK871kW4yf_YLSyUlMQ5QCLcBGAs/s640/1.png" alt=""></a></div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-X-V_2Mj63Cs/Wmmi0um07kI/AAAAAAAAIY8/hEtz4yx2s94wJppHAoL2eT6jR0a9DIzgACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-X-V_2Mj63Cs/Wmmi0um07kI/AAAAAAAAIY8/hEtz4yx2s94wJppHAoL2eT6jR0a9DIzgACLcBGAs/s400/1.png" alt=""></a></div><div><br></div><div><br></div><div><br></div><div>Commit可以填入Git的Commit ID，如果不填就會用最新版執行建置。</div><div><br></div><div><br></div><div><br>下一篇預計接著寫CD的部分，如何接著將以上建置完的檔案分別佈署到Azure AppService以及VM機器上。<br><br>參考文章<br><br><a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/ci-cd-part-1" target="_blank" rel="noopener">Create your first build and release | Microsoft Docs</a><br><br><a href="http://kevintsengtw.blogspot.tw/2014/08/webconfig.html" target="_blank" rel="noopener">發佈網站時依據組態設定的不同而轉換 Web.Config&nbsp; &nbsp;-&nbsp; MRKT</a><br><br><a href="https://dotblogs.com.tw/hatelove/archive/2011/12/25/introducing-continuous-integration.aspx" target="_blank" rel="noopener">[軟體工程]持續整合 (Continuous integration, CI) 簡介 - 91</a></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/24/【爬蟲】透過Selenium-WebDriver-爬網頁，以Instagram為例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/24/【爬蟲】透過Selenium-WebDriver-爬網頁，以Instagram為例/" itemprop="url">【爬蟲】透過Selenium WebDriver 爬網頁，以Instagram為例</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-24T13:49:00+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/24/【爬蟲】透過Selenium-WebDriver-爬網頁，以Instagram為例/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/24/【爬蟲】透過Selenium-WebDriver-爬網頁，以Instagram為例/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>常常因為資料分析的需求，會有需要爬網頁資料的時候，而以往爬網頁不外乎將Html拉回來後，依據Tag去拆解資訊。 但現今的網站很大部分都是前端透過API拉版面，以Instagram來說，如果直接透過網址將Html拉回來，會只得到空空的外殼而已，什麼都找不到。 這時候就需要模擬瀏覽器行為來讓Javascript運作，甚至操作瀏覽器去點擊特定按鈕。</p>
+<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-6yR04AI5phg/Wmf7S3BE3TI/AAAAAAAAITs/gELt5or7tQkL60jmDRYwb1-YGuNU8cKggCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-6yR04AI5phg/Wmf7S3BE3TI/AAAAAAAAITs/gELt5or7tQkL60jmDRYwb1-YGuNU8cKggCLcBGAs/s400/1.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Instagram拉回來的網頁就只有一個空殼而已….</td></tr></tbody></table><br>透過Selenium.WebDriver，以及Seleium.WebDriver.ChromeDriver套件，可以寫程式操作Chrome的操作行為</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-DkheSsyDReI/Wmf8FTKy0VI/AAAAAAAAIT0/raZdEEh40xgGJQbTFwhZ2A3aQbOOh4VWACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-DkheSsyDReI/Wmf8FTKy0VI/AAAAAAAAIT0/raZdEEh40xgGJQbTFwhZ2A3aQbOOh4VWACLcBGAs/s640/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-vnkv6jsDImY/Wmf8OnewkhI/AAAAAAAAIT4/FnlCPUMVsH05noZ1RVbhxFbWqMIYKZJ5gCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-vnkv6jsDImY/Wmf8OnewkhI/AAAAAAAAIT4/FnlCPUMVsH05noZ1RVbhxFbWqMIYKZJ5gCLcBGAs/s640/1.png" alt=""></a></div>
+
+<p>接著來一步一步分析如何透過它來爬網頁</p>
+<p>開啟Chrome瀏覽器，並且連到想爬的網頁 : <a href="https://www.instagram.com/mercci22/" target="_blank" rel="noopener">https://www.instagram.com/mercci22/</a><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (IWebDriver driver = <span class="keyword">new</span> ChromeDriver())</span><br><span class="line">            &#123;</span><br><span class="line"></span><br><span class="line">                driver.Navigate().GoToUrl(<span class="string">"https://www.instagram.com/mercci22/"</span>);            </span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接著分析目標網頁，會發現所有PO文資料都放在一個Div且Class為_cmdpi裡面</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-sbreT5cUils/Wmf99JegYUI/AAAAAAAAIUI/oIXZxzMGX7c9LU4uVQ9H0BSJUI67UgdGwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-sbreT5cUils/Wmf99JegYUI/AAAAAAAAIUI/oIXZxzMGX7c9LU4uVQ9H0BSJUI67UgdGwCLcBGAs/s640/1.png" alt=""></a></div>
+
+<p>往下找出每一行、每一格，在div[class=’_cmdpi’]底下會有div[class=’_70iju’]每一行</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-yluY12_h7T0/Wmf_JJsdiBI/AAAAAAAAIUQ/zLIRDslBbZQEYGRvu0qXp4JoSdObu-lPwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-yluY12_h7T0/Wmf_JJsdiBI/AAAAAAAAIUQ/zLIRDslBbZQEYGRvu0qXp4JoSdObu-lPwCLcBGAs/s640/1.png" alt=""></a></div>
+
+<p>而每一行裡面又有三個Div代表每一格</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-jnEHEexjkeM/Wmf_roHtA4I/AAAAAAAAIUY/4t6RR_UwEP8-1I7EipD7guWU4Ddyk3d5QCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-jnEHEexjkeM/Wmf_roHtA4I/AAAAAAAAIUY/4t6RR_UwEP8-1I7EipD7guWU4Ddyk3d5QCLcBGAs/s640/1.png" alt=""></a></div>
+
+<p>所以就來透過套件的API找出每一行，並點擊每一格吧<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (IWebDriver driver = <span class="keyword">new</span> ChromeDriver())</span><br><span class="line">            &#123;</span><br><span class="line">                driver.Navigate().GoToUrl(<span class="string">"https://www.instagram.com/mercci22/"</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//找到Post的Container</span></span><br><span class="line">                <span class="keyword">var</span> PostContainerElement = driver.FindElement(By.ClassName(<span class="string">"_cmdpi"</span>));</span><br><span class="line">                <span class="comment">//每一行</span></span><br><span class="line">                <span class="keyword">var</span> Rows = PostContainerElement.FindElements(By.ClassName(<span class="string">"_70iju"</span>));</span><br><span class="line">                <span class="keyword">foreach</span> (<span class="keyword">var</span> row <span class="keyword">in</span> Rows)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Boxs = row.FindElements(By.XPath(<span class="string">"div"</span>));</span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> box <span class="keyword">in</span> Boxs)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">//點擊每一格讓它展開Dialog</span></span><br><span class="line">                        box.Click();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></p>
+<p>這時候如果你執行程式，應該會看到它開啟Chrome並且連到網址然後點擊每一格打開視窗</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-UIjpEynpLcA/WmgBKT9R10I/AAAAAAAAIUk/WA64zbd-g-YoQdf33ZVlrfVbXDLsYJkhACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-UIjpEynpLcA/WmgBKT9R10I/AAAAAAAAIUk/WA64zbd-g-YoQdf33ZVlrfVbXDLsYJkhACLcBGAs/s640/1.png" alt=""></a></div>
+
+<p>接著來分析彈跳出來的視窗，會發現當視窗開啟時，網頁會出現以下Div[role=’dialog’]這個元素，關閉後就會移除</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-clgYAUdg4y0/WmgBoMCshoI/AAAAAAAAIUo/E3NwCF5n5i8Cpilg7m-OChlEQEgGHOGAwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-clgYAUdg4y0/WmgBoMCshoI/AAAAAAAAIUo/E3NwCF5n5i8Cpilg7m-OChlEQEgGHOGAwCLcBGAs/s640/1.png" alt=""></a></div>
+
+<p>所以我們要想辦法拿到這個Div Dialog，才有辦法擷取Po文的文案、日期、圖片，找到Dialog後，後面就重複上述步驟分析Tag，會發現</p>
+<p><strong>圖片</strong> : 放在Div[class=’_4rbun’]底下的Img Tag<br><strong>文案&nbsp;</strong>: 放在Img Tag的Alt裡面<br><strong>時間</strong> : 放在Article &gt; div &gt; div &gt; a &gt; time這個Tag裡面</p>
+<p>所以目前程式如下<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (IWebDriver driver = <span class="keyword">new</span> ChromeDriver())</span><br><span class="line">            &#123;</span><br><span class="line">                driver.Navigate().GoToUrl(<span class="string">"https://www.instagram.com/mercci22/"</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//找到Post的Container</span></span><br><span class="line">                <span class="keyword">var</span> PostContainerElement = driver.FindElement(By.ClassName(<span class="string">"_cmdpi"</span>));</span><br><span class="line">                <span class="comment">//每一行</span></span><br><span class="line">                <span class="keyword">var</span> Rows = PostContainerElement.FindElements(By.ClassName(<span class="string">"_70iju"</span>));</span><br><span class="line">                <span class="keyword">foreach</span> (<span class="keyword">var</span> row <span class="keyword">in</span> Rows)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Boxs = row.FindElements(By.XPath(<span class="string">"div"</span>));</span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> box <span class="keyword">in</span> Boxs)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">//點擊每一格讓它展開Dialog</span></span><br><span class="line">                        box.Click();</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//取得Dialog底下的Article元素</span></span><br><span class="line">                        <span class="keyword">var</span> article = driver.FindElement(By.XPath(<span class="string">"//div[@role='dialog']/div/div/article"</span>));</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//如果Dialog裡面放的是影片，則_4rbun會不存在</span></span><br><span class="line">                        <span class="keyword">if</span> (article.FindElements(By.ClassName(<span class="string">"_4rbun"</span>)).Count == <span class="number">0</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="comment">//跳過這則，這次目標只抓出圖片</span></span><br><span class="line">                            <span class="keyword">continue</span>;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//第一張圖</span></span><br><span class="line">                        <span class="keyword">var</span> ImgContainer = article.FindElement(By.ClassName(<span class="string">"_4rbun"</span>));</span><br><span class="line">                        <span class="keyword">var</span> Img = ImgContainer.FindElement(By.TagName(<span class="string">"img"</span>));                       </span><br><span class="line">                        <span class="keyword">var</span> Date = article.FindElement(By.XPath(<span class="string">"div/div/a/time"</span>));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></p>
+<p>這時候執行的時候可能會發生Exception，原因嘗試取得Dialog底下的Artilce，但Dialog點擊後產生會有時間差導致</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-TUSU5eY99xU/WmgWjs_9uBI/AAAAAAAAIVE/QnOtvHvoW38zNLWZQ7m6NpICJluVxyc2QCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-TUSU5eY99xU/WmgWjs_9uBI/AAAAAAAAIVE/QnOtvHvoW38zNLWZQ7m6NpICJluVxyc2QCLcBGAs/s640/1.png" alt=""></a></div>
+
+<p>優化這段程式，加上Wait的限制，而Selenium提供兩種Wait的方式<br><div class="note info"><p>implicitly Wait: 預設等待，當元件暫時找不到時，會嘗試等待，直到timeout時間到。<br>Explicit Wait: 針對特別元件等待。</p>
+<p>參考文件:<br><a href="http://selenium-python.readthedocs.io/waits.html" target="_blank" rel="noopener">Selenium 5. Waits 官方文件</a></p></div></p>
+<p>我們這邊加上第一種預設等待<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(<span class="number">2</span>);</span><br></pre></td></tr></table></figure></p>
+<p>讀取每個Element時，如果暫時不存在兩秒後TimeOut，之後再執行看看，會發現跑到第二次box.Click()的時候跳Exception。</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-y0clUXejLl4/WmgZwH5ZmeI/AAAAAAAAIVQ/bDTSCWKn9jkNDem1AxJ-TAQPwPQpW-7hACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-y0clUXejLl4/WmgZwH5ZmeI/AAAAAAAAIVQ/bDTSCWKn9jkNDem1AxJ-TAQPwPQpW-7hACLcBGAs/s640/1.png" alt=""></a></div>
+
+<p>原因是當我們打開Dialog時，如果爬完不點擊關閉視窗，會點不到第二隔的元素</p>
+<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-gPgFjISg5XI/WmgaJ1qWtUI/AAAAAAAAIVU/ii1yaeglfDgqvpH05tnhPa8Soxe3OszjACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-gPgFjISg5XI/WmgaJ1qWtUI/AAAAAAAAIVU/ii1yaeglfDgqvpH05tnhPa8Soxe3OszjACLcBGAs/s640/1.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">蓋住了第二格元素，所以要執行關閉視窗按鈕</td></tr></tbody></table><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (IWebDriver driver = <span class="keyword">new</span> ChromeDriver())</span><br><span class="line">            &#123;</span><br><span class="line">                driver.Navigate().GoToUrl(<span class="string">"https://www.instagram.com/mercci22/"</span>);</span><br><span class="line">                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(<span class="number">2</span>);</span><br><span class="line">                <span class="comment">//找到Post的Container</span></span><br><span class="line">                <span class="keyword">var</span> PostContainerElement = driver.FindElement(By.ClassName(<span class="string">"_cmdpi"</span>));</span><br><span class="line">                <span class="comment">//每一行</span></span><br><span class="line">                <span class="keyword">var</span> Rows = PostContainerElement.FindElements(By.ClassName(<span class="string">"_70iju"</span>));</span><br><span class="line">                <span class="keyword">foreach</span> (<span class="keyword">var</span> row <span class="keyword">in</span> Rows)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Boxs = row.FindElements(By.XPath(<span class="string">"div"</span>));</span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> box <span class="keyword">in</span> Boxs)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">//點擊每一格讓它展開Dialog</span></span><br><span class="line">                        box.Click();</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//取得Dialog底下的Article元素</span></span><br><span class="line">                        <span class="keyword">var</span> article = driver.FindElement(By.XPath(<span class="string">"//div[@role='dialog']/div/div/article"</span>));</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//如果Dialog裡面放的是影片，則_4rbun會不存在</span></span><br><span class="line">                        <span class="keyword">if</span> (article.FindElements(By.ClassName(<span class="string">"_4rbun"</span>)).Count == <span class="number">0</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="comment">//關閉Dialog</span></span><br><span class="line">                            driver.FindElement(By.ClassName(<span class="string">"_dcj9f"</span>)).Click();</span><br><span class="line">                            <span class="comment">//跳過這則，這次目標只抓出圖片</span></span><br><span class="line">                            <span class="keyword">continue</span>;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//第一張圖</span></span><br><span class="line">                        <span class="keyword">var</span> ImgContainer = article.FindElement(By.ClassName(<span class="string">"_4rbun"</span>));</span><br><span class="line">                        <span class="keyword">var</span> Img = ImgContainer.FindElement(By.TagName(<span class="string">"img"</span>));</span><br><span class="line">                        <span class="keyword">var</span> Date = article.FindElement(By.XPath(<span class="string">"div/div/a/time"</span>));</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//關閉Dialog</span></span><br><span class="line">                        driver.FindElement(By.ClassName(<span class="string">"_dcj9f"</span>)).Click();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></p>
+<p>這樣就可以順利地走完每一格，並且把圖片、文案、時間資料都讀出來了</p>
+<p><strong>
+</strong></p>
+<h4 id="多圖片的情境"><a href="#多圖片的情境" class="headerlink" title="多圖片的情境"></a><strong>多圖片的情境</strong></h4><p>加下來是應用的第二部分，Instagram是可以分享多圖片的，而多張圖片是在點擊向右按鈕後，才會動態透過JS撈出來</p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-S8AFeQpjcHk/WmgbnCX9SgI/AAAAAAAAIVk/2jcAH-RsJ4cg7IN6X2_UwCWVmbNX1BJeACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-S8AFeQpjcHk/WmgbnCX9SgI/AAAAAAAAIVk/2jcAH-RsJ4cg7IN6X2_UwCWVmbNX1BJeACLcBGAs/s400/1.png" alt=""></a></div><br>所以必須寫程式判斷是否有這個按鈕，如果有，表示有多張圖片，要求Driver去點擊那個按鈕，並且撈取Img的Src路徑<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一張圖</span></span><br><span class="line">                        <span class="keyword">var</span> ImgContainer = article.FindElement(By.ClassName(<span class="string">"_4rbun"</span>));</span><br><span class="line">                        <span class="keyword">var</span> Img = ImgContainer.FindElement(By.TagName(<span class="string">"img"</span>));</span><br><span class="line">                        <span class="comment">//存放Image的Src List</span></span><br><span class="line">                        List&lt;<span class="keyword">string</span>&gt; ImgUrls = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt; &#123; Img.GetAttribute(<span class="string">"src"</span>) &#125;;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//如果有第二張圖以上,則會出現a[class=''_8kphn _by8kl coreSpriteRightChevron']</span></span><br><span class="line">                        <span class="comment">//直到不再出現表示最後一張圖到了</span></span><br><span class="line">                        <span class="keyword">while</span> (article.FindElements(By.CssSelector(<span class="string">"a[class='_8kphn _by8kl coreSpriteRightChevron']"</span>)).Count &gt; <span class="number">0</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="comment">//點擊按鈕</span></span><br><span class="line">                            <span class="keyword">var</span> nextBtn = article.FindElement(By.CssSelector(<span class="string">"a[class='_8kphn _by8kl coreSpriteRightChevron']"</span>));</span><br><span class="line">                            nextBtn.Click();</span><br><span class="line"></span><br><span class="line">                            <span class="comment">//因為Instagram是透過同一個Img Tag動態去換Src，因為程式點擊下一張按鈕太快</span></span><br><span class="line">                            <span class="comment">//會導致有Img Tag存在，但Src還來不及換，導致抓到空白的Src</span></span><br><span class="line">                            <span class="comment">//所以不是元素沒出現的問題，只好要求Thread換下一張圖時先暫停0.5秒再抓</span></span><br><span class="line">                            Thread.Sleep(<span class="number">500</span>);</span><br><span class="line"></span><br><span class="line">                            Img = ImgContainer.FindElement(By.TagName(<span class="string">"img"</span>));</span><br><span class="line">                            ImgUrls.Add(Img.GetAttribute(<span class="string">"src"</span>));</span><br><span class="line">                        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>這樣就能順利拿到多張圖的路徑了</p>
+<h4 id="讀取第二頁的情境"><a href="#讀取第二頁的情境" class="headerlink" title="讀取第二頁的情境"></a>讀取第二頁的情境</h4><p><div>Instagram是滑鼠移到最下方才會動態載入第二頁，所以需要能控制視窗移到最下方來觸發它</div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IJavaScriptExecutor js = (IJavaScriptExecutor)driver;</span><br><span class="line">            <span class="comment">//如果爬完第一頁還沒爬完，則執行JS讓視窗滾到最下方，觸發讀取第二頁</span></span><br><span class="line">            js.ExecuteScript(<span class="string">"window.scrollTo(0,1000000)"</span>);</span><br></pre></td></tr></table></figure></p>
+<p>目前綜合以上所提的應用，應該已經能完全將Instagram的網站資料爬回來，只能說Selenium真的是一個強大的東西阿!!</p>
+<p>參考文章:<br><a href="http://www.hosp.ncku.edu.tw/mis/48-netdisk/57-xml-xpath.html" target="_blank" rel="noopener">XML XPath的選擇節點語法</a><br><a href="http://www.seleniumhq.org/docs/" target="_blank" rel="noopener">Selenium Documentation</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/17/【RazorEngine】套寄信、罐頭訊息內容的好幫手/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1493,345 +1834,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/21/【Unit-Test】Day-5-透過InternalsVisibleTo來達成單元測試的外部注入/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/21/【Unit-Test】Day-5-透過InternalsVisibleTo來達成單元測試的外部注入/" itemprop="url">【Unit Test】Day 5 - 透過InternalsVisibleTo來達成單元測試的外部注入</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-21T14:34:00+08:00">
-                2017-04-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/學習單元測試/" itemprop="url" rel="index">
-                    <span itemprop="name">學習單元測試</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/04/21/【Unit-Test】Day-5-透過InternalsVisibleTo來達成單元測試的外部注入/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/04/21/【Unit-Test】Day-5-透過InternalsVisibleTo來達成單元測試的外部注入/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="note info"><p>Demo檔案 : <a href="https://github.com/toyo0103/UnitTest_Day3/tree/UnitTest_Day5" target="_blank" rel="noopener">Git傳送門</a><br>請參照UnitTest_Day5的Branch</p></div>
-<p>延續昨日的進度，我們將呼叫API的RestSharp獨立出來，並且用依賴介面及外部注入的方式將IRestSharp注入到PTX來達成隔離，並且做到可測試性。</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-HjInxsBTGiI/WPmXSYDpTRI/AAAAAAAAIKw/KgSB2yeC2T48twP-CxCExImX9ijhXqHxwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.23.02.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-HjInxsBTGiI/WPmXSYDpTRI/AAAAAAAAIKw/KgSB2yeC2T48twP-CxCExImX9ijhXqHxwCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.23.02.png" alt=""></a></div>
-
-<p>但面臨令一個問題，如果今天開發的是共用套件類的專案，這樣變成要使用物件都必須知道該用什麼東西注入才可使用，這往往會造成使用者困擾，封裝性也不佳，因外部注入的IRestSharp是每個人都可以另外實作的。 甚至更深一層去想，究竟IRestSharp是否需要用Public讓外部使用者都知道有這個東西呢？ 是不是反而因為要達到可測試性而讓封裝這件事做得更差？</p>
-<p><strong>來看看另一種方式</strong></p>
-<p>假設我認為使用這個套件的人只要簡單的建立PTX後即可使用，至於內部如何呼叫API的實作使用者並不需要關心，那麼我們先將IRestSharp從建構子拿掉吧，並且做一個專門產生IRestSharp實體的Factory來滿足需求。</p>
-<p>撰寫IRestSharpFactory</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-8W6FoK7MRiA/WPmcVCDx-VI/AAAAAAAAILA/qpjugEjgNw06nPLvv6RqLB28XqGRWW78ACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.32.57.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-8W6FoK7MRiA/WPmcVCDx-VI/AAAAAAAAILA/qpjugEjgNw06nPLvv6RqLB28XqGRWW78ACLcB/s200/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.32.57.png" alt=""></a></div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 製作IRestSharp的工廠</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">IRestSharpFactory</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//這邊特別注意存取修飾子是用Internal</span></span><br><span class="line">        <span class="comment">//原因是我並不希望專案之外的人使用且知道有這東西</span></span><br><span class="line">        <span class="comment">//而internal剛好能滿足這需求</span></span><br><span class="line">        <span class="function"><span class="keyword">internal</span> <span class="keyword">static</span> IRestSharp <span class="title">Generate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="comment">//產生實體</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MyRestSharp();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>接著修改原本的PTX.cs<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTX</span></span><br><span class="line">    &#123;</span><br><span class="line">        IRestSharp _MyRestSharp</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//這邊改成用工廠建立MyRestSharp實體</span></span><br><span class="line">                <span class="keyword">return</span> IRestSharpFactory.Generate();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Construct</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">PTX</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="comment">//建構子參數移除</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        以下省略.....</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>這邊馬上面臨到一個問題，那我們怎麼Mock IRestSharp，昨天是放在建構子中並透過Nsubstitute來Mock<br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-gPv3l1uHmls/WPmehkxafVI/AAAAAAAAILQ/iR_X30LEPAcPwhxGNHDSUrjTx_AGPJ7rQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.53.09.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-gPv3l1uHmls/WPmehkxafVI/AAAAAAAAILQ/iR_X30LEPAcPwhxGNHDSUrjTx_AGPJ7rQCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.53.09.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;"><div class="separator" style="clear: both; text-align: left;">封裝性變好了，但也變得難以介入模擬外部行為</div></td></tr></tbody></table><br><strong>從IRestSharpFactory著手吧！！</strong><br><div class="note info"><p>想辦法讓<strong>IRestSharpFactory</strong>可以讓我們注入Mock的假物件</p></div><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 製作IRestSharp的工廠</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">IRestSharpFactory</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 此屬性只供UnitTest注入</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">internal</span> <span class="keyword">static</span> IRestSharp _IRestSharpForUnitTest;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">internal</span> <span class="keyword">static</span> IRestSharp <span class="title">Generate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="comment">//如果這個值不為Null,則表示單元測試所注入,直接回傳</span></span><br><span class="line">            <span class="keyword">if</span> (_IRestSharpForUnitTest != <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> _IRestSharpForUnitTest;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//產生實體</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MyRestSharp();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>這邊開了一個_IRestSharpForUnitTest屬性，讓外部能夠注入它，接著在Generate的方法中判斷，如果當_IRestSharpForUnitTest不為Null時，直接回傳（通常會特別在這個屬性寫上說明僅供單元測試使用，正常Production Code禁止使用！！）<br><br><strong>想辦法在單元測試中注入_IRestSharpForUnitTest</strong><br>你可能會發現在單元測試中看不到IRestSharpFactory….<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-432-uYA3xzA/WPmi7ubMQPI/AAAAAAAAILc/lRWIC9z0Rl4J-gDK4S3FqFH-IFAOb4dMQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.12.43.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-432-uYA3xzA/WPmi7ubMQPI/AAAAAAAAILc/lRWIC9z0Rl4J-gDK4S3FqFH-IFAOb4dMQCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.12.43.png" alt=""></a></div><br>原因是我們宣告成Internal，如果要能在專案之外看到就只能開成Public了，但回到最一開始討論的，不就是為了封裝才把他宣告成Internal嗎？如果又改回Public那我們這段工不就白費了，還好還有別的方法可以達成。<br><br><strong>告訴UnitTestDay3這個專案，除了它自己之外，還有誰能看到它宣告成Internal的類別與屬性方法</strong><br><strong>
-</strong>讓我們先打開<strong>UnitTestDay3</strong>專案的AssemblyInfo<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-xJUoNFOIdrs/WPmkLQsBL2I/AAAAAAAAILk/ZZ0cCPNog9QCsdYvinuDtv5sdIQmojNJQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.17.36.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-xJUoNFOIdrs/WPmkLQsBL2I/AAAAAAAAILk/ZZ0cCPNog9QCsdYvinuDtv5sdIQmojNJQCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.17.36.png" alt=""></a></div>寫下這行<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-IZGTMVt3-Lo/WPmkhpuNB7I/AAAAAAAAILo/uiMhb0tvoP8qSxl8ql46g_fS4VsrTxBRACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.19.05.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-IZGTMVt3-Lo/WPmkhpuNB7I/AAAAAAAAILo/uiMhb0tvoP8qSxl8ql46g_fS4VsrTxBRACLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.19.05.png" alt=""></a></div><br>InternalsVisibleTo這邊是要填AssemblyName，透過這個Attribute告訴<strong>UnitTestDay3</strong>這個專案還有誰能看到它內部的Internal。<br>而AssemblyName怎麼看呢？在專案上右鍵 &gt; 屬性<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-HfxlXJV0Eqw/WPml-pvikQI/AAAAAAAAIL0/VeJoBU8c2XEOV2StCNpE-njJpvnWsE6nQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.25.13.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-HfxlXJV0Eqw/WPml-pvikQI/AAAAAAAAIL0/VeJoBU8c2XEOV2StCNpE-njJpvnWsE6nQCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.25.13.png" alt=""></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-8jsc7ogPU80/WPmmNjXGWVI/AAAAAAAAIL4/pKT3iPG1rIYC5c4-5yLrzjrACSJzaxeJQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.26.18.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-8jsc7ogPU80/WPmmNjXGWVI/AAAAAAAAIL4/pKT3iPG1rIYC5c4-5yLrzjrACSJzaxeJQCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.26.18.png" alt=""></a></div><br>如果你有很多單元測試專案需要能看到，InternalsVisibleTo是可以很多組的。<br><br>接著在單元測試中就可以看到啦<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-FJOWCQNSfqE/WPmnDZpn4dI/AAAAAAAAIMA/OnLezxrmtFcC-FrJT-E3FO1gyQlcgbNnACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.29.57.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-FJOWCQNSfqE/WPmnDZpn4dI/AAAAAAAAIMA/OnLezxrmtFcC-FrJT-E3FO1gyQlcgbNnACLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.29.57.png" alt=""></a></div>
-
-<p>這樣就達成我們想封裝起來的需求，卻也能讓單元測試進行注入，那今天就談到這吧！！</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/20/【Unit-Test】Day-4-Mock/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/20/【Unit-Test】Day-4-Mock/" itemprop="url">【Unit Test】Day 4 - Mock</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-20T16:59:00+08:00">
-                2017-04-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/學習單元測試/" itemprop="url" rel="index">
-                    <span itemprop="name">學習單元測試</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/04/20/【Unit-Test】Day-4-Mock/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/04/20/【Unit-Test】Day-4-Mock/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="note info"><p>Demo檔案 : <a href="https://github.com/toyo0103/UnitTest_Day3/tree/UnitTest_Day4" target="_blank" rel="noopener">Git傳送門</a><br>因為程式是昨天的延續，所以是同一個Repository切出UnitTest_Day4的Branch</p></div>
-<p>讓繼續我們昨天的議題，節錄昨天最後的結論<br><div class="note info"><p>…這個方法也不是百分之百沒有缺點，你應該也可以觀察到其中一段在這單元測試中無法被涵蓋到，<br>那就是組API Url那段，在這種透過繼承解耦合的方式中，因為回傳結果是自己設定的，<br>實際上組成的URL正確與否我們並不知道，換句話說，如果我們今天這樣寫測試可能會過，<br>但上線後才會發現錯誤，檢查之下發現原來是在串Url的時候錯字之類的。</p></div><br>身為一位專業有責任感的工程師，你一定想著「爾等豈能如此<strike><span style="font-size: xx-small;">苟且偷生便宜行事</span></strike>草率」，所以今天就來談談另一種方法，Mock。<br><div class="note info"><p>何謂Mock。<br>當測試時你關注與外部相依物件互動時其狀態的變化，並且驗證它，則此就是Mock物件。</p></div><br>很抽象對吧，沒關係讓我們來改改昨天的實作，重中瞭解Stub與Mock的差異。</p>
-<p><strong>先將呼叫API的地方徹底隔離出去</strong><br>開一個NetTool的資料夾，建立一個IRestSharp的介面</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-cvva5eQ2U_4/WPhm4hWfpZI/AAAAAAAAIJk/65nHytvwgT4QxLHwZL44KK4dmIJV1-xSACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25883.44.02.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-cvva5eQ2U_4/WPhm4hWfpZI/AAAAAAAAIJk/65nHytvwgT4QxLHwZL44KK4dmIJV1-xSACLcB/s200/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25883.44.02.png" alt=""></a></div>該介面定義出呼叫API該傳入Url，回傳得到的結果<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IRestSharp</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 用Get的方法呼叫API</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="url"&gt;</span>Url<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>回傳的內容<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">string</span> <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> url</span>)</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>實做這個介面<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-eC21gpDf_0k/WPhoKU1dJVI/AAAAAAAAIJs/lLuPr3k2Yus1qBm3VHltK9zSz1gZ7fDTgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25883.49.03.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-eC21gpDf_0k/WPhoKU1dJVI/AAAAAAAAIJs/lLuPr3k2Yus1qBm3VHltK9zSz1gZ7fDTgCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25883.49.03.png" alt=""></a></div><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyRestSharp</span> : <span class="title">IRestSharp</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 用Get的方法呼叫API</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="url"&gt;</span>Url<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>回傳的內容<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> url</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="comment">//Use RestSharp Call API</span></span><br><span class="line">            <span class="keyword">var</span> client = <span class="keyword">new</span> RestClient(url);</span><br><span class="line">            <span class="keyword">var</span> request = <span class="keyword">new</span> RestRequest(Method.GET);</span><br><span class="line">            request.AddHeader(<span class="string">"cache-control"</span>, <span class="string">"no-cache"</span>);</span><br><span class="line">            IRestResponse response = client.Execute(request);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (response.StatusCode == HttpStatusCode.OK)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> response.Content;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">string</span>.Empty;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br><strong>修改PTX的程式</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTX</span></span><br><span class="line">    &#123;</span><br><span class="line">        IRestSharp _MyRestSharp;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Construct</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="myRestSharp"&gt;</span>外部注入呼叫API的實體<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">PTX</span>(<span class="params">IRestSharp myRestSharp</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="comment">//改由外部注入呼叫API的實體</span></span><br><span class="line">            <span class="keyword">this</span>._MyRestSharp = myRestSharp;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 取得巴士路線資料</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="city"&gt;</span>縣市名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="routeName"&gt;</span>巴士路線名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> BusRouteDTO <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> city,<span class="keyword">string</span> routeName</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            BusRouteDTO Result = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//要呼叫的API Url</span></span><br><span class="line">            <span class="keyword">string</span> Url = <span class="keyword">string</span>.Format(<span class="string">$"http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/<span class="subst">&#123;city&#125;</span>/<span class="subst">&#123;routeName&#125;</span>?%24top=1&amp;%24format=JSON"</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> JsonResult = _MyRestSharp.Get(Url);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">string</span>.IsNullOrEmpty(JsonResult))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> APIResult = JsonConvert.DeserializeObject&lt;List&lt;PTXBusRouteResult&gt;&gt;(JsonResult);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (APIResult != <span class="literal">null</span> &amp;&amp; APIResult.Count &gt; <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Route = APIResult.First();</span><br><span class="line">                    Result = <span class="keyword">new</span> BusRouteDTO</span><br><span class="line">                    &#123;</span><br><span class="line">                        Name = Route.RouteName.Zh_tw,</span><br><span class="line">                        BusStops = <span class="keyword">new</span> List&lt;BusRouteDTO.BusStop&gt;()</span><br><span class="line">                    &#125;;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> stop <span class="keyword">in</span> Route.Stops)</span><br><span class="line">                    &#123;</span><br><span class="line">                        Result.BusStops.Add(<span class="keyword">new</span> BusRouteDTO.BusStop</span><br><span class="line">                        &#123;</span><br><span class="line">                            ID = stop.StopUID,</span><br><span class="line">                            Name = stop.StopName.Zh_tw</span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br><strong>修改Program.cs</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="comment">//new PTX時變成要帶入呼叫API的實體</span></span><br><span class="line">            <span class="keyword">var</span> PTXFunction = <span class="keyword">new</span> PTX(<span class="keyword">new</span> MyRestSharp());</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> Result = PTXFunction.Get(<span class="string">"Taipei"</span>,<span class="string">"307"</span>);</span><br><span class="line"></span><br><span class="line">            Console.Write(JsonConvert.SerializeObject(Result));</span><br><span class="line"></span><br><span class="line">            Console.ReadKey();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>執行後結果是對的！！<br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-umwBITYCb_Y/WPhq7RbpxfI/AAAAAAAAIJ4/GK1TVxOKx2U6rlKhuePmBD4S1RyjuA3QACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25883.55.53.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-umwBITYCb_Y/WPhq7RbpxfI/AAAAAAAAIJ4/GK1TVxOKx2U6rlKhuePmBD4S1RyjuA3QACLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25883.55.53.png" alt=""></a></div>
-
-<h4 id="單元測試"><a href="#單元測試" class="headerlink" title="單元測試"></a>單元測試</h4><p>到目前為止都沒有解釋太多為何要這樣改，不過這跟物件導向設計比較有關，即所謂的外部注入即依賴介面，但這比較偏設計的範疇這邊就不特別討論，不過之後應該會漸漸的發現，如果單元測試要能寫，很多地方都會必須要有物件導向的設計方式才有辦法。</p>
-<p>讓我們回頭看單元測試，首先昨天做的PTXStub就沒用了，因為目前的PTX沒有將呼叫API封裝起來，也就沒有可以override的CallAPI方法了，把它砍掉了。</p>
-<p>這時就會看到昨天的單元測試壞掉了，因為找不到PTXStub</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-Uq_dKbo7G8Q/WPhsMNWenvI/AAAAAAAAIKA/yLCKydQzNJs0uHSUapDP3LihRXtxgKnTgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.06.34.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-Uq_dKbo7G8Q/WPhsMNWenvI/AAAAAAAAIKA/yLCKydQzNJs0uHSUapDP3LihRXtxgKnTgCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.06.34.png" alt=""></a></div>
-
-<p><strong>開始做我們的假物件MyRestSharpMock吧</strong></p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-ZDXJ_Arjt2o/WPhtjaZXn7I/AAAAAAAAIKI/35r-33sGq6ol4iSwqgTJj1gtLGdtoO0awCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.12.06.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-ZDXJ_Arjt2o/WPhtjaZXn7I/AAAAAAAAIKI/35r-33sGq6ol4iSwqgTJj1gtLGdtoO0awCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.12.06.png" alt=""></a></div><strong>
-</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyRestSharpMock</span> : <span class="title">IRestSharp</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> url</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (url == <span class="string">"http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/Taipei/307?%24top=1&amp;%24format=JSON"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> sb = <span class="keyword">new</span> System.Text.StringBuilder(<span class="number">12766</span>);</span><br><span class="line">                sb.AppendLine(<span class="string">@"[&#123;""RouteUID"":""TPE16111"",""RouteID"":""16111"",""RouteName"":&#123;""Zh_tw"":""307"",""En"":""307""&#125;,.....省略"</span>);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> sb.ToString();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">string</span>.Empty;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>這邊特別注意一下if那邊，依據昨天的單元測試，最後網址應該要組成這樣才是正確的，所以我們MyRestSharpMock特地加上這段判斷，已經不像昨天override一樣，不關心它組的網址為何，一律依照我們設定的結果回傳，即便你其實Url組的是錯誤的。<br><br><strong>修改PTXTest.cs</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass()</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTXTests</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> GetTest_傳入縣市和公車路線名稱_如果查的到資料_應回傳該路線的BusRouteDTO()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> RestSharpMock = <span class="keyword">new</span> MyRestSharpMock();</span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> PTX(RestSharpMock); <span class="comment">//注入我們模擬的假物件MyRestSharpMock</span></span><br><span class="line">            <span class="keyword">var</span> City = <span class="string">"Taipei"</span>;</span><br><span class="line">            <span class="keyword">var</span> RouteName = <span class="string">"307"</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> expected = <span class="string">"307"</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Get(City, RouteName);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(actual.Name, expected);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>我們注入的是自己Mock的物件，他不會實際去呼叫API，但它關注我們傳入的值對不對，執行單元測試看看結果。<br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-4ez2utZWgfk/WPhwpoXVMlI/AAAAAAAAIKU/rT34UNZDtQcdRNNasA1cBkX_IquRVtmqQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.25.56.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-4ez2utZWgfk/WPhwpoXVMlI/AAAAAAAAIKU/rT34UNZDtQcdRNNasA1cBkX_IquRVtmqQCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.25.56.png" alt=""></a></div>
-
-<p>可能到這邊會有一個疑問是，「廢話，Mock的物件是我們自己做的，我們想怎麼樣都馬可以！！」，一開始學到這段的時候也有這個疑問，所以容我解釋一下，還記得先前提到的觀念嗎？<br><div class="note info"><p>單元測試關注本身的邏輯，而非外部的關聯</p></div><br>如果今天上線後發現錯誤，而發生錯誤的地方是在呼叫API的程式，那該修改的是誰？當然是MyRestSharp.cs，也絕對不是PTX這支程式，因為它職責掌管的邏輯全部都是正確的。而我們現在單元測試以及MyRestSharpMock都是在做什麼？ 都是在輔助我們驗證PTX所有包含到的邏輯，我們並不關注外部其他程式到底幹了什麼，退一萬步說（好啦其實退一步就可以了）（你好煩）今天IRestSharp這個Interface你的夥伴忘記去實作導致程式上線壞了，那也不會是改你的PTX吧，要改可以，over my dead body先，所以希望這囉說的補充可以幫助釐清這件事情。</p>
-<p>好的，上面這邊如果沒問題的話，那下一步應該心裡就會冒出一個OS :<strong>我的好天鵝啊！！ 如果外部相依的物件很多，每個都自己做Mock物件，做完都老了，單元測試沒寫完Deadline就到了，搞毛啊….</strong><br>看官稍安勿躁，你的心聲有人聽到了，所以接下來介紹一個可以省略掉剛剛一堆繁瑣的動作，登登登登，為您隆重介紹<a href="http://nsubstitute.github.io/" target="_blank" rel="noopener">NSubstitute</a>，怎麼用呢？讓我們在<strong>UnitTestDay3Tests</strong>這個專案透過Nuget安裝這個套件</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-VfiePWyp1vI/WPh09qCW9TI/AAAAAAAAIKg/uWpWPXnQyQUCseoMK9_Li286b-8LndYFwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.44.06.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-VfiePWyp1vI/WPh09qCW9TI/AAAAAAAAIKg/uWpWPXnQyQUCseoMK9_Li286b-8LndYFwCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.44.06.png" alt=""></a></div>
-
-<p>怎麼用呢？先Using<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> NSubstitute;</span><br></pre></td></tr></table></figure></p>
-<p>然後…<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass()</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTXTests</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> GetTest_傳入縣市和公車路線名稱_如果查的到資料_應回傳該路線的BusRouteDTO()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="comment">//透過NSubstitute跟它說你想Mock實作的Interface</span></span><br><span class="line">            <span class="keyword">var</span> NsubRestSharpMock = Substitute.For&lt;IRestSharp&gt;();</span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> PTX(NsubRestSharpMock); <span class="comment">//注入</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//期望API回傳的Json </span></span><br><span class="line">            <span class="keyword">var</span> sb = <span class="keyword">new</span> System.Text.StringBuilder(<span class="number">12766</span>);</span><br><span class="line">            sb.AppendLine(<span class="string">@"[&#123;""RouteUID"":""TPE16111"",""RouteID"":""16111"",""RouteName"":...後略"</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//這邊的意思是,當這個透過NSubstitute Mock的物件</span></span><br><span class="line">            <span class="comment">//被呼叫Get的方法時,且帶入的參數是我們這邊寫的字串</span></span><br><span class="line">            <span class="comment">//就回傳Returns那裡面我們設定的字串</span></span><br><span class="line">            NsubRestSharpMock.Get(<span class="string">"http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/Taipei/307?%24top=1&amp;%24format=JSON"</span>)</span><br><span class="line">                             .Returns(sb.ToString());</span><br><span class="line">            <span class="keyword">var</span> City = <span class="string">"Taipei"</span>;</span><br><span class="line">            <span class="keyword">var</span> RouteName = <span class="string">"307"</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> expected = <span class="string">"307"</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Get(City, RouteName);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(actual.Name, expected);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>因為NSubstitute Mock出來實作IRestSharp的物件也會有Get的方法，他還可以設定帶入參數為何才回傳值，如果比對的Url不符合預期，則就會回傳String的預設值Null，是不是超方便的！！</p>
-<p>當然如果你的方法是要回傳物件，一樣往Returns擺進去就對了，且它驗證參數的方法還有很多種而且很彈性，例如帶入如果是數字，你可以說大於100才回傳結果之類的，因為太多有需要的話還是直接參考他的文件比較快。</p>
-<p>那今天的部分就談到這邊，能幫助我們做到Mock的套件還有很多，這邊只是其中一種我使用的而已，不一定要一樣，但只要了解原來Mock是這麼回事即可。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1886,7 +1888,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">168</span>
+                  <span class="site-state-item-count">170</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1908,7 +1910,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
