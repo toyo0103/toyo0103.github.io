@@ -295,6 +295,159 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/11/【生產力】Code Snippet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/11/【生產力】Code Snippet/" itemprop="url">【生產力】Code Snippet</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-07-11T10:03:00+08:00">
+                2018-07-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/11/【生產力】Code Snippet/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/07/11/【生產力】Code Snippet/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="什麼是Code-Snippet"><a href="#什麼是Code-Snippet" class="headerlink" title="#什麼是Code Snippet"></a>#什麼是Code Snippet</h1><p>從字面來看是程式碼片段，如果已經寫程式一段時間應該都有用到過，例如在Visual Studio打上Switch後按兩下Tab自動產生的程式碼就是Code Snippet功能做出來的。</p>
+<p><img src="/images/20180711/1.png" alt="/images/20180711/1.png"></p>
+<p><img src="/images/20180711/2.jpg" alt="/images/20180711/2.jpg"></p>
+<p>所以將常常重複寫的程式碼做成Code Snippet是一件很方便的事情</p>
+<h1 id="如何自訂"><a href="#如何自訂" class="headerlink" title="#如何自訂"></a>#如何自訂</h1><p>因為寫單元測試常常需要寫3A原則,所以把它做成Code Snippet就可以重用。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span>/ arrange</span></span><br><span class="line"><span class="keyword">var</span> sut = GetSystemUnderTest();</span><br><span class="line"><span class="keyword">var</span> expected = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span>/ act</span></span><br><span class="line"><span class="keyword">var</span> actual = sut.DoSomething();</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span>/ assert</span></span><br></pre></td></tr></table></figure>
+<h2 id="建立3A-Pattern-snippet的檔案"><a href="#建立3A-Pattern-snippet的檔案" class="headerlink" title="建立3A Pattern.snippet的檔案"></a>建立3A Pattern.snippet的檔案</h2><p>打開一個記事本命名成3A Pattern，然後副檔名儲存成.snippet</p>
+<p><img src="/images/20180711/3.jpg" alt=""></p>
+<h2 id="撰寫內容"><a href="#撰寫內容" class="headerlink" title="撰寫內容"></a>撰寫內容</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">CodeSnippets</span> <span class="attr">xmlns</span>=<span class="string">"http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">CodeSnippet</span> <span class="attr">Format</span>=<span class="string">"1.0.0"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Header</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">SnippetTypes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">SnippetType</span>&gt;</span>Expansion<span class="tag">&lt;/<span class="name">SnippetType</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">SnippetType</span>&gt;</span>SurroundsWith<span class="tag">&lt;/<span class="name">SnippetType</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">SnippetTypes</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Title</span>&gt;</span>你的Code Snippet名稱<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Author</span>&gt;</span>Steven<span class="tag">&lt;/<span class="name">Author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Description</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">Description</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">HelpUrl</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">HelpUrl</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Shortcut</span>&gt;</span>你想要呼叫時的代碼<span class="tag">&lt;/<span class="name">Shortcut</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Snippet</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Declarations</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Literal</span> <span class="attr">Editable</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ID</span>&gt;</span>變數ID<span class="tag">&lt;/<span class="name">ID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ToolTip</span>&gt;</span>變數描述<span class="tag">&lt;/<span class="name">ToolTip</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Default</span>&gt;</span>預設值<span class="tag">&lt;/<span class="name">Default</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Function</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">Function</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Literal</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">Declarations</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Code</span> <span class="attr">Language</span>=<span class="string">"csharp"</span> <span class="attr">Delimiter</span>=<span class="string">"$"</span>&gt;</span>&lt;![CDATA[</span><br><span class="line">		......</span><br><span class="line">         放入程式碼的地方        </span><br><span class="line">		......</span><br><span class="line">        ]]&gt;<span class="tag">&lt;/<span class="name">Code</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Snippet</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">CodeSnippet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">CodeSnippets</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>依據上面的Template,將3A Pattern Code Snippet改成</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">CodeSnippets</span> <span class="attr">xmlns</span>=<span class="string">"http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">CodeSnippet</span> <span class="attr">Format</span>=<span class="string">"1.0.0"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Header</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">SnippetTypes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">SnippetType</span>&gt;</span>Expansion<span class="tag">&lt;/<span class="name">SnippetType</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">SnippetType</span>&gt;</span>SurroundsWith<span class="tag">&lt;/<span class="name">SnippetType</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">SnippetTypes</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Title</span>&gt;</span>3A Pattern<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Author</span>&gt;</span>Steven<span class="tag">&lt;/<span class="name">Author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Description</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">Description</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">HelpUrl</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">HelpUrl</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Shortcut</span>&gt;</span>aaa<span class="tag">&lt;/<span class="name">Shortcut</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Snippet</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Declarations</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Literal</span> <span class="attr">Editable</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ID</span>&gt;</span>expected<span class="tag">&lt;/<span class="name">ID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ToolTip</span>&gt;</span>expected<span class="tag">&lt;/<span class="name">ToolTip</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Default</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Default</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Function</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">Function</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Literal</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Literal</span> <span class="attr">Editable</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ID</span>&gt;</span>DoSomthing<span class="tag">&lt;/<span class="name">ID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ToolTip</span>&gt;</span>DoSomthing<span class="tag">&lt;/<span class="name">ToolTip</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Default</span>&gt;</span>DoSomething()<span class="tag">&lt;/<span class="name">Default</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Function</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">Function</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Literal</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">Declarations</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Code</span> <span class="attr">Language</span>=<span class="string">"csharp"</span> <span class="attr">Delimiter</span>=<span class="string">"$"</span>&gt;</span>&lt;![CDATA[</span><br><span class="line">        //// arrange</span><br><span class="line">        var sut = GetSystemUnderTest();</span><br><span class="line">        var expected = $expected$;</span><br><span class="line">        </span><br><span class="line">        //// act</span><br><span class="line">        var actual = sut.$DoSomthing$;</span><br><span class="line">        </span><br><span class="line">        //// assert</span><br><span class="line">        ]]&gt;<span class="tag">&lt;/<span class="name">Code</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Snippet</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">CodeSnippet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">CodeSnippets</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>$變數$</strong> , 兩個前字號中間的就是變數ID,在Snippet &gt; Declarations &gt;  Literal 設定變數相關值</p>
+<h1 id="匯入Visual-Studio"><a href="#匯入Visual-Studio" class="headerlink" title="#匯入Visual Studio"></a>#匯入Visual Studio</h1><p>最後一步就是匯入Visual Studio中,點擊<strong>工具</strong> &gt; <strong>程式碼片段管理員</strong></p>
+<p><img src="/images/20180711/4.jpg" alt="/images/20180711/4.jpg"></p>
+<p>點擊<strong>匯入</strong>，選擇剛剛的3A Pattern.snippet檔案</p>
+<p><img src="/images/20180711/5.jpg" alt="/images/20180711/5.jpg"></p>
+<p>匯入到<strong>My Code Snippets</strong> &gt; <strong>完成</strong> ，就可以看到3A Pattern了</p>
+<p><img src="/images/20180711/6.jpg" alt="/images/20180711/6.jpg"></p>
+<p><img src="/images/20180711/7.jpg" alt="/images/20180711/7.jpg"></p>
+<h1 id="結果"><a href="#結果" class="headerlink" title="#結果"></a>#結果</h1><p>在程式碼中打aaa加兩次Tab就會呼叫出我們設定的Code Snippet</p>
+<p><img src="/images/20180711/8.jpg" alt="/images/20180711/8.jpg"></p>
+<p><img src="/images/20180711/9.jpg" alt="/images/20180711/9.jpg"></p>
+<div class="note info"><p><strong>參考文章</strong></p>
+<p><a href="https://msdn.microsoft.com/zh-tw/library/ms165394.aspx" target="_blank" rel="noopener">逐步解說：建立程式碼片段</a></p></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/27/【LeetCode】Fraction to Recurring Decimal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2176,156 +2329,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/04/【演算法】Counting Sort/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/04/【演算法】Counting Sort/" itemprop="url">【演算法】Counting Sort</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-06-04T14:42:00+08:00">
-                2018-06-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/06/04/【演算法】Counting Sort/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/06/04/【演算法】Counting Sort/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="何謂Counting-Sort"><a href="#何謂Counting-Sort" class="headerlink" title="何謂Counting Sort"></a>何謂Counting Sort</h1><p>是一種排序的演算法，特色是不需要比較數字間的大小，而是透過計算在Array中的Index的位置來達到排序的效果，限制是必須先知道數字的範圍以及數字組的個數，屬於線性排序 O(n) 。</p>
-<h1 id="案例一"><a href="#案例一" class="headerlink" title="案例一"></a>案例一</h1><div class="note info"><p>Suppose you have an array of 1000 integers. The integers are in random order, but you know each of the integers is between 1 and 5000 (inclusive). In addition, each number appears only once in the array. Assume that you can access each element of the array only once. Describe an algorithm to sort it. </p>
-<p>假設你有個數字陣列其中包含1000個數字，且這些數字來自1~5000之間不重複，請用一組演算法來達成只讀取數字一次並排序完成。</p></div>
-<h2 id="解題"><a href="#解題" class="headerlink" title="解題"></a>解題</h2><p><strong>欲排序的陣列</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//隨機取1000個</span></span><br><span class="line"><span class="keyword">int</span> Amount = <span class="number">1000</span>;</span><br><span class="line"><span class="comment">//隨機從1~5000中取出不重複的1000個數字</span></span><br><span class="line"><span class="keyword">int</span>[] IntPool = Enumerable.Range(<span class="number">1</span>, <span class="number">5000</span>).OrderBy(x =&gt; Guid.NewGuid()).Take(Amount).ToArray();</span><br></pre></td></tr></table></figure></p>
-<p><strong>準備一個的數字陣列，空間為5000</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] IndexArray = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">5000</span>];</span><br></pre></td></tr></table></figure></p>
-<p><strong>計算哪些位置應該存在數字</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">foreach</span> (<span class="keyword">var</span> element <span class="keyword">in</span> IntPool)</span><br><span class="line">&#123;</span><br><span class="line">    IndexArray[ element <span class="number">-1</span> ] ++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>將IndexArray中值為1的挑出來</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] Result = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">1000</span>];</span><br><span class="line"><span class="keyword">var</span> Index = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; IndexArray.Length; i++)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (IndexArray[i] &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		Result[Index] = i + <span class="number">1</span>;</span><br><span class="line">		Index++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//此時Result即為排序後的結果</span></span><br></pre></td></tr></table></figure></p>
-<h1 id="案例二"><a href="#案例二" class="headerlink" title="案例二"></a>案例二</h1><div class="note info"><p>假設你有個數字陣列其中包含1000個數字，這些數字來自1~5000之間且<strong>可能會重複</strong>，如何用Counting Sort達成排序</p></div>
-<h2 id="解題-1"><a href="#解題-1" class="headerlink" title="解題"></a>解題</h2><p><strong>欲排序的陣列</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Random Rnd = <span class="keyword">new</span> Random();</span><br><span class="line"><span class="keyword">int</span>[] IntPool  =<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">1000</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">   IntPool[i] = Rnd.Next(<span class="number">1</span>,<span class="number">5001</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>找出最大值與最小值</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> Min = IntPool[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">int</span> Max = IntPool[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; IntPool.Length; i++)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (IntPool[i] &gt; Max)</span><br><span class="line">		Max = IntPool[i];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (IntPool[i] &lt; Min)</span><br><span class="line">		Min = IntPool[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>準備一個能容納最大範圍的IndexArray</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] IndexArray = <span class="keyword">new</span> <span class="keyword">int</span>[Max - Min +<span class="number">1</span>];</span><br></pre></td></tr></table></figure></p>
-<p><strong>計算每個數字在IndexArray中的相對位置，並統計每個位置重複的數字數</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">foreach</span> (<span class="keyword">var</span> element <span class="keyword">in</span> IntPool)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//統計每個位置有幾個重複的數字</span></span><br><span class="line">	IndexArray[element - Min] ++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>計算每個位置累積的數字個數</strong><br>這邊是我想比較久的地方，所以畫了一個圖希望能幫助理解，假設我們算出來後陣列長這樣，表示Index 0放著2個數字，Index 2有1個數字，Index 4有1個數字以此類推<br><a href="/images/20180614/1/1.png"><img src="/images/20180614/1/1.png" alt=""></a><br>所以如果我們將每個位置的數字與前一格相加，可以得到該Index實際上已經排了幾個數字，<br><a href="/images/20180614/1/2.png"><img src="/images/20180614/1/2.png" alt=""></a></p>
-<p><strong>計算到達該位子時，實際上總共已經有幾個數字</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; IndexArray.Length; i++)</span><br><span class="line">&#123;</span><br><span class="line">	IndexArray[i] = IndexArray[i] + IndexArray[i - <span class="number">1</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>排序</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>[] Result = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">1000</span>];</span><br><span class="line"><span class="keyword">foreach</span> (<span class="keyword">var</span> element <span class="keyword">in</span> IntPool)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">var</span> TotalCount = IndexArray[element - Min];</span><br><span class="line">	<span class="comment">//第幾個數字-1，其實就表示他要放在Result的Index位置</span></span><br><span class="line">	Result[TotalCount- <span class="number">1</span>] = element;</span><br><span class="line">	IndexArray[element - Min] --;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//此時Result即為排序後的結果</span></span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2375,7 +2383,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">170</span>
+                  <span class="site-state-item-count">171</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -2397,7 +2405,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

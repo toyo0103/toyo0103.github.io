@@ -5,9 +5,10 @@
   
 
 
-<html class="theme-next muse use-motion" lang="">
+<html class="theme-next gemini use-motion" lang="zh-tw">
 <head>
-  <meta charset="UTF-8"/>
+  ﻿<meta charset="UTF-8"/>
+<meta name="google-site-verification" content="a-sIQSCKPw8MyRi4iUo9hmDiL3P1Txg2Ri8zx8Wk0G0" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -74,18 +75,20 @@
 
 
 
+  <link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml" />
+
 
 
 
 
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="程式隨筆">
 <meta property="og:url" content="http://yoursite.com/page/18/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="default">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:locale" content="zh-tw">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="程式隨筆">
 
 
 
@@ -93,7 +96,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Gemini',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -101,7 +104,7 @@
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
     duoshuo: {
       userId: '0',
-      author: 'Author'
+      author: '博主'
     },
     algolia: {
       applicationID: '',
@@ -121,11 +124,20 @@
 
 
 
-  <title>Hexo</title>
+  <title>程式隨筆</title>
   
 
 
 
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA\-119162267\-1', 'auto');
+  ga('send', 'pageview');
+</script>
 
 
 
@@ -133,7 +145,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
 
   
   
@@ -152,7 +164,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Hexo</span>
+        <span class="site-title">程式隨筆</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -182,7 +194,27 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
           </a>
         </li>
       
@@ -192,15 +224,49 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            歸檔
           </a>
         </li>
       
 
       
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜尋
+          </a>
+        </li>
+      
     </ul>
   
 
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
   
 </nav>
 
@@ -229,16 +295,16 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/26/【SharePoint】確認Web或List是否有權限讀取-1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/10/16/【JavaScript】showModalDialog運用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Toyo">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="程式隨筆">
     </span>
 
     
@@ -248,7 +314,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2012/12/26/【SharePoint】確認Web或List是否有權限讀取-1/" itemprop="url">【SharePoint】確認Web或List是否有權限讀取</a></h1>
+                <a class="post-title-link" href="/2012/10/16/【JavaScript】showModalDialog運用/" itemprop="url">【JavaScript】showModalDialog運用</a></h1>
         
 
         <div class="post-meta">
@@ -258,10 +324,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posted on</span>
+                <span class="post-meta-item-text">發表於</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-12-26T18:14:00+08:00">
-                2012-12-26
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-10-16T14:09:00+08:00">
+                2012-10-16
               </time>
             
 
@@ -273,6 +339,17 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2012/10/16/【JavaScript】showModalDialog運用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2012/10/16/【JavaScript】showModalDialog運用/" itemprop="commentCount"></span>
+                </a>
+              </span>
             
           
 
@@ -300,1336 +377,21 @@
       
         
           
-            <p>詳細可以參考這個<a href="http://webcache.googleusercontent.com/search?q=cache:ubXwX-z3mF4J:blogs.salmanghani.info/check-if-user-has-permissions-on-list-or-web/+&amp;cd=4&amp;hl=zh-TW&amp;ct=clnk&amp;gl=tw" target="_blank" rel="noopener">網站</a></p>
-<p>節錄摘要，</p>
-<pre class="brush : csharp">if (oWeb.DoesUserHavePermissions(SPBasePermissions.ViewPages))
-{
-      SPList oList = oWeb.Lists[ListName];
-      if (oList.DoesUserHavePermissions(SPBasePermissions.ViewListItems))
-      {
-          // some smart code
-      }
-}
-</pre>
-因為要先Get Web或是List的物件才能進行判斷，所以如果該使用者對該物件沒有權限，這樣寫可能會當掉，所以建議寫法如下
+            <p>最近公司專案有使用到IE的showModalDialog，所以做一下筆記!!</p>
+<p>叫用方式：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">openWindow</span>(<span class="params">url</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">var</span> Feature = <span class="string">'dialogWidth:850px;dialogHeight:600px;status:0;help:0;'</span>;</span><br><span class="line">   <span class="keyword">var</span> showModalObj = <span class="built_in">window</span>.showModalDialog(url, <span class="built_in">window</span>, Feature)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>各項參數請參考MSDN文件:<a href="http://msdn.microsoft.com/en-us/library/ie/ms536759(v=vs.85" target="_blank" rel="noopener">參數設定</a>.aspx)</p>
+<p>我的是寫個function,如要使用時將url傳進來。其中第二個參數<span style="color: red;">window</span>是將這這個視窗傳遞給開啟的showModalDialog，之後方便showModalDialog叫用母視窗的function或是變數。</p>
+<p>例如我在母視窗有個alertMe的function<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">alertMe</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">   alert(<span class="string">'我是母視窗的一個function'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我只要在showModalDialog視窗中使用&nbsp;<span style="color: red;">window.dialogArguments.alertMe(); </span>，就可以直接到母視窗的function。</p>
+<p>另外showModalDialog無論是postback或是location到別的網址都會開啟新視窗，所以在&lt;head&gt;裡面加上 </p>
+<p><pre class="brush: html">&lt;head&gt;<br>   &lt;base target=”_self” &gt;<br>&lt;/head&gt;<br></pre>這樣目標就會是showModalDialog自己。</p>
+<p>為了解決showModalDialog因為Cache的關係只有第一個會PostBack的問題，請加入以下的code在page_load事件，讓每次開啟modal dialog都會PostBack<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!Page.IsPostBack) </span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//為了解決showModalDialog常常會讀到舊頁面的問題</span></span><br><span class="line">   Page.Response.Expires = <span class="number">-1</span>;</span><br><span class="line">   Page.Response.AddHeader(<span class="string">"Pragma"</span>, <span class="string">"no-cache"</span>);</span><br><span class="line">   Page.Response.AddHeader(<span class="string">"cache-control"</span>,<span class="string">"no-store"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>或是在Head裡面加上 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Pragma"</span> <span class="attr">content</span>=<span class="string">"no-cache"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"expires"</span> <span class="attr">content</span>=<span class="string">"-1"</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"cache-control"</span> <span class="attr">content</span>=<span class="string">"no-store"</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>showModalDialog回傳True或false給母頁面的方法</strong><br>showModalDialog頁面寫以下Javascript<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.returnValue = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure></p>
+<p>母頁面寫以下Javascript<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.showModalDialog(url, <span class="built_in">window</span>, set))</span><br><span class="line">&#123;</span><br><span class="line">   alert(<span class="string">'true'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">   alert(<span class="string">'false'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>showModalDialog回傳值的方式</strong><br>showModalDialog頁面寫以下Javascript：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">GoReturnValue</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="comment">//宣告一個Object</span></span><br><span class="line">   <span class="keyword">var</span> ReturnObj = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">   <span class="comment">//給這個Object屬性值</span></span><br><span class="line">   ReturnObj.codeValue = <span class="string">"i'am return value"</span>;</span><br><span class="line">   <span class="comment">//將這個Object回傳</span></span><br><span class="line">   <span class="built_in">window</span>.returnValue = ReturnObj;</span><br><span class="line">   <span class="built_in">window</span>.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>母頁面取值方式：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> returnObj = <span class="built_in">window</span>.showModalDialog(url, <span class="built_in">window</span>, Feature);</span><br><span class="line"><span class="comment">//取得這個Object的屬性值，在這邊應該會得到"i'am return value"</span></span><br><span class="line">alert(returnObj .codeValue);</span><br></pre></td></tr></table></figure></p>
 
-<pre class="brush:csharp">SPUser User = SPContext.Current.Web.CurrentUser; //先記錄目前使用者
-
-SPSecurity.RunWithElevatedPrivileges(delegate {        //進行升權的動作
-                        using (SPSite Site = new SPSite(SPContext.Current.Site.ID))
-                        {
-                            using (SPWeb Web = Site.OpenWeb(WebName))
-                            {
-                                //在將剛剛紀錄的使用者丟到Function進行權限的判斷
-                                if(Web.DoesUserHavePermissions(User.LoginName,SPBasePermissions.ViewPages))
-                                {
-                                    SPList List = Web.GetList(URL);
-                                    if(List.DoesUserHavePermissions(User, SPBasePermissions.ViewPages))
-                                    {
-                                        HavePermission = true;
-                                    }
-                                }
-                             }
-                        }
-});
-
-</pre>
-或是
-<pre class="brush:csharp">//如果不把SPSecurity.CatchAccessDeniedException改回正常狀況，Sharepoint網站會直接返回無權限的頁面
-//並停止執行接下來的程式
-private bool CheckPermission(SPWeb _web) 
-{
-   Boolean catchException = SPSecurity.CatchAccessDeniedException;
-   SPSecurity.CatchAccessDeniedException = false;
-   try
-   {
-      if (_web.DoesUserHavePermissions(currentUser.LoginName, SPBasePermissions.ViewPages))
-      {
-         return true;
-      }
-      else 
-      {
-         return false;
-      }
-    }
-    catch 
-    {
-         return false;
-    }
-    finally
-    {
-         //reset the flag to original value
-         SPSecurity.CatchAccessDeniedException = catchException;
-    }
-}
-</pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/26/【SharePoint】確認Web或List是否有權限讀取-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/12/26/【SharePoint】確認Web或List是否有權限讀取-3/" itemprop="url">【SharePoint】確認Web或List是否有權限讀取</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-12-26T18:14:00+08:00">
-                2012-12-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>詳細可以參考這個<a href="http://webcache.googleusercontent.com/search?q=cache:ubXwX-z3mF4J:blogs.salmanghani.info/check-if-user-has-permissions-on-list-or-web/+&amp;cd=4&amp;hl=zh-TW&amp;ct=clnk&amp;gl=tw" target="_blank" rel="noopener">網站</a></p>
-<p>節錄摘要，</p>
-<pre class="brush : csharp">if (oWeb.DoesUserHavePermissions(SPBasePermissions.ViewPages))
-{
-      SPList oList = oWeb.Lists[ListName];
-      if (oList.DoesUserHavePermissions(SPBasePermissions.ViewListItems))
-      {
-          // some smart code
-      }
-}
-</pre>
-因為要先Get Web或是List的物件才能進行判斷，所以如果該使用者對該物件沒有權限，這樣寫可能會當掉，所以建議寫法如下
-
-<pre class="brush:csharp">SPUser User = SPContext.Current.Web.CurrentUser; //先記錄目前使用者
-
-SPSecurity.RunWithElevatedPrivileges(delegate {        //進行升權的動作
-                        using (SPSite Site = new SPSite(SPContext.Current.Site.ID))
-                        {
-                            using (SPWeb Web = Site.OpenWeb(WebName))
-                            {
-                                //在將剛剛紀錄的使用者丟到Function進行權限的判斷
-                                if(Web.DoesUserHavePermissions(User.LoginName,SPBasePermissions.ViewPages))
-                                {
-                                    SPList List = Web.GetList(URL);
-                                    if(List.DoesUserHavePermissions(User, SPBasePermissions.ViewPages))
-                                    {
-                                        HavePermission = true;
-                                    }
-                                }
-                             }
-                        }
-});
-
-</pre>
-或是
-<pre class="brush:csharp">//如果不把SPSecurity.CatchAccessDeniedException改回正常狀況，Sharepoint網站會直接返回無權限的頁面
-//並停止執行接下來的程式
-private bool CheckPermission(SPWeb _web) 
-{
-   Boolean catchException = SPSecurity.CatchAccessDeniedException;
-   SPSecurity.CatchAccessDeniedException = false;
-   try
-   {
-      if (_web.DoesUserHavePermissions(currentUser.LoginName, SPBasePermissions.ViewPages))
-      {
-         return true;
-      }
-      else 
-      {
-         return false;
-      }
-    }
-    catch 
-    {
-         return false;
-    }
-    finally
-    {
-         //reset the flag to original value
-         SPSecurity.CatchAccessDeniedException = catchException;
-    }
-}
-</pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/26/【SharePoint】確認Web或List是否有權限讀取/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/12/26/【SharePoint】確認Web或List是否有權限讀取/" itemprop="url">【SharePoint】確認Web或List是否有權限讀取</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-12-26T18:14:00+08:00">
-                2012-12-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>詳細可以參考這個<a href="http://webcache.googleusercontent.com/search?q=cache:ubXwX-z3mF4J:blogs.salmanghani.info/check-if-user-has-permissions-on-list-or-web/+&amp;cd=4&amp;hl=zh-TW&amp;ct=clnk&amp;gl=tw" target="_blank" rel="noopener">網站</a></p>
-<p>節錄摘要，</p>
-<pre class="brush : csharp">if (oWeb.DoesUserHavePermissions(SPBasePermissions.ViewPages))
-{
-      SPList oList = oWeb.Lists[ListName];
-      if (oList.DoesUserHavePermissions(SPBasePermissions.ViewListItems))
-      {
-          // some smart code
-      }
-}
-</pre>
-因為要先Get Web或是List的物件才能進行判斷，所以如果該使用者對該物件沒有權限，這樣寫可能會當掉，所以建議寫法如下
-
-<pre class="brush:csharp">SPUser User = SPContext.Current.Web.CurrentUser; //先記錄目前使用者
-
-SPSecurity.RunWithElevatedPrivileges(delegate {        //進行升權的動作
-                        using (SPSite Site = new SPSite(SPContext.Current.Site.ID))
-                        {
-                            using (SPWeb Web = Site.OpenWeb(WebName))
-                            {
-                                //在將剛剛紀錄的使用者丟到Function進行權限的判斷
-                                if(Web.DoesUserHavePermissions(User.LoginName,SPBasePermissions.ViewPages))
-                                {
-                                    SPList List = Web.GetList(URL);
-                                    if(List.DoesUserHavePermissions(User, SPBasePermissions.ViewPages))
-                                    {
-                                        HavePermission = true;
-                                    }
-                                }
-                             }
-                        }
-});
-
-</pre>
-或是
-<pre class="brush:csharp">//如果不把SPSecurity.CatchAccessDeniedException改回正常狀況，Sharepoint網站會直接返回無權限的頁面
-//並停止執行接下來的程式
-private bool CheckPermission(SPWeb _web) 
-{
-   Boolean catchException = SPSecurity.CatchAccessDeniedException;
-   SPSecurity.CatchAccessDeniedException = false;
-   try
-   {
-      if (_web.DoesUserHavePermissions(currentUser.LoginName, SPBasePermissions.ViewPages))
-      {
-         return true;
-      }
-      else 
-      {
-         return false;
-      }
-    }
-    catch 
-    {
-         return false;
-    }
-    finally
-    {
-         //reset the flag to original value
-         SPSecurity.CatchAccessDeniedException = catchException;
-    }
-}
-</pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/26/【SharePoint】確認Web或List是否有權限讀取-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/12/26/【SharePoint】確認Web或List是否有權限讀取-2/" itemprop="url">【SharePoint】確認Web或List是否有權限讀取</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-12-26T18:14:00+08:00">
-                2012-12-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>詳細可以參考這個<a href="http://webcache.googleusercontent.com/search?q=cache:ubXwX-z3mF4J:blogs.salmanghani.info/check-if-user-has-permissions-on-list-or-web/+&amp;cd=4&amp;hl=zh-TW&amp;ct=clnk&amp;gl=tw" target="_blank" rel="noopener">網站</a></p>
-<p>節錄摘要，</p>
-<pre class="brush : csharp">if (oWeb.DoesUserHavePermissions(SPBasePermissions.ViewPages))
-{
-      SPList oList = oWeb.Lists[ListName];
-      if (oList.DoesUserHavePermissions(SPBasePermissions.ViewListItems))
-      {
-          // some smart code
-      }
-}
-</pre>
-因為要先Get Web或是List的物件才能進行判斷，所以如果該使用者對該物件沒有權限，這樣寫可能會當掉，所以建議寫法如下
-
-<pre class="brush:csharp">SPUser User = SPContext.Current.Web.CurrentUser; //先記錄目前使用者
-
-SPSecurity.RunWithElevatedPrivileges(delegate {        //進行升權的動作
-                        using (SPSite Site = new SPSite(SPContext.Current.Site.ID))
-                        {
-                            using (SPWeb Web = Site.OpenWeb(WebName))
-                            {
-                                //在將剛剛紀錄的使用者丟到Function進行權限的判斷
-                                if(Web.DoesUserHavePermissions(User.LoginName,SPBasePermissions.ViewPages))
-                                {
-                                    SPList List = Web.GetList(URL);
-                                    if(List.DoesUserHavePermissions(User, SPBasePermissions.ViewPages))
-                                    {
-                                        HavePermission = true;
-                                    }
-                                }
-                             }
-                        }
-});
-
-</pre>
-或是
-<pre class="brush:csharp">//如果不把SPSecurity.CatchAccessDeniedException改回正常狀況，Sharepoint網站會直接返回無權限的頁面
-//並停止執行接下來的程式
-private bool CheckPermission(SPWeb _web) 
-{
-   Boolean catchException = SPSecurity.CatchAccessDeniedException;
-   SPSecurity.CatchAccessDeniedException = false;
-   try
-   {
-      if (_web.DoesUserHavePermissions(currentUser.LoginName, SPBasePermissions.ViewPages))
-      {
-         return true;
-      }
-      else 
-      {
-         return false;
-      }
-    }
-    catch 
-    {
-         return false;
-    }
-    finally
-    {
-         //reset the flag to original value
-         SPSecurity.CatchAccessDeniedException = catchException;
-    }
-}
-</pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/11/13/【SharePoint】讀取目前使用者的DispayName/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/11/13/【SharePoint】讀取目前使用者的DispayName/" itemprop="url">【SharePoint】讀取目前使用者的DispayName</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-11-13T10:57:00+08:00">
-                2012-11-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>是DisplayName不是Account喔!!</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-NaAuRmyrQd0/UKG2nwaZzcI/AAAAAAAAAOM/dE6rh8dC8PI/s1600/1.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-NaAuRmyrQd0/UKG2nwaZzcI/AAAAAAAAAOM/dE6rh8dC8PI/s1600/1.png" alt=""></a></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/11/13/【SharePoint】讀取目前使用者的DispayName-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/11/13/【SharePoint】讀取目前使用者的DispayName-1/" itemprop="url">【SharePoint】讀取目前使用者的DispayName</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-11-13T10:57:00+08:00">
-                2012-11-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>是DisplayName不是Account喔!!</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-NaAuRmyrQd0/UKG2nwaZzcI/AAAAAAAAAOM/dE6rh8dC8PI/s1600/1.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-NaAuRmyrQd0/UKG2nwaZzcI/AAAAAAAAAOM/dE6rh8dC8PI/s1600/1.png" alt=""></a></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/11/13/【SharePoint】讀取目前使用者的DispayName-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/11/13/【SharePoint】讀取目前使用者的DispayName-3/" itemprop="url">【SharePoint】讀取目前使用者的DispayName</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-11-13T10:57:00+08:00">
-                2012-11-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>是DisplayName不是Account喔!!</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-NaAuRmyrQd0/UKG2nwaZzcI/AAAAAAAAAOM/dE6rh8dC8PI/s1600/1.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-NaAuRmyrQd0/UKG2nwaZzcI/AAAAAAAAAOM/dE6rh8dC8PI/s1600/1.png" alt=""></a></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/11/13/【SharePoint】讀取目前使用者的DispayName-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/11/13/【SharePoint】讀取目前使用者的DispayName-2/" itemprop="url">【SharePoint】讀取目前使用者的DispayName</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-11-13T10:57:00+08:00">
-                2012-11-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>是DisplayName不是Account喔!!</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-NaAuRmyrQd0/UKG2nwaZzcI/AAAAAAAAAOM/dE6rh8dC8PI/s1600/1.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-NaAuRmyrQd0/UKG2nwaZzcI/AAAAAAAAAOM/dE6rh8dC8PI/s1600/1.png" alt=""></a></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/11/13/【SharePoint】在LayOut底下的資料夾寫入txt的Log檔-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/11/13/【SharePoint】在LayOut底下的資料夾寫入txt的Log檔-1/" itemprop="url">【SharePoint】在LayOut底下的資料夾寫入txt的Log檔</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-11-13T10:51:00+08:00">
-                2012-11-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我在佈署SharePoint專案時在LayOut資料夾底下放了一個Log的資料夾，打算在該資料夾寫txt的Log檔用，結構如下圖</p>
-<p>首先要在Log資料夾裡下先隨便放個檔案，否則VS在佈署時發現該資料夾沒檔案就不會真的建那個該資料夾出來。<br><a href="http://3.bp.blogspot.com/-hEqdtk5YkfQ/UKG0Fg_QeUI/AAAAAAAAAN8/qW-7eYZAZUw/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-hEqdtk5YkfQ/UKG0Fg_QeUI/AAAAAAAAAN8/qW-7eYZAZUw/s1600/1.png" alt=""></a></p>
-<p>以下程式是抓到佈署完之後該資料夾的實體位置，並以一天一檔案的方式寫Log檔</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-Gjb8chCZLdk/UKG1rVrrveI/AAAAAAAAAOE/5F6qYNcbPg4/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-Gjb8chCZLdk/UKG1rVrrveI/AAAAAAAAAOE/5F6qYNcbPg4/s1600/1.png" alt=""></a></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/11/13/【SharePoint】在LayOut底下的資料夾寫入txt的Log檔-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/11/13/【SharePoint】在LayOut底下的資料夾寫入txt的Log檔-2/" itemprop="url">【SharePoint】在LayOut底下的資料夾寫入txt的Log檔</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2012-11-13T10:51:00+08:00">
-                2012-11-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我在佈署SharePoint專案時在LayOut資料夾底下放了一個Log的資料夾，打算在該資料夾寫txt的Log檔用，結構如下圖</p>
-<p>首先要在Log資料夾裡下先隨便放個檔案，否則VS在佈署時發現該資料夾沒檔案就不會真的建那個該資料夾出來。<br><a href="http://3.bp.blogspot.com/-hEqdtk5YkfQ/UKG0Fg_QeUI/AAAAAAAAAN8/qW-7eYZAZUw/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-hEqdtk5YkfQ/UKG0Fg_QeUI/AAAAAAAAAN8/qW-7eYZAZUw/s1600/1.png" alt=""></a></p>
-<p>以下程式是抓到佈署完之後該資料夾的實體位置，並以一天一檔案的方式寫Log檔</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-Gjb8chCZLdk/UKG1rVrrveI/AAAAAAAAAOE/5F6qYNcbPg4/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-Gjb8chCZLdk/UKG1rVrrveI/AAAAAAAAAOE/5F6qYNcbPg4/s1600/1.png" alt=""></a></div>
           
         
       
@@ -1668,7 +430,7 @@ private bool CheckPermission(SPWeb _web)
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span>
   </nav>
 
 
@@ -1703,7 +465,11 @@ private bool CheckPermission(SPWeb _web)
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <p class="site-author-name" itemprop="name">John Doe</p>
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="Toyo" />
+            
+              <p class="site-author-name" itemprop="name">Toyo</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
@@ -1714,35 +480,93 @@ private bool CheckPermission(SPWeb _web)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">204</span>
-                  <span class="site-state-item-name">posts</span>
+                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-name">文章</span>
                 </a>
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
             
 
             
               
               
               <div class="site-state-item site-state-tags">
-                
-                  <span class="site-state-item-count">44</span>
-                  <span class="site-state-item-name">tags</span>
-                
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
               </div>
             
 
           </nav>
 
           
-
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
           
 
           
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/toyo0103" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://tw.linkedin.com/in/steven-tsai-096580110" target="_blank" title="Linkedin">
+                      
+                        <i class="fa fa-fw fa-linkedin"></i></a>
+                  </span>
+                
+            </div>
           
 
           
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-folder-open"></i>
+                系列文章
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/categories/學習MVC" title="MVC" target="_blank">MVC</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/categories/學習單元測試" title="單元測試" target="_blank">單元測試</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/categories/VSTS建置CI-CD" title="VSTS建置CI/CD" target="_blank">VSTS建置CI/CD</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/categories/LeetCode" title="LeetCode" target="_blank">LeetCode</a>
+                  </li>
+                
+              </ul>
+            </div>
           
 
           
@@ -1768,13 +592,13 @@ private bool CheckPermission(SPWeb _web)
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
 
   
 </div>
 
 
-  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
 
 
 
@@ -1782,7 +606,7 @@ private bool CheckPermission(SPWeb _web)
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
 
 
 
@@ -1882,6 +706,13 @@ private bool CheckPermission(SPWeb _web)
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
   
 
   
@@ -1896,20 +727,11 @@ private bool CheckPermission(SPWeb _web)
 
   
 
+    
+      <script id="dsq-count-scr" src="https://toyo0103.disqus.com/count.js" async></script>
+    
 
-
-
-	
-
-
-
-
-
-  
-
-
-
-
+    
 
   
 
@@ -1924,7 +746,329 @@ private bool CheckPermission(SPWeb _web)
 
 
 
+
+
+
+
+
   
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
 
 
 

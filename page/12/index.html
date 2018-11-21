@@ -295,6 +295,147 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/02/swift-Navigation-Controller-1-畫面切換/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/02/swift-Navigation-Controller-1-畫面切換/" itemprop="url">[swift]Navigation Controller (1) 畫面切換</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-02T17:47:00+08:00">
+                2015-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/02/swift-Navigation-Controller-1-畫面切換/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/03/02/swift-Navigation-Controller-1-畫面切換/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>先拉一個Navigation Controller到StoryBoard,並將起始指標指向它<br><a href="http://2.bp.blogspot.com/-fA8zFXoGMn0/VPQxsX0y6hI/AAAAAAAAEY0/H95akka6mBU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.44.46.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-fA8zFXoGMn0/VPQxsX0y6hI/AAAAAAAAEY0/H95akka6mBU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.44.46.png" alt=""></a></li>
+<li>接著拉個ViewA並且設定他為root view並且執行看看<a href="http://4.bp.blogspot.com/-K4yeFlMFoh8/VPQ2RXPJkEI/AAAAAAAAEZo/KuZ33YI1kGg/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.05.57.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-K4yeFlMFoh8/VPQ2RXPJkEI/AAAAAAAAEZo/KuZ33YI1kGg/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.05.57.png" alt=""></a><br><a href="http://2.bp.blogspot.com/-xXMjStRghEU/VPQ0-TggsYI/AAAAAAAAEZY/SN_q-5qelSU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.00.08.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-xXMjStRghEU/VPQ0-TggsYI/AAAAAAAAEZY/SN_q-5qelSU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.00.08.png" alt=""></a><br>執行結果首頁就是剛剛指定root view的那一頁了<br><a href="http://4.bp.blogspot.com/-_qbQ9rm9jL8/VPQ1DhTqoJI/AAAAAAAAEZg/RACPJIajA6c/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.00.21.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-_qbQ9rm9jL8/VPQ1DhTqoJI/AAAAAAAAEZg/RACPJIajA6c/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.00.21.png" alt=""></a></li>
+<li><p>接著在拉第二個ViewB,並將ViewA與ViewB做Push的關聯<br><a href="http://1.bp.blogspot.com/-rCM22lv7ttI/VPQ5KGX6icI/AAAAAAAAEZ0/4w9YGq6810o/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.18.23.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-rCM22lv7ttI/VPQ5KGX6icI/AAAAAAAAEZ0/4w9YGq6810o/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.18.23.png" alt=""></a></p>
+<p>接著設定這個push segue的identifier<br><a href="http://3.bp.blogspot.com/-euQwt-_kxAU/VPQ7MEAWfUI/AAAAAAAAEaA/slK1nAB8tXQ/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.27.16.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-euQwt-_kxAU/VPQ7MEAWfUI/AAAAAAAAEaA/slK1nAB8tXQ/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.27.16.png" alt=""></a></p>
+</li>
+<li><p>在ViewA做已下修改 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Page_A_ViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">   <span class="comment">//NavBar</span></span><br><span class="line">   <span class="keyword">self</span>.navigationController?.navigationBar.barTintColor = <span class="type">UIColor</span>(red: <span class="number">0.58</span>, green: <span class="number">0.761</span>, blue: <span class="number">0.231</span>, alpha: <span class="number">1</span>)</span><br><span class="line">   <span class="keyword">let</span> titleDic : <span class="type">NSDictionary</span> = [<span class="type">NSForegroundColorAttributeName</span> : <span class="type">UIColor</span>.whiteColor()]; <span class="comment">//字的顏色</span></span><br><span class="line">   <span class="keyword">self</span>.navigationController?.navigationBar.titleTextAttributes = titleDic;</span><br><span class="line">   <span class="keyword">self</span>.navigationController?.navigationBar.tintColor = <span class="type">UIColor</span>.whiteColor() <span class="comment">//按鈕的顏色</span></span><br><span class="line">   <span class="comment">//設定右上角的按鈕let barOptionIcon : UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon-options"), style: UIBarButtonItemStyle.Plain, target: self, action: "PushToOptionController:");</span></span><br><span class="line">   <span class="keyword">self</span>.navigationController?.navigationBar.topItem?.setRightBarButtonItem(barOptionIcon, animated: <span class="literal">true</span>) ;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//右上角Button按下時觸發的事件</span></span><br><span class="line"> <span class="function"><span class="keyword">func</span> <span class="title">PushToOptionController</span><span class="params">(sender: UIBarButtonItem)</span></span> &#123;</span><br><span class="line">    <span class="keyword">self</span>.performSegueWithIdentifier(<span class="string">"toPageB"</span>, sender: <span class="keyword">self</span>);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>完成後試試看,點擊右上角的按鈕即可跳到第二頁了！！</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1523,142 +1664,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/03/13/【SQL】SQL的foreach，逐筆執行/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2014/03/13/【SQL】SQL的foreach，逐筆執行/" itemprop="url">【SQL】SQL的foreach，逐筆執行</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-03-13T17:17:00+08:00">
-                2014-03-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2014/03/13/【SQL】SQL的foreach，逐筆執行/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2014/03/13/【SQL】SQL的foreach，逐筆執行/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>需求:將Table_A的資料塞到Table_B，並把Table_B產生的ID編號回寫回Table_A的對應欄位 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 宣告變數</span></span><br><span class="line"><span class="keyword">DECLARE</span> @para1 <span class="built_in">VARCHAR</span>(<span class="number">50</span>) </span><br><span class="line"><span class="keyword">DECLARE</span> @para2 uniqueidentifier</span><br><span class="line"><span class="keyword">DECLARE</span> @para3 <span class="built_in">VARCHAR</span>(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 宣告指標變數</span></span><br><span class="line"><span class="keyword">DECLARE</span> _cursor <span class="keyword">CURSOR</span> <span class="keyword">FOR</span></span><br><span class="line"><span class="keyword">SELECT</span> s1,s2,s3 <span class="keyword">FROM</span> Table_A <span class="keyword">where</span> eiplstatus = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 啟用指標變數</span></span><br><span class="line"><span class="keyword">OPEN</span> _cursor</span><br><span class="line"><span class="comment">-- 以指標變數為基準點, 將取出的欄位值,依序塞給我們自訂的變數，亦即將每筆s1 =&gt; @para1、 s2 =&gt; @para2 、s3 =&gt; @para3</span></span><br><span class="line"><span class="keyword">FETCH</span> <span class="keyword">NEXT</span> <span class="keyword">FROM</span> _cursor <span class="keyword">INTO</span> @para1,@para2,@para3</span><br><span class="line"></span><br><span class="line"><span class="keyword">WHILE</span> @@FETCH_STATUS = <span class="number">0</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">insert</span> <span class="keyword">into</span> Table_B(c1,c2,c3) <span class="keyword">values</span>(@para1,@para2,@para3)</span><br><span class="line">    <span class="keyword">SET</span> @<span class="keyword">id</span> = SCOPE_IDENTITY();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">update</span> Table_A <span class="keyword">set</span> <span class="keyword">id</span> = @<span class="keyword">id</span> <span class="keyword">where</span> <span class="keyword">CURRENT</span> <span class="keyword">of</span> _cursor</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 指標變數往下移動, 並將取出的欄位值, 設定給我們自訂的變數</span></span><br><span class="line">    <span class="keyword">FETCH</span> <span class="keyword">NEXT</span> <span class="keyword">FROM</span> _cursor <span class="keyword">INTO</span> @para1,@para2,@para3</span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 關閉指標變數</span></span><br><span class="line"><span class="keyword">CLOSE</span> _cursor</span><br><span class="line"><span class="comment">-- 釋放指標變數</span></span><br><span class="line"><span class="keyword">DEALLOCATE</span> _cursor</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1708,7 +1718,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">170</span>
+                  <span class="site-state-item-count">171</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1730,7 +1740,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

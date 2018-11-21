@@ -430,6 +430,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/14/【WebAPI】Custom-ActionFilter-Order/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/12/14/【WebAPI】Custom-ActionFilter-Order/" itemprop="url">【WebAPI】Custom ActionFilter Order</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+08:00">
+                2015-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/14/【WebAPI】Custom-ActionFilter-Order/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/14/【WebAPI】Custom-ActionFilter-Order/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="ActionAttribute"><a href="#ActionAttribute" class="headerlink" title="ActionAttribute"></a>ActionAttribute</h1><div class="note info"><p>環境 : WebAPI 2.2 <a href="http://www.asp.net/web-api/overview/releases/whats-new-in-aspnet-web-api-22" target="_blank" rel="noopener">詳細</a></p></div>
+<p>在WebAPI中，通常都繪有需要客製化ActionFilter的情況發生</p>
+<p><img src="https://3.bp.blogspot.com/-tfA3HwTsUBA/VnIwd3pjxiI/AAAAAAAAHrc/qzbMwEmMBb4/s1600/1.png" alt=""></p>
+<h2 id="執行順序不固定"><a href="#執行順序不固定" class="headerlink" title="執行順序不固定"></a>執行順序不固定</h2><p>ActionFilter的執行順序並非在上面的就優先執行，Filter有個FilterScope來表示他屬於何種層級的ActionFilter，執行順序依次是 Global , Controller , Action 。但如果是在同一層級的ActionFilter順序則未必按照固定。 </p>
+<p><img src="https://2.bp.blogspot.com/-vZ-NniyEom4/VnIx1sGnvcI/AAAAAAAAHro/-ykVRvzvq3Y/s1600/1.png" alt="https://2.bp.blogspot.com/-vZ-NniyEom4/VnIx1sGnvcI/AAAAAAAAHro/-ykVRvzvq3Y/s1600/1.png">]</p>
+<h2 id="測試"><a href="#測試" class="headerlink" title="測試"></a>測試</h2><p><img src="https://4.bp.blogspot.com/-LiCgWC_Ob3M/VnIyiMCn0nI/AAAAAAAAHr0/H58PiNpUUvA/s1600/1.png" alt="https://4.bp.blogspot.com/-LiCgWC_Ob3M/VnIyiMCn0nI/AAAAAAAAHr0/H58PiNpUUvA/s1600/1.png"></p>
+<p>裡面全部都一樣繼承ActionFilterAttribute即可<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FourAttribute</span> :<span class="title">ActionFilterAttribute</span>&#123; &#125;</span><br></pre></td></tr></table></figure></p>
+<p>註冊OneAttribute到Global<br><img src="https://2.bp.blogspot.com/-oCMhVi2M5_w/VnIzKgzvzrI/AAAAAAAAHsA/e9vuB3fiZE4/s1600/1.png" alt="https://2.bp.blogspot.com/-oCMhVi2M5_w/VnIzKgzvzrI/AAAAAAAAHsA/e9vuB3fiZE4/s1600/1.png"></p>
+<p>將其它Attribute分別註冊到Controller與Action<br><img src="https://1.bp.blogspot.com/-VZm61VIoQZY/VnIzc88dwGI/AAAAAAAAHsM/piz8hD4vdXo/s1600/1.png" alt="https://1.bp.blogspot.com/-VZm61VIoQZY/VnIzc88dwGI/AAAAAAAAHsM/piz8hD4vdXo/s1600/1.png"></p>
+<p>在Get中補上以下程式然後執行看看<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpGet</span>]</span><br><span class="line">[<span class="meta">Three</span>]</span><br><span class="line">[<span class="meta">Four</span>]</span><br><span class="line"><span class="keyword">public</span> IEnumerable&lt;Tuple&lt;<span class="keyword">string</span>,<span class="keyword">string</span>&gt;&gt; Get()</span><br><span class="line">&#123;</span><br><span class="line">    IHttpActionSelector actionSelector =</span><br><span class="line">        <span class="keyword">this</span>.Configuration.Services.GetActionSelector();</span><br><span class="line"> </span><br><span class="line">    HttpActionDescriptor actionDescriptor =</span><br><span class="line">        actionSelector.SelectAction(<span class="keyword">this</span>.ControllerContext);</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">foreach</span> (FilterInfo filterInfo <span class="keyword">in</span> actionDescriptor.GetFilterPipeline())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> <span class="keyword">new</span> Tuple&lt;<span class="keyword">string</span>, <span class="keyword">string</span>&gt;(</span><br><span class="line">            filterInfo.Instance.GetType().Name,</span><br><span class="line">            filterInfo.Scope.ToString()</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="測試結果"><a href="#測試結果" class="headerlink" title="測試結果"></a>測試結果</h2><p><img src="https://2.bp.blogspot.com/-ExqARkhthR8/VnI0IaZEwvI/AAAAAAAAHsY/iSNXKBQFZF0/s1600/1.png" alt="https://2.bp.blogspot.com/-ExqARkhthR8/VnI0IaZEwvI/AAAAAAAAHsY/iSNXKBQFZF0/s1600/1.png"></p>
+<p>排序依據所對應的層級，雖然這邊排序與我們在程式上的排序相同。但實際上順序同層級的順序未必是由上而下，為了避免這樣的問題，最好的方法就是在ActionFilter加上排序的屬性來解決。</p>
+<h2 id="實作Order屬性"><a href="#實作Order屬性" class="headerlink" title="實作Order屬性"></a>實作Order屬性</h2><h3 id="定義IOrderAttribute"><a href="#定義IOrderAttribute" class="headerlink" title="定義IOrderAttribute"></a>定義IOrderAttribute</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IOrderAttribute</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">int</span> Order &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class FourAttribute : ActionFilterAttribute, IOrderAttribute</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">int</span> Order &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="實做IComparable介面"><a href="#實做IComparable介面" class="headerlink" title="實做IComparable介面"></a>實做IComparable介面</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomFilterInfo</span> : <span class="title">IComparable</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> IFilter Instance &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> FilterScope Scope &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//FilterInfo</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CustomFilterInfo</span>(<span class="params">IFilter instance, FilterScope scope</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.Instance = instance;</span><br><span class="line">            <span class="keyword">this</span>.Scope = scope;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">CompareTo</span>(<span class="params"><span class="keyword">object</span> obj</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (obj <span class="keyword">is</span> CustomFilterInfo)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> item = obj <span class="keyword">as</span> CustomFilterInfo;</span><br><span class="line"> </span><br><span class="line">                <span class="keyword">if</span> (item.Instance <span class="keyword">is</span> IAttribute)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> attr = item.Instance <span class="keyword">as</span> IAttribute;</span><br><span class="line">                    <span class="keyword">return</span> (<span class="keyword">this</span>.Instance <span class="keyword">as</span> IAttribute).Order.CompareTo(attr.Order);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"> </span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="function"><span class="keyword">public</span> FilterInfo <span class="title">ConvertToFilterInfo</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> FilterInfo(<span class="keyword">this</span>.Instance, <span class="keyword">this</span>.Scope);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="實做IFilterProvider介面"><a href="#實做IFilterProvider介面" class="headerlink" title="實做IFilterProvider介面"></a>實做IFilterProvider介面</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomFilterProvider</span> : <span class="title">IFilterProvider</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable&lt;FilterInfo&gt; <span class="title">GetFilters</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">        HttpConfiguration configuration, </span></span></span><br><span class="line"><span class="function"><span class="params">        HttpActionDescriptor actionDescriptor</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        IEnumerable&lt;CustomFilterInfo&gt; customActionFilters =</span><br><span class="line">            actionDescriptor.GetFilters()</span><br><span class="line">                            .Select(i =&gt; <span class="keyword">new</span> CustomFilterInfo(i, FilterScope.Controller));</span><br><span class="line"> </span><br><span class="line">        IEnumerable&lt;CustomFilterInfo&gt; customControllerFilters =</span><br><span class="line">            actionDescriptor.ControllerDescriptor</span><br><span class="line">                            .GetFilters()</span><br><span class="line">                            .Select(i =&gt; <span class="keyword">new</span> CustomFilterInfo(i, FilterScope.Controller));</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> customControllerFilters.Concat(customActionFilters)</span><br><span class="line">                                      .OrderBy(i =&gt; i)</span><br><span class="line">                                      .Select(i =&gt; i.ConvertToFilterInfo());</span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Global註冊"><a href="#Global註冊" class="headerlink" title="Global註冊"></a>Global註冊</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Application_Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    AreaRegistration.RegisterAllAreas();</span><br><span class="line">    GlobalConfiguration.Configure(WebApiConfig.Register);</span><br><span class="line">    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);</span><br><span class="line">    GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//註冊Global Attribute</span></span><br><span class="line">    GlobalConfiguration.Configuration.Filters.Add(<span class="keyword">new</span> OneAttribute());</span><br><span class="line"> </span><br><span class="line">     </span><br><span class="line">    <span class="comment">//新增CustomFilterProvider</span></span><br><span class="line">    GlobalConfiguration.Configuration.Services.Add(</span><br><span class="line">        <span class="keyword">typeof</span>(System.Web.Http.Filters.IFilterProvider), <span class="keyword">new</span> CustomFilterProvider());</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">var</span> providers = GlobalConfiguration.Configuration.Services.GetFilterProviders();</span><br><span class="line">    <span class="keyword">var</span> defaultprovider = providers.First(i =&gt; i <span class="keyword">is</span> ActionDescriptorFilterProvider);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//移除DefaultProvider</span></span><br><span class="line">    GlobalConfiguration.Configuration.Services.Remove(</span><br><span class="line">        <span class="keyword">typeof</span>(System.Web.Http.Filters.IFilterProvider),</span><br><span class="line">        defaultprovider);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="測試-1"><a href="#測試-1" class="headerlink" title="測試"></a>測試</h3><p>將Attibute補上Order再執行看看得到的順序</p>
+<p><img src="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png" alt="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png"></p>
+<p>可以看到Four排在Three的前面了</p>
+<p><img src="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png" alt="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/08/AutoMapper與Json-NET-JObject對應問題/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1575,158 +1725,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/13/swift-CoreData-1-建立CoreData/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/13/swift-CoreData-1-建立CoreData/" itemprop="url">[swift]  CoreData (1) 建立CoreData</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-13T10:44:00+08:00">
-                2015-03-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/13/swift-CoreData-1-建立CoreData/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/03/13/swift-CoreData-1-建立CoreData/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>CoreData是是一種以物件導向方式讓開發者與跟資料庫互動的框架,好處是你不需要懂SQL也能對SQLite做操作</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-cLEXYUQDTJA/VQJMODzIHuI/AAAAAAAAEjg/uDb2WQBOTmA/s1600/S__23961604.jpg" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-cLEXYUQDTJA/VQJMODzIHuI/AAAAAAAAEjg/uDb2WQBOTmA/s1600/S__23961604.jpg" alt=""></a><a href="http://1.bp.blogspot.com/-cLEXYUQDTJA/VQJMODzIHuI/AAAAAAAAEjg/uDb2WQBOTmA/s1600/S__23961604.jpg" target="_blank" rel="noopener">
-</a></div><div style="clear: both;"></div>
-
-<ul>
-<li>接著來筆記如何實作CoreData,首先先建立一個專案並把Use Core Data勾選起來<br><a href="http://4.bp.blogspot.com/-owBGxoBedgU/VQJObPRud4I/AAAAAAAAEjs/UKixdyBIA_0/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8810.37.24.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-owBGxoBedgU/VQJObPRud4I/AAAAAAAAEjs/UKixdyBIA_0/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8810.37.24.png" alt=""></a></li>
-<li><p>接著打開AppDelegate最下面可以看到多了一大堆程式碼 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MARK: - Core Data stack</span></span><br><span class="line"></span><br><span class="line">        lazy <span class="keyword">var</span> applicationDocumentsDirectory: NSURL = &#123;</span><br><span class="line">        <span class="comment">// The directory the application uses to store the Core Data store file. This code uses a directory named "tw.com.xxx.Coredata" in the application's documents Application Support directory.</span></span><br><span class="line">        <span class="keyword">let</span> urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, <span class="attr">inDomains</span>: .UserDomainMask)</span><br><span class="line">        <span class="keyword">return</span> urls[urls.count<span class="number">-1</span>] <span class="keyword">as</span> NSURL</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">        lazy <span class="keyword">var</span> managedObjectModel: NSManagedObjectModel = &#123;</span><br><span class="line">        <span class="comment">// The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.</span></span><br><span class="line">        <span class="keyword">let</span> modelURL = NSBundle.mainBundle().URLForResource(<span class="string">"Coredata"</span>, <span class="attr">withExtension</span>: <span class="string">"momd"</span>)!</span><br><span class="line">        <span class="keyword">return</span> NSManagedObjectModel(contentsOfURL: modelURL)!</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">        lazy <span class="keyword">var</span> persistentStoreCoordinator: NSPersistentStoreCoordinator? = &#123;</span><br><span class="line">        <span class="comment">// The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.</span></span><br><span class="line">        <span class="comment">// Create the coordinator and store</span></span><br><span class="line">        <span class="keyword">var</span> coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)</span><br><span class="line">        <span class="keyword">let</span> url = self.applicationDocumentsDirectory.URLByAppendingPathComponent(<span class="string">"Coredata.sqlite"</span>)</span><br><span class="line">        <span class="keyword">var</span> error: NSError? = nil</span><br><span class="line">        <span class="keyword">var</span> failureReason = <span class="string">"There was an error creating or loading the application's saved data."</span></span><br><span class="line">        <span class="keyword">if</span> coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, <span class="attr">configuration</span>: nil, <span class="attr">URL</span>: url, <span class="attr">options</span>: nil, <span class="attr">error</span>: &amp;error) == nil &#123;</span><br><span class="line">            coordinator = nil</span><br><span class="line">            <span class="comment">// Report any error we got.</span></span><br><span class="line">            <span class="keyword">let</span> dict = NSMutableDictionary()</span><br><span class="line">            dict[NSLocalizedDescriptionKey] = <span class="string">"Failed to initialize the application's saved data"</span></span><br><span class="line">            dict[NSLocalizedFailureReasonErrorKey] = failureReason</span><br><span class="line">            dict[NSUnderlyingErrorKey] = error</span><br><span class="line">            error = NSError(domain: <span class="string">"YOUR_ERROR_DOMAIN"</span>, <span class="attr">code</span>: <span class="number">9999</span>, <span class="attr">userInfo</span>: dict)</span><br><span class="line">            <span class="comment">// Replace this with code to handle the error appropriately.</span></span><br><span class="line">            <span class="comment">// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.</span></span><br><span class="line">            NSLog(<span class="string">"Unresolved error \(error), \(error!.userInfo)"</span>)</span><br><span class="line">            abort()</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> coordinator</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">        lazy <span class="keyword">var</span> managedObjectContext: NSManagedObjectContext? = &#123;</span><br><span class="line">        <span class="comment">// Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.</span></span><br><span class="line">        <span class="keyword">let</span> coordinator = self.persistentStoreCoordinator</span><br><span class="line">        <span class="keyword">if</span> coordinator == nil &#123;</span><br><span class="line">            <span class="keyword">return</span> nil</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> managedObjectContext = NSManagedObjectContext()</span><br><span class="line">        managedObjectContext.persistentStoreCoordinator = coordinator</span><br><span class="line">        <span class="keyword">return</span> managedObjectContext</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">        <span class="comment">// MARK: - Core Data Saving support</span></span><br><span class="line"></span><br><span class="line">        func saveContext () &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> moc = self.managedObjectContext &#123;</span><br><span class="line">            <span class="keyword">var</span> error: NSError? = nil</span><br><span class="line">            <span class="keyword">if</span> moc.hasChanges &amp;&amp; !moc.save(&amp;error) &#123;</span><br><span class="line">                <span class="comment">// Replace this implementation with code to handle the error appropriately.</span></span><br><span class="line">                <span class="comment">// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.</span></span><br><span class="line">                NSLog(<span class="string">"Unresolved error \(error), \(error!.userInfo)"</span>)</span><br><span class="line">                abort()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>接著建立物件託管模型<br><a href="http://1.bp.blogspot.com/-KK3Tu_Vazbk/VQJTyV8AxfI/AAAAAAAAEj8/YqCpExRBFF0/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8811.02.54.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-KK3Tu_Vazbk/VQJTyV8AxfI/AAAAAAAAEj8/YqCpExRBFF0/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8811.02.54.png" alt=""></a></p>
-</li>
-<li>接著建立Entities<br><a href="http://1.bp.blogspot.com/-D2JtYHHTBxI/VQJUguKuVhI/AAAAAAAAEkE/2vxmi1ktG4U/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8811.07.18.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-D2JtYHHTBxI/VQJUguKuVhI/AAAAAAAAEkE/2vxmi1ktG4U/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8811.07.18.png" alt=""></a><br>＊<strong><span style="color: blue;">圖片需要用Binary Data來儲存 </span></strong></li>
-<li>接著建立Class來對應Entity <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"><span class="keyword">import</span> CoreData</span><br><span class="line">class Friend:NSManagedObject  &#123;</span><br><span class="line">    @NSManaged <span class="keyword">var</span> name:<span class="built_in">String</span>!</span><br><span class="line">    @NSManaged <span class="keyword">var</span> tel:NSNumber!</span><br><span class="line">    @NSManaged <span class="keyword">var</span> picture:NSData!</span><br><span class="line">    @NSManaged <span class="keyword">var</span> marry:NSNumber!</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p><span style="color: blue;">＊對應Entity中的Boolean, Integer, Float and Double attributes,都是用NSNumber</span></p>
-<ul>
-<li>接著設定Entity與Class的對應關係,如圖：<br><a href="http://4.bp.blogspot.com/-A0tdcw2Qows/VQJY1R04ztI/AAAAAAAAEkQ/EyxFjlRa7YY/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8811.25.50.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-A0tdcw2Qows/VQJY1R04ztI/AAAAAAAAEkQ/EyxFjlRa7YY/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8811.25.50.png" alt=""></a><br>這樣託管物件的建立就已經完成了,下一篇介紹如何叫用</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1776,7 +1779,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">170</span>
+                  <span class="site-state-item-count">171</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1798,7 +1801,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

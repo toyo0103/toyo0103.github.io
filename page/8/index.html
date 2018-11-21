@@ -295,6 +295,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/29/【Unit-Test】針對Repository做單元測試-二/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/29/【Unit-Test】針對Repository做單元測試-二/" itemprop="url">【Unit Test】針對Repository做單元測試 (二)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-07-29T18:28:00+08:00">
+                2016-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/07/29/【Unit-Test】針對Repository做單元測試-二/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/07/29/【Unit-Test】針對Repository做單元測試-二/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>曾上一篇，開始在我們的Production專案寫一段跟DB要資料的程式吧。(註 : 這邊不考慮分層與物件導向問題，一切專注在單元測試上)</p>
+<p>首先先在專案中加入EntityFramework，並把Northwind的Employees Table加進來</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-rgwWYtv-ueQ/V5rwi6Q1TII/AAAAAAAAHyQ/uRS4J_82bxsDX5wZNtqjqoA8hjVtRUjcQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-rgwWYtv-ueQ/V5rwi6Q1TII/AAAAAAAAHyQ/uRS4J_82bxsDX5wZNtqjqoA8hjVtRUjcQCLcB/s640/1.png" alt=""></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-yQ-t7YWi-qI/V5rwi006AII/AAAAAAAAHyY/1ftZ1r6NWgQVEmiKy4uhK84XBGa4le3TQCLcB/s1600/2.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-yQ-t7YWi-qI/V5rwi006AII/AAAAAAAAHyY/1ftZ1r6NWgQVEmiKy4uhK84XBGa4le3TQCLcB/s1600/2.png" alt=""></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-eUqI2lewHEY/V5rwi_fRLXI/AAAAAAAAHyU/D-s4l_BrxWE2XOmsvflt-8s-Uo2arn95gCLcB/s1600/3.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-eUqI2lewHEY/V5rwi_fRLXI/AAAAAAAAHyU/D-s4l_BrxWE2XOmsvflt-8s-Uo2arn95gCLcB/s640/3.png" alt=""></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-dbz2xrn6Veo/V5rwjJrehdI/AAAAAAAAHyc/zTVkWvQnVoMUaEVjPiL9TwqtZhTwYxeyQCLcB/s1600/4.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-dbz2xrn6Veo/V5rwjJrehdI/AAAAAAAAHyc/zTVkWvQnVoMUaEVjPiL9TwqtZhTwYxeyQCLcB/s1600/4.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-gY9k8ego5EE/V5rwjPDRHwI/AAAAAAAAHyg/7ICoznJNU74dBS7VPVp56-He_BOoF6HxwCLcB/s1600/5.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-gY9k8ego5EE/V5rwjPDRHwI/AAAAAAAAHyg/7ICoznJNU74dBS7VPVp56-He_BOoF6HxwCLcB/s1600/5.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-4HqmVn15BgY/V5rw-Q4Ow3I/AAAAAAAAHyk/kQKue8geuyUfymRmy-mPAhsTIKt_-iPSwCLcB/s1600/6.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-4HqmVn15BgY/V5rw-Q4Ow3I/AAAAAAAAHyk/kQKue8geuyUfymRmy-mPAhsTIKt_-iPSwCLcB/s1600/6.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-xa7G6erk2fM/V5rxkJIbLSI/AAAAAAAAHys/sTsfBXgEjCAPXHa1C4YXqdZ4VZLEHeSIgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-xa7G6erk2fM/V5rxkJIbLSI/AAAAAAAAHys/sTsfBXgEjCAPXHa1C4YXqdZ4VZLEHeSIgCLcB/s1600/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;">接著寫一段程式，讓我們帶入ID能順利取回該筆員工資料</div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-iG0Vl0uUc0I/V5ryyt4eQoI/AAAAAAAAHy8/DsdR1LF6JycomPbTS1zop1NvFhb1C8olwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-iG0Vl0uUc0I/V5ryyt4eQoI/AAAAAAAAHy8/DsdR1LF6JycomPbTS1zop1NvFhb1C8olwCLcB/s1600/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EmployeesRepository</span> :<span class="title">IDisposable</span></span><br><span class="line">    &#123;</span><br><span class="line">        NorthwindEntities DBContext;</span><br><span class="line">        <span class="keyword">bool</span> disposedValue;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">EmployeesRepository</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            DBContext = <span class="keyword">new</span> NorthwindEntities();</span><br><span class="line">            disposedValue = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Employees <span class="title">Get</span>(<span class="params"><span class="keyword">int</span> id</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> DBContext.Employees.FirstOrDefault(x =&gt; x.EmployeeID == id);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"><span class="keyword">bool</span> disposing</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (!disposedValue)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (DBContext != <span class="literal">null</span>)</span><br><span class="line">                    DBContext.Dispose();</span><br><span class="line"></span><br><span class="line">                disposedValue = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            Dispose(disposedValue);</span><br><span class="line">             GC.SuppressFinalize(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>改寫HomeController的Index Action，依據帶入的ID取回員工，並顯示於葉面上<br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-nqGw1xVRRX0/V5r20E6fPAI/AAAAAAAAHzc/qRcvr7Lr_Os9IrcMr_1XqYnNJYTxKfVsgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-nqGw1xVRRX0/V5r20E6fPAI/AAAAAAAAHzc/qRcvr7Lr_Os9IrcMr_1XqYnNJYTxKfVsgCLcB/s640/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><br>View的部分(一切從簡 XDD)<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-Z3oYtUvXjqo/V5r3L10zYiI/AAAAAAAAHzg/RH5ZJQSpyHk5X8NVMhOpk7JA0rJT95nkQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-Z3oYtUvXjqo/V5r3L10zYiI/AAAAAAAAHzg/RH5ZJQSpyHk5X8NVMhOpk7JA0rJT95nkQCLcB/s640/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><br>來執行看看這段Code有沒有用!!!<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-6bOfbEOFZ_M/V5r3beLjkWI/AAAAAAAAHzo/Q1YmS32wgeMfNPkUeJqFVVQDjRRmu-iKQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-6bOfbEOFZ_M/V5r3beLjkWI/AAAAAAAAHzo/Q1YmS32wgeMfNPkUeJqFVVQDjRRmu-iKQCLcB/s640/1.png" alt=""></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-NfsCSeUstAo/V5r3ooighWI/AAAAAAAAHzs/R94VplAsQn8XeC3QaeL9euzBNLf8NvPjACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-NfsCSeUstAo/V5r3ooighWI/AAAAAAAAHzs/R94VplAsQn8XeC3QaeL9euzBNLf8NvPjACLcB/s1600/1.png" alt=""></a></div>
+
+<p>所以這段Code的確可以正常運作，確定之後我們來寫單元測試驗證這件事情。</p>
+<p>首先在單元測試專案建立EmployeesRepositoryTests</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-LVviiAdNxxs/V5r4xF2a5NI/AAAAAAAAHz8/8H5uWifglgYlr2hqA9WDZ5aageApPJrYACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-LVviiAdNxxs/V5r4xF2a5NI/AAAAAAAAHz8/8H5uWifglgYlr2hqA9WDZ5aageApPJrYACLcB/s1600/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><br></div>上一篇有提到，這邊做的單元測試是每個測試前將準備好的CSV資料匯入LocalDB，做完測試後把資料全部砍掉，所以我們得先寫一段TestInitial讓每次測試之前先跑匯入資料的部分，先在單元測試專把CSVHelper安裝起來。<br><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/--r9VuX4WFbQ/V5r5fTcTc_I/AAAAAAAAH0E/to6r2WGGomsVjlG3sQhFFworO3dAasVqgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/--r9VuX4WFbQ/V5r5fTcTc_I/AAAAAAAAH0E/to6r2WGGomsVjlG3sQhFFworO3dAasVqgCLcB/s640/1.png" alt=""></a></div>
+
+<p>接著寫程式把資料從CSV讀出來，並寫入LocalDB，但首先先將測試專案安裝EntityFramwork套件</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-CbTTIt0AEHI/V5scdqAt-FI/AAAAAAAAH0U/ZiSP3YNeYMwuoUwkZ8dC6iTIq7EMZ8mkACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-CbTTIt0AEHI/V5scdqAt-FI/AAAAAAAAH0U/ZiSP3YNeYMwuoUwkZ8dC6iTIq7EMZ8mkACLcB/s640/1.png" alt=""></a></div>
+
+<p>然後記得把連線字串加到單元測試的專案之中</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">connectionStrings</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">add</span> <span class="attr">name</span>=<span class="string">"NorthwindEntities"</span> <span class="attr">connectionString</span>=<span class="string">"metadata=res://*/Models.Northwind.csdl|res://*/Models.Northwind.ssdl|res://*/Models.Northwind.msl;provider=System.Data.SqlClient;provider connection string=&amp;quot;data source=(LocalDB)\MSSQLLocalDB;attachdbfilename=|DataDirectory|\TestDB.mdf;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&amp;quot;"</span> <span class="attr">providerName</span>=<span class="string">"System.Data.EntityClient"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">connectionStrings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>寫以下程式</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> Microsoft.VisualStudio.TestTools.UnitTesting;</span><br><span class="line"><span class="keyword">using</span> WebApplication4.Models;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> CsvHelper;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Reflection;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title">WebApplication4.Tests</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">TestClass</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EmployeesRepositoryTests</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestInitialize</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Initial</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="comment">//讀取檔案</span></span><br><span class="line">            <span class="keyword">using</span> (StreamReader reader = <span class="keyword">new</span> StreamReader(</span><br><span class="line">                <span class="keyword">string</span>.Concat(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), <span class="string">@"\CSVs\Employees.csv"</span>), </span><br><span class="line">                <span class="keyword">new</span> UTF8Encoding()))</span><br><span class="line">            <span class="keyword">using</span> (<span class="keyword">var</span> csvReader = <span class="keyword">new</span> CsvReader(reader))</span><br><span class="line">            &#123;</span><br><span class="line">                csvReader.Configuration.WillThrowOnMissingField = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">var</span> Employees = csvReader.GetRecords&lt;Employees&gt;().ToList();</span><br><span class="line"></span><br><span class="line">                <span class="comment">//將資料寫入DB</span></span><br><span class="line">                <span class="keyword">var</span> DBContext = <span class="keyword">new</span> NorthwindEntities();</span><br><span class="line">                DBContext.Employees.AddRange(Employees);</span><br><span class="line">                DBContext.SaveChanges();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> Get_帶入ID_應取回該ID的Employee()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> ID = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> EmployeesRepository();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> Expected = <span class="string">"Nancy"</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Get(ID);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(Expected, actual.FirstName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>執行看看會發現爆掉了!!!!!! 果然事情不是憨人我想的那麼簡單  </p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/--GWQvH-BzPo/V5srR-gwv8I/AAAAAAAAH0k/P2uj3DhlLwI1Q5ZTEPa0_E7CdwyQvMNngCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/--GWQvH-BzPo/V5srR-gwv8I/AAAAAAAAH0k/P2uj3DhlLwI1Q5ZTEPa0_E7CdwyQvMNngCLcB/s640/1.png" alt=""></a></div>
+
+<p>原因出在於Employee這個Table的ID欄位為流水自動編號，透過EF是無法寫入的，這時候只好透過Dapper下指令解決了，先安裝Dapper</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-pST5pb51uh0/V5srvCR_TVI/AAAAAAAAH0o/rH5mdCRr574aqTB8_sQIQ6S2clZ4bcU1QCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-pST5pb51uh0/V5srvCR_TVI/AAAAAAAAH0o/rH5mdCRr574aqTB8_sQIQ6S2clZ4bcU1QCLcB/s640/1.png" alt=""></a></div>
+
+<p>將剛剛從CSVHelper的資料用Dapper塞進去，而且要將Identity Insert打開，先補上要給Dapper用的連線字串</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">add</span> <span class="attr">name</span>=<span class="string">"NorthwindString"</span> <span class="attr">connectionString</span>=<span class="string">"Data Source=(LocalDB)\MSSQLLocalDB;attachdbfilename=|DataDirectory|\TestDB.mdf;Persist Security Info=True;"</span> <span class="attr">providerName</span>=<span class="string">"System.Data.SqlClient"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>把程式改成如下</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> Microsoft.VisualStudio.TestTools.UnitTesting;</span><br><span class="line"><span class="keyword">using</span> WebApplication4.Models;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> CsvHelper;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Reflection;</span><br><span class="line"><span class="keyword">using</span> System.Data.SqlClient;</span><br><span class="line"><span class="keyword">using</span> Dapper;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title">WebApplication4.Tests</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">TestClass</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EmployeesRepositoryTests</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestInitialize</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Initial</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="comment">//讀取檔案</span></span><br><span class="line">            <span class="keyword">using</span> (StreamReader reader = <span class="keyword">new</span> StreamReader(</span><br><span class="line">                <span class="keyword">string</span>.Concat(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), <span class="string">@"\CSVs\Employees.csv"</span>), </span><br><span class="line">                <span class="keyword">new</span> UTF8Encoding()))</span><br><span class="line">            <span class="keyword">using</span> (<span class="keyword">var</span> csvReader = <span class="keyword">new</span> CsvReader(reader))</span><br><span class="line">            &#123;</span><br><span class="line">                csvReader.Configuration.WillThrowOnMissingField = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">var</span> Employees = csvReader.GetRecords&lt;Employees&gt;().ToList();</span><br><span class="line"></span><br><span class="line">                <span class="comment">//將資料寫入DB</span></span><br><span class="line">                <span class="comment">//var DBContext = new NorthwindEntities();</span></span><br><span class="line">                <span class="comment">//DBContext.Employees.AddRange(Employees);</span></span><br><span class="line">                <span class="comment">//DBContext.SaveChanges();</span></span><br><span class="line">                <span class="keyword">using</span> (<span class="keyword">var</span> cn = <span class="keyword">new</span> SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings[<span class="string">"NorthwindString"</span>].ConnectionString))</span><br><span class="line">                &#123;</span><br><span class="line">                    cn.Execute(<span class="string">@"SET IDENTITY_INSERT Employees ON </span></span><br><span class="line"><span class="string">                            INSERT INTO Employees (EmployeeID,LastName,FirstName,Title,TitleOfCourtesy,BirthDate,HireDate,Address,City,Region,PostalCode,Country,HomePhone,Extension,Notes,ReportsTo,PhotoPath) </span></span><br><span class="line"><span class="string">                            VALUES (@EmployeeID,@LastName,@FirstName,@Title,@TitleOfCourtesy,@BirthDate,@HireDate,@Address,@City,@Region,@PostalCode,@Country,@HomePhone,@Extension,@Notes,@ReportsTo,@PhotoPath)</span></span><br><span class="line"><span class="string">                            SET IDENTITY_INSERT Employees OFF"</span>,</span><br><span class="line">                          Employees);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> Get_帶入ID_應取回該ID的Employee()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> ID = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> EmployeesRepository();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> Expected = <span class="string">"Nancy"</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Get(ID);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(Expected, actual.FirstName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>執行看看，就會發現終於成功了…….</p>
+<p><div style="text-align: center;"><a href="https://1.bp.blogspot.com/-XvPJF-Zf0u8/V5su65wLx5I/AAAAAAAAH04/D4u0LHDen-EHvjOweb7yfV2r9aLUehYmACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-XvPJF-Zf0u8/V5su65wLx5I/AAAAAAAAH04/D4u0LHDen-EHvjOweb7yfV2r9aLUehYmACLcB/s320/1.png" alt=""></a></div><div style="text-align: center;"><br></div><div style="text-align: center;"><br></div><div style="text-align: center;"><br></div><div style="text-align: center;"><br></div><div style="text-align: left;">最後別忘了前面提到的，每個單元測試應該都是獨立的，所以既然每次都會寫資料進去，當然每次測試完也都要把資料砍掉啦</div><div style="text-align: left;"><br></div><div style="text-align: left;">所以在單元測試的最後補上這個Method，讓他每個單元測試執行完畢後都會清掉資料</div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestCleanup</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">CleanUp</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">using</span> (<span class="keyword">var</span> cn = <span class="keyword">new</span> SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings[<span class="string">"NorthwindString"</span>].ConnectionString))</span><br><span class="line">            &#123;</span><br><span class="line">                cn.Execute(<span class="string">@"Delete Employees"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>這樣就大功告成了!!!!</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/07/29/【Unit-Test】針對Repository做單元測試-一/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1545,161 +1703,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/14/【WebAPI】Custom-ActionFilter-Order/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/12/14/【WebAPI】Custom-ActionFilter-Order/" itemprop="url">【WebAPI】Custom ActionFilter Order</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+08:00">
-                2015-12-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/12/14/【WebAPI】Custom-ActionFilter-Order/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/12/14/【WebAPI】Custom-ActionFilter-Order/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="ActionAttribute"><a href="#ActionAttribute" class="headerlink" title="ActionAttribute"></a>ActionAttribute</h1><div class="note info"><p>環境 : WebAPI 2.2 <a href="http://www.asp.net/web-api/overview/releases/whats-new-in-aspnet-web-api-22" target="_blank" rel="noopener">詳細</a></p></div>
-<p>在WebAPI中，通常都繪有需要客製化ActionFilter的情況發生</p>
-<p><img src="https://3.bp.blogspot.com/-tfA3HwTsUBA/VnIwd3pjxiI/AAAAAAAAHrc/qzbMwEmMBb4/s1600/1.png" alt=""></p>
-<h2 id="執行順序不固定"><a href="#執行順序不固定" class="headerlink" title="執行順序不固定"></a>執行順序不固定</h2><p>ActionFilter的執行順序並非在上面的就優先執行，Filter有個FilterScope來表示他屬於何種層級的ActionFilter，執行順序依次是 Global , Controller , Action 。但如果是在同一層級的ActionFilter順序則未必按照固定。 </p>
-<p><img src="https://2.bp.blogspot.com/-vZ-NniyEom4/VnIx1sGnvcI/AAAAAAAAHro/-ykVRvzvq3Y/s1600/1.png" alt="https://2.bp.blogspot.com/-vZ-NniyEom4/VnIx1sGnvcI/AAAAAAAAHro/-ykVRvzvq3Y/s1600/1.png">]</p>
-<h2 id="測試"><a href="#測試" class="headerlink" title="測試"></a>測試</h2><p><img src="https://4.bp.blogspot.com/-LiCgWC_Ob3M/VnIyiMCn0nI/AAAAAAAAHr0/H58PiNpUUvA/s1600/1.png" alt="https://4.bp.blogspot.com/-LiCgWC_Ob3M/VnIyiMCn0nI/AAAAAAAAHr0/H58PiNpUUvA/s1600/1.png"></p>
-<p>裡面全部都一樣繼承ActionFilterAttribute即可<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FourAttribute</span> :<span class="title">ActionFilterAttribute</span>&#123; &#125;</span><br></pre></td></tr></table></figure></p>
-<p>註冊OneAttribute到Global<br><img src="https://2.bp.blogspot.com/-oCMhVi2M5_w/VnIzKgzvzrI/AAAAAAAAHsA/e9vuB3fiZE4/s1600/1.png" alt="https://2.bp.blogspot.com/-oCMhVi2M5_w/VnIzKgzvzrI/AAAAAAAAHsA/e9vuB3fiZE4/s1600/1.png"></p>
-<p>將其它Attribute分別註冊到Controller與Action<br><img src="https://1.bp.blogspot.com/-VZm61VIoQZY/VnIzc88dwGI/AAAAAAAAHsM/piz8hD4vdXo/s1600/1.png" alt="https://1.bp.blogspot.com/-VZm61VIoQZY/VnIzc88dwGI/AAAAAAAAHsM/piz8hD4vdXo/s1600/1.png"></p>
-<p>在Get中補上以下程式然後執行看看<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpGet</span>]</span><br><span class="line">[<span class="meta">Three</span>]</span><br><span class="line">[<span class="meta">Four</span>]</span><br><span class="line"><span class="keyword">public</span> IEnumerable&lt;Tuple&lt;<span class="keyword">string</span>,<span class="keyword">string</span>&gt;&gt; Get()</span><br><span class="line">&#123;</span><br><span class="line">    IHttpActionSelector actionSelector =</span><br><span class="line">        <span class="keyword">this</span>.Configuration.Services.GetActionSelector();</span><br><span class="line"> </span><br><span class="line">    HttpActionDescriptor actionDescriptor =</span><br><span class="line">        actionSelector.SelectAction(<span class="keyword">this</span>.ControllerContext);</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">foreach</span> (FilterInfo filterInfo <span class="keyword">in</span> actionDescriptor.GetFilterPipeline())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> <span class="keyword">new</span> Tuple&lt;<span class="keyword">string</span>, <span class="keyword">string</span>&gt;(</span><br><span class="line">            filterInfo.Instance.GetType().Name,</span><br><span class="line">            filterInfo.Scope.ToString()</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="測試結果"><a href="#測試結果" class="headerlink" title="測試結果"></a>測試結果</h2><p><img src="https://2.bp.blogspot.com/-ExqARkhthR8/VnI0IaZEwvI/AAAAAAAAHsY/iSNXKBQFZF0/s1600/1.png" alt="https://2.bp.blogspot.com/-ExqARkhthR8/VnI0IaZEwvI/AAAAAAAAHsY/iSNXKBQFZF0/s1600/1.png"></p>
-<p>排序依據所對應的層級，雖然這邊排序與我們在程式上的排序相同。但實際上順序同層級的順序未必是由上而下，為了避免這樣的問題，最好的方法就是在ActionFilter加上排序的屬性來解決。</p>
-<h2 id="實作Order屬性"><a href="#實作Order屬性" class="headerlink" title="實作Order屬性"></a>實作Order屬性</h2><h3 id="定義IOrderAttribute"><a href="#定義IOrderAttribute" class="headerlink" title="定義IOrderAttribute"></a>定義IOrderAttribute</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IOrderAttribute</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">int</span> Order &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class FourAttribute : ActionFilterAttribute, IOrderAttribute</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">int</span> Order &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="實做IComparable介面"><a href="#實做IComparable介面" class="headerlink" title="實做IComparable介面"></a>實做IComparable介面</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomFilterInfo</span> : <span class="title">IComparable</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> IFilter Instance &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> FilterScope Scope &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//FilterInfo</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CustomFilterInfo</span>(<span class="params">IFilter instance, FilterScope scope</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.Instance = instance;</span><br><span class="line">            <span class="keyword">this</span>.Scope = scope;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">CompareTo</span>(<span class="params"><span class="keyword">object</span> obj</span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (obj <span class="keyword">is</span> CustomFilterInfo)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> item = obj <span class="keyword">as</span> CustomFilterInfo;</span><br><span class="line"> </span><br><span class="line">                <span class="keyword">if</span> (item.Instance <span class="keyword">is</span> IAttribute)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> attr = item.Instance <span class="keyword">as</span> IAttribute;</span><br><span class="line">                    <span class="keyword">return</span> (<span class="keyword">this</span>.Instance <span class="keyword">as</span> IAttribute).Order.CompareTo(attr.Order);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"> </span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="function"><span class="keyword">public</span> FilterInfo <span class="title">ConvertToFilterInfo</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> FilterInfo(<span class="keyword">this</span>.Instance, <span class="keyword">this</span>.Scope);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="實做IFilterProvider介面"><a href="#實做IFilterProvider介面" class="headerlink" title="實做IFilterProvider介面"></a>實做IFilterProvider介面</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomFilterProvider</span> : <span class="title">IFilterProvider</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable&lt;FilterInfo&gt; <span class="title">GetFilters</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">        HttpConfiguration configuration, </span></span></span><br><span class="line"><span class="function"><span class="params">        HttpActionDescriptor actionDescriptor</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        IEnumerable&lt;CustomFilterInfo&gt; customActionFilters =</span><br><span class="line">            actionDescriptor.GetFilters()</span><br><span class="line">                            .Select(i =&gt; <span class="keyword">new</span> CustomFilterInfo(i, FilterScope.Controller));</span><br><span class="line"> </span><br><span class="line">        IEnumerable&lt;CustomFilterInfo&gt; customControllerFilters =</span><br><span class="line">            actionDescriptor.ControllerDescriptor</span><br><span class="line">                            .GetFilters()</span><br><span class="line">                            .Select(i =&gt; <span class="keyword">new</span> CustomFilterInfo(i, FilterScope.Controller));</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> customControllerFilters.Concat(customActionFilters)</span><br><span class="line">                                      .OrderBy(i =&gt; i)</span><br><span class="line">                                      .Select(i =&gt; i.ConvertToFilterInfo());</span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Global註冊"><a href="#Global註冊" class="headerlink" title="Global註冊"></a>Global註冊</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Application_Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    AreaRegistration.RegisterAllAreas();</span><br><span class="line">    GlobalConfiguration.Configure(WebApiConfig.Register);</span><br><span class="line">    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);</span><br><span class="line">    GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//註冊Global Attribute</span></span><br><span class="line">    GlobalConfiguration.Configuration.Filters.Add(<span class="keyword">new</span> OneAttribute());</span><br><span class="line"> </span><br><span class="line">     </span><br><span class="line">    <span class="comment">//新增CustomFilterProvider</span></span><br><span class="line">    GlobalConfiguration.Configuration.Services.Add(</span><br><span class="line">        <span class="keyword">typeof</span>(System.Web.Http.Filters.IFilterProvider), <span class="keyword">new</span> CustomFilterProvider());</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">var</span> providers = GlobalConfiguration.Configuration.Services.GetFilterProviders();</span><br><span class="line">    <span class="keyword">var</span> defaultprovider = providers.First(i =&gt; i <span class="keyword">is</span> ActionDescriptorFilterProvider);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//移除DefaultProvider</span></span><br><span class="line">    GlobalConfiguration.Configuration.Services.Remove(</span><br><span class="line">        <span class="keyword">typeof</span>(System.Web.Http.Filters.IFilterProvider),</span><br><span class="line">        defaultprovider);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="測試-1"><a href="#測試-1" class="headerlink" title="測試"></a>測試</h3><p>將Attibute補上Order再執行看看得到的順序</p>
-<p><img src="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png" alt="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png"></p>
-<p>可以看到Four排在Three的前面了</p>
-<p><img src="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png" alt="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1749,7 +1757,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">170</span>
+                  <span class="site-state-item-count">171</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1771,7 +1779,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

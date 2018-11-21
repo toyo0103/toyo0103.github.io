@@ -295,6 +295,137 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/03/13/【SQL】SQL的foreach，逐筆執行/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/03/13/【SQL】SQL的foreach，逐筆執行/" itemprop="url">【SQL】SQL的foreach，逐筆執行</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-03-13T17:17:00+08:00">
+                2014-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2014/03/13/【SQL】SQL的foreach，逐筆執行/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2014/03/13/【SQL】SQL的foreach，逐筆執行/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>需求:將Table_A的資料塞到Table_B，並把Table_B產生的ID編號回寫回Table_A的對應欄位 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 宣告變數</span></span><br><span class="line"><span class="keyword">DECLARE</span> @para1 <span class="built_in">VARCHAR</span>(<span class="number">50</span>) </span><br><span class="line"><span class="keyword">DECLARE</span> @para2 uniqueidentifier</span><br><span class="line"><span class="keyword">DECLARE</span> @para3 <span class="built_in">VARCHAR</span>(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 宣告指標變數</span></span><br><span class="line"><span class="keyword">DECLARE</span> _cursor <span class="keyword">CURSOR</span> <span class="keyword">FOR</span></span><br><span class="line"><span class="keyword">SELECT</span> s1,s2,s3 <span class="keyword">FROM</span> Table_A <span class="keyword">where</span> eiplstatus = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 啟用指標變數</span></span><br><span class="line"><span class="keyword">OPEN</span> _cursor</span><br><span class="line"><span class="comment">-- 以指標變數為基準點, 將取出的欄位值,依序塞給我們自訂的變數，亦即將每筆s1 =&gt; @para1、 s2 =&gt; @para2 、s3 =&gt; @para3</span></span><br><span class="line"><span class="keyword">FETCH</span> <span class="keyword">NEXT</span> <span class="keyword">FROM</span> _cursor <span class="keyword">INTO</span> @para1,@para2,@para3</span><br><span class="line"></span><br><span class="line"><span class="keyword">WHILE</span> @@FETCH_STATUS = <span class="number">0</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">insert</span> <span class="keyword">into</span> Table_B(c1,c2,c3) <span class="keyword">values</span>(@para1,@para2,@para3)</span><br><span class="line">    <span class="keyword">SET</span> @<span class="keyword">id</span> = SCOPE_IDENTITY();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">update</span> Table_A <span class="keyword">set</span> <span class="keyword">id</span> = @<span class="keyword">id</span> <span class="keyword">where</span> <span class="keyword">CURRENT</span> <span class="keyword">of</span> _cursor</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 指標變數往下移動, 並將取出的欄位值, 設定給我們自訂的變數</span></span><br><span class="line">    <span class="keyword">FETCH</span> <span class="keyword">NEXT</span> <span class="keyword">FROM</span> _cursor <span class="keyword">INTO</span> @para1,@para2,@para3</span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 關閉指標變數</span></span><br><span class="line"><span class="keyword">CLOSE</span> _cursor</span><br><span class="line"><span class="comment">-- 釋放指標變數</span></span><br><span class="line"><span class="keyword">DEALLOCATE</span> _cursor</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/12/09/【心情】世殊事異/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1510,148 +1641,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/09/01/【C-】FormsAuthentication驗證模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/09/01/【C-】FormsAuthentication驗證模式/" itemprop="url">【C#】FormsAuthentication驗證模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-09-01T17:04:04+08:00">
-                2013-09-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/09/01/【C-】FormsAuthentication驗證模式/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/09/01/【C-】FormsAuthentication驗證模式/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>研究了老半天終於搞懂了，來做一下簡單的筆記<br>從.NET 2.0開始就已經開始實行的Form驗證模式，今天拜讀了保哥的<a href="https://blog.miniasp.com/post/2008/02/20/Explain-Forms-Authentication-in-ASPNET-20.aspx" target="_blank" rel="noopener">「概略解釋 Forms Authentication 的運作」</a>後測試的簡單心得</p>
-<p>使用這個方法即表示驗證成功，這個驗證會記錄在電腦的cookie當中<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FormsAuthentication.RedirectFromLoginPage(strUsername, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure></p>
-<p>但如果你想要關閉瀏覽器時就登出，你就得改用以下方式將cookie記錄在web browser當中<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//改發Ticket的方式</span></span><br><span class="line">FormsAuthenticationTicket ticket = <span class="keyword">new</span> FormsAuthenticationTicket(<span class="number">1</span>, username, DateTime.Now, DateTime.Now.AddMinutes(<span class="number">30</span>),<span class="literal">false</span>, userdata, FormsAuthentication.FormsCookiePath);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Encrypt the ticket.</span></span><br><span class="line"><span class="keyword">string</span> encTicket = FormsAuthentication.Encrypt(ticket);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create the cookie.</span></span><br><span class="line">Response.Cookies.Add(<span class="keyword">new</span> HttpCookie(FormsAuthentication.FormsCookieName, encTicket));</span><br></pre></td></tr></table></figure></p>
-<p>那如果又要實作，記住我xx天不用重新登入的功能呢?<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//除了剛剛發Ticket之外</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">bool</span>.Parse(remember))</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//如果打勾記住我的話</span></span><br><span class="line">  HttpCookie cookie = <span class="keyword">new</span> HttpCookie(<span class="string">"rememberme"</span>);</span><br><span class="line">  cookie.Value = SysHelper.enCrypt(account);</span><br><span class="line">  cookie.Expires = DateTime.Now.AddDays(<span class="number">3</span>);</span><br><span class="line">  Response.Cookies.Add(cookie);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>這樣下次登入的時候只要判斷這個cookie存不存在就可以放行了!!<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//登入Login頁面時，先判斷Form驗證已經通過了嗎?</span></span><br><span class="line"><span class="keyword">if</span> (!User.Identity.IsAuthenticated)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//沒通過的話，判斷cookie存不存在。有的話表示此人上次登入時有勾記住我!!</span></span><br><span class="line">   <span class="keyword">if</span> ( Request.Cookies[<span class="string">"backend"</span>] != <span class="literal">null</span>)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="comment">//cookie如果過期的話會判斷為null，所以進得來表示cookie還沒過期，可以發Ticket給他</span></span><br><span class="line">      passTicket(SysHelper.deCrypt(Request.Cookies[<span class="string">"rememberme"</span>].Value), <span class="string">""</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">return</span> Redirect(<span class="string">"/backend"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">      <span class="keyword">return</span> View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>登出<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//呼叫這個方法就已經登出摟~</span></span><br><span class="line">FormsAuthentication.SignOut();</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> (Request.Cookies[<span class="string">"backend"</span>] != <span class="literal">null</span>)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//如果cookie還沒過期，既然已經登出當然要把它重新設定為過期啦!!</span></span><br><span class="line">   HttpCookie myCookie = <span class="keyword">new</span> HttpCookie(<span class="string">"backend"</span>);</span><br><span class="line">   myCookie.Expires = DateTime.Now.AddDays(<span class="number">-1</span>d);</span><br><span class="line">   Response.Cookies.Add(myCookie);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> Redirect(<span class="string">"/backend"</span>);</span><br></pre></td></tr></table></figure></p>
-<p>最後不要搞混Response與Request了。我寫的時候沒注意到害我Debug超久的….(汗)</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1701,7 +1695,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">170</span>
+                  <span class="site-state-item-count">171</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1723,7 +1717,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
