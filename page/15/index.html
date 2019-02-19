@@ -295,6 +295,422 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/29/【SQL】Group-by-and-Top-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/05/29/【SQL】Group-by-and-Top-1/" itemprop="url">【SQL】Group by and Top 1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-29T17:13:00+08:00">
+                2013-05-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/05/29/【SQL】Group-by-and-Top-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/05/29/【SQL】Group-by-and-Top-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>參考：<a href="http://www.dotblogs.com.tw/joysdw12/archive/2011/12/28/63596.aspx" target="_blank" rel="noopener">[SQL] 於多筆重複資料中取得該重複群組中最新一筆資料</a></p>
+<p>今天也遇到一個需求是將group by完後的資料挑出最新的一筆<br>模擬的原始資料大致如下<br><a href="http://1.bp.blogspot.com/-aelfyc7IvaY/UaXE0bMvmsI/AAAAAAAADmg/NyXn94jNZXQ/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-aelfyc7IvaY/UaXE0bMvmsI/AAAAAAAADmg/NyXn94jNZXQ/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt=""></a></p>
+<p>我希望抓出每個人在在每個地點所做的最後一件事情，寫法如下: </p>
+<ul>
+<li><p>先將每個人跟地點透過時間由大到小歸類          <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *  ,ROW_NUMBER() <span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> location,who <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">time</span> <span class="keyword">Desc</span> ) <span class="keyword">as</span> row_index</span><br><span class="line">             <span class="keyword">from</span> timeline</span><br></pre></td></tr></table></figure></p>
+<pre><code>[![](http://3.bp.blogspot.com/-hbcc3sD90ek/UaXGjjKL0UI/AAAAAAAADmw/jh2ks4iABqM/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png)](http://3.bp.blogspot.com/-hbcc3sD90ek/UaXGjjKL0UI/AAAAAAAADmw/jh2ks4iABqM/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png)*   然後        <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line">         <span class="keyword">from</span> (</span><br><span class="line">              <span class="keyword">select</span> *  ,ROW_NUMBER() <span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> location,who <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">time</span> <span class="keyword">Desc</span> ) <span class="keyword">as</span> row_index</span><br><span class="line">              <span class="keyword">from</span> timeline) <span class="keyword">as</span> tempTable</span><br><span class="line">         <span class="keyword">where</span> tempTable.row_index = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+</code></pre><p>   <a href="http://4.bp.blogspot.com/-E-Syl1jp57A/UaXHnZ_4jwI/AAAAAAAADm8/4cLCGkPmMag/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-E-Syl1jp57A/UaXHnZ_4jwI/AAAAAAAADm8/4cLCGkPmMag/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt=""></a>*   結論就是早點回家，否則也只是在公司吃東西而已 XD</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/28/SQL-NOT-EXISTS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/05/28/SQL-NOT-EXISTS/" itemprop="url">SQL NOT  EXISTS</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-28T14:46:00+08:00">
+                2013-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/05/28/SQL-NOT-EXISTS/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/05/28/SQL-NOT-EXISTS/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="http://frankiestudy.blogspot.tw/2012/01/sql-not-exists.html" target="_blank" rel="noopener">參考</a><br><a href="http://msdn.microsoft.com/en-us/library/bb399769.aspx" target="_blank" rel="noopener">MSDN</a><br>結論就是，如果單一欄位要篩選掉就用Not IN <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> [<span class="keyword">order</span>]</span><br><span class="line"><span class="keyword">where</span> 序號 <span class="keyword">not</span> <span class="keyword">in</span> </span><br><span class="line">(</span><br><span class="line"> <span class="keyword">select</span> 訂單編號 <span class="keyword">from</span> orderDetail</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<p>如果多個欄位要同時符合才篩選掉，就用Not Exists <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> [<span class="keyword">order</span>] a</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">not</span> <span class="keyword">exists</span></span><br><span class="line">(</span><br><span class="line"> <span class="keyword">select</span> 訂單編號 <span class="keyword">from</span> orderDetail b </span><br><span class="line"> <span class="keyword">where</span> b.訂單編號 = a.序號 <span class="keyword">and</span> b.購買日期 = (a.民國年+<span class="number">1911</span>) </span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/20/【SharePoint-2013】開啟BreadCrumb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/05/20/【SharePoint-2013】開啟BreadCrumb/" itemprop="url">【SharePoint 2013】開啟BreadCrumb</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-20T10:15:00+08:00">
+                2013-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/05/20/【SharePoint-2013】開啟BreadCrumb/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/05/20/【SharePoint-2013】開啟BreadCrumb/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>用Sharepoint Designer登入SharePoint網站</li>
+<li>編輯主板頁面</li>
+<li>找到GlobalBreadCrumbNavPopout</li>
+<li><p>做以下修改</p>
+<pre><code>*   將div class=&quot;ms-breadcrumb-dropdownBox&quot;旁邊的display:none修改掉
+</code></pre><ul>
+<li>將GlobalBreadCrumbNavPopout的Visible改為True</li>
+<li><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"ms-breadcrumb-dropdownBox"</span> <span class="attr">style</span>=<span class="string">"display:inline;"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">SharePoint:AjaxDelta</span> <span class="attr">id</span>=<span class="string">"DeltaBreadcrumbDropdown"</span> <span class="attr">runat</span>=<span class="string">"server"</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">SharePoint:PopoutMenu</span></span></span><br><span class="line"><span class="tag">  <span class="attr">Visible</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">runat</span>=<span class="string">"server"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">ID</span>=<span class="string">"GlobalBreadCrumbNavPopout"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">IconUrl</span>=<span class="string">"/_layouts/15/images/spcommon.png?rev=23"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">IconAlt</span>=<span class="string">"&lt;%$Resources:wss,master_breadcrumbIconAlt%&gt;"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">ThemeKey</span>=<span class="string">"v15breadcrumb"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">IconOffsetX</span>=<span class="string">"215"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">IconOffsetY</span>=<span class="string">"120"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">IconWidth</span>=<span class="string">"16"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">IconHeight</span>=<span class="string">"16"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">AnchorCss</span>=<span class="string">"ms-breadcrumb-anchor"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">AnchorOpenCss</span>=<span class="string">"ms-breadcrumb-anchor-open"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">MenuCss</span>=<span class="string">"ms-breadcrumb-menu ms-noList"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>breadCrumb就出現了<br><a href="http://4.bp.blogspot.com/-NKa8p_r0erM/UZmIbzWmblI/AAAAAAAADb4/2QDnT1WcKWI/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-NKa8p_r0erM/UZmIbzWmblI/AAAAAAAADb4/2QDnT1WcKWI/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt=""></a></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/15/Cache/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1273,412 +1689,6 @@ public static string deCrypt(string strSource)
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/01/Entity-Framework問題筆記/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/05/01/Entity-Framework問題筆記/" itemprop="url">Entity Framework問題筆記</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-01T15:44:00+08:00">
-                2013-05-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/05/01/Entity-Framework問題筆記/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/05/01/Entity-Framework問題筆記/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>目前使用的是MVC4 + Entity Framework </p>
-<p><strong><span style="color: red;">Q:</span></strong>無法更新 EntitySet ‘xxxx’，因為它有 DefiningQuery，但是在 <modificationfunctionmapping> 項目中沒有 <insertfunction> 項目來支援目前的作業。<br><strong><span style="color: red;">A：</span></strong>這是因為 Table 沒有 PK 的關係，所以 EF 就認定這是唯讀的 Table ，在 EDMX 的 Model 中的 Table 的欄位，加上 pk 後就正常了 </insertfunction></modificationfunctionmapping></p>
-<p><strong><span style="color: red;">Q:</span></strong>在設計資料庫時明明有指定欄位的預設值，可是每次透過 EF 新增資料時，該欄位的值卻是 null？<br><strong><span style="color: red;">A:</span></strong>這是因為 DB 該欄位有 Default Value 而且又不允許 null，在 Visual Studio 中開啟 .edmx 檔案，在模型編輯器中點選 entity 的屬性，然後到屬性視窗中設定其 Default Value 屬性。參考下圖： </p>
-<p><a href="http://1.bp.blogspot.com/-TJvtcnfcdUU/UYDGF1mXiGI/AAAAAAAAC6M/TAGlBEJAgm8/s1600/11.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-TJvtcnfcdUU/UYDGF1mXiGI/AAAAAAAAC6M/TAGlBEJAgm8/s1600/11.png" alt=""></a><br>參考自:<br><a href="http://www.dotblogs.com.tw/franma/archive/2010/12/20/20263.aspx" target="_blank" rel="noopener">Entity Framework 4 的錯誤訊息排除</a><br><a href="http://huan-lin.blogspot.tw/2012/12/entity-framework-column-default-value.html" target="_blank" rel="noopener">Entity Framework 欄位預設值相關問題</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/" itemprop="url">【MVC】Client Side Validate in Partial View  with unobtrusive</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-04-29T16:23:00+08:00">
-                2013-04-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>MVC中很好用的一種驗證方式就是在model寫attribute<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Required(ErrorMessage=<span class="meta-string">"展覽名稱為必填"</span>)</span>]</span><br><span class="line">[<span class="meta">MaxLength(50)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">string</span> ExhibitionName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure></p>
-<p>接著在View中用HtmlHelp方式建立Textbox<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Html.TextBoxFor(m =&gt; m.ExhibitionName)</span><br><span class="line">@Html.ValidationMessageFor(m =&gt; m.ExhibitionName)</span><br></pre></td></tr></table></figure></p>
-<p>MVC就會很貼心的把你的Client端驗證做好了。 </p>
-<p>但今天遇到的問題是，用同樣的方法寫在Partial View裡面卻沒有用<br>狀況如下：<br>在_layout Page中一樣載入了必備的MVC4提供的Jquery驗證檔案</p>
-<p><pre class="brush: html">&lt;script src=”/Scripts/jquery.unobtrusive-ajax.js”&gt;&lt;/script&gt;<br>&lt;script src=”/Scripts/jquery.validate.js”&gt;&lt;/script&gt;<br>&lt;script src=”/Scripts/jquery.validate.unobtrusive.js”&gt;&lt;/script&gt;<br></pre>網站頁面長成這樣</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-WiQ8PRLsFG0/UX4vwwOgvvI/AAAAAAAACq8/ifNZBq9JUEs/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-WiQ8PRLsFG0/UX4vwwOgvvI/AAAAAAAACq8/ifNZBq9JUEs/s640/1.png" alt=""></a></div>當按下紅色框框內的功能列表，用Ajax的方式return Partial View放到藍色框框中。<br><a href="http://1.bp.blogspot.com/-h-0y5VY6FgE/UX4wNNMxGiI/AAAAAAAACrE/IzSGeMXQhQo/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-h-0y5VY6FgE/UX4wNNMxGiI/AAAAAAAACrE/IzSGeMXQhQo/s640/1.png" alt=""></a><br>但用Ajax載入的Partial View用上述的方式就不會自動驗證了，研判應該是動態產生的DOM元件沒有跟JQuery繫結到，這跟以前Asp.Net的UpdatePanel有異曲同工之妙。</p>
-<p>所以在Partial View中的Script block中加入這行 <span style="color: red;">註:#ajaxForm為Partial View中Form ID </span><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'body'</span>).on(<span class="string">"click"</span>, <span class="string">'.addNewExihition'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        $.validator.unobtrusive.parse(<span class="string">'.ajaxForm'</span>);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure></p>
-<p>這樣JQuery的驗證就又重新繫結上了，讚!!</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/04/29/【JQuery】為動態新增的Elements綁定事件-jQuery-on/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/04/29/【JQuery】為動態新增的Elements綁定事件-jQuery-on/" itemprop="url">【JQuery】為動態新增的Elements綁定事件 -- jQuery .on()</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-04-29T12:20:00+08:00">
-                2013-04-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/04/29/【JQuery】為動態新增的Elements綁定事件-jQuery-on/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/04/29/【JQuery】為動態新增的Elements綁定事件-jQuery-on/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>按下新增按鈕後，利用JQuery動態新增一個填寫欄位跟兩個按鈕</p>
-<p><a href="http://2.bp.blogspot.com/-MkKh6MsfaM4/UX31TyroisI/AAAAAAAACqs/IFEjiWTny0s/s1600/1.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-MkKh6MsfaM4/UX31TyroisI/AAAAAAAACqs/IFEjiWTny0s/s1600/1.png" alt=""></a><br>其中取消的按鈕ID為addCancel，我想替它增加click事件按下後彈跳一則簡短的訊息<br>原本的寫法如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'#addCancel'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   alert(<span class="string">'Click事件沒有問題'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<p>但Click事件始終沒有效果，原來動態新增的elements要綁定事件需要用<strong>.on</strong>的方式<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'body'</span>).on(<span class="string">"click"</span>, <span class="string">'#addCancel'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">'用on綁定就沒有問題!!'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<p><a href="http://3.bp.blogspot.com/-ig6RzcQGtj4/UX30ttpbCII/AAAAAAAACqg/nWulStFehMg/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-ig6RzcQGtj4/UX30ttpbCII/AAAAAAAACqg/nWulStFehMg/s1600/1.png" alt=""></a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1733,7 +1743,7 @@ public static string deCrypt(string strSource)
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-count">174</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1755,7 +1765,7 @@ public static string deCrypt(string strSource)
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -1841,7 +1851,7 @@ public static string deCrypt(string strSource)
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

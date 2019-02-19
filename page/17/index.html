@@ -295,6 +295,415 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/01/08/【C-】GridView更改Pager的樣式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/01/08/【C-】GridView更改Pager的樣式/" itemprop="url">【C#】GridView更改Pager的樣式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-01-08T17:04:00+08:00">
+                2013-01-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/01/08/【C-】GridView更改Pager的樣式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/01/08/【C-】GridView更改Pager的樣式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><div class="separator" style="clear: both; text-align: left;">在GridView的Pager是用Table組成的，這裡是做個簡單的將 “…” 改成前五頁後五頁。</div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: center;"></div><pre class="brush : csharp"><br>else if(e.Row.RowType == DataControlRowType.Pager)<br>        {<br>            //修改page …的樣式<br>            TableRow pageTR = (TableRow)e.Row.Controls[0].Controls[0].Controls[0];<br>            for(int x = 0; x&lt; pageTR.Controls.Count; x++)<br>            {<br>                TableCell pageTD = (TableCell)pageTR.Controls[x];<br>                for(int y = 0 ; y&lt;pageTD.Controls.Count; y++)<br>                {<br>                    if(pageTD.Controls[y] is LinkButton)<br>                    {<br>                        LinkButton lb = (LinkButton)pageTD.Controls[y];<br>                        if(lb.Text == &quot;…&quot; &amp;&amp;  x == 1)<br>                        {<br>                            lb.Text = &quot;前5頁&quot;;<br>                        }<br>                        else if(lb.Text ==&quot;…&quot;)<br>                        {<br>                            lb.Text = &quot;後5頁&quot;;<br>                        }<br>                    }<br>                }<br>            }<br>        }<br></pre></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/27/【SharePoint】判斷清單屬性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/12/27/【SharePoint】判斷清單屬性/" itemprop="url">【SharePoint】判斷清單屬性</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-12-27T11:31:00+08:00">
+                2012-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2012/12/27/【SharePoint】判斷清單屬性/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2012/12/27/【SharePoint】判斷清單屬性/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近做一個SharePoint的功能，需要將SiteCollection裡面所有子網站的清單全數撈出來，並判斷是否為Survey或Announcement </p>
+<ul>
+<li><p>判斷是否為Survey    <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List.BaseType.ToString() ==<span class="string">"Survey"</span></span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>判斷是否為Announcement <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List.BaseTemplate.ToString() == <span class="string">"Announcements"</span></span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<table style="width:300px;margin:0px auto;"><tr> <td>問卷</td> <td>Survey</td></tr><tr> <td>公告</td> <td>Announcements</td></tr><tr> <td>文件庫</td> <td>DocumentLibrary</td></tr></table>
+
+<p>另外網路上查到各種清單的對照表，可以參考 :  <a href="http://blog.bugrapostaci.com/2010/09/22/sharepoint-list-type-numbers/" target="_blank" rel="noopener">清單對照表</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/27/【SharePoint】VisualWebPart/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/12/27/【SharePoint】VisualWebPart/" itemprop="url">【SharePoint】VisualWebPart</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-12-27T11:17:00+08:00">
+                2012-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2012/12/27/【SharePoint】VisualWebPart/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2012/12/27/【SharePoint】VisualWebPart/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-BbJDYNJ9yJQ/UNu49lR8hFI/AAAAAAAAAeA/ETeG2o2Gs4M/s1600/111.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-BbJDYNJ9yJQ/UNu49lR8hFI/AAAAAAAAAeA/ETeG2o2Gs4M/s640/111.png" alt=""></a></div>
+
+<p><span style="background-color: white;"><strong>建立VisualWebPart(後面簡稱vwp)後會產生以下檔案結構</strong></span></p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-sj79ZvE6lH4/UNu5jeqCYrI/AAAAAAAAAeI/stuhIeBL11k/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-sj79ZvE6lH4/UNu5jeqCYrI/AAAAAAAAAeI/stuhIeBL11k/s1600/111.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><strong>.XML檔中可以設定vwp佈署後歸類在哪個群組裡面</strong></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-Vv3Q5WgnzGo/UNu68vKX92I/AAAAAAAAAeg/l0j6pcw1oLY/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-Vv3Q5WgnzGo/UNu68vKX92I/AAAAAAAAAeg/l0j6pcw1oLY/s640/111.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-8K_6ifqFwTw/UNu7eFJb4gI/AAAAAAAAAeo/uMqpnmtiMNc/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-8K_6ifqFwTw/UNu7eFJb4gI/AAAAAAAAAeo/uMqpnmtiMNc/s320/111.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><strong>VWP的CS檔中可以增加可設定的參數</strong></div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">ScinoPharm.EIP.vwpSurveys</span></span><br><span class="line">   &#123;</span><br><span class="line">        [<span class="meta">ToolboxItemAttribute(false)</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">vwpSurveys</span> : <span class="title">WebPart</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//增加可設定的參數</span></span><br><span class="line">            [<span class="meta">Category(<span class="meta-string">"MySetting"</span>),</span></span><br><span class="line"><span class="meta">             Personalizable(PersonalizationScope.Shared), //共用設定</span></span><br><span class="line"><span class="meta">             WebBrowsable(true), //是否顯示在面板上</span></span><br><span class="line"><span class="meta">             WebDisplayName(<span class="meta-string">"來源清單名稱"</span>),</span></span><br><span class="line"><span class="meta">             WebDescription(<span class="meta-string">"請填寫Survey資料來源的清單名稱"</span>) //描述</span></span><br><span class="line"><span class="meta">            </span>]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">string</span> ListName&#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//當您變更視覺 Web 組件專案項目時，Visual Studio 可能會自動更新此路徑</span></span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">string</span> _ascxPath = <span class="string">@"~/_CONTROLTEMPLATES/ScinoPharm.EIP/vwpSurveys/vwpSurveysUserControl.ascx"</span>;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">CreateChildControls</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">            </span>&#123;</span><br><span class="line">                Control control = Page.LoadControl(_ascxPath);</span><br><span class="line">                ControlSkin.Add(control);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p><div class="separator" style="clear: both; text-align: left;"><strong>
+</strong></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-vNWquvR2rzs/UNu9Aq_nY_I/AAAAAAAAAe4/lNd-Ro9x2Z4/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-vNWquvR2rzs/UNu9Aq_nY_I/AAAAAAAAAe4/lNd-Ro9x2Z4/s1600/111.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><strong>在UserControl中要抓到VWP的參數設定，需要透過以下的方法</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> vwpSurveys SurveyParameter;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Page_Load</span>(<span class="params"><span class="keyword">object</span> sender, EventArgs e</span>) </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!Page.IsPostBack) </span><br><span class="line">        &#123;</span><br><span class="line">            SurveyParameter = <span class="keyword">this</span>.Parent <span class="keyword">as</span> vwpSurveys;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>
+</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1246,429 +1655,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/10/19/【JavaScript】判斷檔案是否存在/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/10/19/【JavaScript】判斷檔案是否存在/" itemprop="url">【JavaScript】判斷檔案是否存在</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-10-19T00:46:00+08:00">
-                2012-10-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/10/19/【JavaScript】判斷檔案是否存在/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2012/10/19/【JavaScript】判斷檔案是否存在/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近用IE判斷某檔案是否存在，路徑分別有以下兩種情況<br><span style="color: red;">相對路徑</span> : %appdata%\Microsoft\Windows\Start Menu\Programs\Accessories\Notepad.lnk<br><span style="color: red;">絕對路徑</span> :&nbsp;C:\xxx\xxxx\Microsoft\Windows\Start Menu\Programs\Accessories\Notepad.lnk</p>
-<p>原本只是單純使用<span style="color: red;">ActiveXObject(‘Scripting.FileSystemObject’)</span>的<span style="color: red;">FileExists</span>來判斷該檔案是否存在</p>
-<p>在絕對路徑下都很OK，但這個function無法判斷相對路徑，所以必須先做一個轉換為絕對路徑的動作<br>var objShell =<span style="color: red;"> new ActiveXObject(“Wscript.Shell”);&nbsp;</span></p>
-<p>objShell.ExpandEnvironmentStrings(“%appdata%\Microsoft\Windows\StartMenu\Programs\Accessories\Notepad.lnk”);</p>
-<p>再丟給<span style="color: red;">FileExists</span>來判斷檔案是否存在，即大功告成。</p>
-<p><strong>全部code</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> objnav = navigator;</span><br><span class="line"><span class="keyword">var</span> OsVersion = objnav.appVersion;</span><br><span class="line"><span class="keyword">var</span> fso = <span class="keyword">new</span> ActiveXObject(<span class="string">'Scripting.FileSystemObject'</span>);</span><br><span class="line"><span class="keyword">var</span> objShell = <span class="keyword">new</span> ActiveXObject(<span class="string">"Wscript.Shell"</span>);</span><br><span class="line"></span><br><span class="line">strfolderpath = objShell.ExpandEnvironmentStrings(<span class="string">"%appdata%\\Microsoft\\Windows\\StartMenu\\Programs\\Accessories\\Notepad.lnk"</span>);</span><br><span class="line"><span class="keyword">if</span> (fso.FileExists(strfolderpath))&#123;</span><br><span class="line">   alert(<span class="string">'絕對路徑有'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">   alert(<span class="string">'絕對路徑沒有'</span>);   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/10/17/VM上網設定/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/10/17/VM上網設定/" itemprop="url">VM上網設定</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-10-17T10:36:00+08:00">
-                2012-10-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/10/17/VM上網設定/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2012/10/17/VM上網設定/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>連結有詳細介紹!! &nbsp; 終於可以安心在VM裡面開發SharePoint了</p>
-<p><a href="http://tw.myblog.yahoo.com/jw!ozeuU_mGAx1rvd0bKga8nQ--/article?mid=434&amp;l=f&amp;fid=25" target="_blank" rel="noopener">Windows7中的VMWare網路設定 </a><br><strong>以下是摘錄</strong></p>
-<ul>
-<li>首先開啟網路共用中心 &gt; 變更介面卡設定 &gt; 找到VMnet1然後記住它的名稱<br><a href="http://3.bp.blogspot.com/-4rwOPHWCWeA/UXiZ97dgMtI/AAAAAAAACkk/55cCcvmWE08/s1600/11.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-4rwOPHWCWeA/UXiZ97dgMtI/AAAAAAAACkk/55cCcvmWE08/s1600/11.png" alt=""></a></li>
-<li>找到目前的連線(此圖為無線網路連線)&gt; 右鍵點選內容 &gt; 切到”共用”頁籤&gt; 然後把共用都打勾並選擇剛剛那個VM的連線與他共享<br><a href="http://2.bp.blogspot.com/-2obanFUgJrw/UXibp8XUfnI/AAAAAAAACk0/QIMQcO2zGQo/s1600/11.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-2obanFUgJrw/UXibp8XUfnI/AAAAAAAACk0/QIMQcO2zGQo/s1600/11.png" alt=""></a></li>
-<li>接著點選VMnet1右鍵 &gt; 內容 &gt; TCP/IPV4 &gt;設定如下<br><a href="http://2.bp.blogspot.com/-QVdsPKPrP6M/UXieOWafJ1I/AAAAAAAAClA/vy_D7FK1m8s/s1600/11.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-QVdsPKPrP6M/UXieOWafJ1I/AAAAAAAAClA/vy_D7FK1m8s/s1600/11.png" alt=""></a></li>
-<li>執行 VMWare 及虛擬系統，例如：Windows XP，開啟虛擬系統的「網蔎連線」，在「區域網路」上按滑鼠右鍵，選擇「內容」<br><a href="http://2.bp.blogspot.com/-KPtz27OW_ho/UXifEuXbtBI/AAAAAAAAClM/wjXQloJ00eo/s1600/UZidjL7joI6_8oXzaY6oCA.jpg" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-KPtz27OW_ho/UXifEuXbtBI/AAAAAAAAClM/wjXQloJ00eo/s1600/UZidjL7joI6_8oXzaY6oCA.jpg" alt=""></a></li>
-<li>最後在 VMWare 的「VM \ setting」中將「Hardware \ Ethenet」設定為「Host-Only」<br><a href="http://2.bp.blogspot.com/-FFmWeEuVggY/UXifTCLSDUI/AAAAAAAAClU/dDLLKl5RPMY/s1600/MZxveFdaHiBXh4q6vZyrRQ.jpg" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-FFmWeEuVggY/UXifTCLSDUI/AAAAAAAAClU/dDLLKl5RPMY/s1600/MZxveFdaHiBXh4q6vZyrRQ.jpg" alt=""></a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/10/16/【SharePoint】安裝筆記/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/10/16/【SharePoint】安裝筆記/" itemprop="url">【SharePoint】安裝筆記</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-10-16T16:54:00+08:00">
-                2012-10-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/10/16/【SharePoint】安裝筆記/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2012/10/16/【SharePoint】安裝筆記/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>1.先安裝Window server 2008 R2</p>
-<p>2.啟動Active Directory網域服務</p>
-<p>3.啟動DC</p>
-<p>4.新增兩名Domain的使用者 　EX：sps_service , sps_admin</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-pdH93mRSZ6U/UHz7sukxtvI/AAAAAAAAALE/kVexakOlhXY/s1600/11.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-pdH93mRSZ6U/UHz7sukxtvI/AAAAAAAAALE/kVexakOlhXY/s1600/11.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-23V72MV9S64/UHz9Wwu1EeI/AAAAAAAAALM/mo-DmwO5fbo/s1600/11.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-23V72MV9S64/UHz9Wwu1EeI/AAAAAAAAALM/mo-DmwO5fbo/s1600/11.png" alt=""></a></div>
-
-<p>之後再將兩個帳號加到Builtin的administrator的成員之中</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-naehp0j1yl8/UHz96Ob1eDI/AAAAAAAAALU/b_CzKkYeyfM/s1600/11.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-naehp0j1yl8/UHz96Ob1eDI/AAAAAAAAALU/b_CzKkYeyfM/s1600/11.png" alt=""></a></div>
-
-<p>接下來的安裝都用sps_admin來做<br>5.安裝SQL Server 2008 R2<br>&nbsp; &nbsp;將帳戶指定給sps_service</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-bf65-cgmngg/UH0IyzgAmSI/AAAAAAAAALs/1NXycYusVwc/s1600/11.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-bf65-cgmngg/UH0IyzgAmSI/AAAAAAAAALs/1NXycYusVwc/s1600/11.png" alt=""></a></div>
-
-<p>6.安裝SharePointService<br>&nbsp; &nbsp;先點選安裝軟體先決條件</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-lQXiOG1zWlA/UH0UVHgAi7I/AAAAAAAAAME/VtB6ot6gQFY/s1600/11.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-lQXiOG1zWlA/UH0UVHgAi7I/AAAAAAAAAME/VtB6ot6gQFY/s1600/11.png" alt=""></a></div><br>過程中如果有問題的話，可以參考提示另行下載元件安裝</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-9tHDhQmuN54/UH0Us5D-7SI/AAAAAAAAAMM/TvIjFqbK7CE/s1600/11.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-9tHDhQmuN54/UH0Us5D-7SI/AAAAAAAAAMM/TvIjFqbK7CE/s1600/11.png" alt=""></a></div>元件表</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-Go4DUvNwuLo/UH0ZDeWE2bI/AAAAAAAAAMk/yG6Z_ePVICY/s1600/11.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-Go4DUvNwuLo/UH0ZDeWE2bI/AAAAAAAAAMk/yG6Z_ePVICY/s1600/11.png" alt=""></a></div><br>7.正式安裝SharePoint<br>&nbsp; &nbsp;選擇新的伺服器陣列 &gt; 設定機器名稱 &gt; 輸入使用者名稱與密碼</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-p-X5WlDPa0E/UH0ZgKYDUFI/AAAAAAAAAMs/8dSN3t3oWiM/s1600/1-1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-p-X5WlDPa0E/UH0ZgKYDUFI/AAAAAAAAAMs/8dSN3t3oWiM/s1600/1-1.png" alt=""></a></div><br>指定Port</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-Xyvy6bqdUBA/UH0Z3-axdmI/AAAAAAAAAM0/NHBNBdBTnrU/s1600/1-2.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-Xyvy6bqdUBA/UH0Z3-axdmI/AAAAAAAAAM0/NHBNBdBTnrU/s1600/1-2.png" alt=""></a></div><br>之後再設定頂層網站就大功告成了!!</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1723,7 +1709,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-count">174</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1745,7 +1731,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -1831,7 +1817,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

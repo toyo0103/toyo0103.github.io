@@ -295,6 +295,607 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/06/【LeetCode】Permutations II/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/06/【LeetCode】Permutations II/" itemprop="url">【LeetCode】Permutations II</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-06-06T18:53:00+08:00">
+                2018-06-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/06/【LeetCode】Permutations II/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/06/【LeetCode】Permutations II/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>這題寫超級久，應該是自己邏輯不好的緣故，想不出邏輯最後只好直接用TDD的撰寫方式慢慢將範圍縮小，才歸納出結果，看來我的邏輯真的要好好加強了</p>
+<h1 id="題目"><a href="#題目" class="headerlink" title="#題目"></a>#題目</h1><p>Given a collection of numbers that might contain duplicates, return all possible unique permutations. </p>
+<p><strong>Example</strong> </p>
+<div class="note info"><p>Input: [1,1,2]<br>Output:<br>[<br>  [1,1,2],<br>  [1,2,1],<br>  [2,1,1]<br>]</p></div>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> IList&lt;IList&lt;<span class="keyword">int</span>&gt;&gt; PermuteUnique(<span class="keyword">int</span>[] nums) &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="解題"><a href="#解題" class="headerlink" title="#解題"></a>#解題</h1><h2 id="案例一"><a href="#案例一" class="headerlink" title="案例一"></a>案例一</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> PermuteUniqueTest_輸入<span class="number">1</span>_1()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">int</span>[] input = <span class="keyword">new</span> <span class="keyword">int</span> []&#123; <span class="number">1</span>, <span class="number">1</span> &#125;;</span><br><span class="line">    <span class="keyword">var</span> expected = <span class="keyword">new</span> List&lt;List&lt;<span class="keyword">int</span>&gt;&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">1</span>,<span class="number">1</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">            </span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.PermuteUnique(input);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">Solution</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> IList&lt;IList&lt;<span class="keyword">int</span>&gt;&gt; PermuteUnique(<span class="keyword">int</span>[] nums)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;IList&lt;<span class="keyword">int</span>&gt;&gt;();</span><br><span class="line">        Result.Add(nums.ToList());</span><br><span class="line">        <span class="keyword">return</span> Result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="案例二"><a href="#案例二" class="headerlink" title="案例二"></a>案例二</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> PermuteUniqueTest_輸入空Array()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">int</span>[] input = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">var</span> expected = <span class="keyword">new</span> List&lt;List&lt;<span class="keyword">int</span>&gt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.PermuteUnique(input);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> IList&lt;IList&lt;<span class="keyword">int</span>&gt;&gt; PermuteUnique(<span class="keyword">int</span>[] nums)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;IList&lt;<span class="keyword">int</span>&gt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (nums.Length == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> Result;</span><br><span class="line"></span><br><span class="line">    Result.Add(nums.ToList());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="案例三"><a href="#案例三" class="headerlink" title="案例三"></a>案例三</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> PermuteUniqueTest_輸入<span class="number">1</span>_2()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">int</span>[] input = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; <span class="number">1</span>, <span class="number">2</span> &#125;;</span><br><span class="line">    <span class="keyword">var</span> expected = <span class="keyword">new</span> List&lt;List&lt;<span class="keyword">int</span>&gt;&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">1</span>,<span class="number">2</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">2</span>,<span class="number">1</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.PermuteUnique(input);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> IList&lt;IList&lt;<span class="keyword">int</span>&gt;&gt; PermuteUnique(<span class="keyword">int</span>[] nums)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;IList&lt;<span class="keyword">int</span>&gt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (nums.Length == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> Result;</span><br><span class="line"></span><br><span class="line">    Result.Add(nums.ToList());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (i == nums.Length - <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (nums[i] != nums[ i+<span class="number">1</span>])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//Swap</span></span><br><span class="line">            <span class="keyword">var</span> Temp = nums[i];</span><br><span class="line">            nums[i] = nums[i + <span class="number">1</span>];</span><br><span class="line">            nums[i + <span class="number">1</span>] = Temp;</span><br><span class="line"></span><br><span class="line">            Result.Add(nums.ToList());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="重構"><a href="#重構" class="headerlink" title="重構"></a>重構</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> IList&lt;IList&lt;<span class="keyword">int</span>&gt;&gt; PermuteUnique(<span class="keyword">int</span>[] nums)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;IList&lt;<span class="keyword">int</span>&gt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (nums.Length == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> Result;</span><br><span class="line"></span><br><span class="line">    Result.Add(nums.ToList());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (i == nums.Length - <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (nums[i] != nums[ i+<span class="number">1</span>])</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//Swap</span></span><br><span class="line">            Swap(nums, i);</span><br><span class="line"></span><br><span class="line">            Result.Add(nums.ToList());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Swap</span>(<span class="params"><span class="keyword">int</span>[] nums, <span class="keyword">int</span> index</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> Temp = nums[index];</span><br><span class="line">    nums[index] = nums[index + <span class="number">1</span>];</span><br><span class="line">    nums[index + <span class="number">1</span>] = Temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="案例四"><a href="#案例四" class="headerlink" title="案例四"></a>案例四</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> PermuteUniqueTest_輸入<span class="number">1</span>_2_3()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">int</span>[] input = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; <span class="number">1</span>, <span class="number">2</span> , <span class="number">3</span>&#125;;</span><br><span class="line">    <span class="keyword">var</span> expected = <span class="keyword">new</span> List&lt;List&lt;<span class="keyword">int</span>&gt;&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>&#125;,</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.PermuteUnique(input);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">Solution</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> IList&lt;IList&lt;<span class="keyword">int</span>&gt;&gt; PermuteUnique(<span class="keyword">int</span>[] nums)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;IList&lt;<span class="keyword">int</span>&gt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (nums.Length == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line"></span><br><span class="line">        Result.Add(nums.ToList());</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == nums.Length - <span class="number">1</span>)</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> s = i + <span class="number">1</span> ; s &lt; nums.Length; s++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[i] != nums[s])</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> SplitLeaft = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;(nums);</span><br><span class="line">                    Swap(SplitLeaft, i, s);</span><br><span class="line">                    Recursive(SplitLeaft, i + <span class="number">1</span>, Result);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Recursive</span>(<span class="params">List&lt;<span class="keyword">int</span>&gt; nums, <span class="keyword">int</span> start, List&lt;IList&lt;<span class="keyword">int</span>&gt;&gt; result</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        result.Add(nums);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt; nums.Count; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == nums.Count - <span class="number">1</span>)</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (nums[start] != nums[i + <span class="number">1</span>])</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> SplitLeaft = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;(nums);</span><br><span class="line">                Swap(SplitLeaft, start, i + <span class="number">1</span>);</span><br><span class="line">                Recursive(SplitLeaft, i + <span class="number">1</span>, result);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Swap</span>(<span class="params">List&lt;<span class="keyword">int</span>&gt; nums, <span class="keyword">int</span> index1,<span class="keyword">int</span> index2</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> Temp = nums[index1];</span><br><span class="line">        nums[index1] = nums[index2];</span><br><span class="line">        nums[index2] = Temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="重構-1"><a href="#重構-1" class="headerlink" title="重構"></a>重構</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">Solution</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> IList&lt;IList&lt;<span class="keyword">int</span>&gt;&gt; PermuteUnique(<span class="keyword">int</span>[] nums)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;IList&lt;<span class="keyword">int</span>&gt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (nums.Length == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line"></span><br><span class="line">        Recursive(<span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;(nums), <span class="number">0</span> , Result);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Recursive</span>(<span class="params">List&lt;<span class="keyword">int</span>&gt; nums, <span class="keyword">int</span> start, List&lt;IList&lt;<span class="keyword">int</span>&gt;&gt; result</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        result.Add(nums);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt; nums.Count; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == nums.Count - <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; nums.Count; j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[i] != nums[j])</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> SplitLeaft = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;(nums);</span><br><span class="line">                    Swap(SplitLeaft, i, j);</span><br><span class="line">                    Recursive(SplitLeaft, i + <span class="number">1</span>, result);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Swap</span>(<span class="params">List&lt;<span class="keyword">int</span>&gt; nums, <span class="keyword">int</span> index1,<span class="keyword">int</span> index2</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> Temp = nums[index1];</span><br><span class="line">        nums[index1] = nums[index2];</span><br><span class="line">        nums[index2] = Temp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="案例五"><a href="#案例五" class="headerlink" title="案例五"></a>案例五</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> PermuteUniqueTest_輸入<span class="number">1</span>_1_2()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">int</span>[] input = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span> &#125;;</span><br><span class="line">    <span class="keyword">var</span> expected = <span class="keyword">new</span> List&lt;List&lt;<span class="keyword">int</span>&gt;&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.PermuteUnique(input);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>程式無需更動直接通過測試</strong></p>
+<h1 id="分析結果"><a href="#分析結果" class="headerlink" title="#分析結果"></a>#分析結果</h1><p>LeetCode跑單元測試錯誤</p>
+<p><img src="/images/20180606/1.jpg" alt="/images/20180606/1.jpg"></p>
+<h2 id="補上錯誤案例"><a href="#補上錯誤案例" class="headerlink" title="補上錯誤案例"></a>補上錯誤案例</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> PermuteUniqueTest_輸入<span class="number">2</span>_2_1_1()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">int</span>[] input = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span> &#125;;</span><br><span class="line">    <span class="keyword">var</span> expected = <span class="keyword">new</span> List&lt;List&lt;<span class="keyword">int</span>&gt;&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;&#123; <span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.PermuteUnique(input);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> IList&lt;IList&lt;<span class="keyword">int</span>&gt;&gt; PermuteUnique(<span class="keyword">int</span>[] nums)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;IList&lt;<span class="keyword">int</span>&gt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (nums.Length == <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> Result;</span><br><span class="line"></span><br><span class="line">    Recursive(<span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;(nums), <span class="number">0</span> , Result);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Recursive</span>(<span class="params">List&lt;<span class="keyword">int</span>&gt; nums, <span class="keyword">int</span> start, List&lt;IList&lt;<span class="keyword">int</span>&gt;&gt; result</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    result.Add(nums);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = start; i &lt; nums.Count; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        HashSet&lt;<span class="keyword">int</span>&gt; used = <span class="keyword">new</span> HashSet&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line">        <span class="keyword">if</span> (i == nums.Count - <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; nums.Count; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (nums[i] != nums[j])</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (used.Contains(nums[j]))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    used.Add(nums[j]);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">var</span> SplitLeaft = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;(nums);</span><br><span class="line">                Swap(SplitLeaft, i, j);</span><br><span class="line">                Recursive(SplitLeaft, i + <span class="number">1</span>, result);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Swap</span>(<span class="params">List&lt;<span class="keyword">int</span>&gt; nums, <span class="keyword">int</span> index1,<span class="keyword">int</span> index2</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> Temp = nums[index1];</span><br><span class="line">    nums[index1] = nums[index2];</span><br><span class="line">    nums[index2] = Temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這邊的原因是，同一個位置只需要跟相同的數字互換一次即可，因為遞迴會把後面的各種可能補上，否則會發生重複的排列組合</p>
+<hr>
+<p><strong>1,1,2,2</strong>,   <strong>index[0] 與後面所有後面的數相比</strong></p>
+<ul>
+<li><strong>1,1,2,2</strong>  (index[0] = 1與index[1] = 1相同，不做動作)</li>
+<li><p><strong>2,1,1,2</strong>  (index[0] = 1與index[2] = 2不相同，互換並產生支線)</p>
+<ul>
+<li>2,1,1,2  (index[1] = 1與index[2] = 1相同，不做動作)</li>
+<li><strong>2,2,1,1</strong>  (index[1] = 1與index[3] = 2不相同，互換並產生支線)<ul>
+<li>2,2,1,1  (index[2] = 1與index[3] = 1相同，不做動作，支線遞迴結束)</li>
+</ul>
+</li>
+<li><strong>2,1,2,1</strong>  (index[2] = 1與index[3] = 2不相同，互換並產生支線)</li>
+</ul>
+</li>
+<li><p>1,1,1,2  (index[0] = 1與index[3] = 2不相同，但之前跟2互換過一次，所以不做動作)</p>
+</li>
+</ul>
+<hr>
+<p><strong>1,1,2,2</strong> , <strong>index[1] 與後面所有後面的數相比</strong></p>
+<ul>
+<li><strong>1,2,1,2</strong>  (index[1] = 1與index[2] = 2不相同，互換並產生支線)<ul>
+<li><strong>1,2,2,1</strong>(index[2] = 1與index[3] = 2不相同，互換並產生支線)<ul>
+<li>走到最末端，遞迴結束</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>1,1,2,2  (index[1] = 1與index[3] = 2不相同，但之前跟2互換過一次，所以不做動作)</li>
+</ul>
+<p><strong>這邊如果互換的話將導致重複的數列出現</strong></p>
+<p>…….以下省略…..</p>
+<p><img src="/images/20180606/2.jpg" alt="/images/20180606/2.jpg"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/【LeetCode】Add Two Numbers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/05/【LeetCode】Add Two Numbers/" itemprop="url">【LeetCode】Add Two Numbers</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-06-05T21:10:00+08:00">
+                2018-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/05/【LeetCode】Add Two Numbers/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/05/【LeetCode】Add Two Numbers/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>有感於自己是個廢物工程師，開了LeetCode帳號好幾個月一題都還沒刷，所以決定寫一系列紀錄自己刷LeetCode的過程跟解題方法，希望幾年後回頭能看見自己的進步，廢話不多說直接進入題目。</p>
+<h1 id="題目"><a href="#題目" class="headerlink" title="#題目"></a>#題目</h1><p>You are given two <strong>non-empty</strong> linked lists representing two non-negative integers. The digits are stored in <strong>reverse order</strong> and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p>
+<p>You may assume the two numbers do not contain any leading zero, except the number 0 itself.</p>
+<p><strong>Example</strong> </p>
+<div class="note info"><p>Input: (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)<br>Output: 7 -&gt; 0 -&gt; 8<br>Explanation: 342 + 465 = 807</p></div>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     public int val;</span></span><br><span class="line"><span class="comment"> *     public ListNode next;</span></span><br><span class="line"><span class="comment"> *     public ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Solution</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">AddTwoNumbers</span>(<span class="params">ListNode l1, ListNode l2</span>) </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="解題"><a href="#解題" class="headerlink" title="#解題"></a>#解題</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Solution</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="function"><span class="keyword">public</span> ListNode <span class="title">AddTwoNumbers</span>(<span class="params">ListNode l1, ListNode l2</span>)</span></span><br><span class="line"><span class="function">       </span>&#123;</span><br><span class="line">           ListNode Result = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">           ListNode CN1 = l1;</span><br><span class="line">           ListNode CN2 = l2;</span><br><span class="line"></span><br><span class="line">           ListNode RCN = Result;</span><br><span class="line">           <span class="keyword">bool</span> Flag = <span class="literal">true</span>;</span><br><span class="line">           <span class="keyword">while</span> (Flag)</span><br><span class="line">           &#123;</span><br><span class="line">               <span class="keyword">var</span> Sum = RCN.val +  GetNodeValue(CN1) + GetNodeValue(CN2);</span><br><span class="line"></span><br><span class="line">               RCN.val = Sum % <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">if</span> (Sum &gt; <span class="number">9</span>)</span><br><span class="line">                   RCN.next = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">               CN1 = CN1 == <span class="literal">null</span> ? <span class="literal">null</span> : CN1.next;</span><br><span class="line">               CN2 = CN2 == <span class="literal">null</span> ? <span class="literal">null</span> : CN2.next;</span><br><span class="line">               </span><br><span class="line"></span><br><span class="line">               Flag = (CN1 != <span class="literal">null</span> || CN2 != <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">               <span class="keyword">if</span> (Flag &amp;&amp; RCN.next == <span class="literal">null</span>)</span><br><span class="line">                   RCN.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">               RCN = RCN.next;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="keyword">return</span> Result;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">GetNodeValue</span>(<span class="params">ListNode node</span>)</span></span><br><span class="line"><span class="function">       </span>&#123;</span><br><span class="line">           <span class="keyword">return</span> node == <span class="literal">null</span> ?  <span class="number">0</span> : node.val;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Unit-Testing"><a href="#Unit-Testing" class="headerlink" title="Unit Testing"></a>Unit Testing</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SolutionTests</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">TestMethod</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> AddTwoNumbersTest_輸入L1為<span class="number">342</span>_L2為<span class="number">456</span>_應得到<span class="number">807</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//arrange</span></span><br><span class="line">        <span class="keyword">var</span> l1 = <span class="keyword">new</span> ListNode(<span class="number">2</span>);</span><br><span class="line">        l1.next = <span class="keyword">new</span> ListNode(<span class="number">4</span>);</span><br><span class="line">        l1.next.next = <span class="keyword">new</span> ListNode(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> l2 = <span class="keyword">new</span> ListNode(<span class="number">5</span>);</span><br><span class="line">        l2.next = <span class="keyword">new</span> ListNode(<span class="number">6</span>);</span><br><span class="line">        l2.next.next = <span class="keyword">new</span> ListNode(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> expected = <span class="keyword">new</span> ListNode(<span class="number">7</span>);</span><br><span class="line">        expected.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        expected.next.next = <span class="keyword">new</span> ListNode(<span class="number">8</span>);</span><br><span class="line">        <span class="comment">//act</span></span><br><span class="line">        <span class="keyword">var</span> actual = sut.AddTwoNumbers(l1,l2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//assert</span></span><br><span class="line">        actual.Should().BeEquivalentTo(expected);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">TestMethod</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> AddTwoNumbersTest_輸入L1為<span class="number">42</span>_L2為<span class="number">708</span>_應得到<span class="number">750</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//arrange</span></span><br><span class="line">        <span class="keyword">var</span> l1 = <span class="keyword">new</span> ListNode(<span class="number">2</span>);</span><br><span class="line">        l1.next = <span class="keyword">new</span> ListNode(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> l2 = <span class="keyword">new</span> ListNode(<span class="number">8</span>);</span><br><span class="line">        l2.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        l2.next.next = <span class="keyword">new</span> ListNode(<span class="number">7</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> expected = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        expected.next = <span class="keyword">new</span> ListNode(<span class="number">5</span>);</span><br><span class="line">        expected.next.next = <span class="keyword">new</span> ListNode(<span class="number">7</span>);</span><br><span class="line">        <span class="comment">//act</span></span><br><span class="line">        <span class="keyword">var</span> actual = sut.AddTwoNumbers(l1, l2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//assert</span></span><br><span class="line">        actual.Should().BeEquivalentTo(expected);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">TestMethod</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> AddTwoNumbersTest_輸入L1為<span class="number">1</span>_L2為<span class="number">99</span>_應得到<span class="number">100</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//arrange</span></span><br><span class="line">        <span class="keyword">var</span> l1 = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> l2 = <span class="keyword">new</span> ListNode(<span class="number">9</span>);</span><br><span class="line">        l2.next = <span class="keyword">new</span> ListNode(<span class="number">9</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> expected = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        expected.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        expected.next.next = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">//act</span></span><br><span class="line">        <span class="keyword">var</span> actual = sut.AddTwoNumbers(l1, l2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//assert</span></span><br><span class="line">        actual.Should().BeEquivalentTo(expected);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="分析結果"><a href="#分析結果" class="headerlink" title="#分析結果"></a>#分析結果</h1><p>雖然過了但是效率不佳，執行完LeetCode全部的測試總共花費 <strong>176 ms</strong>只贏過38.84%的提交範例，所以試試看優化它</p>
+<p><img src="/images/20180615/leetcode/1.jpg" alt="/images/20180615/leetcode/1.jpg"></p>
+<h2 id="移除三元運算子"><a href="#移除三元運算子" class="headerlink" title="移除三元運算子"></a>移除三元運算子</h2><p>基本上三元運算子比較耗效能，所以優先改進它</p>
+<p><strong>原本</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">GetNodeValue</span>(<span class="params">ListNode node</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> node == <span class="literal">null</span> ?  <span class="number">0</span> : node.val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>修改後</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">GetNodeValue</span>(<span class="params">ListNode node</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (node == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> node.val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p><strong>原本</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CN1 = CN1 == <span class="literal">null</span> ? <span class="literal">null</span> : CN1.next;</span><br><span class="line">CN2 = CN2 == <span class="literal">null</span> ? <span class="literal">null</span> : CN2.next;</span><br></pre></td></tr></table></figure>
+<p><strong>修改後</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (Node1Cursor != <span class="literal">null</span>)</span><br><span class="line">    Node1Cursor = Node1Cursor.next;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (Node2Cursor != <span class="literal">null</span>)</span><br><span class="line">    Node2Cursor = Node2Cursor.next;</span><br></pre></td></tr></table></figure>
+<p><strong>測試結果</strong></p>
+<p><img src="/images/20180615/leetcode/2.jpg" alt="/images/20180615/leetcode/2.jpg"></p>
+<p>簡直是三元運算子定生死….</p>
+<h2 id="優化可讀性"><a href="#優化可讀性" class="headerlink" title="優化可讀性"></a>優化可讀性</h2><blockquote class="blockquote-center"><p>乾淨的程式碼，閱讀起來應該像是幾何證明般</p>
+<p>Uncle Bob</p>
+</blockquote>
+<p>所以試著讓變數命名更貼近意義一點</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Solution</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">AddTwoNumbers</span>(<span class="params">ListNode l1, ListNode l2</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        ListNode Result = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        ListNode Node1Cursor = l1;</span><br><span class="line">        ListNode Node2Cursor = l2;</span><br><span class="line"></span><br><span class="line">        ListNode Head = Result;</span><br><span class="line">        <span class="keyword">bool</span> NeedNextRun = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">while</span> (NeedNextRun)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> Sum = Head.val + GetNodeValue(Node1Cursor) + GetNodeValue(Node2Cursor);</span><br><span class="line"></span><br><span class="line">            Head.val = Sum % <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Sum &gt; <span class="number">9</span>)</span><br><span class="line">                Head.next = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Node1Cursor != <span class="literal">null</span>)</span><br><span class="line">                Node1Cursor = Node1Cursor.next;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Node2Cursor != <span class="literal">null</span>)</span><br><span class="line">                Node2Cursor = Node2Cursor.next;</span><br><span class="line"></span><br><span class="line">            NeedNextRun = (Node1Cursor != <span class="literal">null</span> || Node2Cursor != <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (NeedNextRun &amp;&amp; Head.next == <span class="literal">null</span>)</span><br><span class="line">                Head.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            Head = Head.next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">GetNodeValue</span>(<span class="params">ListNode node</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (node == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> node.val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也因為有寫單元測試的關係，上述的調整過程中都沒讓程式壞掉，最後希望藉由這樣的練習能讓自己TDD與重構的技巧再更純熟一些</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/【MVC教學】7.驗證參數-DataAnnotations /">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/05/【MVC教學】7.驗證參數-DataAnnotations /" itemprop="url">【MVC教學】7.驗證參數-DataAnnotations</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-06-05T11:40:00+08:00">
+                2018-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/學習MVC/" itemprop="url" rel="index">
+                    <span itemprop="name">學習MVC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/05/【MVC教學】7.驗證參數-DataAnnotations /#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/06/05/【MVC教學】7.驗證參數-DataAnnotations /" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <div class="note info"><p>Demo範例 ：<a href="https://github.com/toyo0103/HelloDotNetMVC" target="_blank" rel="noopener">Git位置</a></p></div>
+<h1 id="什麼是DataAnnotations"><a href="#什麼是DataAnnotations" class="headerlink" title="#什麼是DataAnnotations"></a>#什麼是DataAnnotations</h1><p>DataAnnotations是.Net Framework 3.5之後提供的一個命名空間，裡面包含了一些基本的驗證Attribute，同時也提供客製化的方法，希望開發人員能透過簡單的加上Attribute即達到驗證的效果。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UserSignUpParameter</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">Required</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span>  Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="如何使用"><a href="#如何使用" class="headerlink" title="#如何使用"></a>#如何使用</h1><p>我們透過修改先前的範例，嘗試將<strong>UserSignUpParameter</strong>的驗證從FluentValidation改成用MVC預設提供的DataAnnotations來達成，從修改中學習他是如何運作的。</p>
+<p><strong>重新審視一下需求</strong></p>
+<div class="note info"><p><strong>帳號</strong></p>
+<ul>
+<li>必填</li>
+<li>必須包含@</li>
+</ul>
+<p><strong>密碼</strong></p>
+<ul>
+<li>必填</li>
+<li>不得小於6個字元</li>
+</ul></div>
+<h2 id="RequiredAttribute"><a href="#RequiredAttribute" class="headerlink" title="RequiredAttribute"></a>RequiredAttribute</h2><p>RequiredAttribute為DataAnnotations預設提供的驗證方式，目標是驗證該欄位是否為Null或Empty</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 摘要:</span></span><br><span class="line"><span class="comment">//     指定資料欄位值為必要。</span></span><br><span class="line">[<span class="meta">AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RequiredAttribute</span> : <span class="title">ValidationAttribute</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">    <span class="comment">// 摘要:</span></span><br><span class="line">    <span class="comment">//     初始化 System.ComponentModel.DataAnnotations.RequiredAttribute 類別的新執行個體。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RequiredAttribute</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">    <span class="comment">// 摘要:</span></span><br><span class="line">    <span class="comment">//     取得或設定值，指出是否允許空字串。</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// 傳回:</span></span><br><span class="line">    <span class="comment">//     true 如果允許空字串。否則， false。 預設值是 false。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> AllowEmptyStrings &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">    <span class="comment">// 摘要:</span></span><br><span class="line">    <span class="comment">//     檢查必要的資料欄位的值不是空的。</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// 參數:</span></span><br><span class="line">    <span class="comment">//   value:</span></span><br><span class="line">    <span class="comment">//     要驗證的資料欄位值。</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// 傳回:</span></span><br><span class="line">    <span class="comment">//     true 如果驗證成功。否則， false。</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// 例外狀況:</span></span><br><span class="line">    <span class="comment">//   T:System.ComponentModel.DataAnnotations.ValidationException:</span></span><br><span class="line">    <span class="comment">//     資料欄位值為 null。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">bool</span> <span class="title">IsValid</span>(<span class="params"><span class="keyword">object</span> <span class="keyword">value</span></span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>從上述的程式碼可以看出它有提供<strong>AllowEmptyStrings</strong>的屬性可以設定，意義如同字面意思，可以<strong>EmptyString</strong>。</p>
+<h3 id="AllowEmptyStrings"><a href="#AllowEmptyStrings" class="headerlink" title="AllowEmptyStrings"></a>AllowEmptyStrings</h3><p>我們先將Account掛上Required，並且指定屬性AllowEmptyStrings為True，執行看看</p>
+<div class="note info"><p>繼承自Attribute的類別，在掛Attribute時可以省略後綴詞，所以可以看到程式碼只寫Required而不是RequiredAttribute</p></div>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Parameter UserSignUp</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UserSignUpParameter</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">Required(AllowEmptyStrings =true)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span>  Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 密碼</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Password &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>當Account傳入為Null時</p>
+<p><img src="/images/20180615/1.png" alt="/images/20180615/1.png"></p>
+<p>ModelState.IsValidate為False，在Values.Errors底下可以找到錯誤訊息<strong>Account 欄位是必要項。</strong></p>
+<p><img src="/images/20180615/2.png" alt="/images/20180615/2.png"></p>
+<p>接著改傳入<strong>空格</strong></p>
+<p><img src="/images/20180615/3.png" alt="/images/20180615/3.png"></p>
+<p>通過驗證</p>
+<p><img src="/images/20180615/4.png" alt="/images/20180615/4.png"></p>
+<h3 id="ErrorMessage"><a href="#ErrorMessage" class="headerlink" title="ErrorMessage"></a>ErrorMessage</h3><p>如果想修改錯誤的回傳訊息時，可以透過ErrorMessage來處理</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">Required(ErrorMessage = <span class="meta-string">"帳號為必填欄位"</span>)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">string</span>  Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure>
+<p>或是</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">Required(ErrorMessage = <span class="meta-string">"&#123;0&#125;為必填欄位"</span>)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">string</span>  Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure>
+<p>{0}的位置系統會自動帶入欄位名稱</p>
+<p><img src="/images/20180615/5.png" alt="/images/20180615/5.png"></p>
+<p>介紹完RequiredAttribute的基本用法後，目前程式碼如下</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Parameter UserSignUp</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UserSignUpParameter</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">Required(ErrorMessage = <span class="meta-string">"&#123;0&#125;為必填欄位"</span>)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span>  Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 密碼.</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">Required(ErrorMessage = <span class="meta-string">"&#123;0&#125;為必填欄位"</span>)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Password &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="MinLengthAttribute"><a href="#MinLengthAttribute" class="headerlink" title="MinLengthAttribute"></a>MinLengthAttribute</h2><p>MinLengthAttribute是用來檢查屬性的最小字數，與MaxLengthAttribute為剛好相反的一組</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line">    <span class="comment">// 摘要:</span></span><br><span class="line">    <span class="comment">//     指定屬性中所允許之陣列或字串資料的最大長度。</span></span><br><span class="line">    [<span class="meta">AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MaxLengthAttribute</span> : <span class="title">ValidationAttribute</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 摘要:</span></span><br><span class="line">        <span class="comment">//     初始化 System.ComponentModel.DataAnnotations.MaxLengthAttribute 類別的新執行個體。</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MaxLengthAttribute</span>(<span class="params"></span>)</span>;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 摘要:</span></span><br><span class="line">        <span class="comment">//     初始化的新執行個體 System.ComponentModel.DataAnnotations.MaxLengthAttribute 類別根據 length</span></span><br><span class="line">        <span class="comment">//     參數。</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 參數:</span></span><br><span class="line">        <span class="comment">//   length:</span></span><br><span class="line">        <span class="comment">//     陣列或字串資料的最大容許長度。</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MaxLengthAttribute</span>(<span class="params"><span class="keyword">int</span> length</span>)</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 摘要:</span></span><br><span class="line">        <span class="comment">//     取得陣列或字串資料所容許的最大長度。</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 傳回:</span></span><br><span class="line">        <span class="comment">//     陣列或字串資料的最大容許長度。</span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> Length &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 摘要:</span></span><br><span class="line">        <span class="comment">//     將格式套用到指定的錯誤訊息</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 參數:</span></span><br><span class="line">        <span class="comment">//   name:</span></span><br><span class="line">        <span class="comment">//     要包含在格式化字串中的名稱。</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 傳回:</span></span><br><span class="line">        <span class="comment">//     描述可接受之最大長度的當地語系化字串。</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">string</span> <span class="title">FormatErrorMessage</span>(<span class="params"><span class="keyword">string</span> name</span>)</span>;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 摘要:</span></span><br><span class="line">        <span class="comment">//     判斷指定的物件是否有效</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 參數:</span></span><br><span class="line">        <span class="comment">//   value:</span></span><br><span class="line">        <span class="comment">//     要驗證的物件。</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 傳回:</span></span><br><span class="line">        <span class="comment">//     如果此值為 null 或是小於或等於指定的最大長度，則為 true，否則為 false。</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 例外狀況:</span></span><br><span class="line">        <span class="comment">//   T:System.InvalidOperationException:</span></span><br><span class="line">        <span class="comment">//     長度為零或小於 –1。</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">bool</span> <span class="title">IsValid</span>(<span class="params"><span class="keyword">object</span> <span class="keyword">value</span></span>)</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>密碼<strong>最少應為6個字元</strong>設定方式，當然它同時也提供修改ErrorMessage的方法</p>
+<p>{0}的位置系統會自動帶入欄位名稱</p>
+<p>{1}的位置系統會帶入所設定的最小字元數字</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 密碼.</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span>    </span></span><br><span class="line">[<span class="meta">MinLength(6, ErrorMessage = <span class="meta-string">"&#123;0&#125;不得低於&#123;1&#125;個字元"</span>)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">string</span> Password &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20180615/6.png" alt="/images/20180615/6.png"></p>
+<p><img src="/images/20180615/7.png" alt="/images/20180615/7.png"></p>
+<h2 id="RegularExpression"><a href="#RegularExpression" class="headerlink" title="RegularExpression"></a>RegularExpression</h2><p>Account還有一個需求是必須包含@字元，這時候可以透過預設提供的RegularExpression來達成需求</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line">   <span class="comment">// 摘要:</span></span><br><span class="line">   <span class="comment">//     指定 ASP.NET 動態資料的資料欄位值必須符合指定的規則運算式。</span></span><br><span class="line">   [<span class="meta">AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)</span>]</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RegularExpressionAttribute</span> : <span class="title">ValidationAttribute</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 摘要:</span></span><br><span class="line">       <span class="comment">//     初始化 System.ComponentModel.DataAnnotations.RegularExpressionAttribute 類別的新執行個體。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 參數:</span></span><br><span class="line">       <span class="comment">//   pattern:</span></span><br><span class="line">       <span class="comment">//     用來驗證資料欄位值的規則運算式。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 例外狀況:</span></span><br><span class="line">       <span class="comment">//   T:System.ArgumentNullException:</span></span><br><span class="line">       <span class="comment">//     pattern 為 null。</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">RegularExpressionAttribute</span>(<span class="params"><span class="keyword">string</span> pattern</span>)</span>;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 摘要:</span></span><br><span class="line">       <span class="comment">//     取得規則運算式模式。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 傳回:</span></span><br><span class="line">       <span class="comment">//     要比對模式。</span></span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">string</span> Pattern &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 摘要:</span></span><br><span class="line">       <span class="comment">//     取得或設定執行單一比對作業，直到作業逾時之前的時間 (以毫秒為單位)。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 傳回:</span></span><br><span class="line">       <span class="comment">//     執行單一比對作業的時間 (以毫秒為單位)。</span></span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">int</span> MatchTimeoutInMilliseconds &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 摘要:</span></span><br><span class="line">       <span class="comment">//     格式化要顯示在規則運算式驗證失敗時的錯誤訊息。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 參數:</span></span><br><span class="line">       <span class="comment">//   name:</span></span><br><span class="line">       <span class="comment">//     造成驗證失敗的欄位名稱。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 傳回:</span></span><br><span class="line">       <span class="comment">//     格式化的錯誤訊息。</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">string</span> <span class="title">FormatErrorMessage</span>(<span class="params"><span class="keyword">string</span> name</span>)</span>;</span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 摘要:</span></span><br><span class="line">       <span class="comment">//     會檢查使用者輸入的值是否符合規則運算式模式。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 參數:</span></span><br><span class="line">       <span class="comment">//   value:</span></span><br><span class="line">       <span class="comment">//     要驗證的資料欄位值。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 傳回:</span></span><br><span class="line">       <span class="comment">//     true 如果驗證成功。否則， false。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 例外狀況:</span></span><br><span class="line">       <span class="comment">//   T:System.ComponentModel.DataAnnotations.ValidationException:</span></span><br><span class="line">       <span class="comment">//     資料欄位值不符合規則運算式模式。</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">bool</span> <span class="title">IsValid</span>(<span class="params"><span class="keyword">object</span> <span class="keyword">value</span></span>)</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>可以透過寫正規表示法的方式來驗證想驗證的屬性，一樣有ErrorMessage可供使用</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">RegularExpression(<span class="meta-string">"[@]+"</span>,ErrorMessage =<span class="meta-string">"&#123;0&#125;必須包含@字元"</span>)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">string</span> Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20180615/8.png" alt="/images/20180615/8.png"></p>
+<p><img src="/images/20180615/9.png" alt="/images/20180615/9.png"></p>
+<h2 id="其它Attribute"><a href="#其它Attribute" class="headerlink" title="其它Attribute"></a>其它Attribute</h2><p>DataAnnotations還有提供一些預設的Attribute可以使用，篇幅有限就不一一介紹，有興趣的可以參考以下文章</p>
+<div class="note info"><p><a href="http://dotnetmentors.com/mvc/how-to-validate-mvc-model-using-dataannotation-attributes.aspx" target="_blank" rel="noopener">How To Validate MVC Model Using DataAnnotation Attribute</a></p>
+<p><a href="https://msdn.microsoft.com/zh-tw/library/system.componentmodel.dataannotations.validationattribute(v=vs.110).aspx" target="_blank" rel="noopener">MSDN - ValidationAttribute 類別</a></p></div>
+<h1 id="客製"><a href="#客製" class="headerlink" title="#客製"></a>#客製</h1><p>如果碰到一個驗證需要在多個地方使用，且預設沒有提供的話，這時候就可以透過自製驗證Attribute來解決，我們以<strong>字元需包含@</strong>為例</p>
+<h2 id="繼承ValidationAttribute"><a href="#繼承ValidationAttribute" class="headerlink" title="繼承ValidationAttribute"></a>繼承ValidationAttribute</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MouseCharactersAttribute</span>: <span class="title">ValidationAttribute</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> Returns true if ... is valid.</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="value"&gt;</span>要驗證之物件的值。<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;see langword="true" /&gt;</span> 指定的值是否有效。否則， <span class="doctag">&lt;see langword="false" /&gt;</span>。</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">bool</span> <span class="title">IsValid</span>(<span class="params"><span class="keyword">object</span> <span class="keyword">value</span></span>)</span></span><br><span class="line"><span class="function">       </span>&#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">base</span>.IsValid(<span class="keyword">value</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Override-IsValid-Method"><a href="#Override-IsValid-Method" class="headerlink" title="Override IsValid Method"></a>Override IsValid Method</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">bool</span> <span class="title">IsValid</span>(<span class="params"><span class="keyword">object</span> <span class="keyword">value</span></span>)</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">value</span> == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;   </span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> stringValue = <span class="keyword">value</span> <span class="keyword">as</span> <span class="keyword">string</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> stringValue.Contains(<span class="string">"@"</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>將原本的<strong>RegularExpression</strong>改成我們客製的<strong>MouseCharacters</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">  <span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line">  <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">  [<span class="meta">MouseCharacters(ErrorMessage =<span class="meta-string">"&#123;0&#125;必須包含@字元"</span>)</span>]</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">string</span> Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure>
+<p>實測會發現結果是一樣的</p>
+<p><img src="/images/20180615/10.png" alt="/images/20180615/10.png"></p>
+<h1 id="比較FluentValidation"><a href="#比較FluentValidation" class="headerlink" title="#比較FluentValidation"></a>#比較FluentValidation</h1><p>DataAnnotations其實使用起來相當方便，且只要知道如何客製ValidationAttribute基本上大部分情境都能解決，加上套用Attribute的方式算是相當親民的寫法。</p>
+<p>但我本身基於單一職責的原則下，還是喜歡將驗證邏輯等方法分離到不同的Class管理，而這也正是FluentValidation套件的特性，不過這是見仁見智，就像大部分Pattern一樣，永遠不會有最好的解法，只要能花最小的成本解決需求，同時盡量不犧牲維護及擴充性，那就稱得上是好方法了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/04/【演算法】Counting Sort/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1456,550 +2057,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/21/【MVC教學】1-工欲善其事、必先利其器-Visual-Studio/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/21/【MVC教學】1-工欲善其事、必先利其器-Visual-Studio/" itemprop="url">【MVC教學】1. 工欲善其事、必先利其器 Visual Studio</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-02-21T16:06:00+08:00">
-                2018-02-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/學習MVC/" itemprop="url" rel="index">
-                    <span itemprop="name">學習MVC</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/21/【MVC教學】1-工欲善其事、必先利其器-Visual-Studio/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/02/21/【MVC教學】1-工欲善其事、必先利其器-Visual-Studio/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>年前朋友討論是否寫Dot Net Mvc的簡單教學文章,害我過年都在思考該怎麼寫這東西…可惡(果然是個心裡容不下待辦事項的人啊)。</p>
-<p>認真的想了後覺得這真是個非常難的主題,一來是網路上已經有很多資源,我也不是什麼大神,很怕誤人子弟。二來雖然以前曾經幫忙教育訓練過新進同事,但面對面的溝通且依照每個人程度不同給予討論,跟用文章教會一個不知道對象是誰,且博大精深的框架與語言,這個差距實在太大,所以最後只好一直將目標縮小再縮小,希望這系列文如果看完時能達到以下目標我就滿足了</p>
-<p><strong>目標對象 </strong><br><div class="note info"><p>1.你有一點程式語言的底子,但沒接觸過Dot Net MVC<br>2.寫過Dot Net MVC,但還不是很熟悉它怎麼應用</p></div></p>
-<p><strong>希望達成目標</strong><br><div class="note info"><p>1.能夠比較清楚的理解Dot Net MVC怎麼運作<br>2.知道了一些小東西,或許能改善目前你開發上困擾</p></div></p>
-<p>那就先從工具開始吧<br><div class="note info"><p>Visual Studio Community : <a href="https://www.visualstudio.com/zh-hant/vs/community/" target="_blank" rel="noopener">微軟官網載點</a></p></div><br>開發Dot Net的工程師,應該9成9的人都是使用Visual Studio,它不僅號稱地表最強編輯器,微軟更佛心的提供了免費版本給大家使用,否則最基礎的一套Visual Studio的價格應該也會讓初學者非常卻步。</p>
-<p>當然既然是免費版本,功能上一定會有些陽春,但對於只是入門學習Dot Net而言已經是相當強大的工具了。</p>
-<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-AThY6IIeOMU/Wozqfrbkj8I/AAAAAAAAIhM/unPhEYOMwi4GocjIIbH3sQLsG6zFLwLXgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258A%25E5%258D%258811.41.26.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-AThY6IIeOMU/Wozqfrbkj8I/AAAAAAAAIhM/unPhEYOMwi4GocjIIbH3sQLsG6zFLwLXgCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258A%25E5%258D%258811.41.26.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">功能比較(來源: <a href="https://www.visualstudio.com/zh-hant/vs/compare/" target="_blank" rel="noopener">https://www.visualstudio.com/zh-hant/vs/compare/</a>)</td></tr></tbody></table><br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-IAZ842DU7bE/WozrAMFvS5I/AAAAAAAAIhU/hXxvWOr48VIim3dJ2gxOVdllEfdLsvspgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258A%25E5%258D%258811.43.35.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-IAZ842DU7bE/WozrAMFvS5I/AAAAAAAAIhU/hXxvWOr48VIim3dJ2gxOVdllEfdLsvspgCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258A%25E5%258D%258811.43.35.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">價格表(來源:<a href="https://www.visualstudio.com/zh-hant/vs/pricing/" target="_blank" rel="noopener">https://www.visualstudio.com/zh-hant/vs/pricing/</a>)</td></tr></tbody></table>
-
-<p>下載完之後將它安裝起來</p>
-<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-l_GogekWtuo/Wo0NeymgUGI/AAAAAAAAIhk/a9KRtEucnA8ZAofXpTfM1WKc0Cn1-VSeACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.10.47.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-l_GogekWtuo/Wo0NeymgUGI/AAAAAAAAIhk/a9KRtEucnA8ZAofXpTfM1WKc0Cn1-VSeACLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.10.47.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">選擇Community安裝</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-VxH0BFcP1N4/Wo0OAeM_n8I/AAAAAAAAIhs/XbpBzTLtFQsEQwdPNDVF0V1-yghRDhHMgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.13.01.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-VxH0BFcP1N4/Wo0OAeM_n8I/AAAAAAAAIhs/XbpBzTLtFQsEQwdPNDVF0V1-yghRDhHMgCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.13.01.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">勾選ASP.NET與網頁程式開發</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-YT3wMLUPuxQ/Wo0OS6i817I/AAAAAAAAIhw/cJGnL6jonT0Kf9XxbKzB9k_5qT6vdB16wCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.14.13.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-YT3wMLUPuxQ/Wo0OS6i817I/AAAAAAAAIhw/cJGnL6jonT0Kf9XxbKzB9k_5qT6vdB16wCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.14.13.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">等它安裝完</td></tr></tbody></table></p>
-<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-mb-CXRobkYs/Wo0ZC8U4VJI/AAAAAAAAIiE/hVP-yUd9UtMsSVpt3iVTjyRgksp825iLwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.00.10.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-mb-CXRobkYs/Wo0ZC8U4VJI/AAAAAAAAIiE/hVP-yUd9UtMsSVpt3iVTjyRgksp825iLwCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.00.10.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">安裝完之後打開應該會看到這個畫面</td></tr></tbody></table><br><div class="note info"><p>因為寫程式大部分時間都需要一直長盯著螢幕,所以螢幕底色如果是淺色系通常到下午我眼睛都會很酸,所以Visual Studio也很貼心了提供修改視窗色系的功能,例如我截圖就是深色系。<br>調整方式如下<br>工具 &gt; 選項 &gt; 色彩佈景主題<br><a href="https://1.bp.blogspot.com/-ExYk1nrzalI/Wo0aNHm1jLI/AAAAAAAAIiM/xA5vmqHWUkgo1DYB_4zz9nbfb1oKw3vyQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.03.31.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-ExYk1nrzalI/Wo0aNHm1jLI/AAAAAAAAIiM/xA5vmqHWUkgo1DYB_4zz9nbfb1oKw3vyQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.03.31.png" alt=""></a></p></div><br>**</p>
-<hr>
-<p><strong>**建立第一個Web專案</strong></p>
-<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-8NkEiv-Pdy0/Wo0atMIeTBI/AAAAAAAAIiY/Xqtt1Nt4vdYMutyRHnF6SK0ywGJw6IBVwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.07.17.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-8NkEiv-Pdy0/Wo0atMIeTBI/AAAAAAAAIiY/Xqtt1Nt4vdYMutyRHnF6SK0ywGJw6IBVwCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.07.17.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">檔案 &gt; 新增 &gt; 專案</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-52w4Z2LQrMo/Wo0bFfQ42ZI/AAAAAAAAIic/W7IdEeXSIqIh3rG2CmSN4slAT6Qu1qkzgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.08.51.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-52w4Z2LQrMo/Wo0bFfQ42ZI/AAAAAAAAIic/W7IdEeXSIqIh3rG2CmSN4slAT6Qu1qkzgCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.08.51.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">選擇Web &gt; Web應用程式(.NET Framework) 。<br>專案名稱與放的位置依照自己喜好即可</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-sG9_1osHZzM/Wo0bo1ny1kI/AAAAAAAAIio/mRKCMTpCjp461LAbSFCK6EzS02y1Z02KQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.11.14.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-sG9_1osHZzM/Wo0bo1ny1kI/AAAAAAAAIio/mRKCMTpCjp461LAbSFCK6EzS02y1Z02KQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.11.14.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">選擇MVC</td></tr></tbody></table><br>建立完成之後應該可以看到這個畫面</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-bgNV43jpPbY/Wo0cBzZrZPI/AAAAAAAAIis/U152KITJzwkkk3aMigyzBB7fAyCPS0pIACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.12.56.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-bgNV43jpPbY/Wo0cBzZrZPI/AAAAAAAAIis/U152KITJzwkkk3aMigyzBB7fAyCPS0pIACLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.12.56.png" alt=""></a></div><div class="note info"><p>如果看不到方案總管,可以透過<strong>檢視</strong>&gt; <strong>方案總管</strong>來打開</p></div><br><br><br>右邊就是我們寫程式要放的地方,之後介紹Dot Net MVC時會慢慢帶到,但今天還不需要寫到程式,先直接將程式執行起來,看看預設建立好的網站是長什麼樣<br><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-rsiatvazfV0/Wo0dW96VDgI/AAAAAAAAIi0/62hUceI6RWI5zmuuQrkAE9MP5q0ZXAjaQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.17.44.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-rsiatvazfV0/Wo0dW96VDgI/AAAAAAAAIi0/62hUceI6RWI5zmuuQrkAE9MP5q0ZXAjaQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.17.44.png" alt=""></a></div><br>因為這是網站程式, 點選執行旁邊的向下箭頭後,可以依照個人喜好選擇習慣用的瀏覽器來瀏覽,我個人是習慣用Google Chrome,所以以下用Chrome做示範,選好後按下綠色的箭頭執行。<br><br>執行起來之後應該可以看到一個很專業的診斷工具面板,分別顯示目前佔了CPU幾%,用了多少記憶體…等等<br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-02yTU2prJZY/Wo0ekE8DgvI/AAAAAAAAIi8/8BiY3LezXhUhV7QMK8XeKO9oy3RG4jKOQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.22.30.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-02yTU2prJZY/Wo0ekE8DgvI/AAAAAAAAIi8/8BiY3LezXhUhV7QMK8XeKO9oy3RG4jKOQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.22.30.png" alt=""></a></div>
-
-<p>而這時候你選擇的瀏覽器應該也會開啟，然後看到目前網站的成果</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-Xw28Lnnj1vI/Wo0euDl5nmI/AAAAAAAAIjA/hj1eQKYS0jcS8goj3FDv0yngDCHDYPmVACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.24.20.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-Xw28Lnnj1vI/Wo0euDl5nmI/AAAAAAAAIjA/hj1eQKYS0jcS8goj3FDv0yngDCHDYPmVACLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.24.20.png" alt=""></a></div>
-
-<p>可以隨意的點擊網站按鈕逛逛玩玩後,現在來簡單講一下該如何追蹤偵錯<br><div class="note info"><p>偵錯是門大學問,常常我們寫的程式編譯時都沒有錯誤,但執行結果卻不如我們預期那般時,一步一步偵錯就會是我們發現問題的好朋友</p></div></p>
-<p>我們以<strong>關於這個按鈕</strong>為例,究竟點擊<strong>關於</strong>這個按鈕時,程式是如何執行,讓我們可以看到畫面的</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/--aluBIC6nMg/Wo0gH9fbBYI/AAAAAAAAIjQ/BaKOSBTJacIOl9_W7YAz8lqi-9Fx5C0FQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.29.58.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/--aluBIC6nMg/Wo0gH9fbBYI/AAAAAAAAIjQ/BaKOSBTJacIOl9_W7YAz8lqi-9Fx5C0FQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.29.58.png" alt=""></a></div>
-
-<p>因為我們還不知道目前整個程式的運作原理,所以依照下面的指示這樣做</p>
-<ol>
-<li>找到HomeController,並且打開它<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-kCJKeJELsx0/Wo0gxIiQthI/AAAAAAAAIjY/FPc1xN8m0oQzv5tfWhG8hf649M2gp4jUACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.31.50.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-kCJKeJELsx0/Wo0gxIiQthI/AAAAAAAAIjY/FPc1xN8m0oQzv5tfWhG8hf649M2gp4jUACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.31.50.png" alt=""></a></div></li>
-<li><p>找到第18行的地方,點擊那行的最左邊邊框,會產生一個紅色的原點,我們稱之為中斷點<br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-LIvuofL8J2g/Wo0ha-LzXzI/AAAAAAAAIjg/GrPyIZE-hss6nVqf2b6CgYKIhaXTjpfNgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.34.22.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-LIvuofL8J2g/Wo0ha-LzXzI/AAAAAAAAIjg/GrPyIZE-hss6nVqf2b6CgYKIhaXTjpfNgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.34.22.png" alt=""></a></div><div class="note info"><p>中斷點的意思就是,當程式執行到這行時會停下來讓你知道,並且等待你的指示</p></div></p>
-</li>
-<li><p>接著再回去剛剛的網頁點擊<strong>關於,</strong>你會發現<strong>,視窗會跳到你剛剛下得中斷點位置,而網頁會卡住,並沒有顯示關於的頁面</strong><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-_VDwlMMcZM0/Wo0iMV7i_mI/AAAAAAAAIjo/8yZiG4s8Kb0bXtwGlMl4UaLUxau9yZ5rACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.39.13.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-_VDwlMMcZM0/Wo0iMV7i_mI/AAAAAAAAIjo/8yZiG4s8Kb0bXtwGlMl4UaLUxau9yZ5rACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.39.13.png" alt=""></a></div><br>那是因為程式還沒執行完,所以還沒辦法顯示頁面資訊4.  按下<strong>F11</strong>,每按一次<strong>F11</strong>,你會看到程式往下走一行,藉此來觀察程式如何運行,並且是否符合我們預期的結果</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-2hTcGcR7bAg/Wo0mas9EleI/AAAAAAAAIj0/H7T3H2WKSO0yF_lGqHIcrR-CxhuraR1egCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.56.54.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-2hTcGcR7bAg/Wo0mas9EleI/AAAAAAAAIj0/H7T3H2WKSO0yF_lGqHIcrR-CxhuraR1egCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.56.54.png" alt=""></a></div></li>
-<li>當然,我們不必每次進入中斷點後都一步一步將它執行完,如果已經找到哪邊有問題,只要再按下繼續,程式就會自動往下跑,直到碰到下一個中斷點為止 <div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-R2SEzOTjLeU/Wo0nRTaBCsI/AAAAAAAAIj8/Sx_eFGxFUgo0TNDMGsWEcVYutD1U9pYSgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25884.00.22.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-R2SEzOTjLeU/Wo0nRTaBCsI/AAAAAAAAIj8/Sx_eFGxFUgo0TNDMGsWEcVYutD1U9pYSgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25884.00.22.png" alt=""></a></div><br>當然以上所提的,都是非常非常基礎的Visual Studio（之後文章都簡稱為VS）操作,跟日常比較會運用到的情境,VS之所以被人稱為地表最強編輯器,想當然耳不可能只有這樣而已,但這都是要慢慢開發中去體會跟累積的。相信如果真的用久了,開始使用擴充輔助套件之類的,就會知道它的強大之處。</li>
-</ol>
-<p>下一篇來提何謂MVC，知道後應就能理解為何會知道<strong>關於</strong>這個按鈕點擊後,會停在我們今天下的中斷點了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/26/【CI-CD】4-在佈署階段置換參數值，以Web-Config為例/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/26/【CI-CD】4-在佈署階段置換參數值，以Web-Config為例/" itemprop="url">【CI/CD】4. 在佈署階段置換參數值，以Web.Config為例</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-26T17:25:00+08:00">
-                2018-01-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/VSTS建置CI-CD/" itemprop="url" rel="index">
-                    <span itemprop="name">VSTS建置CI-CD</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/26/【CI-CD】4-在佈署階段置換參數值，以Web-Config為例/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/01/26/【CI-CD】4-在佈署階段置換參數值，以Web-Config為例/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="note info"><p>接續前篇 : <a href="https://toyo0103.blogspot.tw/2018/01/cicd3-vsts-azure-appservice-slot.html" target="_blank" rel="noopener">【CI/CD】3. 透過VSTS 切換Azure AppService Slot</a></p></div>
-<p>如果你的佈署狀況如下</p>
-<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-uiFFGMOOPlQ/WmraN8BbjEI/AAAAAAAAIdo/xzVVbXd5NLkz4xpa1wI-gTNN048M5R7ngCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-uiFFGMOOPlQ/WmraN8BbjEI/AAAAAAAAIdo/xzVVbXd5NLkz4xpa1wI-gTNN048M5R7ngCLcBGAs/s640/1.png" alt=""></a></td></tr><tr><td class="tr-caption" style="text-align: center;">原諒我只繪畫醜圖….</td></tr></tbody></table><br>有一次更版進到到Master Branch，而CI設定Trigger是Master更動時自動建置，CD接收到CI建置完成後執行佈署機器，而每台機器的Web.Config值都有差異，這時候該怎麼做?</p>
-<h1 id="XML-variable-substitution"><a href="#XML-variable-substitution" class="headerlink" title="#XML variable substitution"></a>#XML variable substitution</h1><p>Azure App Service Deploy有提供XML variable substitutuin可以選擇</p>
-<div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-LN_4j9iX9As/WmrfdZWF3oI/AAAAAAAAId4/Tc9U1W24Lq45Ms0p9qhtBLNX2EJ8sKJ_QCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-LN_4j9iX9As/WmrfdZWF3oI/AAAAAAAAId4/Tc9U1W24Lq45Ms0p9qhtBLNX2EJ8sKJ_QCLcBGAs/s640/1.png" alt=""></a></div><br><div class="note info"><p>依據註解中說明就是，當這個選項勾選時，他會自動去找專案中的所有.Config檔案，檔案中的appSettings，application Settings , connectionString區塊，如果有Key或Name與設定的變數相同時自動置換，且是發生在Config transforms之後</p></div><br><br><br>什麼意思呢? 直接看範例，如果我們的Web.Config裡面長這樣<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-iEfgD967KZc/WmriR-qREbI/AAAAAAAAIeE/P_zG3I8Ah3EPMA4uADVKwh8LqCImdKpjACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-iEfgD967KZc/WmriR-qREbI/AAAAAAAAIeE/P_zG3I8Ah3EPMA4uADVKwh8LqCImdKpjACLcBGAs/s400/1.png" alt=""></a></div><br>那他就會在去比對appSettings、connectionString區塊，裡面的Name或是Key有對應到變數設定的話，Value值會自動被替換，而變數設定又在哪邊呢?<br><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-bJ9GV3qzx1A/WmrjTH_HnSI/AAAAAAAAIeM/XMf0yAL-XBsfedMAXLy7jbkiS5RcfRViwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-bJ9GV3qzx1A/WmrjTH_HnSI/AAAAAAAAIeM/XMf0yAL-XBsfedMAXLy7jbkiS5RcfRViwCLcBGAs/s400/1.png" alt=""></a></div>
-
-<p>以上面兩張圖來說，那他在WebDeploy到Azure App Service之前就會將我的<strong>StaticDomains、Domain</strong>的<strong>Value</strong>換掉，因為我們在變數檔案裡面有設定。</p>
-<p>這樣我們就能透過建置多個環境的方式，在每個環境中設定好對應的變數值，只要執行一次CI流程，觸發多個CD流程，達到多台同時佈署的目的</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-Vn7jrg9S6zM/WmrkbLQL9JI/AAAAAAAAIeY/DSoCnAGpUUA_-3oKJhbPD6sj9bdNQ0DPQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-Vn7jrg9S6zM/WmrkbLQL9JI/AAAAAAAAIeY/DSoCnAGpUUA_-3oKJhbPD6sj9bdNQ0DPQCLcBGAs/s400/1.png" alt=""></a></div>
-
-<h1 id="參數不在appSettings，application-Settings-connectionString區塊之中"><a href="#參數不在appSettings，application-Settings-connectionString區塊之中" class="headerlink" title="#參數不在appSettings，application Settings , connectionString區塊之中"></a>#參數不在appSettings，application Settings , connectionString區塊之中</h1><p>這邊特別注意，剛剛那種置換的值方法僅適用於上述區塊之中，換句話說，如果我們有環境設定變數，但他又不在這幾個區塊之中，該如何做?</p>
-<h2 id="Parameter-xml"><a href="#Parameter-xml" class="headerlink" title="Parameter.xml"></a>Parameter.xml</h2><p>還好微軟有提供另一種方式能處理這個問題，就是透過Parameters.xml</p>
-<h2 id="建立parameters-xml"><a href="#建立parameters-xml" class="headerlink" title="建立parameters.xml"></a>建立parameters.xml</h2><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-DIAJpQ2tUYk/WmrlsIo55sI/AAAAAAAAIeg/PCaPpM04JucMUYC8QFByvv4X3pPcRwjJgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-DIAJpQ2tUYk/WmrlsIo55sI/AAAAAAAAIeg/PCaPpM04JucMUYC8QFByvv4X3pPcRwjJgCLcBGAs/s320/1.png" alt=""></a></div><div><br></div>
-
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parameters</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">parameter</span> <span class="attr">name</span>=<span class="string">"ExceptionlessAPIKey"</span> <span class="attr">defaultValue</span>=<span class="string">"#&#123;ExceptionlessAPIKey&#125;#"</span> &gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">parameterEntry</span></span></span><br><span class="line"><span class="tag">      <span class="attr">kind</span>=<span class="string">"XmlFile"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">scope</span>=<span class="string">"Web\.config"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">match</span>=<span class="string">"//exceptionless/@apiKey"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">parameter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">parameter</span> <span class="attr">name</span>=<span class="string">"SessionConnectionString"</span> <span class="attr">defaultValue</span>=<span class="string">"#&#123;SessionConnectionString&#125;#"</span> &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parameterEntry</span></span></span><br><span class="line"><span class="tag">      <span class="attr">kind</span>=<span class="string">"XmlFile"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">scope</span>=<span class="string">"Web\.config"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">match</span>=<span class="string">"//configuration/system.web/sessionState/@sqlConnectionString"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">parameter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parameters</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p><strong>Name</strong> : 變數名稱<br><strong>Scope</strong> : 受影響的檔案為和，你可以設定整個專案底下全部的.Config也行<br><strong>Match</strong> : 在這些檔案底下如何尋找要被替換的值</p>
-<div class="note info"><p>Example 1 :  Web.Config底下從根結點開始找起，找到一個叫做exceptionLess的Tag，然後把apiKey這個屬性換成我設定的值</p>
-<p>Example 2 :  Web.Config底下從根結點開始找起，找到configuration底下的system.web底下的sessionState Tag，然後把sqlConnectionString這個屬性換成我設定的值</p></div>
-<p><strong>DefaultValue</strong> : 如果在佈署時沒有設定參數值時，預設給的Value</p>
-<p>接著在VisualStudio按發行後應該會看到檔案長出<strong>SetParameters.xml</strong></p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-s_s3aU7dr74/WmrsRb8ETdI/AAAAAAAAIew/WYlqsjbIk0oj7ow-GOqheH4FJY6QZAUHgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-s_s3aU7dr74/WmrsRb8ETdI/AAAAAAAAIew/WYlqsjbIk0oj7ow-GOqheH4FJY6QZAUHgCLcBGAs/s640/1.png" alt=""></a></div>
-
-<p>打開來會看到</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-viIUyylwlDg/Wmr6qYwZv-I/AAAAAAAAIgE/C0ISadjZIigW7FQ6sMezcjZwYudaEaLrwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-viIUyylwlDg/Wmr6qYwZv-I/AAAAAAAAIgE/C0ISadjZIigW7FQ6sMezcjZwYudaEaLrwCLcBGAs/s640/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><br></div>
-
-<p>到這邊我們已經成功將Web.Config的指定位置挖成變數值，等等在CD階段，我們就是要想辦法把<strong>SetParameters.xml</strong>的Value值換掉</p>
-<h2 id="回到CD設定介面"><a href="#回到CD設定介面" class="headerlink" title="回到CD設定介面"></a>回到CD設定介面</h2><p>告訴<strong>Azure App Service Deploy Task</strong>，你有<strong>SetParameters.xml</strong></p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-NUpiKPxhPRY/Wmrtx-vh_HI/AAAAAAAAIfE/RRml5NRckGQ6S4uDWJJsfSHhX2H7CWEBgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-NUpiKPxhPRY/Wmrtx-vh_HI/AAAAAAAAIfE/RRml5NRckGQ6S4uDWJJsfSHhX2H7CWEBgCLcBGAs/s640/1.png" alt=""></a></div>
-
-<h2 id="安裝Replace-Token-Task"><a href="#安裝Replace-Token-Task" class="headerlink" title="安裝Replace Token Task"></a>安裝Replace Token Task</h2><div>為了置換掉SetParameters.xml裡面的值，必須幫我們VSTS安裝套件</div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-Kq1PpE97VYE/WmruR4NMthI/AAAAAAAAIfM/Vu2lwFOUsx4Npju7imY-kYBuW3Frt1exACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-Kq1PpE97VYE/WmruR4NMthI/AAAAAAAAIfM/Vu2lwFOUsx4Npju7imY-kYBuW3Frt1exACLcBGAs/s400/1.png" alt=""></a></div><div><br></div><div>安裝連結 :&nbsp; <a href="https://marketplace.visualstudio.com/items?itemName=qetza.replacetokens" target="_blank" rel="noopener">Replace Token MarketPlace&nbsp;</a></div>
-
-<p>在<strong>Azure App Service Deploy</strong>之前加上<strong>Replace Token Task</strong></p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-jDdk2Q7Mj7I/Wmru-f9N1fI/AAAAAAAAIfU/y2x-uJAWD8wQSwaij7_B6TyOS7T2RmMzQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-jDdk2Q7Mj7I/Wmru-f9N1fI/AAAAAAAAIfU/y2x-uJAWD8wQSwaij7_B6TyOS7T2RmMzQCLcBGAs/s640/1.png" alt=""></a></div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-mTQYjeZIYho/WmrvSLWq_lI/AAAAAAAAIfY/hWpXjtyZkzMf40oTRqx4cfaWoSxvNQ5XgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-mTQYjeZIYho/WmrvSLWq_lI/AAAAAAAAIfY/hWpXjtyZkzMf40oTRqx4cfaWoSxvNQ5XgCLcBGAs/s640/1.png" alt=""></a></div><div><br></div>
-
-<h2 id="設定"><a href="#設定" class="headerlink" title="設定"></a>設定</h2><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-j-77BDvLK7A/WmrxsFTAD8I/AAAAAAAAIfo/4PIBYR3ck7Uc0DSDfUcTbjs4bAA2CzM-ACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-j-77BDvLK7A/WmrxsFTAD8I/AAAAAAAAIfo/4PIBYR3ck7Uc0DSDfUcTbjs4bAA2CzM-ACLcBGAs/s640/1.png" alt=""></a></div><br><strong>Root Directory : </strong>要替換的目標檔案Root資料夾位置<br><strong>Target files : </strong>告訴它我們要找的檔案是誰，以這邊來說就是SetParameters.xml<br><strong>Token prefix、Token suffix : </strong>比對什麼是它要幫我們置換的，而這邊就是#{xxxx}#包起來的就是參數<br><br>這樣設定完之後，它就會在WebDeploy之前執行<strong>Replace Token Task</strong>，而這個Task會去找到SetParameters.xml，然後找到#{xxx}#符號的，然後用我們之前設定在<strong>Variables</strong>的參數置換掉<br><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-rvxpn3Nkvrw/WmrzQb7-SUI/AAAAAAAAIf0/fMBjj3gSnYwGvbR50p7UZcQQwvGUf5MNgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-rvxpn3Nkvrw/WmrzQb7-SUI/AAAAAAAAIf0/fMBjj3gSnYwGvbR50p7UZcQQwvGUf5MNgCLcBGAs/s640/1.png" alt=""></a></div><div><br></div>
-
-<div class="note info"><p><strong>參考文章 </strong></p>
-<p><a href="http://andrew.lansdowne.me/2016/12/15/using-environment-variables-for-configuration-with-vsts-build-and-release/" target="_blank" rel="noopener">Using environment variables for configuration with VSTS build and release</a></p>
-<p><a href="http://cobus.io/devops/2016/02/06/Parameterizing_Webconfig.html" target="_blank" rel="noopener">Parameterizing Web.config</a></p>
-<p><a href="https://blogs.iis.net/elliotth/web-deploy-xml-file-parameterization" target="_blank" rel="noopener">Web Deploy XML File Parameterization</a></p>
-<p><a href="http://jakeydocs.readthedocs.io/en/latest/publishing/vsts-continuous-deployment.html" target="_blank" rel="noopener">Use VSTS to Build and Publish to an Azure Web App with Continuous Deployment</a></p>
-<p><a href="http://blog.ehn.nu/2016/03/using-web-deploy-in-visual-studio-team-services-release-management/" target="_blank" rel="noopener">Using Web Deploy in Visual Studio Team Services Release Management</a></p>
-<p><a href="https://docs.microsoft.com/en-us/vsts/build-release/tasks/transforms-variable-substitution" target="_blank" rel="noopener">File transforms and variable substitution reference</a></p></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/26/【CI-CD】3-透過VSTS-切換Azure-AppService-Slot/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/26/【CI-CD】3-透過VSTS-切換Azure-AppService-Slot/" itemprop="url">【CI/CD】3. 透過VSTS 切換Azure AppService Slot</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-26T13:51:00+08:00">
-                2018-01-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/VSTS建置CI-CD/" itemprop="url" rel="index">
-                    <span itemprop="name">VSTS建置CI-CD</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/26/【CI-CD】3-透過VSTS-切換Azure-AppService-Slot/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/01/26/【CI-CD】3-透過VSTS-切換Azure-AppService-Slot/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="note info"><p>接續前篇 : <a href="https://toyo0103.blogspot.tw/2018/01/cicd2-vstsazure-appservice.html" target="_blank" rel="noopener">【CI/CD】2. 透過VSTS自動佈署程式到Azure AppService</a></p></div>
-<p>一般為了服務的順暢，一般都會在正式機的Azure App Service開啟Slot服務<br><div class="note info"><p>參考 : <a href="https://docs.microsoft.com/zh-tw/azure/app-service/web-sites-staged-publishing" target="_blank" rel="noopener">在 Azure App Service 中設定預備環境</a></p></div></p>
-<p>好讓服務更新時，能無痛更新且不會中斷Session。</p>
-<p>而上一篇有提到如何更新Azure App Service，但如果在有開啟Slot的情形下，設定要做一些變更。</p>
-<h4 id="首先先將設定從佈署正式機改成佈署到Slot"><a href="#首先先將設定從佈署正式機改成佈署到Slot" class="headerlink" title="首先先將設定從佈署正式機改成佈署到Slot"></a><span style="font-weight: normal;">首先先將設定從佈署</span>正式機<span style="font-weight: normal;">改成佈署到</span>Slot</h4><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-8u_M2pW8r6I/Wmq7HICh6mI/AAAAAAAAIcE/XVVdqTZH-houw6m7iXuRw1R1B-QYMuPHgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-8u_M2pW8r6I/Wmq7HICh6mI/AAAAAAAAIcE/XVVdqTZH-houw6m7iXuRw1R1B-QYMuPHgCLcBGAs/s640/1.png" alt=""></a></div><div><br></div><div>勾選Deploy to Slot後，會需要選擇<strong>Resource group</strong>與<strong>Slot</strong>，分別選擇好後存檔。</div><div><br></div><div><br></div>
-
-<h3 id="新增一組切換Slot-的Enviroment"><a href="#新增一組切換Slot-的Enviroment" class="headerlink" title="新增一組切換Slot 的Enviroment"></a><span style="font-weight: normal;">新增一組切換</span>Slot <span style="font-weight: normal;">的</span>Enviroment</h3><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-sDn38p_Mnbw/Wmq8ETA_jDI/AAAAAAAAIcM/H_eI0hPhGIwW-a6rxAwMdWy7O7s5vlCAACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-sDn38p_Mnbw/Wmq8ETA_jDI/AAAAAAAAIcM/H_eI0hPhGIwW-a6rxAwMdWy7O7s5vlCAACLcBGAs/s1600/1.png" alt=""></a></div><div><br></div><div>因為我們是希望佈署到Slot後，再決定要不要跟正式機進行交換，所以是按第一組環境的Add而不是Enviroments Add，兩個差異如下</div><div><br></div><div><strong>Enviroments Add : </strong>同時觸發</div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-MeAkdLz3Cr0/Wmq8tNg9y9I/AAAAAAAAIcY/OscSApLOq4U9Fg19E1Ck7ai5RQO6Yi5agCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-MeAkdLz3Cr0/Wmq8tNg9y9I/AAAAAAAAIcY/OscSApLOq4U9Fg19E1Ck7ai5RQO6Yi5agCLcBGAs/s400/1.png" alt=""></a></div><div><strong>
-</strong></div><div><strong>DeployToStage Add : </strong>依序</div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-rgl9IIrg7PM/Wmq9FwxUOPI/AAAAAAAAIcc/X4QXZY09ZqwBjKuO14TeLbQdhBY5ZkfCQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-rgl9IIrg7PM/Wmq9FwxUOPI/AAAAAAAAIcc/X4QXZY09ZqwBjKuO14TeLbQdhBY5ZkfCQCLcBGAs/s400/1.png" alt=""></a></div><div><br></div><div><br><br>### <span style="font-weight: 400;"><br></span><br><br>### <span style="font-weight: 400;">設定</span>Swap Slot<br></div>
-
-<h4 id="新增Azure-App-Service-Manage"><a href="#新增Azure-App-Service-Manage" class="headerlink" title="新增Azure App Service Manage"></a>新增Azure App Service Manage</h4><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-cu8E1X0iFtc/Wmq9gXARCNI/AAAAAAAAIck/BhcwVvceOyUPJ_1rBx_57fn5zLIbbynDQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-cu8E1X0iFtc/Wmq9gXARCNI/AAAAAAAAIck/BhcwVvceOyUPJ_1rBx_57fn5zLIbbynDQCLcBGAs/s400/1.png" alt=""></a></div><div><br></div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-rERunRQExFg/Wmq-YRBwp7I/AAAAAAAAIc0/MxgvqqNAZrIPKSGwPgHfBIEB3DHe7-qswCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-rERunRQExFg/Wmq-YRBwp7I/AAAAAAAAIc0/MxgvqqNAZrIPKSGwPgHfBIEB3DHe7-qswCLcBGAs/s400/1.png" alt=""></a></div><div><br></div><div>跟前面的設定基本上都一樣，只要是Action的地方要選擇<strong>Swap Slots</strong></div><div><strong>
-</strong></div><div><strong>
-</strong></div>
-
-<h4 id="加上啟動切換Slot的條件"><a href="#加上啟動切換Slot的條件" class="headerlink" title="加上啟動切換Slot的條件"></a>加上啟動切換Slot的條件</h4><div>正式機加上上述設定後帶來了一些好處</div><div><br></div><div>1.上線時推程式會先進到Slot，先連到Slot測試確定沒問題</div><div>2.讓正式機跟Slot交換，線上服務感受不到中斷，但程式已經更新了</div><div><br></div><div>而我們為了安全起見，在切換Slot前會再加一到人工審核，當核准時才會進行切換</div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-NPW1J_euv1g/Wmq_d5ZIgbI/AAAAAAAAIc8/fel0tpckNpY3G9U-Ce-l_7cux4hh69UrgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-NPW1J_euv1g/Wmq_d5ZIgbI/AAAAAAAAIc8/fel0tpckNpY3G9U-Ce-l_7cux4hh69UrgCLcBGAs/s400/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-MUxdoYfNdvI/WmrAesUzntI/AAAAAAAAIdI/rprzi_YpU2I3gU8Nf6WvND6lnqbP5f-TwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-MUxdoYfNdvI/WmrAesUzntI/AAAAAAAAIdI/rprzi_YpU2I3gU8Nf6WvND6lnqbP5f-TwCLcBGAs/s640/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div><br></div><div><br></div><div>這樣設定後，切換Slot就會需要審核</div><div><br></div><div><br></div><div>第一關審核是佈署到Slot</div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-xPtLxwhLiEM/WmrA85Q54II/AAAAAAAAIdM/w5moJRIMBecavQfl60mVPKB6fhLedXgRgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-xPtLxwhLiEM/WmrA85Q54II/AAAAAAAAIdM/w5moJRIMBecavQfl60mVPKB6fhLedXgRgCLcBGAs/s400/1.png" alt=""></a></div><div><br></div><div>第二關審核是將正式機跟Slot切換</div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-rZTHXtthOOk/WmrBvam9k3I/AAAAAAAAIdY/yuP69VL0ZlkFPnQ5CWUd8nTImmr4mWBdACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-rZTHXtthOOk/WmrBvam9k3I/AAAAAAAAIdY/yuP69VL0ZlkFPnQ5CWUd8nTImmr4mWBdACLcBGAs/s400/1.png" alt=""></a></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div>下一篇來寫如何在CD階段置換參數值</div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2054,7 +2111,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-count">174</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -2076,7 +2133,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -2162,7 +2219,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

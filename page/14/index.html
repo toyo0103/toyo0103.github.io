@@ -295,6 +295,415 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/09/09/【MVC】MVC上傳圖片/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/09/09/【MVC】MVC上傳圖片/" itemprop="url">【MVC】MVC上傳圖片</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-09-09T17:39:00+08:00">
+                2013-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/09/09/【MVC】MVC上傳圖片/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/09/09/【MVC】MVC上傳圖片/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><p>View <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">using</span> (Html.BeginForm(<span class="string">"edit"</span>, <span class="string">"group"</span>, FormMethod.Post, <span class="keyword">new</span> &#123; enctype = <span class="string">"multipart/form-data"</span> &#125;))</span><br><span class="line">&#123;</span><br><span class="line">  &lt;div <span class="keyword">class</span>=<span class="string">"form-group"</span>&gt;</span><br><span class="line">   &lt;label <span class="keyword">for</span>=<span class="string">"picturl"</span>&gt;圖片&lt;/label&gt;</span><br><span class="line">   &lt;input type=<span class="string">"file"</span> id=<span class="string">"picture"</span> name=<span class="string">"picture"</span> /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>Controller，這邊特別注意<span style="color: blue;">HttpPostedFileBase</span> picture的參數名稱要與View file的name相同 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">AddExhibitionItem</span>(<span class="params"><span class="keyword">string</span> name, <span class="keyword">string</span> sort,<span class="keyword">string</span> stop ,HttpPostedFileBase picture</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">string</span> err= <span class="keyword">string</span>.Empty;</span><br><span class="line">   <span class="keyword">if</span> (ExhibitionUtilFactory.AddItem(name, sort, stop, picture, <span class="keyword">ref</span> err))</span><br><span class="line">   &#123;</span><br><span class="line">     <span class="keyword">return</span> Content(<span class="string">"&lt;script&gt;alert('新增成功');window.parent.closeDialog();&lt;/script&gt;"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span>   &#123;</span><br><span class="line">      TempData[<span class="string">"alert"</span>] = err;</span><br><span class="line">      <span class="keyword">return</span> View();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>如果是多檔上傳的話，View <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="keyword">class</span>=<span class="string">"form-group"</span>&gt;</span><br><span class="line">   &lt;label <span class="keyword">for</span>=<span class="string">"picturl"</span>&gt;圖片&lt;/label&gt;</span><br><span class="line">   &lt;input type=<span class="string">"file"</span> id=<span class="string">"picture1"</span> name=<span class="string">"picture"</span> /&gt;</span><br><span class="line">   &lt;input type=<span class="string">"file"</span> id=<span class="string">"picture2"</span> name=<span class="string">"picture"</span> /&gt;</span><br><span class="line">   &lt;input type=<span class="string">"file"</span> id=<span class="string">"picture3"</span> name=<span class="string">"picture"</span> /&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>Controller <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">AddExhibitionItem</span>(<span class="params"><span class="keyword">string</span> name, <span class="keyword">string</span> sort,<span class="keyword">string</span> stop ,IEnumerable&lt;HttpPostedFileBase&gt; picture</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">foreach</span> (<span class="keyword">var</span> file <span class="keyword">in</span> picture)   &#123;</span><br><span class="line">     ............   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/" itemprop="url">【LINQ TO SQL】解決SubmitChanges時與資料庫衝突的問題</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-09-06T10:39:00+08:00">
+                2013-09-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>一樣參考保哥的<a href="http://blog.miniasp.com/post/2008/05/24/Resolve-LINQ-to-SQL-Change-Conflict-Exception.aspx" target="_blank" rel="noopener">解決 LINQ to SQL 資料庫更新衝突的情形</a>與公司前輩的Source Code</li>
+<li><strong>發生原因：</strong>有可能我們在跟DB取得某個欄位時得到A這個值，但當我們改動這個值並嘗試更新回DB時，可能DB早就被其他使用者改成B了。DBContext SubmitChanges會去比對這個欄位最初值是否與DB目前的值一致避免Dirty Data的問題，但當上述情況發生時則會擲出Exception。各種處理方式如下:<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">   _dbContext.SubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (System.Data.Linq.ChangeConflictException ex)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">foreach</span> (System.Data.Linq.ObjectChangeConflict occ <span class="keyword">in</span> _dbContext.ChangeConflicts)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="comment">// 採用資料庫的查詢出來的值，目前物件的值將會被資料庫最新查到的複寫</span></span><br><span class="line">      <span class="comment">//occ.Resolve(System.Data.Linq.RefreshMode.OverwriteCurrentValues);</span></span><br><span class="line"></span><br><span class="line">          <span class="comment">// 採用目前物件中的值，並更新資料庫中的版本</span></span><br><span class="line">      <span class="comment">//occ.Resolve(System.Data.Linq.RefreshMode.KeepCurrentValues);</span></span><br><span class="line"></span><br><span class="line">          <span class="comment">// 僅更新此物件中變更的欄位，僅將變更的欄位寫入資料庫（或稱為合併更新）</span></span><br><span class="line">      occ.Resolve(System.Data.Linq.RefreshMode.KeepChanges);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 注意：解決完衝突之後要記得重新再 SubmitChanges() 一次，否則一樣不會更新資料庫</span></span><br><span class="line">    _dbContext.SubmitChanges();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/09/03/【SQL】SQL-2008R2-開啟SA帳號/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/09/03/【SQL】SQL-2008R2-開啟SA帳號/" itemprop="url">【SQL】SQL 2008R2 開啟SA帳號</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-09-03T09:57:00+08:00">
+                2013-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/09/03/【SQL】SQL-2008R2-開啟SA帳號/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/09/03/【SQL】SQL-2008R2-開啟SA帳號/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>這個東西做了八百萬遍了還是常常忘記在哪設定，所以決定寫起來方必查詢(汗)*   首先，SQL Server上右鍵 &gt; 屬性 &gt; 安全性 &gt; 選擇SQL Server及Windows驗證模式<br><a href="http://3.bp.blogspot.com/-mE-e_m1GG5A/UiU_U4zbxFI/AAAAAAAAEFU/iKr_d0k9Bcs/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-mE-e_m1GG5A/UiU_U4zbxFI/AAAAAAAAEFU/iKr_d0k9Bcs/s1600/1.png" alt=""></a><br><a href="http://1.bp.blogspot.com/-AP3hYPuC948/UiVAJIB5byI/AAAAAAAAEFc/bb-y_80CC30/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-AP3hYPuC948/UiVAJIB5byI/AAAAAAAAEFc/bb-y_80CC30/s1600/1.png" alt=""></a></li>
+<li>安全性 &gt; 登入 &gt; SA帳戶 &gt; 屬性<br><a href="http://3.bp.blogspot.com/-Jcp7Ew-tGO0/UiVAzjFHpuI/AAAAAAAAEFo/RkC9pLBz-lg/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-Jcp7Ew-tGO0/UiVAzjFHpuI/AAAAAAAAEFo/RkC9pLBz-lg/s1600/1.png" alt=""></a><br>狀態 &gt; 登入 &gt; 啟用<br><a href="http://1.bp.blogspot.com/-9DV1cn7WvxU/UiVBdtlhuBI/AAAAAAAAEFw/vIwxIh0Fhqw/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-9DV1cn7WvxU/UiVBdtlhuBI/AAAAAAAAEFw/vIwxIh0Fhqw/s1600/1.png" alt=""></a></li>
+<li>重新啟動SQL服務<br><a href="http://3.bp.blogspot.com/-o4plDe-GmWM/UiVByaHsp_I/AAAAAAAAEF4/MYqwyrFuSvI/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-o4plDe-GmWM/UiVByaHsp_I/AAAAAAAAEF4/MYqwyrFuSvI/s1600/1.png" alt=""></a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/09/01/【C-】FormsAuthentication驗證模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1237,422 +1646,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/29/【SQL】Group-by-and-Top-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/05/29/【SQL】Group-by-and-Top-1/" itemprop="url">【SQL】Group by and Top 1</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-29T17:13:00+08:00">
-                2013-05-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/05/29/【SQL】Group-by-and-Top-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/05/29/【SQL】Group-by-and-Top-1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>參考：<a href="http://www.dotblogs.com.tw/joysdw12/archive/2011/12/28/63596.aspx" target="_blank" rel="noopener">[SQL] 於多筆重複資料中取得該重複群組中最新一筆資料</a></p>
-<p>今天也遇到一個需求是將group by完後的資料挑出最新的一筆<br>模擬的原始資料大致如下<br><a href="http://1.bp.blogspot.com/-aelfyc7IvaY/UaXE0bMvmsI/AAAAAAAADmg/NyXn94jNZXQ/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-aelfyc7IvaY/UaXE0bMvmsI/AAAAAAAADmg/NyXn94jNZXQ/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt=""></a></p>
-<p>我希望抓出每個人在在每個地點所做的最後一件事情，寫法如下: </p>
-<ul>
-<li><p>先將每個人跟地點透過時間由大到小歸類          <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *  ,ROW_NUMBER() <span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> location,who <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">time</span> <span class="keyword">Desc</span> ) <span class="keyword">as</span> row_index</span><br><span class="line">             <span class="keyword">from</span> timeline</span><br></pre></td></tr></table></figure></p>
-<pre><code>[![](http://3.bp.blogspot.com/-hbcc3sD90ek/UaXGjjKL0UI/AAAAAAAADmw/jh2ks4iABqM/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png)](http://3.bp.blogspot.com/-hbcc3sD90ek/UaXGjjKL0UI/AAAAAAAADmw/jh2ks4iABqM/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png)*   然後        <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line">         <span class="keyword">from</span> (</span><br><span class="line">              <span class="keyword">select</span> *  ,ROW_NUMBER() <span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> location,who <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">time</span> <span class="keyword">Desc</span> ) <span class="keyword">as</span> row_index</span><br><span class="line">              <span class="keyword">from</span> timeline) <span class="keyword">as</span> tempTable</span><br><span class="line">         <span class="keyword">where</span> tempTable.row_index = <span class="number">1</span></span><br></pre></td></tr></table></figure>
-</code></pre><p>   <a href="http://4.bp.blogspot.com/-E-Syl1jp57A/UaXHnZ_4jwI/AAAAAAAADm8/4cLCGkPmMag/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-E-Syl1jp57A/UaXHnZ_4jwI/AAAAAAAADm8/4cLCGkPmMag/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt=""></a>*   結論就是早點回家，否則也只是在公司吃東西而已 XD</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/28/SQL-NOT-EXISTS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/05/28/SQL-NOT-EXISTS/" itemprop="url">SQL NOT  EXISTS</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-28T14:46:00+08:00">
-                2013-05-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/05/28/SQL-NOT-EXISTS/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/05/28/SQL-NOT-EXISTS/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="http://frankiestudy.blogspot.tw/2012/01/sql-not-exists.html" target="_blank" rel="noopener">參考</a><br><a href="http://msdn.microsoft.com/en-us/library/bb399769.aspx" target="_blank" rel="noopener">MSDN</a><br>結論就是，如果單一欄位要篩選掉就用Not IN <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> [<span class="keyword">order</span>]</span><br><span class="line"><span class="keyword">where</span> 序號 <span class="keyword">not</span> <span class="keyword">in</span> </span><br><span class="line">(</span><br><span class="line"> <span class="keyword">select</span> 訂單編號 <span class="keyword">from</span> orderDetail</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
-<p>如果多個欄位要同時符合才篩選掉，就用Not Exists <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *</span><br><span class="line"><span class="keyword">from</span> [<span class="keyword">order</span>] a</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">not</span> <span class="keyword">exists</span></span><br><span class="line">(</span><br><span class="line"> <span class="keyword">select</span> 訂單編號 <span class="keyword">from</span> orderDetail b </span><br><span class="line"> <span class="keyword">where</span> b.訂單編號 = a.序號 <span class="keyword">and</span> b.購買日期 = (a.民國年+<span class="number">1911</span>) </span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/20/【SharePoint-2013】開啟BreadCrumb/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/05/20/【SharePoint-2013】開啟BreadCrumb/" itemprop="url">【SharePoint 2013】開啟BreadCrumb</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-20T10:15:00+08:00">
-                2013-05-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/05/20/【SharePoint-2013】開啟BreadCrumb/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/05/20/【SharePoint-2013】開啟BreadCrumb/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>用Sharepoint Designer登入SharePoint網站</li>
-<li>編輯主板頁面</li>
-<li>找到GlobalBreadCrumbNavPopout</li>
-<li><p>做以下修改</p>
-<pre><code>*   將div class=&quot;ms-breadcrumb-dropdownBox&quot;旁邊的display:none修改掉
-</code></pre><ul>
-<li>將GlobalBreadCrumbNavPopout的Visible改為True</li>
-<li><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"ms-breadcrumb-dropdownBox"</span> <span class="attr">style</span>=<span class="string">"display:inline;"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">SharePoint:AjaxDelta</span> <span class="attr">id</span>=<span class="string">"DeltaBreadcrumbDropdown"</span> <span class="attr">runat</span>=<span class="string">"server"</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;<span class="name">SharePoint:PopoutMenu</span></span></span><br><span class="line"><span class="tag">  <span class="attr">Visible</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">runat</span>=<span class="string">"server"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">ID</span>=<span class="string">"GlobalBreadCrumbNavPopout"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">IconUrl</span>=<span class="string">"/_layouts/15/images/spcommon.png?rev=23"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">IconAlt</span>=<span class="string">"&lt;%$Resources:wss,master_breadcrumbIconAlt%&gt;"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">ThemeKey</span>=<span class="string">"v15breadcrumb"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">IconOffsetX</span>=<span class="string">"215"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">IconOffsetY</span>=<span class="string">"120"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">IconWidth</span>=<span class="string">"16"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">IconHeight</span>=<span class="string">"16"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">AnchorCss</span>=<span class="string">"ms-breadcrumb-anchor"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">AnchorOpenCss</span>=<span class="string">"ms-breadcrumb-anchor-open"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">MenuCss</span>=<span class="string">"ms-breadcrumb-menu ms-noList"</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>breadCrumb就出現了<br><a href="http://4.bp.blogspot.com/-NKa8p_r0erM/UZmIbzWmblI/AAAAAAAADb4/2QDnT1WcKWI/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-NKa8p_r0erM/UZmIbzWmblI/AAAAAAAADb4/2QDnT1WcKWI/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt=""></a></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1707,7 +1700,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-count">174</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1729,7 +1722,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -1815,7 +1808,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

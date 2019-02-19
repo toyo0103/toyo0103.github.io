@@ -295,6 +295,414 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/22/如何設定檔案、資料夾匿名驗證存取權限/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/03/22/如何設定檔案、資料夾匿名驗證存取權限/" itemprop="url">如何設定檔案、資料夾匿名驗證存取權限</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-03-22T11:43:00+08:00">
+                2017-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/22/如何設定檔案、資料夾匿名驗證存取權限/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/03/22/如何設定檔案、資料夾匿名驗證存取權限/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>每次討論到windows或是IIS權限都是我的弱項，碰到這類問題總是要搞個老半天，所以處理完趕緊來記錄一下!!</p>
+<h4 id="情境"><a href="#情境" class="headerlink" title="情境 :"></a>情境 :</h4><p>同事希望某個資料夾下的Json檔案都不能被外部存取，但唯獨某一支有資訊安全問題，想要排除</p>
+<h4 id="解決方案"><a href="#解決方案" class="headerlink" title="解決方案:"></a>解決方案:</h4><div>一開始單純的想說透過IIS的驗證設定將該資料夾的匿名驗證停用，但這樣就變成所有在該資料夾底下的檔案都讀取不到了。</div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-RnKuPAsgeo4/WNHuiKDxc5I/AAAAAAAAIFo/iW3Vy1dIanMIQnrg8fN8Bey6ieywbJX8ACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-RnKuPAsgeo4/WNHuiKDxc5I/AAAAAAAAIFo/iW3Vy1dIanMIQnrg8fN8Bey6ieywbJX8ACLcB/s640/1.png" alt=""></a></div><div><br></div><div><br></div><div>最後查了一下後，採取透過Web.config設定的方式來達成!!</div><div><br></div><div><br><br>1.  首先在Web.config的system.webServer區段接入以下區段 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">handlers</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">add</span> <span class="attr">name</span>=<span class="string">"JsonHandler"</span> <span class="attr">verb</span>=<span class="string">"*"</span> <span class="attr">path</span>=<span class="string">"*.json"</span> <span class="attr">type</span>=<span class="string">"System.Web.StaticFileHandler"</span> <span class="attr">resourceType</span>=<span class="string">"Unspecified"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">handlers</span>&gt;</span></span><br></pre></td></tr></table></figure><br><br>2.  接著在想要權限控管的那個資料夾底下加入一個新的web.config，並且寫入以下區段 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">system.web</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">authorization</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">deny</span> <span class="attr">users</span>=<span class="string">"?"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">authorization</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">system.web</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">location</span> <span class="attr">path</span>=<span class="string">"xxx.json"</span>&gt;</span>    <span class="tag">&lt;<span class="name">system.web</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">authorization</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">allow</span> <span class="attr">users</span>=<span class="string">"?"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">authorization</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">system.web</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">location</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure><br><br>這邊稍微解釋一下意思，首先authorization區段底下寫著deny user=”?”，表示匿名驗證的使用者都無法存取。<br><br>    接著location path這段是表示，xxx.json，他的權限是可以允許(allow)匿名驗證者個存取。&nbsp;</div><div><br></div><div>這樣設定完後進行測試，的確該資料夾底下的所以檔案都會無法直接讀取，並且跳出401權限驗證錯誤，而xxx.json雖然在同資料夾下，但卻是可以直接讀取檔案的<br><br>因為關於權限設定真的是肉腳一枚，如果有寫錯或觀念偏誤的地方，也歡迎留言指正教導，感激不盡!!!<br><br></div><div><br></div><div><br></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/13/【生產力】SmartPaster/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/03/13/【生產力】SmartPaster/" itemprop="url">【生產力】SmartPaster</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-03-13T10:20:00+08:00">
+                2017-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/03/13/【生產力】SmartPaster/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/03/13/【生產力】SmartPaster/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>常常我會在SSMS上面撰寫SQL語法，等到確定之後才會把他挪到專案內，這時候就會碰到要補上前後雙引號或是跳脫字元等問題，以前都會笨笨的一行一行慢慢改，直到朋友介紹我一款<strike>好藥</strike>好套件<strong>SmartPaster</strong></p>
+<div><strong>
+</strong></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-z9hPIDANTMo/WMX_dl7i0HI/AAAAAAAAIFE/PS6PSdkYy4w1lh-BSUYlR608rsaAfU89wCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-z9hPIDANTMo/WMX_dl7i0HI/AAAAAAAAIFE/PS6PSdkYy4w1lh-BSUYlR608rsaAfU89wCLcB/s1600/1.png" alt=""></a></div><div><strong>
+</strong></div><div><br><div class="note info"><p>下載位置 : <a href="https://marketplace.visualstudio.com/items?itemName=martinw.SmartPaster2013" target="_blank" rel="noopener">https://marketplace.visualstudio.com/items?itemName=martinw.SmartPaster2013</a></p></div><br><br><br>它的功用是做什麼呢? 我想直接看圖就一目了然了<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-QzoRYhI2WNg/WMYAOrkP_DI/AAAAAAAAIFI/7dsnic6h8wohlRxmfLkli7y7krZfv5URACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-QzoRYhI2WNg/WMYAOrkP_DI/AAAAAAAAIFI/7dsnic6h8wohlRxmfLkli7y7krZfv5URACLcB/s1600/1.png" alt=""></a></div>
+
+<p>只要你複製好任何字串，這邊以這串為例<br><div class="note info"><p>select *<br>from Employee</p></div><br>到VS裡面的時候點擊右鍵 &gt;&gt; Paste As… &gt;&gt; 選擇你要貼上的格式，登登~~~</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-Z0tq9CXFV1M/WMYBiGjJ7DI/AAAAAAAAIFU/8sWywyAkPfQRAE3w9FS-AJn7KJAyjH7cACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-Z0tq9CXFV1M/WMYBiGjJ7DI/AAAAAAAAIFU/8sWywyAkPfQRAE3w9FS-AJn7KJAyjH7cACLcB/s1600/1.png" alt=""></a></div>
+
+<p>自動就會幫你補上可以執行的程式了，不用再自己前後雙引號、跳脫字元等等，搞到格式大亂啦!!!! YES</p></div><p></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/14/【UnitTest】Mock-Controller-Request/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/02/14/【UnitTest】Mock-Controller-Request/" itemprop="url">【UnitTest】Mock Controller Request</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-02-14T09:37:00+08:00">
+                2017-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/02/14/【UnitTest】Mock-Controller-Request/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/02/14/【UnitTest】Mock-Controller-Request/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>寫單元測試測試Controller的時候，有時候程式中會用到<a href="https://msdn.microsoft.com/en-us/library/system.web.mvc.controller.request(v=vs.118" target="_blank" rel="noopener">Controller.Request Property</a>.aspx)，但單元測試並不是真的Web連線行為，所以呼叫到Request的時候會是Null , 想要做一個假的塞給他，這個屬性卻是只能讀取不能寫入的</p>
+<div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-4_O_yEIRJeA/WKJdDhYR0MI/AAAAAAAAIEk/pa8aYvPcJw4jt62eTTSYrp6h-hK98eP1ACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-4_O_yEIRJeA/WKJdDhYR0MI/AAAAAAAAIEk/pa8aYvPcJw4jt62eTTSYrp6h-hK98eP1ACLcB/s1600/1.png" alt=""></a></div>
+
+<p>每次寫完沒多久碰到就又會忘記，所以筆記下來方便以後查找，這邊一樣用NSubstitute套件做處理</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-dMNVp94tO1Y/WKJeLHnEa8I/AAAAAAAAIEs/7yAUVlh29F0wsXsmTjh_UcSZUdoC8MfpgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-dMNVp94tO1Y/WKJeLHnEa8I/AAAAAAAAIEs/7yAUVlh29F0wsXsmTjh_UcSZUdoC8MfpgCLcB/s1600/1.png" alt=""></a></div>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">YourController Sut = <span class="keyword">new</span> YourController();</span><br><span class="line"> <span class="keyword">var</span> request = Substitute.For&lt;HttpRequestBase&gt;();</span><br><span class="line"> <span class="keyword">var</span> context = Substitute.For&lt;HttpContextBase&gt;();</span><br><span class="line"> request.HttpMethod.Returns(<span class="string">"Get"</span>);</span><br><span class="line"> context.Request.Returns(request);</span><br><span class="line"></span><br><span class="line"> Sut.ControllerContext = <span class="keyword">new</span> ControllerContext(context, <span class="keyword">new</span> RouteData(), Sut);</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/23/【C-】程式建立LocalDB-mdf-與刪除/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1279,425 +1687,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/10/【Linq】Multiple-Column-with-OrderBy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/11/10/【Linq】Multiple-Column-with-OrderBy/" itemprop="url">【Linq】Multiple Column with OrderBy</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-11-10T11:24:00+08:00">
-                2016-11-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/11/10/【Linq】Multiple-Column-with-OrderBy/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/11/10/【Linq】Multiple-Column-with-OrderBy/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>用Linq的好處是強型別，讓你在寫程式的時後不會因為Key錯字，但也有些衍伸的問題導致程式會寫得很醜，以前最常碰到的例子就是，當排序可能依據【多欄位】升降冪，程式就會又臭又長。</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="comment">//要用來排序的欄位</span></span><br><span class="line"> OrderByColumnEnum OrderByColumn = OrderByColumnEnum.Pin;</span><br><span class="line"> <span class="comment">//排序的方法</span></span><br><span class="line"> OrderByEnum OrderBy = OrderByEnum.ASC;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//準備資料</span></span><br><span class="line"> <span class="keyword">var</span> BuildingList = <span class="keyword">new</span> List&lt;Building&gt;();</span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line"> &#123;</span><br><span class="line">  BuildingList.Add(<span class="keyword">new</span> Building </span><br><span class="line">  &#123;</span><br><span class="line">   Age = <span class="number">1</span> * (i+<span class="number">1</span>),</span><br><span class="line">   Pin = <span class="number">1</span> * (i+<span class="number">1</span>),</span><br><span class="line">   CaseDate = DateTime.Now.AddDays(i +<span class="number">1</span>)</span><br><span class="line">  &#125;);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//排序欄位</span></span><br><span class="line"> <span class="keyword">switch</span> (OrderByColumn)</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">case</span> OrderByColumnEnum.Pin:</span><br><span class="line">   <span class="keyword">switch</span> (OrderBy)</span><br><span class="line">   &#123;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.ASC:</span><br><span class="line">     <span class="comment">//因為裡面用到的欄位不同,又是強型別,只能寫死...</span></span><br><span class="line">     BuildingList = BuildingList.OrderBy(x =&gt; x.Pin).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.DESC:</span><br><span class="line">     BuildingList = BuildingList.OrderByDescending(x =&gt; x.Pin).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> OrderByColumnEnum.Age:</span><br><span class="line">   <span class="keyword">switch</span> (OrderBy)</span><br><span class="line">   &#123;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.ASC:</span><br><span class="line">     BuildingList = BuildingList.OrderBy(x =&gt; x.Age).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.DESC:</span><br><span class="line">     BuildingList = BuildingList.OrderByDescending(x =&gt;x.Age).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> OrderByColumnEnum.CaseDate:</span><br><span class="line">   <span class="keyword">switch</span> (OrderBy)</span><br><span class="line">   &#123;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.ASC:</span><br><span class="line">     BuildingList = BuildingList.OrderBy(x =&gt; x.CaseDate).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.DESC:</span><br><span class="line">     BuildingList = BuildingList.OrderByDescending(x =&gt; x.CaseDate).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> BuildingList.Dump();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Building</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">int</span> Pin &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">int</span> Age &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> DateTime CaseDate &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 排序欄位</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> OrderByColumnEnum</span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> 成交日期</span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"> CaseDate,</span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> 建坪</span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"> Pin,</span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> 屋齡</span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"> Age</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 排序方法</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> OrderByEnum</span><br><span class="line">&#123;</span><br><span class="line"> ASC = <span class="number">1</span>,</span><br><span class="line"> DESC = <span class="number">2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>因為每個欄位不同名稱,又有可能升降冪，所以寫的超級長，如果欄位達到5~6個時，幾乎已經無法維護，但其實只要搭配一點點反射可以把這段改得很漂亮的</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//要用來排序的欄位</span></span><br><span class="line"> OrderByColumnEnum OrderByColumn = OrderByColumnEnum.Pin;</span><br><span class="line"> <span class="comment">//排序的方法</span></span><br><span class="line"> OrderByEnum OrderBy = OrderByEnum.ASC;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//準備資料</span></span><br><span class="line"> <span class="keyword">var</span> BuildingList = <span class="keyword">new</span> List&lt;Building&gt;();</span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line"> &#123;</span><br><span class="line">  BuildingList.Add(<span class="keyword">new</span> Building </span><br><span class="line">  &#123;</span><br><span class="line">   Age = <span class="number">1</span> * (i+<span class="number">1</span>),</span><br><span class="line">   Pin = <span class="number">1</span> * (i+<span class="number">1</span>),</span><br><span class="line">   CaseDate = DateTime.Now.AddDays(i +<span class="number">1</span>)</span><br><span class="line">  &#125;);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//排序欄位</span></span><br><span class="line"> <span class="keyword">var</span> param = OrderByColumnEnum.Pin.ToString();</span><br><span class="line"></span><br><span class="line"> <span class="comment">//透過PropertyInfo操作</span></span><br><span class="line"> <span class="keyword">var</span> propertyInfo = <span class="keyword">typeof</span>(Building).GetProperty(param);</span><br><span class="line"> <span class="keyword">switch</span> (OrderBy)</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">case</span> OrderByEnum.ASC:</span><br><span class="line">   BuildingList = BuildingList.OrderBy(x =&gt; propertyInfo.GetValue(x, <span class="literal">null</span>)).ToList();</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> OrderByEnum.DESC:</span><br><span class="line">   BuildingList = BuildingList.OrderByDescending(x =&gt; propertyInfo.GetValue(x, <span class="literal">null</span>)).ToList();</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> BuildingList.Dump();</span><br></pre></td></tr></table></figure>
-<p>這樣程式是不是變得乾淨許多,但這邊要特別注意的是，因為我的Enum跟Building的屬性剛好都可以對應起來，如果我的Enum名稱與Building的屬性不能對應，那要另外寫對應方式，例如寫到擴充的Enum Attribute，或是用最簡單的Switch Case解決。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/17/【Unit-Test】Fake-DLL發生does-not-exist-in-the-namespace-System-Diagnostics-Tracing/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/17/【Unit-Test】Fake-DLL發生does-not-exist-in-the-namespace-System-Diagnostics-Tracing/" itemprop="url">【Unit Test】Fake DLL發生does not exist in the namespace 'System.Diagnostics.Tracing'</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-17T14:49:00+08:00">
-                2016-10-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/10/17/【Unit-Test】Fake-DLL發生does-not-exist-in-the-namespace-System-Diagnostics-Tracing/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/10/17/【Unit-Test】Fake-DLL發生does-not-exist-in-the-namespace-System-Diagnostics-Tracing/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>上一篇<a href="http://toyo0103.blogspot.tw/2016/10/unittestfake-systemdatetime.html" target="_blank" rel="noopener">【Unit Test】Fake System.DateTime</a>&nbsp;寫到如何Fake DLL，在本機建置與進行測試都沒問題，唯獨放到CICD機器去做自動化部屬時，一直鬼擋牆的跳建置方案錯誤，錯誤內容如下</p>
-<p><span style="background-color: white; font-family: &quot;Segoe UI&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana;">The type or namespace name ‘EventSourceCreatedEventArgs’ does not exist in the namespace ‘System.Diagnostics.Tracing’ (are you missing an assembly reference?)&nbsp;</span><br><span style="background-color: white; font-family: &quot;Segoe UI&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana;"><br></span>上網查了一下找到以下解法</p>
-<ul>
-<li>打開mscorlib.fakes，改成以下內容<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;Fakes xmlns=<span class="string">"http://schemas.microsoft.com/fakes/2011/"</span>&gt;</span><br><span class="line">  &lt;Assembly Name=<span class="string">"mscorlib"</span> Version=<span class="string">"4.0.0.0"</span>/&gt;</span><br><span class="line">  &lt;StubGeneration&gt;</span><br><span class="line">    &lt;Remove FullName=<span class="string">"System.Diagnostics.Tracing"</span>/&gt;</span><br><span class="line">    &lt;Remove FullName=<span class="string">"System.Text.Encoding"</span>/&gt;</span><br><span class="line">    &lt;Remove FullName=<span class="string">"System.Security.Cryptography"</span> /&gt;</span><br><span class="line">  &lt;/StubGeneration&gt;</span><br><span class="line">&lt;/Fakes&gt;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>自動化佈署機器這樣去建置佈署就過關了!!!!</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/17/【Unit-Test】Fake-System-DateTime/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/17/【Unit-Test】Fake-System-DateTime/" itemprop="url">【Unit Test】Fake System.DateTime</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-17T14:26:00+08:00">
-                2016-10-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/10/17/【Unit-Test】Fake-System-DateTime/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2016/10/17/【Unit-Test】Fake-System-DateTime/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在寫程式的時後，常常會用到DateTime.Now來判斷目前時間，依照時間邏輯去撈取不同的資料，但碰到單元測試要驗證的時候就是個大麻煩，因為DateTime.Now每次執行的時候時間都會改變，所以以前的做法都是這樣</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">SystemTime</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment">//Internal For UnitTest</span></span><br><span class="line"> <span class="keyword">internal</span> <span class="keyword">static</span> Func&lt;DateTime&gt; SetCurrentTime = () =&gt; DateTime.Now;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> DateTime Now</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">get</span></span><br><span class="line">  &#123;</span><br><span class="line">   <span class="keyword">return</span> SetCurrentTime();</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然後在在程式碼裡面使用的時候不直接使用DateTime.Now，改用SystemTime.Now<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">if</span> (SystemTime.Now == <span class="keyword">new</span> DateTime(<span class="number">2016</span>,<span class="number">10</span>,<span class="number">17</span>,<span class="number">12</span>,<span class="number">0</span>,<span class="number">0</span>))</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="string">"時間到了"</span>.Dump();</span><br><span class="line"> &#125; </span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="string">"時間不對"</span>.Dump();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>之後單元測試驗證時，動態去改寫SetCurrentTime，就能確保拿到自己要的時間<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SystemTime.SetCurrentTime = () =&gt; <span class="keyword">new</span> DateTime(<span class="number">2016</span>,<span class="number">10</span>,<span class="number">17</span>,<span class="number">12</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
-<p>雖然這樣可以解決問題沒錯，但實在太麻煩，為了單元測試要多寫一堆Code之外，System底下很多東西有用到時，都要因為可以單元測試的關係而擴充出來。</p>
-<p>還好之後有找到方法可以針對DLL做Fake，讓我們可以繼續安心使用DateTime.Now之餘，單元測試也能指定時間，接下來就來實作一下這個步驟</p>
-<ul>
-<li><p>首先在單元測試的專案對參考的組件System按下右鍵，新增Fake物件</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-2CmHnA1rUMA/WARsswfjOPI/AAAAAAAAIBI/HGzYnnuIOzM6DuGEl8psJIIA4EtBmutgQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-2CmHnA1rUMA/WARsswfjOPI/AAAAAAAAIBI/HGzYnnuIOzM6DuGEl8psJIIA4EtBmutgQCLcB/s1600/1.png" alt=""></a></div>
-</li>
-<li><p>接著就會跑出Fake資料夾</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-QhvjMs19Dr4/WARtB33gWvI/AAAAAAAAIBM/ptqbpm0CKTgbi5C8CWZY3DjWbmykiJa4gCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-QhvjMs19Dr4/WARtB33gWvI/AAAAAAAAIBM/ptqbpm0CKTgbi5C8CWZY3DjWbmykiJa4gCLcB/s1600/1.png" alt=""></a></div>
-</li>
-<li><p>接著只要在單元測試的地方寫如此寫，就能設定DateTime.Now應該回傳的時間了<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 取得現在時間()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">using</span> (ShimsContext.Create())</span><br><span class="line">            &#123;</span><br><span class="line">                System.Fakes.ShimDateTime.NowGet= () =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> DateTime(<span class="number">2016</span>, <span class="number">9</span>, <span class="number">25</span>);</span><br><span class="line">                &#125;;</span><br><span class="line"></span><br><span class="line">                 <span class="comment">//arrange</span></span><br><span class="line">                <span class="keyword">var</span> expected = <span class="keyword">new</span> DateTime(<span class="number">2016</span>, <span class="number">9</span>, <span class="number">25</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//act</span></span><br><span class="line">                <span class="keyword">var</span> actual = DateTime.Now;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//assert</span></span><br><span class="line">                Assert.AreEqual(expected, actual);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-<h3 id="補充2017-01-24"><a href="#補充2017-01-24" class="headerlink" title="補充2017/01/24"></a><span style="color: red;">補充2017/01/24</span></h3><p>單元測試Fake的功能，以Visual Studio 2015來說只有Enterprise版本才有支援，所以使用的時候請特別小心，像今天公司因為授權費的關係，要求調降成Professional，之前有用到Fake的地方就都測不過了，還請特別注意</p>
-<p>各版本比較 : <a href="https://www.visualstudio.com/vs/compare/" target="_blank" rel="noopener">Compare Visual Studio 2015 Offerings</a></p>
-<h3 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h3><div><a href="http://huan-lin.blogspot.com/2012/10/microsoft-fakes.html" target="_blank" rel="noopener">Huan-Lin - Microsoft Fakes 入門</a></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1752,7 +1741,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-count">174</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1774,7 +1763,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -1860,7 +1849,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

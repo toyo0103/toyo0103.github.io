@@ -295,6 +295,632 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/19/windows_contianer_iamrole_/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/19/windows_contianer_iamrole_/" itemprop="url">【Docker】Widows Container IAM Role 問題</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-02-19T16:24:00+08:00">
+                2019-02-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/19/windows_contianer_iamrole_/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/02/19/windows_contianer_iamrole_/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>通常在使用 EC2 的建議上都是希望將機器掛上 IAM Role 的權限，在機器上面執行相關 AWS 資源時就可以透過該角色的權限來執行，避免將 Access Toke 、Secret Key 寫到程式中去跑。</p>
+<p>但如果將程式包到 Container 裡面去執行時卻發現，Linux Container 可以吃到 Host 的 IAM Role 權限，而 Windows Container 卻不行，為何 ?</p>
+<p><br></p>
+<h1 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h1><p>原來 AWS 之所以能夠讓機器能知道執行權限為何是否過一個叫 Metadata Service 的服務來達成 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl 169.254.169.254</span><br></pre></td></tr></table></figure>
+<p>當在 EC2 上執行該指令應該能看到基本的回應</p>
+<p><img src="/images/20190219/1.png" alt="/images/20190219/1.png"></p>
+<p>連線到 <code>http://169.254.169.254/latest/meta-data/</code> 也可以看到一些對應的 Metadata 設定，而這個 Metadata Service IP 很巧的在 Azure 上也一模一樣 XD</p>
+<div class="note info"><p>參考文章</p>
+<p><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html" target="_blank" rel="noopener">Instance Metadata and User Data</a></p>
+<p><a href="https://docs.microsoft.com/zh-tw/azure/virtual-machines/windows/instance-metadata-service" target="_blank" rel="noopener">Azure 執行個體中繼資料服務</a></p></div>
+<p><br></p>
+<p>所以要能夠透過 IAM Role 的權限來執行 AWS 相關資源，169.254.169.254 就勢必要能通，接著將 Windows Container Run起來並執行相同指令會發現得到 Timeout 的回應</p>
+<p><img src="/images/20190219/2.png" alt="/images/20190219/2.png"></p>
+<p><br></p>
+<p>Windows Container 預設是走 <a href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2" target="_blank" rel="noopener">NAT</a> 的網路模式，如果你在 Host 與 Windows Container 內列出 Routing Table IPv4 的資料會發現，169.254.169.254 Gateway 是走同一條</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ route <span class="built_in">print</span> -4</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20190219/3.png" alt="/images/20190219/3.png"></p>
+<p>這也是導致 Container 內得不到回應的原因，應該讓它透過 Default Gateway 來遞送封包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ipconfig /all</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20190219/4.png" alt="/images/20190219/4.png"></p>
+<p>(圖片中 Container 內的 Default Gateway 為 172.18.64.1 )</p>
+<p><br></p>
+<h1 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h1><p>先看看預設 Container 用的網路是如何設定的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network ls</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20190219/5.png" alt="/images/20190219/5.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network inspect nat</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20190219/6.png" alt="/images/20190219/6.png"></p>
+<p>可以看到紅框處並沒有指定 Default Gateway，所以每次執行 Container 時都是動態分配 Subnet 與 Default Gateway，這樣讓我們設定上會有困難</p>
+<p><br></p>
+<h2 id="自建一組網路給-Container-使用"><a href="#自建一組網路給-Container-使用" class="headerlink" title="自建一組網路給 Container 使用"></a>自建一組網路給 Container 使用</h2><p>可以透過 <a href="https://docs.docker.com/engine/reference/commandline/network_create/" target="_blank" rel="noopener">Docker network create</a> 來預先建立一組規範好的網路，並讓 Container 起起來的時候指定吃這組設定</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network create --driver nat --gateway 172.17.0.1 --subnet 172.17.0.0/20 mynetwork</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20190219/7.png" alt="/images/20190219/7.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it --rm --network mynetwork mycontainer:latest</span><br></pre></td></tr></table></figure>
+<p>檢視 Container 起來後網路設定狀況，可以看到 Default Gateway 已經被定下來了</p>
+<p><img src="/images/20190219/8.png" alt="/images/20190219/8.png"></p>
+<p>接著執行 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ route -p add 169.254.169.254 172.17.0.1</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20190219/9.png" alt="/images/20190219/9.png"></p>
+<p><img src="/images/20190219/10.png" alt="/images/20190219/10.png"></p>
+<p>至於 route add 怎麼在 Container 起起來時自動執行那就是另一個課題了，這邊不討論</p>
+<h2 id="Docker-compose-動態建網路給-Container-使用"><a href="#Docker-compose-動態建網路給-Container-使用" class="headerlink" title="Docker compose 動態建網路給 Container 使用"></a>Docker compose 動態建網路給 Container 使用</h2><p>第二種方法是透過 Docker compose 執行時動態建立一組網路來使用，方法大同小異，只是透過 Docker Compose 來設定而已</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2.1'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  mycontainer:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">mycontainer:latest</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">mynetwork</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">  mynetwork:</span></span><br><span class="line"><span class="attr">    driver:</span> <span class="string">nat</span></span><br><span class="line"><span class="attr">    ipam:</span></span><br><span class="line"><span class="attr">      config:</span></span><br><span class="line"><span class="attr">        - subnet:</span> <span class="number">172.17</span><span class="number">.0</span><span class="number">.0</span><span class="string">/20</span></span><br><span class="line"><span class="attr">          gateway:</span> <span class="number">172.17</span><span class="number">.0</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+<h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>最近跟著架構師還有一群很厲害的同事做新的專案，發現自己對於 Infra 與網路的知識真的相當不足，所以在Docker 一些設定與建置上常常卡的亂七八糟，也趁著這個機會把以前一堆已經還老師的知識又惡補了一翻，希望能越來越順利 </p>
+<div class="note info"><p>參考文章</p>
+<p><a href="https://www.speedoflightmedia.com/blog/aws-iam-roles-windows-containers/" target="_blank" rel="noopener">AWSS IAM Roles in Windows Containers</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/%E4%BF%9D%E7%95%99IP%E5%9C%B0%E5%9D%80" target="_blank" rel="noopener">wiki - 保留IP位址</a></p></div>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/12/anycpu_x86_x64/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/12/anycpu_x86_x64/" itemprop="url">將程式編譯成 x86、x64、Any CPU差別在哪</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-02-12T11:09:00+08:00">
+                2019-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/12/anycpu_x86_x64/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/02/12/anycpu_x86_x64/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>相信用過 Visual Studio 的應該都注意過編譯時可以選擇 Any CPU、x86、x64 (x86、x64 需要編輯組態檔才會看的到)</p>
+<p><img src="/images/20190212/1.png" alt="/images/20190212/1.png"></p>
+<p>這次踩到問題是，明明程式用 Any CPU 來編譯，但在 64 bit OS 上卻會用 32 bit  Process 來執行</p>
+<p><img src="/images/20190212/2.png" alt="/images/20190212/2.png"></p>
+<p>原來是因為專案建置的屬性勾到了 <code>建議使用32位元</code>的選項導致</p>
+<p><img src="/images/20190212/3.png" alt="/images/20190212/3.png"></p>
+<p>解決的同時也引起了對於編譯成 x86、x64、Any CPU 有什麼差別的好奇心，找了文章後整理如下</p>
+<p><br></p>
+<h1 id="差異"><a href="#差異" class="headerlink" title="差異"></a>差異</h1><p><br></p>
+<h2 id="在-32-bit-OS-上執行"><a href="#在-32-bit-OS-上執行" class="headerlink" title="在 32 bit OS 上執行"></a>在 32 bit OS 上執行</h2><p><strong>Any CPU</strong> : 會用 32 bit Process 來執行，可以載入 Any CPU 和 x86 方式編譯的組件，但如果載入 x64 編譯的組件將會引發 BadImageFormatException </p>
+<p><strong>Any CPU (勾選建議使用32位元)</strong> : 運作方式同上</p>
+<p><strong>x86</strong> : 運作方式同上</p>
+<p><strong>x64</strong> : 引發 BadImageFormatException</p>
+<p><br></p>
+<h2 id="在-64-bit-OS-上執行"><a href="#在-64-bit-OS-上執行" class="headerlink" title="在 64 bit OS 上執行"></a>在 64 bit OS 上執行</h2><p><strong>Any CPU</strong> : 會用 64 bit Process 來執行，可以載入 Any CPU 和 x64 方式編譯的組件，但如果載入 x86 編譯的組件將會引發 BadImageFormatException</p>
+<p><strong>Any CPU (勾選建議使用32位元)</strong> : 會用 32 bit Process 來執行，可以載入 Any CPU 和 <code>x86</code> 方式編譯的組件，但如果載入 x64 編譯的組件將會引發 BadImageFormatException</p>
+<p><strong>x86</strong> : 運作方式同 <strong>Any CPU (勾選建議使用32位元)</strong></p>
+<p><strong>x64</strong> : 運作方式同 <strong>Any CPU</strong>  </p>
+<p><br></p>
+<h2 id="Machine-Config"><a href="#Machine-Config" class="headerlink" title="Machine Config"></a>Machine Config</h2><p>依據執行的 Process 位元決定</p>
+<p>32 bit Process 吃的 Machine Config 位置 : C:\Windows\Microsoft.NET\ <code>Framework</code> \v4.0.30319\Config</p>
+<p>64 bit Process 吃的 Machine Config 位置 : C:\Windows\Microsoft.NET\ <code>Framework64</code> \v4.0.30319\Config</p>
+<p><br></p>
+<h1 id="怎麼查是用哪種方式編譯的"><a href="#怎麼查是用哪種方式編譯的" class="headerlink" title="怎麼查是用哪種方式編譯的?"></a>怎麼查是用哪種方式編譯的?</h1><p>可以透過 <code>CorFlags.exe</code> 的工具來查詢，該程式放在 <code>C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools</code> 路徑底下，設定為環境變數後就可以用 command 來檢視 PE </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ corflags yourPE.exe</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>PE : Process Executables (EXEs and DLLs)</p></div>
+<p><img src="/images/20190212/4.png" alt="/images/20190212/4.png"></p>
+<p>意義如下</p>
+<p><img src="/images/20190212/5.png" alt="/images/20190212/5.png"></p>
+<p>(圖片節錄至 : <a href="https://stackoverflow.com/questions/18608785/how-to-interpret-the-corflags-flags/23614024#23614024" target="_blank" rel="noopener">https://stackoverflow.com/questions/18608785/how-to-interpret-the-corflags-flags/23614024#23614024</a>)</p>
+<div class="note info"><p>參考文章</p>
+<p><a href="https://blog.darkthread.net/blog/corflags/" target="_blank" rel="noopener">【茶包射手日記】檢查.NET程式平台目標(Platform Target)</a></p>
+<p><a href="https://www.codeproject.com/Articles/1160645/Dealing-with-bit-bit-and-Any-CPU-Compilation-Optio" target="_blank" rel="noopener">Dealing with 32-bit, 64-bit and Any CPU Compilation Options in .NET</a></p>
+<p><a href="https://stackoverflow.com/questions/18608785/how-to-interpret-the-corflags-flags" target="_blank" rel="noopener">How to interpret the CorFlags flags?</a></p></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/21/【C-】yield_retuen/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/21/【C-】yield_retuen/" itemprop="url">【C#】Yield Return與迭代器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-12-21T13:54:00+08:00">
+                2018-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/21/【C-】yield_retuen/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/12/21/【C-】yield_retuen/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="什麼是-Yield"><a href="#什麼是-Yield" class="headerlink" title="什麼是 Yield"></a>什麼是 Yield</h1><p>Yield 就是 .Net 中用來實作 iterator(迭代器) 設計模式的語法糖，雖然很早就知道這東西，但一直都不太知道怎麼用，剛好最近同事在翻寫寄送大量信件的程式有用到就跟他請教了一下。</p>
+<p><strong>以前的做法</strong></p>
+<p>將收件人從 DB 撈出來後 ，依據每封信的 Template 去置換內容，再批次送去給寄信服務執行</p>
+<p><strong>問題</strong></p>
+<p>如果這批收件人很多，把整批的信件都置換完 Template 再送出，會導致系統吃掉大量的記憶。當然最簡單的解決方法就是用迴圈組完一筆就送出一次，但其實用 Yield Return 可以更優雅的解決這個問題</p>
+<h1 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h1><p>同事提供了簡單的範例來理解這件事情</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">foreach</span> (<span class="function"><span class="keyword">var</span> mail <span class="keyword">in</span> <span class="title">GetData</span>(<span class="params"></span>))</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		Console.WriteLine(<span class="string">$"- Received: <span class="subst">&#123;mail.Title&#125;</span>"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> List&lt;Mail&gt; <span class="title">GetData</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">var</span> mailList = <span class="keyword">new</span> List&lt;Mail&gt;();</span><br><span class="line">	<span class="keyword">int</span> buffer_size = <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">4</span>;  <span class="comment">// 4MB</span></span><br><span class="line">	Random _rnd = <span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; <span class="number">1024</span>; index++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">var</span> _buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[buffer_size];</span><br><span class="line">		_rnd.NextBytes(_buffer);</span><br><span class="line"></span><br><span class="line">		mailList.Add(<span class="keyword">new</span> Mail()</span><br><span class="line">		&#123;</span><br><span class="line">			Title = <span class="string">$"buffer[<span class="subst">&#123;index&#125;</span>], <span class="subst">&#123;buffer_size / <span class="number">1024</span> / <span class="number">1024</span>&#125;</span> MB"</span>,</span><br><span class="line">			Buffer = _buffer,</span><br><span class="line">		&#125;);</span><br><span class="line">		Task.Delay(<span class="number">50</span>).Wait();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> mailList;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Mail</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">string</span> Title &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">byte</span>[] Buffer &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>GetData()</code> 這是模擬處理信件的地方，每封信件假設 4MB (到底是寄啥…)，整批處理完後回傳 mailList </p>
+<p>如果把這段 Code 放到 LINQPad 執行，會發現記憶體一直往上飆，因為會全部都做完放到 List 再回傳並寄信</p>
+<p><img src="/images/20181221/1.gif" alt="/images/20181221/1.gif"></p>
+<h2 id="Yield-Return-版本"><a href="#Yield-Return-版本" class="headerlink" title="Yield Return 版本"></a>Yield Return 版本</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">foreach</span> (<span class="function"><span class="keyword">var</span> mail <span class="keyword">in</span> <span class="title">GetData</span>(<span class="params"></span>))</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		Console.WriteLine(<span class="string">$"- Received: <span class="subst">&#123;mail.Title&#125;</span>"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> IEnumerable&lt;Mail&gt; <span class="title">GetData</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> buffer_size = <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">4</span>;  <span class="comment">// 4MB</span></span><br><span class="line">	Random _rnd = <span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; <span class="number">1024</span>; index++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">var</span> _buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[buffer_size];</span><br><span class="line">		_rnd.NextBytes(_buffer);</span><br><span class="line"></span><br><span class="line">	    <span class="function"><span class="keyword">yield</span> return new <span class="title">Mail</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">		</span>&#123;</span><br><span class="line">			Title = <span class="string">$"buffer[<span class="subst">&#123;index&#125;</span>], <span class="subst">&#123;buffer_size / <span class="number">1024</span> / <span class="number">1024</span>&#125;</span> MB"</span>,</span><br><span class="line">			Buffer = _buffer,</span><br><span class="line">		&#125;;</span><br><span class="line">		Task.Delay(<span class="number">50</span>).Wait();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">yield</span> <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Mail</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">string</span> Title &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">byte</span>[] Buffer &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>觀察記憶體會發現非常的平穩，因為逐筆處理完就被消滅掉了</p>
+<p><img src="/images/20181221/2.gif" alt="/images/20181221/2.gif"></p>
+<h1 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h1><p>至於如果不用語法糖 Yield 該如何實作迭代器，可參考安德魯的部落格裡面介紹非常詳細，希望這個方法以後可以更融會貫通的套在專案中使用</p>
+<div class="note info"><p>參考文章</p>
+<p><a href="https://columns.chicken-house.net/2008/09/18/c-yield-return-1-how-it-work/" target="_blank" rel="noopener">安德魯的部落格 - [C#: yield return] #1. How It Work ?</a></p>
+<p><a href="https://zh.wikipedia.org/wiki/%E8%BF%AD%E4%BB%A3%E5%99%A8" target="_blank" rel="noopener">Wiki - 迭代器</a></p></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/03/Task_WaitAll/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/03/Task_WaitAll/" itemprop="url">【C#】Task WaitAll</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-12-03T15:53:00+08:00">
+                2018-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/12/03/Task_WaitAll/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/12/03/Task_WaitAll/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>假設有一項任務，執行時會做三件事情，而這三件事情彼此並沒有相依關係，傳統程式寫法通常都是 1  &gt;  2  &gt; 3 依序呼叫下去做，但這樣有一個問題就是，假設 1 這個任務要執行特別久，那 2、3 都得等 1 做完才能執行到，整體來說效率並沒有最佳化。</p>
+<p><img src="/images/20181203/1.png" alt="/images/20181203/1.png"></p>
+<p>跑一次需要 2.012 秒完成，如果需要重複 10 次 、100 次，那所需時間會相當可觀。 </p>
+<h1 id="非同步版本"><a href="#非同步版本" class="headerlink" title="非同步版本"></a>非同步版本</h1><p>改成非同步版本後，它執行順序就不會被第一步給拖累，三個工作是併行處理</p>
+<p><img src="/images/20181203/2.png" alt="/images/20181203/2.png"></p>
+<p>但這會有一個問題，如果程式是 Run 在 Console Application 中，因為沒有等待非同步的程式都執行完，就已經跑到 Done ，而導致 Console Application 被關掉，其相應的 Process 也會被停掉，導致有些工作沒有執行完，所以必須要確保所有程式都執行完才關閉的機制在。</p>
+<p><img src="/images/20181203/3.png" alt="/images/20181203/3.png"></p>
+<h1 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h1><ol>
+<li><a href="https://docs.microsoft.com/zh-tw/dotnet/standard/parallel-programming/task-based-asynchronous-programming" target="_blank" rel="noopener">MSDN : 以工作為基礎的非同步程式設計</a></li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/21/【日文】か_かどうか/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -395,289 +1021,6 @@
 <div class="note info"><p>參考文章</p>
 <p><a href="https://www.facebook.com/wangcolaneko/posts/%E3%81%8B%E3%81%A9%E3%81%86%E3%81%8B%E8%B7%9F%E3%81%8B%E5%BF%AB%E9%80%9F%E8%A7%A3%E9%A1%8C%E6%B3%95%E6%9C%AC%E6%95%99%E5%AD%B8%E7%82%BA-%E9%9B%B2%E7%AB%AF%E8%AA%B2%E7%A8%8B%E5%88%9D%E7%B4%9A%E2%85%A3n3%E4%B8%AD%E7%B4%9A%E7%AF%80%E9%8C%84%E6%97%A5%E6%96%87%E5%8F%A5%E4%B8%AD%E5%B8%B8%E6%9C%83%E7%9C%8B%E5%88%B0%E4%BB%8A%E4%BD%95%E6%99%82%E3%81%8B%E3%82%8F%E3%81%8B%E3%82%8A%E3%81%BE%E3%81%9B%E3%82%93%E4%BB%8A%E6%97%A5%E3%81%AF%E4%BD%95%E6%9B%9C%E6%97%A5%E3%81%8B%E6%95%99%E3%81%88%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E7%9A%84%E9%96%93%E6%8E%A5%E5%95%8F%E5%8F%A5%E6%89%80%E8%AC%82%E7%9A%84%E5%95%8F%E5%8F%A5%E6%8C%87%E7%9A%84%E6%98%AF%E7%96%91%E5%95%8F%E8%A9%9E%E3%81%8B%E7%9A%84%E5%8F%A5/1624497210915932/" target="_blank" rel="noopener">王可樂的日文教室【「かどうか」跟「か」快速解題法！】</a></p>
 <p><a href="http://www2.nkfust.edu.tw/~jwd/playgrammar/1know/page2_10.htm" target="_blank" rel="noopener">間接句型的用法</a></p></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/19/【英文】My family/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/19/【英文】My family/" itemprop="url">【英文】My family</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-11-19T20:08:00+08:00">
-                2018-11-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/11/19/【英文】My family/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/11/19/【英文】My family/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote class="blockquote-center"><p>我英文的爛,聽過都知道</p>
-</blockquote>
-<p><br></p>
-<p>最近終於有位朋友看不下去，決定啟動救救菜英文行動，要我每週寫一篇文章給他批改，不寫不知道，原來我比想像的還爛 ＸＤ 為了避免錯了又錯，所以把來筆記一下內容與修正過程</p>
-<p><br></p>
-<h1 id="Draft-1"><a href="#Draft-1" class="headerlink" title="Draft 1"></a>Draft 1</h1><p>Toyo Tsai<br>Journal<br>Draft 1<br>My Family</p>
-<p>Hello Sharon, I want to introduce my family to you. <a href="#1-1">My family has</a><strong>(*1.1)</strong> 4 people, <a href="#1-2">my father mother, and little brother</a><strong>(*1.2)</strong>. <a href="#1-3">Father and mother</a><strong>(*1.3)</strong> <a href="#1-4">are a very humorous person</a><strong>(*1.4)</strong>, they usually <a href="#1-5">say a joke</a><strong>(*1.5)</strong> to each other and <a href="#1-6">make the home</a><strong>(*1.6)</strong> very noisy. <a href="#1-7">Every day</a><strong>(*1.7)</strong> <a href="#1-8">I can hear laugh</a> <strong>(*1.8)</strong> when I wake up. So I always <a href="#1-9">say they are ganhwa king</a><strong>(*1.9)</strong>. In Chinese, we call that 「幹話王」.</p>
-<p><a href="#1-10">Let’s</a><strong>(*1.10)</strong> us to talk about my little brother<a href="#1-11">,</a><strong>(*1.11)</strong> <a href="#1-12">he is a nerdy boy and always stay at the home</a><strong>(*1.12)</strong>, <a href="#1-13">watch movies, Korea drama or read comic books</a><strong>(*1.13)</strong>. He told me he has some friends, but I don’t really believe that. <a href="#1-14">Because of</a><strong>(*1.14)</strong> I only see his friends two times, <a href="#1-15">maybe they are a Extras</a><strong>(*1.15)</strong>. He is <a href="#1-16">a engineer</a><strong>(*1.16)</strong> <a href="#1-17">too</a><strong>(*1.17)</strong> <a href="#1-18">and like a almost engineer who doesn’t have a girlfriend</a><strong>(*1.18)</strong>. But I think he is a good and kind person. Hope one day he can find [the soulmate(#1-19)<strong>(*1.19)</strong>.</p>
-<p>Oh, I forgot to introduce my girlfriend Ruth. She is a cute girl with a <a href="#1-20">sunny personality</a><strong>(*1.20)</strong>. As you talk to her, you will <a href="#1-21">find that</a><strong>(*1.21)</strong>. She is a <a href="#1-22">king of ganhwa</a><strong>(*1.22)</strong> too, <a href="#1-23">but I only tell you</a><strong>(*1.23)</strong>. And remember, this is our secret haha. </p>
-<p>Finally, I think my English is very pool, Ruth already <a href="#1-24">gives up me</a><strong>(*1.24)</strong>, <a href="#1-25">I really feel happy when I know you want to teach me English, thank you, Sharon, you are good and beautiful and kind person, in Chinese, we will say 「讚讚」 to you.</a><strong>(*1.25)</strong></p>
-<h2 id="1-1"><a href="#1-1" class="headerlink" title="1.1"></a>1.1</h2><p>句子中的主角(主詞)是「有生命」的名詞時,才可以使用 have 或 has,例如:我有汽車。湯姆有房子。Robert有兩個女兒。至於像是「一週有七天。」「這棟房子裡有五個房間。」「我的學校有三千名學生。」這類型的句子,請使用 there be的句型</p>
-<p>My family是一個概念，那用there be( is/ are)要怎麼改？</p>
-<p><br></p>
-<h2 id="1-2"><a href="#1-2" class="headerlink" title="1.2"></a>1.2</h2><p>你的家裡有四個人，你只講了三個？<br>你是不是少說了「包含」？</p>
-<p><br></p>
-<h2 id="1-3"><a href="#1-3" class="headerlink" title="*1.3"></a>*1.3</h2><p>誰的爸媽？</p>
-<p><br></p>
-<h2 id="1-4"><a href="#1-4" class="headerlink" title="*1.4"></a>*1.4</h2><p>前面說are (雙數)，可是後面又講a … person (單數)，可不可以用另外一種說法，不用寫是一個怎麼樣的「人」，而是直接描述他們兩個的個性？</p>
-<p><br></p>
-<h2 id="1-5"><a href="#1-5" class="headerlink" title="*1.5"></a>*1.5</h2><p>去查一下joke是用say嗎? Say “a” joke變成是講一個笑話喔，如果要比較廣泛的去只「講笑話」這個行為，應該要用say(要換掉say) jokes</p>
-<p><br></p>
-<h2 id="1-6"><a href="#1-6" class="headerlink" title="*1.6"></a>*1.6</h2><p>前面沒特別提過home，這裡用the變成不知道在指定哪個home。你想說的是「我家」嗎</p>
-<p><br></p>
-<h2 id="1-7"><a href="#1-7" class="headerlink" title="*1.7"></a>*1.7</h2><p>Every day 與 Everyday 用法？</p>
-<p>​    <strong>Every day</strong> : 時間副詞 </p>
-<p>​        I go to work by bus every day.</p>
-<p>​    <strong>Everyday</strong> : 形容詞</p>
-<p>​        This is an everyday work.</p>
-<p><br></p>
-<h2 id="1-8"><a href="#1-8" class="headerlink" title="*1.8"></a>*1.8</h2><p>Laugh詞性錯誤，請更正。你說的是聽到誰的笑聲？中文很常省略掉，但英文也省的話很常會造成語意不清</p>
-<p><br></p>
-<h2 id="1-9"><a href="#1-9" class="headerlink" title="*1.9"></a>*1.9</h2><p>你這樣講，翻譯起來變成很像：所以我常常說「他們事幹話王」←這句話。你想說的是「我總是告訴別人他們是幹話王」，或是「我總是認為他們是幹話王」嗎？</p>
-<p><br></p>
-<h2 id="1-10"><a href="#1-10" class="headerlink" title="*1.10"></a>*1.10</h2><p>Let’s xxx開頭跟let us xxx兩種用法不同，請查出來把筆記寫上並更正 (整句文法錯誤)</p>
-<p>​    <strong>Let’s</strong> ：表示將說話對象包含在內</p>
-<p>​        Come on, Mary,let’s dace! （瑪莉，我們來跳舞吧）</p>
-<p>​    <strong>Let us</strong> : 不包含說話對象</p>
-<p>​        Father, let us marry ! (父親，讓我們結婚吧！)</p>
-<p><br></p>
-<h2 id="1-11"><a href="#1-11" class="headerlink" title="*1.11"></a>*1.11</h2><p>你很多地方會喜歡用逗號，但是你還不熟悉正確的句型結構，所以建議你盡量用簡單的句子寫文章。寫完一句就句點，然後檢查每一句句號中有沒有主詞、動詞。</p>
-<p><br></p>
-<h2 id="1-12"><a href="#1-12" class="headerlink" title="*1.12"></a>*1.12</h2><p>And是用來連接完整的句子，你前面那句有主詞動詞，後面有嗎？</p>
-<p><br></p>
-<h2 id="1-13"><a href="#1-13" class="headerlink" title="*1.13"></a>*1.13</h2><p>前面兩句想辦法句號，這句重開一句寫</p>
-<p><br></p>
-<h2 id="1-14"><a href="#1-14" class="headerlink" title="*1.14"></a>*1.14</h2><p>Because of +的是名詞你後面是句子，不應該這樣用。更簡單就是直接用because，跟前面一句連一起</p>
-<p><br></p>
-<h2 id="1-15"><a href="#1-15" class="headerlink" title="*1.15"></a>*1.15</h2><p>看不懂意思，重寫一下</p>
-<p><br></p>
-<h2 id="1-16"><a href="#1-16" class="headerlink" title="*1.16"></a>*1.16</h2><p>說好的AEIOU前面加an呢？ (怒</p>
-<p><br></p>
-<h2 id="1-17"><a href="#1-17" class="headerlink" title="*1.17"></a>*1.17</h2><p>你這邊寫too會有點怪，因為你從來沒在文章中提過還有誰是工程師啊～要不就不要too，要不就這邊說明一下「跟我一樣」</p>
-<p><br></p>
-<h2 id="1-18"><a href="#1-18" class="headerlink" title="*1.18"></a>*1.18</h2><p>前面那句用句號結尾，這句重開一句重寫。</p>
-<p><br></p>
-<h2 id="1-19"><a href="#1-19" class="headerlink" title="*1.19"></a>*1.19</h2><p>The 是限定，前面沒提到過任何soulmate，這個the會讓人不知道在講什麼。你可以說”his soulmate”</p>
-<p><br></p>
-<h2 id="1-20"><a href="#1-20" class="headerlink" title="*1.20"></a>*1.20</h2><p>我查了一下還真的有這個講法…(汗，我是很少聽到啦…網路上也大多是用”she is a sunny person”之類的，沒看過你這種用法，建議換常用一點的…</p>
-<p><br></p>
-<h2 id="1-21"><a href="#1-21" class="headerlink" title="*1.21"></a>*1.21</h2><p>Find啥？that指的是什麼？太語意不清，</p>
-<p><br></p>
-<h2 id="1-22"><a href="#1-22" class="headerlink" title="*1.22"></a>*1.22</h2><p>為啥你前面要寫幹話王，後面寫王之幹話？最好一致啦</p>
-<p><br></p>
-<h2 id="1-23"><a href="#1-23" class="headerlink" title="*1.23"></a>*1.23</h2><p>這句話很怪，好像沒講清楚或沒結尾，只是說「他是XXX，但我只跟你說」，仔細想會覺得沒什麼邏輯。(因為你寫的前後文還有這句並沒有暗示到”幹話王”是個可恥的稱呼，而一般人不會想被這樣講。所以你可以提到「我跟你說個秘密，跟我爸媽一樣，他也是幹話王。(如果他聽到一定會生氣，所以不要說出去) 之類的</p>
-<p><br></p>
-<h2 id="1-24"><a href="#1-24" class="headerlink" title="*1.24"></a>*1.24</h2><p>通常是用give xxx up<br>而且你說的是已經發生過的事，那詞性也要改</p>
-<p><br></p>
-<h2 id="1-25"><a href="#1-25" class="headerlink" title="*1.25"></a>*1.25</h2><p>太多逗號啦!!請愛用句號，請重寫這段</p>
-<p><br></p>
-<p><br></p>
-<h1 id="Draft-2"><a href="#Draft-2" class="headerlink" title="Draft 2"></a>Draft 2</h1><p>Toyo Tsai</p>
-<p>Journal</p>
-<p>Draft 2</p>
-<p>My Family</p>
-<p>Hello Sharon, I want to introduce my family to you. <a href="#2-1">My family are 4 people</a><strong>(*2.1)</strong>, <a href="#2-2">include</a><strong>(*2.2)</strong> <a href="#2-3">my father mother, and little brother</a><strong>(*2.3)</strong>. My Father and mother are very humorous. They usually joke with each other and make our home very noisy. Every day I can hear their laughs when I wake up. <a href="#2-4">So I always say they are king of ganhwa to them</a><strong>(*2.4)</strong>. In Chinese, the king of ganhwa means someone always talks trash.</p>
-<p>Let’s talk about my little brother. He is a nerdy boy and he always stays at <a href="#2-5">the home</a><strong>(*2.5)</strong>. He often watches movies and <a href="#2-6">Korea drama</a><strong>(*2.6)</strong>. Sometimes he reads comic books. He told me he has some friends, but I don’t really believe that because I only saw his friends two times. Maybe <a href="#2-7">they</a><strong>(*2.7)</strong> are <a href="#2-8">actors or actresses</a><strong>(*2.8)</strong>. <a href="#2-9">He is an engineer like me</a><strong>(*2.9)</strong>. <a href="#2-10">He doesn’t have a girlfriend like most engineers</a><strong>(*2.10)</strong>. But I think he is a good and kind person. <a href="#2-11">Hope</a><strong>(*2.11)</strong> one day he <a href="#2-12">can</a><strong>(*2.12)</strong> find his soulmate. </p>
-<p>Oh, I forgot to introduce my girlfriend Ruth. If you talk to her, you will know that she is a cute and sunny girl. <a href="#2-13">I tell you one secret</a><strong>(*2.13)</strong>. She is a king of ganhwa <a href="#2-14">too</a><strong>(*2.14)</strong>. <a href="#2-15">But I only tell you because if she knows, she will be very angry</a><strong>(*2.15)</strong>. This is our secret haha. </p>
-<p>Finally, I think my English is very poor<a href="#2-16">,</a><strong>(*2.16)</strong> Ruth already gave me up. <a href="#2-17">I really feel happy</a><strong>(*2.17)</strong> when I know you <a href="#2-18">want</a><strong>(*2.18)</strong> to teach me English. Thank you, Sharon. You are a <a href="#2-19">good and beautiful and kind</a><strong>(*2.19)</strong> person. In Chinese, we will say “讚讚” to you.</p>
-<div class="note info"><p>怎樣是完整的句子？你如果不會判斷的話，你可以用檢查的方式</p>
-<p>先看一下<a href="http://weedyc.pixnet.net/blog/post/26181706-%E8%8B%B1%E6%96%87%E6%96%87%E6%B3%95%E8%BC%95%E9%AC%86%E5%AD%B8%EF%BC%9A%E4%BA%94%E5%A4%A7%E5%9F%BA%E6%9C%AC%E5%8F%A5%E5%9E%8B" target="_blank" rel="noopener">句型介紹</a> </p>
-<p>基本上一個完整的句子只會有一個主詞跟一個動詞。</p>
-<p>所以說如果你發現你一個很長的句子不確定文法是不是正確，你就檢查一下整句有沒有多出主詞，或出現超過一個動詞？有的話代表文法可能有誤，或者是需要用別種連接詞才能讓他變成正確的句子…因為現在程度還不夠，所以最好就是把每個完整句子都斷句(用句號)，或者最多只用各種連接詞(比如and/ so/ because這種基本的連接詞)來組合兩個完整句子。</p></div>
-<h2 id="2-1"><a href="#2-1" class="headerlink" title="*2.1"></a>*2.1</h2><p>用there is/ there are 句型寫。通常要表示家族有幾個人都是用這種句型，不會拿家族來當主詞。通常說明一個東西裡面有幾個的時候都是用這種句型，比如「家裡有兩台筆電」、「鉛筆盒裡有三隻筆」之類的。</p>
-<p><br></p>
-<h2 id="2-2"><a href="#2-2" class="headerlink" title="*2.2"></a>*2.2</h2><p>去查一下include/ including/ included的用法，然後把這句寫正確。</p>
-<ol>
-<li><strong>include</strong> : 就是一般動詞「<strong>包括、包含</strong>」的意思，需要搭配主詞、受詞。    </li>
-<li><strong>including</strong> : 是用來帶出包含的事物，在主要句子後面先加上逗號之後，由 including 引導含括的事物。</li>
-<li><strong>included</strong> : 也是在主要句子後加上逗號，再作補充說明，不過它放置的位子跟 including 相反，會先講出所包含的事物，再加上 included 於後方位置。</li>
-</ol>
-<p>下面是練習，請造句：</p>
-<p>日文考試有三部分，包括閱讀、聽力跟寫作。 (including)</p>
-<p>​    There are three parts of Japanese exam, including reading, listening, and writing.</p>
-<p>這金額已經包含稅金了。(included)</p>
-<p>​    This price is tax included.</p>
-<p>這套餐包含前菜、煮餐，還有甜點。 (includes)</p>
-<p>​    This meal includes appetizer, main course, and dessert.</p>
-<p><br></p>
-<h2 id="2-3"><a href="#2-3" class="headerlink" title="*2.3"></a>*2.3</h2><p>你家有四個人，你只寫了三個，剩下一個是誰 ? Father mother中間沒有標點符號</p>
-<p><br></p>
-<h2 id="2-4"><a href="#2-4" class="headerlink" title="*2.4"></a>*2.4</h2><p>你先跟我說一下你到底想寫什麼</p>
-<ol>
-<li>我都跟我爸媽說：「你們是幹話王」</li>
-<li>我都跟我爸媽說他們是幹話王</li>
-<li>我都稱呼我爸媽是幹話王。</li>
-</ol>
-<p><br></p>
-<h2 id="2-5"><a href="#2-5" class="headerlink" title="*2.5"></a>*2.5</h2><p>直接寫Stay at home就好，加上去變成好像想特別指定說哪個特別的home</p>
-<p><br></p>
-<h2 id="2-6"><a href="#2-6" class="headerlink" title="*2.6"></a>*2.6</h2><p>確定是這樣翻嗎？查一下</p>
-<p><br></p>
-<h2 id="2-7"><a href="#2-7" class="headerlink" title="*2.7"></a>*2.7</h2><p>誰？前面一直都在提弟弟的事 (主詞是弟弟)，突然切到they讓人不知道在說誰。你可以講清楚一點，例如「或許那些我只看過兩次的人」or「或許那些他說是朋友的人」are actors…</p>
-<p><br></p>
-<h2 id="2-8"><a href="#2-8" class="headerlink" title="*2.8"></a>*2.8</h2><p>你是不是查過extra嗎?如果沒有錯就要跟老師講啊XD老師不是字典吼 很少用到的字也是不會</p>
-<p>還有就是直接講actors/ actresses/ extras也稍微不夠清楚。<br>「他跟我說他有一些朋友，但我不太相信因為我只看過他們兩次。或許他們(那些朋友)只是臨時演員。」中文翻起來是這樣子，但你仔細想想的話會覺得連結不夠強。為何只看過兩次就覺得不是朋友？為何會覺得那些朋友是「臨時演員」？(這句很突兀，沒有什麼特別的解釋，好像只是突然猜測他們的職業的感覺)</p>
-<p>「他跟我說他有一些朋友，但我不太相信，因為他平常都是自己一個人，也不會出去玩，也從未看過他跟朋友聊天或玩遊戲。或許是怕丟臉，所以才請了臨時演員來假裝自己有朋友。」這樣子前文後理是不是更完整了一些？當然不是說要照我這樣寫，重點是講中文你會下意識因為太熟悉語言+好像是跟朋友說話(對方一定會懂你意思)而省略了很多重要的話。假如照那樣的方式寫成英文，很容易因為省略太多東西而聽不懂。</p>
-<p><br></p>
-<h2 id="2-9"><a href="#2-9" class="headerlink" title="*2.9"></a>*2.9</h2><p>英文通常會說Like me, he is an engineer. (像我一樣，他是個工程師) 。</p>
-<p><br></p>
-<h2 id="2-10"><a href="#2-10" class="headerlink" title="*2.10"></a>*2.10</h2><p>這句也照前句方式改吧</p>
-<p><br></p>
-<h2 id="2-11"><a href="#2-11" class="headerlink" title="*2.11"></a>*2.11</h2><p>主詞勒？</p>
-<p><br></p>
-<h2 id="2-12"><a href="#2-12" class="headerlink" title="*2.12"></a>*2.12</h2><p>文法上沒有錯，我的話會寫”I hope one day he will find his soulmate.” Will 跟Can中文都可以翻做「會、可以」，但can比較像是日文的可能型，像是能力上做不做的到的感覺。所以can find….會變成像是說 希望有一天他會(變的有能力)可以交到女友，而will find…的感覺比較像那種對未來的期許</p>
-<p><br></p>
-<h2 id="2-13"><a href="#2-13" class="headerlink" title="*2.13"></a>*2.13</h2><p>通常不會這樣講，你學的Let呢～讓我來XXX這樣通常會用let</p>
-<p><br></p>
-<h2 id="2-14"><a href="#2-14" class="headerlink" title="*2.14"></a>*2.14</h2><p>這個too是在指什麼？因為你爸媽是幹話王這個已經是好久之前提到的事了，這樣寫一時也不知道你too在說啥。<br>題外話，除了too以外你也可以用also~<br>比如前面你才剛講你爸媽是幹話王，你下面又接著馬上講，你就可以說Ruth is also a King of Ganhwa</p>
-<p><br></p>
-<h2 id="2-15"><a href="#2-15" class="headerlink" title="*2.15"></a>*2.15</h2><ol>
-<li>if she knows what??? </li>
-<li>But I only tell you很怪，「只告訴你」跟「如果她知道了會很生氣」有什麼關連？應該是類似「你不要講出去」+「他知道會很生氣」邏輯才對吧？</li>
-</ol>
-<p><br></p>
-<h2 id="2-16"><a href="#2-16" class="headerlink" title="*2.16"></a>*2.16</h2><p>句號</p>
-<p><br></p>
-<h2 id="2-17"><a href="#2-17" class="headerlink" title="*2.17"></a>*2.17</h2><p>Really要放feel後面</p>
-<p><br></p>
-<h2 id="2-18"><a href="#2-18" class="headerlink" title="*2.18"></a>*2.18</h2><p>題外話，want是想要，是一個人想做某件事。Be + willing to 是願意，兩個意思有差唷～你覺得我是哪個呢？ ㄏㄏㄏ</p>
-<p><br></p>
-<h2 id="2-19"><a href="#2-19" class="headerlink" title="*2.19"></a>*2.19</h2><p>不要給我連用兩個and (怒<br>講兩個以上的東西，請善用逗點，最後的兩個才能用and<br>you are a good, beautiful and kind person</p>
-<p><br></p>
-<p><br></p>
-<h1 id="Draft-3"><a href="#Draft-3" class="headerlink" title="Draft 3"></a>Draft 3</h1><p>Toyo Tsai</p>
-<p>Journal</p>
-<p>Draft 3</p>
-<p>My Family</p>
-<p>Hello Sharon, I want to introduce my family to you. There are 4 people, including my father, mother, little brother, and me. My Father and mother are very humorous. They usually joke with each other and make our home very noisy. Every day I can hear their laughs when I wake up. So I always say they are king of ganhwa to them. In Chinese, the king of ganhwa means someone always talks trash.</p>
-<p>Let’s talk about my little brother. He is a nerdy boy and he always stays at home. He often watches movies and Korean dramas. Sometimes he reads comic books. He told me he has some friends, but I don’t really believe that because I only saw his friends two times. Maybe those people whom I only saw twice are actors or actresses. Like me, he is an engineer. Like most engineers, he doesn’t have a girlfriend. But I think he is a good and kind person. I hope one day he will find his soulmate. </p>
-<p>Oh, I forgot to introduce my girlfriend Ruth. If you talk to her, you will know that she is a cute and sunny girl. Let me tell you one secret. She is also a king of ganhwa. But please don’t tell anyone or she will be very angry. This is our secret haha. </p>
-<p>Finally, I think my English is very poor. Ruth already gave me up. I feel really happy when I know you are willing to teach me English. Thank you, Sharon. You are a good, beautiful, and kind person. In Chinese, we will say “讚讚” to you.</p>
-<p>附上長頸鹿倫老師本尊照片</p>
-<p><img src="/images/20181119/1.jpg" alt="/images/20181119/1.jpg"></p>
-
           
         
       
@@ -1608,492 +1951,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/23/byte_order_mark/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/08/23/byte_order_mark/" itemprop="url">什麼是BOM(Byte-order mark)?</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-08-23T09:44:00+08:00">
-                2018-08-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/08/23/byte_order_mark/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/08/23/byte_order_mark/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近開發了一支收集資訊然後將資料轉成Json檔案給其它單位讀取，但收到對口單位回報Json格式不正確。但我將檔案內容貼到線上的Json解析網站，或是自己肉眼判斷都覺得格式沒問題，所以執行了一次對方的解析程式，錯誤訊息如下。</p>
-<p>在字串0的位置有錯誤</p>
-<p><img src="/images/20180823/1.png" alt="/images/20180823/1.png"></p>
-<p>打開我提供的檔案，字串0也就是最前面感覺很正常…</p>
-<p><img src="/images/20180823/2.png" alt="/images/20180823/2.png"></p>
-<p>接著我將這段錯誤訊息貼Notepad++，轉成Hex碼來看看究竟是藏了什麼東西</p>
-<p><img src="/images/20180823/3.png" alt="/images/20180823/3.png"></p>
-<h1 id="什麼是BOM"><a href="#什麼是BOM" class="headerlink" title="#什麼是BOM"></a>#什麼是BOM</h1><p>把<strong>ef bb bf</strong>拿去Google最後查到了<a href="https://zh.wikipedia.org/wiki/%E4%BD%8D%E5%85%83%E7%B5%84%E9%A0%86%E5%BA%8F%E8%A8%98%E8%99%9F" target="_blank" rel="noopener">Wiki-位元組順序記號</a></p>
-<div class="note info"><p>節錄Wiki</p>
-<p><strong>位元組順序記號</strong>（英語：byte-order mark，<strong>BOM</strong>）是位於碼點<code>U+FEFF</code>的<a href="https://zh.wikipedia.org/wiki/%E7%B5%B1%E4%B8%80%E7%A2%BC" target="_blank" rel="noopener">統一碼</a>字元的名稱。當以<a href="https://zh.wikipedia.org/wiki/UTF-16" target="_blank" rel="noopener">UTF-16</a>或<a href="https://zh.wikipedia.org/wiki/UTF-32" target="_blank" rel="noopener">UTF-32</a>來將<a href="https://zh.wikipedia.org/wiki/UCS" target="_blank" rel="noopener">UCS</a>/統一碼字元所組成的字串編碼時，這個字元被用來標示其<a href="https://zh.wikipedia.org/wiki/%E5%AD%97%E8%8A%82%E5%BA%8F" target="_blank" rel="noopener">位元組序</a>。它常被用來當做標示檔案是以<a href="https://zh.wikipedia.org/wiki/UTF-8" target="_blank" rel="noopener">UTF-8</a>、<a href="https://zh.wikipedia.org/wiki/UTF-16" target="_blank" rel="noopener">UTF-16</a>或<a href="https://zh.wikipedia.org/wiki/UTF-32" target="_blank" rel="noopener">UTF-32</a>編碼的記號。 </p></div>
-<h1 id="解法"><a href="#解法" class="headerlink" title="#解法"></a>#解法</h1><p>而會塞入位元組序是因為在寫檔案時這樣指定編碼</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (StreamWriter file = <span class="keyword">new</span> StreamWriter(</span><br><span class="line">    					<span class="keyword">new</span> FileStream(path,FileMode.OpenOrCreate,FileAccess.Write),</span><br><span class="line">                        Encoding.UTF8))</span><br><span class="line">&#123;</span><br><span class="line">	.....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>只要將寫改改成 <strong>new UTF8Encoding(false)</strong> 即可</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (StreamWriter file = <span class="keyword">new</span> StreamWriter(</span><br><span class="line">                         <span class="keyword">new</span> FileStream(path, FileMode.OpenOrCreate, FileAccess.Write),</span><br><span class="line">                         <span class="keyword">new</span> UTF8Encoding(<span class="literal">false</span>)))</span><br><span class="line">&#123;</span><br><span class="line">    .....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/24/【Entity Framework】The_connection_was_not_closed_The_connection_s_current_state_is_connecting/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/24/【Entity Framework】The_connection_was_not_closed_The_connection_s_current_state_is_connecting/" itemprop="url">【Entity Framework】The connection was not closed. The connection's current state is connecting</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-07-24T11:28:00+08:00">
-                2018-07-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/07/24/【Entity Framework】The_connection_was_not_closed_The_connection_s_current_state_is_connecting/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/07/24/【Entity Framework】The_connection_was_not_closed_The_connection_s_current_state_is_connecting/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="前情提要"><a href="#前情提要" class="headerlink" title="#前情提要"></a>#前情提要</h1><p>不定時、不定量、不特定API跳出<strong>【System.InvalidOperationException】  - The connection was not closed. The connection’s current state is connecting.</strong>錯誤，這個錯誤以前公司也遇到過，當時研判是Entity Framework與Unity套件生命週期的問題，當時專案不算太大又一直找不到確切解決方案，所以索性將Repository Layer整個用Dapper改寫讓問題得以解決了。</p>
-<div class="note info"><p>當時的筆記</p>
-<p><a href="https://toyo0103.github.io/2016/12/19/%E3%80%90EntityFramework%E3%80%91DBContext-Dispose%E8%88%87%E5%90%A6%EF%BC%8C%E8%88%87DB%E7%9A%84%E9%80%A3%E7%B7%9A%E6%95%B8%E6%98%AF%E5%90%A6%E6%9C%89%E9%97%9C%E4%BF%82/" target="_blank" rel="noopener">【Entity Framework】DBContext Dispose與否，與DB的連線數是否有關係</a></p></div>
-<p>但這次退無可退，再次印證了一句話</p>
-<blockquote class="blockquote-center"><p>你不解決問題，問題就會解決你</p>
-</blockquote>
-<p>&nbsp; &nbsp;  </p>
-<h1 id="分析"><a href="#分析" class="headerlink" title="#分析"></a>#分析</h1><p>透過Elmah的Log分析，發現共同點都壞在一支Token驗證的DelegatingHandler裡面，因為呼叫每支API都會經過這，可以解釋為何壞在不特定API。</p>
-<p>而關鍵在其中的一行</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Service = AutofacConfig.Container.Resolve&lt;ISupplierApiProfileService&gt;();</span><br><span class="line"><span class="keyword">var</span> Profile = Service.GetSupplierApiProfileByToken(token);</span><br></pre></td></tr></table></figure>
-<p>透過Autofac Container取得ISupplierApiProfileService，猜測當時這樣撰寫是希望每次產生新的Service的實體來使用，在這之前先一下看一下整體的架構</p>
-<p><img src="/images/20180724/1.gif" alt="/images/20180724/1.gif"></p>
-<p>而每個實體分別Autofac註冊的生命週期為</p>
-<p><img src="/images/20180724/2.jpg" alt="/images/20180724/2.jpg"></p>
-<p>這導致了一個結果，因為Actofac Container為Singleton的實體，透過他Resolve出來的DBContext (<strong>InstancePerLifetimeScope</strong>)也會變成Singleton的生命週期。</p>
-<p>而Entity Framework非Thread Safe的設計，所以如果不同Thread共用同一個DBContext時，如果前一個交易尚未完成，撞在一起時就會有機率產生這個錯誤</p>
-<p><img src="/images/20180724/3.jpg" alt="/images/20180724/3.jpg"></p>
-<div class="note info"><p>相關討論 </p>
-<p><a href="https://github.com/aspnet/EntityFrameworkCore/issues/3887" target="_blank" rel="noopener">https://github.com/aspnet/EntityFrameworkCore/issues/3887</a></p></div>
-<h1 id="解法"><a href="#解法" class="headerlink" title="#解法"></a>#解法</h1><p>而DBContext會設定為<strong>InstancePerLifetimeScope</strong>的生命週期是希望DBContext隨著每次Request產生與消滅(亦即每個Request只會產生一次DBContext實體)，如果後續應用Transaction才不會發生問題，但在DelegatingHandler這邊的應用情境卻導致了Singleton的情況。</p>
-<h2 id="BeginLifetimeScope"><a href="#BeginLifetimeScope" class="headerlink" title="BeginLifetimeScope"></a>BeginLifetimeScope</h2><div class="note info"><p>官方文件 - <a href="https://autofaccn.readthedocs.io/en/latest/lifetime/working-with-scopes.html" target="_blank" rel="noopener">Working with Lifetime Scopes</a></p></div>
-<p>Autofac提供給使用者產生一個動態的生命週期的方法，所有透過這個生命週期產生的實體會隨著它的消滅一併被Disposed掉，使用方式如下</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (<span class="keyword">var</span> scope = AutofacConfig.Container.BeginLifetimeScope())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> Service = scope.Resolve&lt;ISupplierApiProfileService&gt;();</span><br><span class="line">    <span class="keyword">var</span> Profile = Service.GetSupplierApiProfileByToken(token);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>這樣可以確保在DelegatingHandler裡面產生的DBContext不會變成Singleton，也不用動到最基底DBContext <strong>InstancePerLifetimeScope</strong>的生命週期，確保了每次Request共用同一個DBContext。</p>
-<p>上線後觀察Elmah，確認這個伴隨著我將近三年的問題終於徹底消滅了，可喜可賀 可喜可賀。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/12/【Autofac】生命週期/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/12/【Autofac】生命週期/" itemprop="url">【Autofac】生命週期</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-07-12T16:06:00+08:00">
-                2018-07-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/07/12/【Autofac】生命週期/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/07/12/【Autofac】生命週期/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="什麼是Autofac"><a href="#什麼是Autofac" class="headerlink" title="#什麼是Autofac"></a>#什麼是Autofac</h1><p>用來實作<strong>控制反轉</strong>(Inversion of Control, IoC)的套件,幫我們管理抽象與實體之間的對應關係, 除了Autofac之外還有Unity等其它套件可以實作,但概念都大同小異。</p>
-<div class="note info"><p><a href="https://autofac.org/" target="_blank" rel="noopener">Autofac官網</a></p></div>
-<h1 id="Autofac的生命週期有哪些"><a href="#Autofac的生命週期有哪些" class="headerlink" title="#Autofac的生命週期有哪些"></a>#Autofac的生命週期有哪些</h1><ul>
-<li>InstancePerDependency</li>
-<li>SingleInstance</li>
-<li>InstancePerLifetimeScope</li>
-<li>InstancePerRequest</li>
-</ul>
-<p>下面會一一解說跟實作測試,在這之前先準備一個WebAPI的專案,並且將Autofac與Autofac WebAPI2裝起來</p>
-<p><img src="/images/20180712/1.jpg" alt="/images/20180712/1.jpg"></p>
-<p>然後在App_Start資料夾新增AutofacConfig類別</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">AutofacConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> IContainer Container &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">BuildContainer</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> builder = <span class="keyword">new</span> ContainerBuilder();</span><br><span class="line"></span><br><span class="line">        Register(builder);</span><br><span class="line"></span><br><span class="line">        Container = builder.Build();</span><br><span class="line">        GlobalConfiguration.Configuration.DependencyResolver = <span class="keyword">new</span> AutofacWebApiDependencyResolver(Container);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Register</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> assembly = <span class="keyword">typeof</span>(AutofacConfig).Assembly;</span><br><span class="line">        builder.RegisterApiControllers(assembly);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>Global.asax</strong>加上這行</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Application_Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//Autofac Init</span></span><br><span class="line">    AutofacConfig.BuildContainer();</span><br><span class="line"></span><br><span class="line">    AreaRegistration.RegisterAllAreas();</span><br><span class="line">    GlobalConfiguration.Configure(WebApiConfig.Register);</span><br><span class="line">    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);</span><br><span class="line">    RouteConfig.RegisterRoutes(RouteTable.Routes);</span><br><span class="line">    BundleConfig.RegisterBundles(BundleTable.Bundles);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="InstancePerDependency"><a href="#InstancePerDependency" class="headerlink" title="InstancePerDependency"></a>InstancePerDependency</h2><div class="note info"><p>Also called ‘transient’ or ‘factory’ in other containers. Using per-dependency scope, <strong>a unique instance will be returned from each request for a service.</strong> </p></div>
-<p>每次呼叫都回傳一個新的實體,產生的Instance隨著呼叫者的生命週期消滅</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LiftTimeModel</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> Count;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> ID &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LiftTimeModel</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        Count++;</span><br><span class="line">        <span class="keyword">this</span>.ID = LiftTimeModel.Count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>AutofacConfig</strong></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">AutofacConfig</span></span><br><span class="line">&#123;</span><br><span class="line">	....省略....</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Register</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> assembly = <span class="keyword">typeof</span>(AutofacConfig).Assembly;</span><br><span class="line">        builder.RegisterApiControllers(assembly);</span><br><span class="line"></span><br><span class="line">        builder.RegisterType&lt;LiftTimeModel&gt;().InstancePerDependency();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>TestController</strong></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestController</span> : <span class="title">ApiController</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">private</span> LifeTimeModel _lifeTimeModel;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TestController</span>(<span class="params">LifeTimeModel lifeTimeModel</span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">this</span>._lifeTimeModel = lifeTimeModel;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// GET api/&lt;controller&gt;</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">		sb.AppendLine(<span class="keyword">string</span>.Concat(<span class="string">"PerDependencyModel ID :"</span>, <span class="keyword">this</span>._lifeTimeModel.ID));</span><br><span class="line"></span><br><span class="line">    	<span class="keyword">return</span> sb.ToString();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>呼叫/api/test會發現隨著呼叫的次數增加，LifeTimeModel ID 也會一直增加，因為每次Request呼叫開始都會產生新的TestController Instance，隨著Request結束TestController也會被消滅，依賴在它身上的LifeTimeModel也隨之產生與消滅。而每次產生新的LifeTimeModel Instance都會在建構子將static的Count加1，這是數字一直增加的緣故。</p>
-<p>此外Autofac預設使用的生命週期即為InstancePerDependency，所以這兩行的意思是一樣的</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">builder.RegisterType&lt;LiftTimeModel&gt;().InstancePerDependency();</span><br><span class="line">builder.RegisterType&lt;LiftTimeModel&gt;();</span><br></pre></td></tr></table></figure>
-<p><img src="/images/20180712/2.jpg" alt="InstancePerDependency圖解"></p>
-<h2 id="SingleInstance"><a href="#SingleInstance" class="headerlink" title="SingleInstance"></a>SingleInstance</h2><div class="note info"><p>This is also known as ‘singleton.’ Using single instance scope, <strong>one instance is returned from all requests in the root and all nested scopes</strong>. </p></div>
-<p>不管呼叫幾次都只有產生一個Instance，以WebAPI為例只有當Application Shut down的時候會消滅</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">AutofacConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    ...省略....</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Register</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> assembly = <span class="keyword">typeof</span>(AutofacConfig).Assembly;</span><br><span class="line">        builder.RegisterApiControllers(assembly);</span><br><span class="line">        <span class="comment">//改成SingleInstance</span></span><br><span class="line">        builder.RegisterType&lt;LifeTimeModel&gt;().SingleInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>會發現不管呼叫/api/test幾次ID永遠都是1,原因是LifeTimeModel只會產生一次</p>
-<p><img src="/images/20180712/3.jpg" alt="SingleInstance圖解"></p>
-<h2 id="InstancePerLifetimeScope"><a href="#InstancePerLifetimeScope" class="headerlink" title="InstancePerLifetimeScope"></a>InstancePerLifetimeScope</h2><div class="note info"><p>This scope applies to nested lifetimes. <strong>A component with per-lifetime scope will have at most a single instance per nested lifetime scope.</strong> </p></div>
-<p>這個非常容易跟InstancePerRequest搞混,簡單理解方式就是,每個Scope只會最多產生一個Instance。</p>
-<p>所以在Root只會產生一個，在Autofac WebRequest只會產生一組</p>
-<p><strong>新增TestPerLifetimeScopeModel做為觀察標的</strong></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestPerLifetimeScopeModel</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> LifeTimeModel LifeTimeModel &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestPerLifetimeScopeModel</span>(<span class="params">LifeTimeModel lifeTimeModel</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.LifeTimeModel = lifeTimeModel;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">AutofacConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    ...省略....</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Register</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> assembly = <span class="keyword">typeof</span>(AutofacConfig).Assembly;</span><br><span class="line">        builder.RegisterApiControllers(assembly);</span><br><span class="line">        </span><br><span class="line">        builder.RegisterType&lt;TestPerLifetimeScopeModel&gt;();</span><br><span class="line">         <span class="comment">//改成InstancePerLifetimeScope</span></span><br><span class="line">        builder.RegisterType&lt;LifeTimeModel&gt;().InstancePerLifetimeScope();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestController</span> : <span class="title">ApiController</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">private</span> LifeTimeModel _lifeTimeModel;</span><br><span class="line">    <span class="keyword">private</span> TestPerLifetimeScopeModel _testPerLifetimeScopeModel;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestController</span>(<span class="params">LifeTimeModel lifeTimeModel, TestPerLifetimeScopeModel testPerLifetimeScopeModel</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    	<span class="keyword">this</span>._lifeTimeModel = lifeTimeModel;</span><br><span class="line">    	<span class="keyword">this</span>._testPerLifetimeScopeModel = testPerLifetimeScopeModel;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// GET api/&lt;controller&gt;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    	StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">    	sb.AppendLine(<span class="keyword">string</span>.Concat(<span class="string">"PerDependencyModel ID :"</span>, <span class="keyword">this</span>._lifeTimeModel.ID));</span><br><span class="line">        sb.AppendLine(<span class="keyword">string</span>.Concat(<span class="string">"TestPerLifetimeScopeModel's LifeTimeModel ID :"</span>, <span class="keyword">this</span>._testPerLifetimeScopeModel.LifeTimeModel.ID));</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> sb.ToString();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>會發現兩個得到的ID都是相同的，原因是Autofac WebRequest Scope中，一次Request只會產生一組LifeTimeModel，所以ID都會一樣</p>
-<p><img src="/images/20180712/4.jpg" alt="/images/20180712/4.jpg"></p>
-<p><del>更進一步說，如果我們今天有使用WebAPI DelegatingHandler，因為Handler只會在Application起來時產生一次Instance，所以在這產生的LifeTimeModel也會變成Singleton</del>   <strong>*註1</strong></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestHandler</span>: <span class="title">DelegatingHandler</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> Task&lt;HttpResponseMessage&gt; <span class="title">SendAsync</span>(<span class="params">HttpRequestMessage request, CancellationToken cancellationToken</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">    	<span class="keyword">var</span> Model = AutofacConfig.Container.Resolve&lt;LifeTimeModel&gt;();</span><br><span class="line">    	<span class="keyword">var</span> TestID = Model.ID;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">base</span>.SendAsync(request, cancellationToken);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">WebApiConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Register</span>(<span class="params">HttpConfiguration config</span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="comment">// Web API 設定和服務</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Web API 路由</span></span><br><span class="line">        config.MapHttpAttributeRoutes();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 註冊Handler</span></span><br><span class="line">        config.MessageHandlers.Add(<span class="keyword">new</span> TestHandler());</span><br><span class="line"></span><br><span class="line">        config.Routes.MapHttpRoute(</span><br><span class="line">            name: <span class="string">"DefaultApi"</span>,</span><br><span class="line">            routeTemplate: <span class="string">"api/&#123;controller&#125;/&#123;id&#125;"</span>,</span><br><span class="line">            defaults: <span class="keyword">new</span> &#123; id = RouteParameter.Optional &#125;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>會發現Handler裡面的ID永遠拿到的都是1，而API回傳的結果則會慢慢增加，兩邊是各自獨立的實體</p>
-<p><img src="/images/20180712/6.jpg" alt="/images/20180712/6.jpg"></p>
-<p><img src="/images/20180712/7.jpg" alt="/images/20180712/7.jpg"></p>
-<p><img src="/images/20180712/5.jpg" alt="InstancePerLifetimeScope圖解"></p>
-<div class="note danger"><p><strong>註1</strong></p>
-<p>這邊觀念有錯誤，會Singleton的原因不在於DelegatingHandler的問題，而是因為使用AutofacConfig.Container來產生實體，Container是Root層級也是Singleton，請它產生LifeTimeModel (InstancePerLifetimeScope)，所以會變成Singleton。</p>
-<p>交叉測試的方法是把這段 AutofacConfig.Container.Resolve<lifetimemodel>()放到Controller的Action之中，產出來的實體也會是Singleton，所以癥結在AutofacConfig.Container而非DelegatingHandler或Controller Action的生命週期，特此更正</lifetimemodel></p></div>
-<h2 id="InstancePerRequest"><a href="#InstancePerRequest" class="headerlink" title="InstancePerRequest"></a>InstancePerRequest</h2><div class="note info"><p>Some application types naturally lend themselves to “request” type semantics, for example ASP.NET <a href="http://autofac.readthedocs.io/en/latest/integration/webforms.html" target="_blank" rel="noopener">web forms</a> and <a href="http://autofac.readthedocs.io/en/latest/integration/mvc.html" target="_blank" rel="noopener">MVC</a> applications. In these application types, it’s helpful to have the ability to have a sort of “singleton per request.” </p></div>
-<p>基本上跟InstancePerLifetimeScope認知是一致的，唯一差別是它無法Root Scope產生Instance，因為生命週期隨著Request產生與消滅，不會有Singleton的可能，所以如果改成InstancePerRequest，剛剛的TestHandler就會產生Exception。</p>
-<p><img src="/images/20180712/8.jpg" alt="/images/20180712/8.jpg"></p>
-<p><img src="/images/20180712/9.jpg" alt="/images/20180712/9.jpg"></p>
-<p>Unity跟Autofac的生命週期一直都不是很好懂所以之前也踩了不少雷，筆記起來希望對大家能有幫助</p>
-<div class="note info"><p><strong>補充</strong></p>
-<p>產生在AutofacWebRequest Scope的實體，一定會在每次Request結束後被消滅</p></div>
-<div class="note info"><p><strong>參考文件</strong></p>
-<p><a href="https://web.archive.org/web/20170111185216/http://decompile.it/blog/2014/03/13/webapi-autofac-lifetime-scopes/" target="_blank" rel="noopener">WebAPI, Autofac, and Lifetime Scopes</a></p></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2148,7 +2005,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-count">174</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -2170,7 +2027,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -2256,7 +2113,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

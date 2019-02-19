@@ -295,6 +295,412 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/05/01/Entity-Framework問題筆記/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/05/01/Entity-Framework問題筆記/" itemprop="url">Entity Framework問題筆記</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-01T15:44:00+08:00">
+                2013-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/05/01/Entity-Framework問題筆記/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/05/01/Entity-Framework問題筆記/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>目前使用的是MVC4 + Entity Framework </p>
+<p><strong><span style="color: red;">Q:</span></strong>無法更新 EntitySet ‘xxxx’，因為它有 DefiningQuery，但是在 <modificationfunctionmapping> 項目中沒有 <insertfunction> 項目來支援目前的作業。<br><strong><span style="color: red;">A：</span></strong>這是因為 Table 沒有 PK 的關係，所以 EF 就認定這是唯讀的 Table ，在 EDMX 的 Model 中的 Table 的欄位，加上 pk 後就正常了 </insertfunction></modificationfunctionmapping></p>
+<p><strong><span style="color: red;">Q:</span></strong>在設計資料庫時明明有指定欄位的預設值，可是每次透過 EF 新增資料時，該欄位的值卻是 null？<br><strong><span style="color: red;">A:</span></strong>這是因為 DB 該欄位有 Default Value 而且又不允許 null，在 Visual Studio 中開啟 .edmx 檔案，在模型編輯器中點選 entity 的屬性，然後到屬性視窗中設定其 Default Value 屬性。參考下圖： </p>
+<p><a href="http://1.bp.blogspot.com/-TJvtcnfcdUU/UYDGF1mXiGI/AAAAAAAAC6M/TAGlBEJAgm8/s1600/11.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-TJvtcnfcdUU/UYDGF1mXiGI/AAAAAAAAC6M/TAGlBEJAgm8/s1600/11.png" alt=""></a><br>參考自:<br><a href="http://www.dotblogs.com.tw/franma/archive/2010/12/20/20263.aspx" target="_blank" rel="noopener">Entity Framework 4 的錯誤訊息排除</a><br><a href="http://huan-lin.blogspot.tw/2012/12/entity-framework-column-default-value.html" target="_blank" rel="noopener">Entity Framework 欄位預設值相關問題</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/" itemprop="url">【MVC】Client Side Validate in Partial View  with unobtrusive</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-04-29T16:23:00+08:00">
+                2013-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>MVC中很好用的一種驗證方式就是在model寫attribute<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Required(ErrorMessage=<span class="meta-string">"展覽名稱為必填"</span>)</span>]</span><br><span class="line">[<span class="meta">MaxLength(50)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">string</span> ExhibitionName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接著在View中用HtmlHelp方式建立Textbox<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Html.TextBoxFor(m =&gt; m.ExhibitionName)</span><br><span class="line">@Html.ValidationMessageFor(m =&gt; m.ExhibitionName)</span><br></pre></td></tr></table></figure></p>
+<p>MVC就會很貼心的把你的Client端驗證做好了。 </p>
+<p>但今天遇到的問題是，用同樣的方法寫在Partial View裡面卻沒有用<br>狀況如下：<br>在_layout Page中一樣載入了必備的MVC4提供的Jquery驗證檔案</p>
+<p><pre class="brush: html">&lt;script src=”/Scripts/jquery.unobtrusive-ajax.js”&gt;&lt;/script&gt;<br>&lt;script src=”/Scripts/jquery.validate.js”&gt;&lt;/script&gt;<br>&lt;script src=”/Scripts/jquery.validate.unobtrusive.js”&gt;&lt;/script&gt;<br></pre>網站頁面長成這樣</p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-WiQ8PRLsFG0/UX4vwwOgvvI/AAAAAAAACq8/ifNZBq9JUEs/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-WiQ8PRLsFG0/UX4vwwOgvvI/AAAAAAAACq8/ifNZBq9JUEs/s640/1.png" alt=""></a></div>當按下紅色框框內的功能列表，用Ajax的方式return Partial View放到藍色框框中。<br><a href="http://1.bp.blogspot.com/-h-0y5VY6FgE/UX4wNNMxGiI/AAAAAAAACrE/IzSGeMXQhQo/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-h-0y5VY6FgE/UX4wNNMxGiI/AAAAAAAACrE/IzSGeMXQhQo/s640/1.png" alt=""></a><br>但用Ajax載入的Partial View用上述的方式就不會自動驗證了，研判應該是動態產生的DOM元件沒有跟JQuery繫結到，這跟以前Asp.Net的UpdatePanel有異曲同工之妙。</p>
+<p>所以在Partial View中的Script block中加入這行 <span style="color: red;">註:#ajaxForm為Partial View中Form ID </span><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'body'</span>).on(<span class="string">"click"</span>, <span class="string">'.addNewExihition'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        $.validator.unobtrusive.parse(<span class="string">'.ajaxForm'</span>);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>這樣JQuery的驗證就又重新繫結上了，讚!!</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/04/29/【JQuery】為動態新增的Elements綁定事件-jQuery-on/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/04/29/【JQuery】為動態新增的Elements綁定事件-jQuery-on/" itemprop="url">【JQuery】為動態新增的Elements綁定事件 -- jQuery .on()</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-04-29T12:20:00+08:00">
+                2013-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/04/29/【JQuery】為動態新增的Elements綁定事件-jQuery-on/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2013/04/29/【JQuery】為動態新增的Elements綁定事件-jQuery-on/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>按下新增按鈕後，利用JQuery動態新增一個填寫欄位跟兩個按鈕</p>
+<p><a href="http://2.bp.blogspot.com/-MkKh6MsfaM4/UX31TyroisI/AAAAAAAACqs/IFEjiWTny0s/s1600/1.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-MkKh6MsfaM4/UX31TyroisI/AAAAAAAACqs/IFEjiWTny0s/s1600/1.png" alt=""></a><br>其中取消的按鈕ID為addCancel，我想替它增加click事件按下後彈跳一則簡短的訊息<br>原本的寫法如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'#addCancel'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   alert(<span class="string">'Click事件沒有問題'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>但Click事件始終沒有效果，原來動態新增的elements要綁定事件需要用<strong>.on</strong>的方式<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'body'</span>).on(<span class="string">"click"</span>, <span class="string">'#addCancel'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">'用on綁定就沒有問題!!'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://3.bp.blogspot.com/-ig6RzcQGtj4/UX30ttpbCII/AAAAAAAACqg/nWulStFehMg/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-ig6RzcQGtj4/UX30ttpbCII/AAAAAAAACqg/nWulStFehMg/s1600/1.png" alt=""></a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/04/29/【MVC】One-View-Two-Models-tuple-or-ViewModel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1246,415 +1652,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/01/08/【C-】GridView更改Pager的樣式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/01/08/【C-】GridView更改Pager的樣式/" itemprop="url">【C#】GridView更改Pager的樣式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-01-08T17:04:00+08:00">
-                2013-01-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/01/08/【C-】GridView更改Pager的樣式/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/01/08/【C-】GridView更改Pager的樣式/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><div class="separator" style="clear: both; text-align: left;">在GridView的Pager是用Table組成的，這裡是做個簡單的將 “…” 改成前五頁後五頁。</div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: center;"></div><pre class="brush : csharp"><br>else if(e.Row.RowType == DataControlRowType.Pager)<br>        {<br>            //修改page …的樣式<br>            TableRow pageTR = (TableRow)e.Row.Controls[0].Controls[0].Controls[0];<br>            for(int x = 0; x&lt; pageTR.Controls.Count; x++)<br>            {<br>                TableCell pageTD = (TableCell)pageTR.Controls[x];<br>                for(int y = 0 ; y&lt;pageTD.Controls.Count; y++)<br>                {<br>                    if(pageTD.Controls[y] is LinkButton)<br>                    {<br>                        LinkButton lb = (LinkButton)pageTD.Controls[y];<br>                        if(lb.Text == &quot;…&quot; &amp;&amp;  x == 1)<br>                        {<br>                            lb.Text = &quot;前5頁&quot;;<br>                        }<br>                        else if(lb.Text ==&quot;…&quot;)<br>                        {<br>                            lb.Text = &quot;後5頁&quot;;<br>                        }<br>                    }<br>                }<br>            }<br>        }<br></pre></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/27/【SharePoint】判斷清單屬性/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/12/27/【SharePoint】判斷清單屬性/" itemprop="url">【SharePoint】判斷清單屬性</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-12-27T11:31:00+08:00">
-                2012-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/12/27/【SharePoint】判斷清單屬性/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2012/12/27/【SharePoint】判斷清單屬性/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近做一個SharePoint的功能，需要將SiteCollection裡面所有子網站的清單全數撈出來，並判斷是否為Survey或Announcement </p>
-<ul>
-<li><p>判斷是否為Survey    <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List.BaseType.ToString() ==<span class="string">"Survey"</span></span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>判斷是否為Announcement <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List.BaseTemplate.ToString() == <span class="string">"Announcements"</span></span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-<table style="width:300px;margin:0px auto;"><tr> <td>問卷</td> <td>Survey</td></tr><tr> <td>公告</td> <td>Announcements</td></tr><tr> <td>文件庫</td> <td>DocumentLibrary</td></tr></table>
-
-<p>另外網路上查到各種清單的對照表，可以參考 :  <a href="http://blog.bugrapostaci.com/2010/09/22/sharepoint-list-type-numbers/" target="_blank" rel="noopener">清單對照表</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/27/【SharePoint】VisualWebPart/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/12/27/【SharePoint】VisualWebPart/" itemprop="url">【SharePoint】VisualWebPart</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-12-27T11:17:00+08:00">
-                2012-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/12/27/【SharePoint】VisualWebPart/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2012/12/27/【SharePoint】VisualWebPart/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-BbJDYNJ9yJQ/UNu49lR8hFI/AAAAAAAAAeA/ETeG2o2Gs4M/s1600/111.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-BbJDYNJ9yJQ/UNu49lR8hFI/AAAAAAAAAeA/ETeG2o2Gs4M/s640/111.png" alt=""></a></div>
-
-<p><span style="background-color: white;"><strong>建立VisualWebPart(後面簡稱vwp)後會產生以下檔案結構</strong></span></p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-sj79ZvE6lH4/UNu5jeqCYrI/AAAAAAAAAeI/stuhIeBL11k/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-sj79ZvE6lH4/UNu5jeqCYrI/AAAAAAAAAeI/stuhIeBL11k/s1600/111.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><strong>.XML檔中可以設定vwp佈署後歸類在哪個群組裡面</strong></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-Vv3Q5WgnzGo/UNu68vKX92I/AAAAAAAAAeg/l0j6pcw1oLY/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-Vv3Q5WgnzGo/UNu68vKX92I/AAAAAAAAAeg/l0j6pcw1oLY/s640/111.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-8K_6ifqFwTw/UNu7eFJb4gI/AAAAAAAAAeo/uMqpnmtiMNc/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-8K_6ifqFwTw/UNu7eFJb4gI/AAAAAAAAAeo/uMqpnmtiMNc/s320/111.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><strong>VWP的CS檔中可以增加可設定的參數</strong></div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">ScinoPharm.EIP.vwpSurveys</span></span><br><span class="line">   &#123;</span><br><span class="line">        [<span class="meta">ToolboxItemAttribute(false)</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">vwpSurveys</span> : <span class="title">WebPart</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//增加可設定的參數</span></span><br><span class="line">            [<span class="meta">Category(<span class="meta-string">"MySetting"</span>),</span></span><br><span class="line"><span class="meta">             Personalizable(PersonalizationScope.Shared), //共用設定</span></span><br><span class="line"><span class="meta">             WebBrowsable(true), //是否顯示在面板上</span></span><br><span class="line"><span class="meta">             WebDisplayName(<span class="meta-string">"來源清單名稱"</span>),</span></span><br><span class="line"><span class="meta">             WebDescription(<span class="meta-string">"請填寫Survey資料來源的清單名稱"</span>) //描述</span></span><br><span class="line"><span class="meta">            </span>]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">string</span> ListName&#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//當您變更視覺 Web 組件專案項目時，Visual Studio 可能會自動更新此路徑</span></span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">string</span> _ascxPath = <span class="string">@"~/_CONTROLTEMPLATES/ScinoPharm.EIP/vwpSurveys/vwpSurveysUserControl.ascx"</span>;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">CreateChildControls</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">            </span>&#123;</span><br><span class="line">                Control control = Page.LoadControl(_ascxPath);</span><br><span class="line">                ControlSkin.Add(control);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p><div class="separator" style="clear: both; text-align: left;"><strong>
-</strong></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-vNWquvR2rzs/UNu9Aq_nY_I/AAAAAAAAAe4/lNd-Ro9x2Z4/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-vNWquvR2rzs/UNu9Aq_nY_I/AAAAAAAAAe4/lNd-Ro9x2Z4/s1600/111.png" alt=""></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><strong>在UserControl中要抓到VWP的參數設定，需要透過以下的方法</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> vwpSurveys SurveyParameter;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Page_Load</span>(<span class="params"><span class="keyword">object</span> sender, EventArgs e</span>) </span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!Page.IsPostBack) </span><br><span class="line">        &#123;</span><br><span class="line">            SurveyParameter = <span class="keyword">this</span>.Parent <span class="keyword">as</span> vwpSurveys;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>
-</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1709,7 +1706,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-count">174</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1731,7 +1728,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -1817,7 +1814,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

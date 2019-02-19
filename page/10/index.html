@@ -295,6 +295,443 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/10/22/LinqToSql-ExcuteQuery回傳Binary的問題/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/10/22/LinqToSql-ExcuteQuery回傳Binary的問題/" itemprop="url">LinqToSql ExcuteQuery回傳Binary的問題</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-10-22T14:13:00+08:00">
+                2015-10-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/10/22/LinqToSql-ExcuteQuery回傳Binary的問題/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/10/22/LinqToSql-ExcuteQuery回傳Binary的問題/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近發現用LinqToSQL的物件模型,使用ExecuteQuery&lt;Binary&gt;的方式執行SQL會回傳<br><span style="color: #666666;">型別’System.Data.Linq.Binary’ 必須宣告預設(無參數)建構涵式,才能在對應時加以建構,</span><br>的問題</p>
+<p>實際案例如下:</p>
+<ul>
+<li>先在DB裡建立一個Function <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">function</span> [dbo].[fb_CreatePWD]</span><br><span class="line">(</span><br><span class="line">  @Param1 <span class="built_in">varchar</span>(<span class="number">150</span>)</span><br><span class="line">)</span><br><span class="line"><span class="keyword">RETURNS</span> varbinary (<span class="number">150</span>)</span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">DECLARE</span> @ResultVar varbinary(<span class="number">150</span>)</span><br><span class="line">  <span class="keyword">select</span> @ResultVar = pwdencrypt(@Param1)</span><br><span class="line"></span><br><span class="line">      <span class="keyword">RETURN</span> @ResultVar</span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;/pre&gt;</span><br><span class="line">*   接著在MSSMS上測試是可以正常的[![](http://4.bp.blogspot.com/-9so5HU0Hkr0/Vih51QjzYZI/AAAAAAAAHe8/mIYlcdaDToA/s1600/1.png)](http://4.bp.blogspot.com/-9so5HU0Hkr0/Vih51QjzYZI/AAAAAAAAHe8/mIYlcdaDToA/s1600/1.png)</span><br><span class="line"></span><br><span class="line">*   然後移到LinqToSql的DataContext試試看```csharp</span><br><span class="line">var result = this.ExecuteQuery&lt;binary&gt;("select dbo.fn_CreatePWD(&#123;0&#125;)","ok").FirstOrDefault();</span><br><span class="line">&lt;/binary&gt;</span><br></pre></td></tr></table></figure>
+<p>得到以下錯誤訊息<br>型別 ‘System.Data.Linq.Binary’ 必須宣告預設 (無參數) 建構函式，才能在對應時加以建構<div><br></div></p>
+<ul>
+<li>網路上找到有人說用byte[]接可以,所以立馬做一下測試 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><pre class="brush:csharp">var result = this.ExecuteQuery<binary>(“select dbo.fn_CreatePWD({0})”,”ok”).FirstOrDefault();<br></binary><br><code>`</code><br>結果一樣GG, 型別 ‘System.Byte[]’ 必須宣告預設 (無參數) 建構函式，才能在對應時加以建構。</pre></p>
+<p>接著改用Entity Framework 6.0來試試看*   一樣不行<a href="http://3.bp.blogspot.com/-HheTlW-N0t8/Vih8Tpj_LNI/AAAAAAAAHfY/hTgin_0PdxM/s1600/1-1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-HheTlW-N0t8/Vih8Tpj_LNI/AAAAAAAAHfY/hTgin_0PdxM/s640/1-1.png" alt=""></a></p>
+<ul>
+<li>換成Byte[]就可以了！！！<br><a href="http://1.bp.blogspot.com/-0HTZnzzgbo4/Vih9H9jaa4I/AAAAAAAAHfg/UwPi5Fpb8ms/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-0HTZnzzgbo4/Vih9H9jaa4I/AAAAAAAAHfg/UwPi5Fpb8ms/s1600/1.png" alt=""></a><br>所以還是趕快放棄LinqToSql這個被放棄掉的產品,投入Entity Framwork的懷抱吧XD</li>
+</ul>
+<p>*<br>這邊特別備註一下,如果今天是直接用物件模型將function拉進來,並且直接對xxxDataContext.fn_CreatePWD()操作是可以運作沒問題.</p>
+<p>但因為我今天的狀況是在Repository Pattern的情況下,並不會真的對實體做操作,而是全部都對基底類別DataContext做執行,所以沒有這個Method可以使用</p>
+<p>我想以上狀況應該是LinqToSql的Bug吧!!網路上也查了滿久的資料,好像沒有人對這塊有比較好的處理方式,如果有再補充上來～</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/06/09/Android-Use-Post-To-Call-API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/06/09/Android-Use-Post-To-Call-API/" itemprop="url">[Android] Use Post To Call API</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-06-09T10:31:00+08:00">
+                2015-06-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/06/09/Android-Use-Post-To-Call-API/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/06/09/Android-Use-Post-To-Call-API/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>開發Android時,如何用Post的方式 Call API來取得值</p>
+<ul>
+<li><p>首先 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">String UrlLocation = 你的API位置; <span class="comment">//API位置</span></span><br><span class="line">            String PostData = 要傳遞的資料(字串); <span class="comment">//EX: ID=Toyo&amp;Name=Steven</span></span><br><span class="line"></span><br><span class="line">                HttpURLConnection conn = <span class="literal">null</span>;</span><br><span class="line">            StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">            <span class="keyword">try</span></span><br><span class="line">            &#123;</span><br><span class="line">                URL Url = <span class="keyword">new</span> URL(UrlLocation);</span><br><span class="line">                conn = (HttpURLConnection)Url.openConnection();</span><br><span class="line">                conn.setRequestMethod(<span class="string">"POST"</span>); <span class="comment">//要呼意的方式 Get Or Post</span></span><br><span class="line">                conn.setDoInput(<span class="literal">true</span>);</span><br><span class="line">                conn.setDoOutput(<span class="literal">true</span>);</span><br><span class="line">                conn.connect();</span><br><span class="line">                <span class="comment">//開始傳輸資料過去給API</span></span><br><span class="line">                OutputStream Output = conn.getOutputStream();</span><br><span class="line">                BufferedWriter writer = <span class="keyword">new</span> BufferedWriter(</span><br><span class="line">                        <span class="keyword">new</span> OutputStreamWriter(Output, <span class="string">"UTF-8"</span>));</span><br><span class="line">                writer.write(PostData);</span><br><span class="line">                writer.flush();</span><br><span class="line">                writer.close();</span><br><span class="line">                Output.close();</span><br><span class="line">                <span class="comment">//讀取API回傳的值</span></span><br><span class="line">                BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(</span><br><span class="line">                        conn.getInputStream(),<span class="string">"utf-8"</span>));</span><br><span class="line"></span><br><span class="line">                    String line;</span><br><span class="line">                <span class="keyword">while</span> ((line=br.readLine())!=<span class="literal">null</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    sb.append(line);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">catch</span>(Exception ex)</span><br><span class="line">            &#123;</span><br><span class="line">                Log.e(<span class="string">"API_Post"</span>,ex.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">finally</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (conn != <span class="literal">null</span>)</span><br><span class="line">                    conn.disconnect();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> sb.toString();</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>目前測試的結果是,如果不把呼叫API用執行緒AsyncTask的方式處理,在conn.connect()這邊會跳出Http…InMainThread的Exception,原因是Andorid預設呼叫外部處理5秒沒有回應就會跳Exception,所以預設不管這支API反應速度快不快,他都要你把上面那段做成切執行緒的方式處理,當然網路上還是有舊的方式可以用,但既然這是官方目前推薦的做法就照做吧 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//這邊有三個參數</span></span><br><span class="line"><span class="comment">//第一個參數String : 呼叫這個方法時要帶入的參數型態,這邊就是可以帶入String,</span></span><br><span class="line"><span class="comment">//第二個參數Void : 處理時會回報狀態跟進度,這邊寫Void表示不回傳目前處理狀態</span></span><br><span class="line"><span class="comment">//第三個參數String : 處理完成時回傳的值</span></span><br><span class="line">private class Post extends AsyncTask&lt;String,Void,String&gt;</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//事件處理順序onPreExecute , doInBackground ,onPostExecute</span></span><br><span class="line">        @Override</span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPreExecute</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            super.onPreExecute();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">        <span class="function"><span class="keyword">protected</span> String <span class="title">doInBackground</span>(<span class="params">String ... <span class="keyword">params</span></span>) </span>&#123;</span><br><span class="line">            <span class="comment">//改寫這邊,呼叫方法時可以傳進多個String,所以這邊改抓params</span></span><br><span class="line">            String UrlLocation = <span class="keyword">params</span>[<span class="number">0</span>]; <span class="comment">//API位置</span></span><br><span class="line">            String PostData = <span class="keyword">params</span>[<span class="number">1</span>]; <span class="comment">//要傳資料</span></span><br><span class="line"></span><br><span class="line">                HttpURLConnection conn = <span class="literal">null</span>;</span><br><span class="line">            StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">            <span class="keyword">try</span></span><br><span class="line">            &#123;</span><br><span class="line">                URL Url = <span class="keyword">new</span> URL(UrlLocation);</span><br><span class="line">                conn = (HttpURLConnection)Url.openConnection();</span><br><span class="line">                conn.setRequestMethod(<span class="string">"POST"</span>); <span class="comment">//要呼意的方式 Get Or Post</span></span><br><span class="line">                conn.setDoInput(<span class="literal">true</span>);</span><br><span class="line">                conn.setDoOutput(<span class="literal">true</span>);</span><br><span class="line">                conn.connect();</span><br><span class="line">                <span class="comment">//開始傳輸資料過去給API</span></span><br><span class="line">                OutputStream Output = conn.getOutputStream();</span><br><span class="line">                BufferedWriter writer = <span class="keyword">new</span> BufferedWriter(</span><br><span class="line">                        <span class="keyword">new</span> OutputStreamWriter(Output, <span class="string">"UTF-8"</span>));</span><br><span class="line">                writer.write(PostData);</span><br><span class="line">                writer.flush();</span><br><span class="line">                writer.close();</span><br><span class="line">                Output.close();</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//讀取API回傳的值</span></span><br><span class="line">                BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(</span><br><span class="line">                        conn.getInputStream(),<span class="string">"utf-8"</span>));</span><br><span class="line"></span><br><span class="line">                    String line;</span><br><span class="line">                <span class="keyword">while</span> ((line=br.readLine())!=<span class="literal">null</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    sb.append(line);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">catch</span>(Exception ex)</span><br><span class="line">            &#123;</span><br><span class="line">                Log.e(<span class="string">"API_Post"</span>,ex.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">finally</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (conn != <span class="literal">null</span>)</span><br><span class="line">                    conn.disconnect();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> sb.toString();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">           @Override</span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onPostExecute</span>(<span class="params">String Result</span>) </span>&#123;</span><br><span class="line">            super.onPostExecute(Result);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>最後,因為在Debug模式AsyncTask並不會進入,所以要在doInBackground的事件裡面加上這行,但因為非Debug模式下這行會造成Android沒有回應, 所以記得在部署時把這行拿掉！！ <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">android.os.Debug.waitForDebugger();</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>全部完成後,呼叫方式如下 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">String Url = <span class="string">"http://www.api.com.tw"</span>;</span><br><span class="line">String PostData = <span class="string">"id=toyo&amp;name=steven"</span>;</span><br><span class="line">String Response = <span class="keyword">new</span> Post().execute(Url,PostData).<span class="keyword">get</span>();</span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/13/swift-CoreData-2-新增-刪除CoreData資料/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/13/swift-CoreData-2-新增-刪除CoreData資料/" itemprop="url">[swift]  CoreData (2) 新增,刪除CoreData資料</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-13T18:20:00+08:00">
+                2015-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/13/swift-CoreData-2-新增-刪除CoreData資料/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/03/13/swift-CoreData-2-新增-刪除CoreData資料/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>這邊做個簡單的介面,讓TableView的資料來自資料庫,並能把資料存到資料庫裡面<br><a href="http://1.bp.blogspot.com/-Uz3JfDAuaic/VQKFrHxDa-I/AAAAAAAAEkg/2DXXn3_CA6o/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8B%E5%8D%882.35.33.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-Uz3JfDAuaic/VQKFrHxDa-I/AAAAAAAAEkg/2DXXn3_CA6o/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8B%E5%8D%882.35.33.png" alt=""></a> </p>
+<ul>
+<li><p>首先先把TableView的資料來源設定成來自資料庫,完整程式碼如下,這樣就已經把Table的datasource friends來源改成SQLite了 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> CoreData</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span> , <span class="title">UITableViewDelegate</span> , <span class="title">UITableViewDataSource</span>, <span class="title">NSFetchedResultsControllerDelegate</span></span>&#123;</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> tableview: <span class="type">UITableView</span>!</span><br><span class="line">    <span class="keyword">var</span> friends : [<span class="type">Friend</span>] = []</span><br><span class="line">    <span class="keyword">var</span> fetchRequestController:<span class="type">NSFetchedResultsController</span>!</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        <span class="comment">//讀取Friend的Entity</span></span><br><span class="line">        <span class="keyword">var</span> fetchRequest = <span class="type">NSFetchRequest</span>(entityName: <span class="string">"Friend"</span>)</span><br><span class="line">        <span class="comment">//排序方式用name這個欄位</span></span><br><span class="line">        <span class="keyword">let</span> sortDescriptor = <span class="type">NSSortDescriptor</span>(key: <span class="string">"name"</span>, ascending: <span class="literal">true</span>)</span><br><span class="line">        fetchRequest.sortDescriptors = [sortDescriptor]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> managedObjectContext = (<span class="type">UIApplication</span>.sharedApplication().delegate <span class="keyword">as</span> <span class="type">AppDelegate</span>).managedObjectContext&#123;</span><br><span class="line">            fetchRequestController = <span class="type">NSFetchedResultsController</span>(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: <span class="literal">nil</span>, cacheName: <span class="literal">nil</span>)</span><br><span class="line">            <span class="comment">//delegate設定為自己時,當新增修改刪除SQLite的資料時會呼叫以下事件</span></span><br><span class="line">            <span class="comment">//controllerWillChangeContent()</span></span><br><span class="line">            <span class="comment">//controller(_:didChangeObject:atIndexPath:forChangeType:newIndexPath:)</span></span><br><span class="line">            <span class="comment">//controllerDidChangeContent(_:)</span></span><br><span class="line">            fetchRequestController.delegate = <span class="keyword">self</span></span><br><span class="line">            <span class="keyword">var</span> e:<span class="type">NSError</span>?</span><br><span class="line">            <span class="keyword">var</span> result = fetchRequestController.performFetch(&amp;e)</span><br><span class="line">            friends = fetchRequestController.fetchedObjects <span class="keyword">as</span> [<span class="type">Friend</span>]</span><br><span class="line">            <span class="keyword">if</span> result != <span class="literal">true</span>&#123;</span><br><span class="line">                 <span class="built_in">println</span>(e?.localizedDescription)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">didReceiveMemoryWarning</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.didReceiveMemoryWarning()</span><br><span class="line">        <span class="comment">// Dispose of any resources that can be recreated.</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)</span></span> -&gt; <span class="type">UITableViewCell</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> identifier = <span class="string">"cell"</span></span><br><span class="line">        <span class="keyword">var</span> cell = tableView.dequeueReusableCellWithIdentifier(identifier) <span class="keyword">as</span> customCell</span><br><span class="line">        cell.nameLabel.text = friends[indexPath.row].name</span><br><span class="line">        cell.telLabel.text = friends[indexPath.row].tel.stringValue</span><br><span class="line">        cell.picImageView.image = <span class="type">UIImage</span>(data: friends[indexPath.row].picture)</span><br><span class="line">        cell.marryLabel.text = friends[indexPath.row].marry.boolValue ? <span class="string">"YES"</span> : <span class="string">"NO"</span></span><br><span class="line">        <span class="keyword">return</span> cell</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, numberOfRowsInSection section: Int)</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> friends.<span class="built_in">count</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>接著寫按下save後的事件將檔案能寫到資料庫中,在這之前先處理Yes and no的按鈕和載入圖片按鈕<br>Yes and No按鈕 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> <span class="type">YesButton</span>: <span class="type">UIButton</span>!</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> <span class="type">NoButton</span>: <span class="type">UIButton</span>!</span><br><span class="line"></span><br><span class="line">        <span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">MarryButtonClick</span><span class="params">(sender: AnyObject)</span></span> &#123;</span><br><span class="line">        <span class="type">YesButton</span>.backgroundColor = (sender <span class="keyword">as</span> <span class="type">UIButton</span> == <span class="type">YesButton</span>) ? <span class="type">UIColor</span>.redColor() : <span class="type">UIColor</span>.lightGrayColor()</span><br><span class="line">        <span class="type">NoButton</span>.backgroundColor = (sender <span class="keyword">as</span> <span class="type">UIButton</span> == <span class="type">NoButton</span>) ? <span class="type">UIColor</span>.redColor() : <span class="type">UIColor</span>.lightGrayColor()</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<p>實作載入圖片的按鈕,需要讓viewController實作UIImagePickerControllerDelegate和UINavigationControllerDelegate<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span> , <span class="title">UITableViewDelegate</span> , <span class="title">UITableViewDataSource</span>, <span class="title">NSFetchedResultsControllerDelegate</span> , <span class="title">UIImagePickerControllerDelegate</span>,<span class="title">UINavigationControllerDelegate</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>selectPicture的按鈕 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">SelectPictureClick</span><span class="params">(sender: AnyObject)</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> imagePicker = <span class="type">UIImagePickerController</span>()</span><br><span class="line">        imagePicker.allowsEditing = <span class="literal">false</span></span><br><span class="line">        imagePicker.sourceType = <span class="type">UIImagePickerControllerSourceType</span>.<span class="type">PhotoLibrary</span></span><br><span class="line">        imagePicker.delegate = <span class="keyword">self</span></span><br><span class="line">        <span class="comment">//顯示挑選圖片的視窗</span></span><br><span class="line">        <span class="keyword">self</span>.presentViewController(imagePicker, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">imagePickerController</span><span class="params">(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject])</span></span> &#123;</span><br><span class="line">        <span class="type">PicImageView</span>.image = info[<span class="type">UIImagePickerControllerOriginalImage</span>] <span class="keyword">as</span>? <span class="type">UIImage</span></span><br><span class="line">        <span class="type">PicImageView</span>.contentMode = <span class="type">UIViewContentMode</span>.<span class="type">ScaleAspectFill</span></span><br><span class="line">        <span class="type">PicImageView</span>.clipsToBounds = <span class="literal">true</span></span><br><span class="line">        <span class="comment">//關閉挑選圖片的視窗</span></span><br><span class="line">        dismissViewControllerAnimated(<span class="literal">true</span>, completion: <span class="literal">nil</span>)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接著執行看看應該結果<a href="http://1.bp.blogspot.com/-2NW3TefbDxE/VQK1HNE_8rI/AAAAAAAAEkw/l2v6Div6BYA/s1600/test.gif" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-2NW3TefbDxE/VQK1HNE_8rI/AAAAAAAAEkw/l2v6Div6BYA/s400/test.gif" alt=""></a></p>
+<ul>
+<li>接著把Save按鈕按下後存到SQLite的事件寫好 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">SaveClick</span><span class="params">(sender: AnyObject)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> manageObjectContext = (<span class="type">UIApplication</span>.sharedApplication().delegate <span class="keyword">as</span> <span class="type">AppDelegate</span>).managedObjectContext&#123;</span><br><span class="line">            <span class="keyword">var</span> friend = <span class="type">NSEntityDescription</span>.insertNewObjectForEntityForName(<span class="string">"Friend"</span>, inManagedObjectContext: manageObjectContext) <span class="keyword">as</span> <span class="type">Friend</span></span><br><span class="line">            friend.name = <span class="type">NameTextField</span>.text</span><br><span class="line">            friend.tel = <span class="type">TelTextField</span>.text.toInt()</span><br><span class="line">            friend.marry = (<span class="type">YesButton</span>.backgroundColor == <span class="type">UIColor</span>.redColor()) ? <span class="literal">true</span> : <span class="literal">false</span></span><br><span class="line">            friend.picture = <span class="type">UIImagePNGRepresentation</span>(<span class="type">PicImageView</span>.image)</span><br><span class="line">            <span class="keyword">var</span> e:<span class="type">NSError</span>?</span><br><span class="line">            <span class="keyword">if</span> manageObjectContext.save(&amp;e) != <span class="literal">true</span>&#123;</span><br><span class="line">                <span class="built_in">println</span>(<span class="string">"error: \(e?.localizedDescription)"</span>)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>接著執行看看會發現按了儲存按鈕後雖然存進資料庫了,但沒有讓TableView馬上連動顯示,必須重新開APP才會顯示在table上*   還記得之前有繼承NSFetchedResultsControllerDelegate嗎?這時候派上用場了,補上幾個事件讓他可以跟TableView連動吧 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//資料庫準備更新了</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">controllerWillChangeContent</span><span class="params">(controller: NSFetchedResultsController)</span></span> &#123;</span><br><span class="line">        tableview.beginUpdates()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">controller</span><span class="params">(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> type&#123;</span><br><span class="line">        <span class="keyword">case</span> .<span class="type">Insert</span>:</span><br><span class="line">            tableview.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: <span class="type">UITableViewRowAnimation</span>.<span class="type">Fade</span>)</span><br><span class="line">        <span class="keyword">case</span> .<span class="type">Delete</span>:</span><br><span class="line">            tableview.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: <span class="type">UITableViewRowAnimation</span>.<span class="type">Fade</span>)</span><br><span class="line">        <span class="keyword">case</span> .<span class="type">Update</span>:</span><br><span class="line">            tableview.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: <span class="type">UITableViewRowAnimation</span>.<span class="type">Fade</span>)</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            tableview.reloadData()</span><br><span class="line">        &#125;</span><br><span class="line">        friends = controller.fetchedObjects <span class="keyword">as</span> [<span class="type">Friend</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">controllerDidChangeContent</span><span class="params">(controller: NSFetchedResultsController)</span></span> &#123;</span><br><span class="line">        tableview.endUpdates()</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接著再執行看看應該就可以看到他會馬上顯示了*   最後來個刪除吧！！這邊只舉例刪除該如何做,就不加到例子當中了 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> manageObjectContext = (<span class="type">UIApplication</span>.sharedApplication().delegate <span class="keyword">as</span> <span class="type">AppDelegate</span>).managedObjectContext&#123;</span><br><span class="line">            <span class="comment">//簡單說就是挑出那個想刪除的物件</span></span><br><span class="line">            <span class="keyword">var</span> friendToDelete = <span class="keyword">self</span>.fetchRequestController.objectAtIndexPath(<span class="type">NSIndexPath</span>(index: <span class="number">0</span>)) <span class="keyword">as</span> <span class="type">Friend</span></span><br><span class="line">            <span class="comment">//呼叫刪除方法把它丟進去</span></span><br><span class="line">            manageObjectContext.deleteObject(friendToDelete)</span><br><span class="line">            <span class="keyword">var</span> e:<span class="type">NSError</span>?</span><br><span class="line">            <span class="comment">//儲存</span></span><br><span class="line">            <span class="keyword">if</span> manageObjectContext.save(&amp;e) != <span class="literal">true</span>&#123;</span><br><span class="line">                <span class="built_in">println</span>(<span class="string">"error: \(e?.localizedDescription)"</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>基本上有操作過.NET Entity物件的話,這邊的概念幾乎都雷同,最後補上完整的程式碼 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> CoreData</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span> , <span class="title">UITableViewDelegate</span> , <span class="title">UITableViewDataSource</span>, <span class="title">UINavigationControllerDelegate</span> ,<span class="title">NSFetchedResultsControllerDelegate</span> , <span class="title">UIImagePickerControllerDelegate</span></span>&#123;</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> tableview: <span class="type">UITableView</span>!</span><br><span class="line">    <span class="keyword">var</span> friends : [<span class="type">Friend</span>] = []</span><br><span class="line">    <span class="keyword">var</span> fetchRequestController:<span class="type">NSFetchedResultsController</span>!</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> <span class="type">NameTextField</span>: <span class="type">UITextField</span>!</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> <span class="type">TelTextField</span>: <span class="type">UITextField</span>!</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> <span class="type">PicImageView</span>: <span class="type">UIImageView</span>!</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> <span class="type">YesButton</span>: <span class="type">UIButton</span>!</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> <span class="type">NoButton</span>: <span class="type">UIButton</span>!</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        <span class="comment">//讀取Friend的Entity</span></span><br><span class="line">        <span class="keyword">var</span> fetchRequest = <span class="type">NSFetchRequest</span>(entityName: <span class="string">"Friend"</span>)</span><br><span class="line">        <span class="comment">//排序方式用name這個欄位</span></span><br><span class="line">        <span class="keyword">let</span> sortDescriptor = <span class="type">NSSortDescriptor</span>(key: <span class="string">"name"</span>, ascending: <span class="literal">true</span>)</span><br><span class="line">        fetchRequest.sortDescriptors = [sortDescriptor]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> managedObjectContext = (<span class="type">UIApplication</span>.sharedApplication().delegate <span class="keyword">as</span> <span class="type">AppDelegate</span>).managedObjectContext&#123;</span><br><span class="line">            fetchRequestController = <span class="type">NSFetchedResultsController</span>(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: <span class="literal">nil</span>, cacheName: <span class="literal">nil</span>)</span><br><span class="line">            <span class="comment">//delegate設定為自己時,當新增修改刪除SQLite的資料時會呼叫以下事件</span></span><br><span class="line">            <span class="comment">//controllerWillChangeContent()</span></span><br><span class="line">            <span class="comment">//controller(_:didChangeObject:atIndexPath:forChangeType:newIndexPath:)</span></span><br><span class="line">            <span class="comment">//controllerDidChangeContent(_:)</span></span><br><span class="line">            fetchRequestController.delegate = <span class="keyword">self</span></span><br><span class="line">            <span class="keyword">var</span> e:<span class="type">NSError</span>?</span><br><span class="line">            <span class="keyword">var</span> result = fetchRequestController.performFetch(&amp;e)</span><br><span class="line">            friends = fetchRequestController.fetchedObjects <span class="keyword">as</span> [<span class="type">Friend</span>]</span><br><span class="line">            <span class="keyword">if</span> result != <span class="literal">true</span>&#123;</span><br><span class="line">                 <span class="built_in">println</span>(e?.localizedDescription)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">didReceiveMemoryWarning</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.didReceiveMemoryWarning()</span><br><span class="line">        <span class="comment">// Dispose of any resources that can be recreated.</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)</span></span> -&gt; <span class="type">UITableViewCell</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> identifier = <span class="string">"cell"</span></span><br><span class="line">        <span class="keyword">var</span> cell = tableView.dequeueReusableCellWithIdentifier(identifier) <span class="keyword">as</span> customCell</span><br><span class="line">        cell.nameLabel.text = friends[indexPath.row].name</span><br><span class="line">        cell.telLabel.text = friends[indexPath.row].tel.stringValue</span><br><span class="line">        cell.picImageView.image = <span class="type">UIImage</span>(data: friends[indexPath.row].picture)</span><br><span class="line">        cell.marryLabel.text = friends[indexPath.row].marry.boolValue ? <span class="string">"YES"</span> : <span class="string">"NO"</span></span><br><span class="line">        <span class="keyword">return</span> cell</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, numberOfRowsInSection section: Int)</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> friends.<span class="built_in">count</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">MarryButtonClick</span><span class="params">(sender: AnyObject)</span></span> &#123;</span><br><span class="line">        <span class="type">YesButton</span>.backgroundColor = (sender <span class="keyword">as</span> <span class="type">UIButton</span> == <span class="type">YesButton</span>) ? <span class="type">UIColor</span>.redColor() : <span class="type">UIColor</span>.lightGrayColor()</span><br><span class="line">        <span class="type">NoButton</span>.backgroundColor = (sender <span class="keyword">as</span> <span class="type">UIButton</span> == <span class="type">NoButton</span>) ? <span class="type">UIColor</span>.redColor() : <span class="type">UIColor</span>.lightGrayColor()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">SelectPictureClick</span><span class="params">(sender: AnyObject)</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> imagePicker = <span class="type">UIImagePickerController</span>()</span><br><span class="line">        imagePicker.allowsEditing = <span class="literal">false</span></span><br><span class="line">        imagePicker.sourceType = <span class="type">UIImagePickerControllerSourceType</span>.<span class="type">PhotoLibrary</span></span><br><span class="line">        imagePicker.delegate = <span class="keyword">self</span></span><br><span class="line">        <span class="comment">//顯示挑選圖片的視窗</span></span><br><span class="line">        <span class="keyword">self</span>.presentViewController(imagePicker, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">imagePickerController</span><span class="params">(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject])</span></span> &#123;</span><br><span class="line">        <span class="type">PicImageView</span>.image = info[<span class="type">UIImagePickerControllerOriginalImage</span>] <span class="keyword">as</span>? <span class="type">UIImage</span></span><br><span class="line">        <span class="type">PicImageView</span>.contentMode = <span class="type">UIViewContentMode</span>.<span class="type">ScaleAspectFill</span></span><br><span class="line">        <span class="type">PicImageView</span>.clipsToBounds = <span class="literal">true</span></span><br><span class="line">        <span class="comment">//關閉挑選圖片的視窗</span></span><br><span class="line">        dismissViewControllerAnimated(<span class="literal">true</span>, completion: <span class="literal">nil</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">SaveClick</span><span class="params">(sender: AnyObject)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> manageObjectContext = (<span class="type">UIApplication</span>.sharedApplication().delegate <span class="keyword">as</span> <span class="type">AppDelegate</span>).managedObjectContext&#123;</span><br><span class="line">            <span class="keyword">var</span> friend = <span class="type">NSEntityDescription</span>.insertNewObjectForEntityForName(<span class="string">"Friend"</span>, inManagedObjectContext: manageObjectContext) <span class="keyword">as</span> <span class="type">Friend</span></span><br><span class="line">            friend.name = <span class="type">NameTextField</span>.text</span><br><span class="line">            friend.tel = <span class="type">TelTextField</span>.text.toInt()</span><br><span class="line">            friend.marry = (<span class="type">YesButton</span>.backgroundColor == <span class="type">UIColor</span>.redColor()) ? <span class="literal">true</span> : <span class="literal">false</span></span><br><span class="line">            friend.picture = <span class="type">UIImagePNGRepresentation</span>(<span class="type">PicImageView</span>.image)</span><br><span class="line">            <span class="keyword">var</span> e:<span class="type">NSError</span>?</span><br><span class="line">            <span class="keyword">if</span> manageObjectContext.save(&amp;e) != <span class="literal">true</span>&#123;</span><br><span class="line">                <span class="built_in">println</span>(<span class="string">"error: \(e?.localizedDescription)"</span>)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//資料庫準備更新了</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">controllerWillChangeContent</span><span class="params">(controller: NSFetchedResultsController)</span></span> &#123;</span><br><span class="line">        tableview.beginUpdates()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">controller</span><span class="params">(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> type&#123;</span><br><span class="line">        <span class="keyword">case</span> .<span class="type">Insert</span>:</span><br><span class="line">            tableview.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: <span class="type">UITableViewRowAnimation</span>.<span class="type">Fade</span>)</span><br><span class="line">        <span class="keyword">case</span> .<span class="type">Delete</span>:</span><br><span class="line">            tableview.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: <span class="type">UITableViewRowAnimation</span>.<span class="type">Fade</span>)</span><br><span class="line">        <span class="keyword">case</span> .<span class="type">Update</span>:</span><br><span class="line">            tableview.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: <span class="type">UITableViewRowAnimation</span>.<span class="type">Fade</span>)</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            tableview.reloadData()</span><br><span class="line">        &#125;</span><br><span class="line">        friends = controller.fetchedObjects <span class="keyword">as</span> [<span class="type">Friend</span>]</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">controllerDidChangeContent</span><span class="params">(controller: NSFetchedResultsController)</span></span> &#123;</span><br><span class="line">        tableview.endUpdates()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/13/swift-CoreData-1-建立CoreData/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1273,414 +1710,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/09/swift-Extension/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/09/swift-Extension/" itemprop="url">[swift] Extension</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-09T09:58:00+08:00">
-                2015-03-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/09/swift-Extension/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/03/09/swift-Extension/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Swift這個語法常常會遇到參數型態間的轉換,寫慣了C#,常常遇到什麼參數轉換就會想要.toString() .toInt()阿之類的,偏偏Swift沒有這些function不打緊,還每種型態的變數互轉常常方式不一樣….搞得我每次遇到都要查一下到底這次又該用哪個function來轉換好,最後索性就把這些整理起來做成Extension,以後就跟C#一樣to啥to啥的就好.</p>
-<ul>
-<li>那接下來就來介紹怎麼擴充Swift的function語法</li>
-<li><p>extension是關鍵字,擴充String類別型態的function <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">String</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">toDoublue</span><span class="params">()</span></span> -&gt; <span class="type">Double</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">self</span> <span class="keyword">as</span> <span class="type">NSString</span>).doubleValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>結果<br><a href="http://2.bp.blogspot.com/-ScO8IMg64Mc/VPz-IPzpfGI/AAAAAAAAEg8/PUHhR5dzQrc/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8A%E5%8D%889.57.22.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-ScO8IMg64Mc/VPz-IPzpfGI/AAAAAAAAEg8/PUHhR5dzQrc/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8A%E5%8D%889.57.22.png" alt=""></a></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/07/SQL-2008-R2-繁體中文版安裝問題/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/07/SQL-2008-R2-繁體中文版安裝問題/" itemprop="url">[SQL] 2008 R2 繁體中文版安裝問題</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-07T12:24:00+08:00">
-                2015-03-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/07/SQL-2008-R2-繁體中文版安裝問題/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/03/07/SQL-2008-R2-繁體中文版安裝問題/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>如果你作業系統是從英文版安裝與語系版本成為中文版的話,安裝SQL繁體中文版應該會遇到不明的錯誤而停止,上網找了一下資料發現這篇:<br><a href="http://www.dotblogs.com.tw/hunterpo/archive/2010/07/14/16555.aspx" target="_blank" rel="noopener">解決 Windows 7 線上更新語言包後安裝 SQL Server 2008 R2 繁體中文版失敗的問題</a></p>
-<p>原因是從英文版透過語系包轉成的中文版的作業系統,他是香港繁體中文版,在安裝SQL時預設會去抓3076_ZHH_LP這個資料夾,但繁體中文版的SQL Server的資料夾為1028_CHT_LP。</p>
-<p>所以解決方法就是,把全部的光碟內容複製下來,並且將1028_CHT_LP複製一份並且改名為3076_ZHH_LP,用這個資料夾安裝就可以順利完成了</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-ygIcfJtBNic/VPp9GMAHE0I/AAAAAAAAEgk/oi6kUT_rkfc/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-ygIcfJtBNic/VPp9GMAHE0I/AAAAAAAAEgk/oi6kUT_rkfc/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt=""></a></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/05/swift-NetWork-4-解析Json/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/05/swift-NetWork-4-解析Json/" itemprop="url">[swift] NetWork (4) 解析Json</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-05T16:15:00+08:00">
-                2015-03-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/05/swift-NetWork-4-解析Json/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/03/05/swift-NetWork-4-解析Json/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>先做一個json檔案來模擬接到時怎麼解析 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">"組織名稱"</span>:<span class="string">"普攏拱團隊"</span>,</span><br><span class="line"><span class="string">"組織成員"</span>:[</span><br><span class="line">    &#123;<span class="string">"姓名"</span>:<span class="string">"科科人"</span>,<span class="string">"年齡"</span>:<span class="number">11</span>&#125;,</span><br><span class="line">    &#123;<span class="string">"姓名"</span>:<span class="string">"可可狗"</span>,<span class="string">"年齡"</span>:<span class="number">120</span>&#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>在viewDidLoad加上,測試看看！！ <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將檔案讀出來</span></span><br><span class="line">        <span class="keyword">let</span> path = <span class="type">NSBundle</span>.mainBundle().pathForResource(<span class="string">"json"</span>, ofType: <span class="string">"txt"</span>);</span><br><span class="line">        <span class="keyword">var</span> data:<span class="type">NSData</span> = <span class="type">NSData</span>(contentsOfFile: path!)!;</span><br><span class="line">        <span class="comment">//解析Json</span></span><br><span class="line">        <span class="keyword">var</span> jsonobj = <span class="type">NSJSONSerialization</span>.<span class="type">JSONObjectWithData</span>(data, options: <span class="type">NSJSONReadingOptions</span>.<span class="type">MutableContainers</span>, error: <span class="literal">nil</span>) <span class="keyword">as</span> <span class="type">NSDictionary</span>;</span><br><span class="line">        <span class="built_in">println</span>(jsonobj[<span class="string">"組織名稱"</span>] <span class="keyword">as</span> <span class="type">String</span>);</span><br><span class="line">        <span class="built_in">println</span>(<span class="string">"組織成員"</span>);</span><br><span class="line">        <span class="keyword">var</span> arr = jsonobj[<span class="string">"組織成員"</span>] <span class="keyword">as</span> <span class="type">NSArray</span>;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> (<span class="number">0</span>...arr.<span class="built_in">count</span> - <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">let</span> mdic = arr[i] <span class="keyword">as</span> <span class="type">NSDictionary</span>;</span><br><span class="line">            <span class="built_in">println</span>(mdic[<span class="string">"姓名"</span>] <span class="keyword">as</span> <span class="type">String</span>);</span><br><span class="line">            <span class="built_in">println</span>(mdic[<span class="string">"年齡"</span>] <span class="keyword">as</span> <span class="type">Int</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-<p><a href="http://3.bp.blogspot.com/-QRs1yWks6qY/VPgZj3HwGJI/AAAAAAAAEgQ/IXGY0PKyPps/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8B%E5%8D%884.53.19.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-QRs1yWks6qY/VPgZj3HwGJI/AAAAAAAAEgQ/IXGY0PKyPps/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8B%E5%8D%884.53.19.png" alt=""></a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1735,7 +1764,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-count">174</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1757,7 +1786,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -1843,7 +1872,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

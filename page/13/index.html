@@ -295,6 +295,410 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/08/11/【XML】將資料匯出到EXCEL-透過ClosedXML套件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/08/11/【XML】將資料匯出到EXCEL-透過ClosedXML套件/" itemprop="url">【XML】將資料匯出到EXCEL - 透過ClosedXML套件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-08-11T10:03:00+08:00">
+                2014-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2014/08/11/【XML】將資料匯出到EXCEL-透過ClosedXML套件/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2014/08/11/【XML】將資料匯出到EXCEL-透過ClosedXML套件/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近有寫Excel報表的需求，ClosedXML真的是個不錯的套件<br><a href="http://4.bp.blogspot.com/-U77EUQ5N4bI/U-gfNomELwI/AAAAAAAAEOg/pmy-h-xJt78/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-U77EUQ5N4bI/U-gfNomELwI/AAAAAAAAEOg/pmy-h-xJt78/s1600/1.png" alt=""></a><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> workbook = <span class="keyword">new</span> XLWorkbook(); <span class="comment">//new Excel</span></span><br><span class="line"> <span class="keyword">var</span> sheet_A = workbook.Worksheets.Add(<span class="string">"Sheet_A"</span>); <span class="comment">//新增Sheet到 Excel</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">//塞資料到Sheet中</span></span><br><span class="line"> worksheet.Cell(_index, <span class="number">1</span>).Value = <span class="string">"欄位一"</span>;</span><br><span class="line"> worksheet.Cell(_index, <span class="number">2</span>).Value = <span class="string">"欄位二"</span>;</span><br><span class="line"> worksheet.Cell(_index, <span class="number">3</span>).Value = <span class="string">"欄位三"</span>;</span><br><span class="line"> worksheet.Cell(_index, <span class="number">4</span>).Value = <span class="string">"欄位四"</span>;</span><br><span class="line"> worksheet.Cell(_index, <span class="number">5</span>).Value = <span class="string">"欄位五"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>用法還滿簡單的，如果有更深入的用法想瞭解也可以到<a href="https://closedxml.codeplex.com/documentation" target="_blank" rel="noopener">ClosedXml網站</a>看文件<br>在使用的過程有遇到一個情況就是從DB裡面撈出大量的資料倒入Excel時，匯出打開檔案會顯示Excel已經損毀，可是直接把DB撈出來的資料用複製貼上卻可以完整地貼到Excel中，存檔再打開也不會壞掉。這個問題搞了好久…最後查到大陸網站得到以下的解答<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 提示??，??信息如下： 十六?制值 0x0B 是?效的字符??</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>?生原因是xml文件中包含低位非打印字符造成的</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>?理方法：在?生xml文件的?候，??低位非打印字符</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="tmp" /&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">string</span> <span class="title">ReplaceLowOrderASCIICharacters</span>(<span class="params"><span class="keyword">string</span> tmp</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   StringBuilder info = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">   <span class="keyword">foreach</span> (<span class="keyword">char</span> cc <span class="keyword">in</span> tmp)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="keyword">int</span> ss = (<span class="keyword">int</span>)cc;</span><br><span class="line">      <span class="keyword">if</span> (((ss &gt;= <span class="number">0</span>) &amp;&amp; (ss &lt;= <span class="number">8</span>)) || ((ss &gt;= <span class="number">11</span>) &amp;&amp; (ss &lt;= <span class="number">12</span>)) || ((ss &gt;= <span class="number">14</span>) &amp;&amp; (ss &lt;= <span class="number">32</span>)))</span><br><span class="line">         info.AppendFormat(<span class="string">" "</span>, ss);<span class="comment">//&amp;#x&#123;0:X&#125;;</span></span><br><span class="line">      <span class="keyword">else</span> info.Append(cc);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> info.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>把字元丟到這個function去過濾後就可以避免錯誤了!!</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/06/03/【-NET】防止XSS攻擊/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/06/03/【-NET】防止XSS攻擊/" itemprop="url">【.NET】防止XSS攻擊</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-06-03T16:39:00+08:00">
+                2014-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2014/06/03/【-NET】防止XSS攻擊/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2014/06/03/【-NET】防止XSS攻擊/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>一直都有聽過XSS攻擊的原理跟方式，但都沒有好好認真研究過，剛好最近看到一個小遊戲在這邊推薦給大家:<br><a href="https://xss-game.appspot.com/level1" target="_blank" rel="noopener">瞭解XSS攻擊的小遊戲</a></p>
+<p>查了一下.NET防止XSS攻擊的有效方法，剛好保哥有寫過相關的文章<br><a href="http://blog.miniasp.com/post/2009/09/26/Recommand-Microsoft-Anti-XSS-Library-V31.aspx" target="_blank" rel="noopener">保哥-推薦使用 Microsoft Anti-Cross Site Scripting Library v3.1</a><br>裡面介紹的非常詳細，這邊就不再多做贅述了。</p>
+<p>唯一需要特別注意的地方是Anti-XSS Library在4.2版的時候將GetSafeHtml 、GetSafeHtmlFragment移到了新的DLL了。所以如果依照文章去下載這個DLL會發現沒有這兩個方法可用，請改用Nuget搜尋HtmlSanitizationLibrary</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-El2JuoTjn70/U42JPHwLqqI/AAAAAAAAEOM/z99tk-Wb_AI/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-El2JuoTjn70/U42JPHwLqqI/AAAAAAAAEOM/z99tk-Wb_AI/s1600/1.png" alt=""></a></div>
+
+<p>使用方法也變成<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sanitizer.GetSafeHtmlFragment(inputext);</span><br></pre></td></tr></table></figure></p>
+<p>真是很好很強大阿!!!!</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/05/28/【SQL】WAITFOR-DELAY/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/05/28/【SQL】WAITFOR-DELAY/" itemprop="url">【SQL】WAITFOR DELAY</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-05-28T11:57:00+08:00">
+                2014-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2014/05/28/【SQL】WAITFOR-DELAY/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2014/05/28/【SQL】WAITFOR-DELAY/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>有時候大量資料批次匯入時，我們會用寫SQL語法的方式增加效率(LinqToSql會讓你慢到server timeout)，但常常發生SQL處理速度太快，造成datein的時間完全一樣，讓人分不清楚哪筆先哪筆後 這種先後順序在權限的處理上又異常的重要，畢竟權限通常都是拿最後一筆的時間再繼續往下疊加下去，如果分不出哪一筆應該是最後一筆可就慘了阿!!!</p>
+<p>SQL表示:今天的我沒有極限</p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-yo13exV70Lw/U4VbOW1w9OI/AAAAAAAAEN8/hulc_I52GBk/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-yo13exV70Lw/U4VbOW1w9OI/AAAAAAAAEN8/hulc_I52GBk/s1600/1.png" alt=""></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;">所以要在每一筆寫入的時候告訴SQL Server說，”來，您辛苦了。休息個0.1秒再繼續吧!!”</div><div class="separator" style="clear: both; text-align: left;">這時候你就會需要WAITFOR DELAY語法了(<a href="http://msdn.microsoft.com/zh-tw/library/ms187331.aspx" target="_blank" rel="noopener">MSDN解說</a>)</div><div class="separator" style="clear: both; text-align: left;"><br></div><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--每insert一筆都呼叫一次</span></span><br><span class="line">WAITFOR DELAY '00:00:00.010'</span><br></pre></td></tr></table></figure></p>
+<p>打完收工</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/03/13/【SQL】SQL的foreach，逐筆執行/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1232,415 +1636,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/09/09/【MVC】MVC上傳圖片/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/09/09/【MVC】MVC上傳圖片/" itemprop="url">【MVC】MVC上傳圖片</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-09-09T17:39:00+08:00">
-                2013-09-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/09/09/【MVC】MVC上傳圖片/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/09/09/【MVC】MVC上傳圖片/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><p>View <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">using</span> (Html.BeginForm(<span class="string">"edit"</span>, <span class="string">"group"</span>, FormMethod.Post, <span class="keyword">new</span> &#123; enctype = <span class="string">"multipart/form-data"</span> &#125;))</span><br><span class="line">&#123;</span><br><span class="line">  &lt;div <span class="keyword">class</span>=<span class="string">"form-group"</span>&gt;</span><br><span class="line">   &lt;label <span class="keyword">for</span>=<span class="string">"picturl"</span>&gt;圖片&lt;/label&gt;</span><br><span class="line">   &lt;input type=<span class="string">"file"</span> id=<span class="string">"picture"</span> name=<span class="string">"picture"</span> /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>Controller，這邊特別注意<span style="color: blue;">HttpPostedFileBase</span> picture的參數名稱要與View file的name相同 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">AddExhibitionItem</span>(<span class="params"><span class="keyword">string</span> name, <span class="keyword">string</span> sort,<span class="keyword">string</span> stop ,HttpPostedFileBase picture</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">string</span> err= <span class="keyword">string</span>.Empty;</span><br><span class="line">   <span class="keyword">if</span> (ExhibitionUtilFactory.AddItem(name, sort, stop, picture, <span class="keyword">ref</span> err))</span><br><span class="line">   &#123;</span><br><span class="line">     <span class="keyword">return</span> Content(<span class="string">"&lt;script&gt;alert('新增成功');window.parent.closeDialog();&lt;/script&gt;"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span>   &#123;</span><br><span class="line">      TempData[<span class="string">"alert"</span>] = err;</span><br><span class="line">      <span class="keyword">return</span> View();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>如果是多檔上傳的話，View <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="keyword">class</span>=<span class="string">"form-group"</span>&gt;</span><br><span class="line">   &lt;label <span class="keyword">for</span>=<span class="string">"picturl"</span>&gt;圖片&lt;/label&gt;</span><br><span class="line">   &lt;input type=<span class="string">"file"</span> id=<span class="string">"picture1"</span> name=<span class="string">"picture"</span> /&gt;</span><br><span class="line">   &lt;input type=<span class="string">"file"</span> id=<span class="string">"picture2"</span> name=<span class="string">"picture"</span> /&gt;</span><br><span class="line">   &lt;input type=<span class="string">"file"</span> id=<span class="string">"picture3"</span> name=<span class="string">"picture"</span> /&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>Controller <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">AddExhibitionItem</span>(<span class="params"><span class="keyword">string</span> name, <span class="keyword">string</span> sort,<span class="keyword">string</span> stop ,IEnumerable&lt;HttpPostedFileBase&gt; picture</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">foreach</span> (<span class="keyword">var</span> file <span class="keyword">in</span> picture)   &#123;</span><br><span class="line">     ............   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/" itemprop="url">【LINQ TO SQL】解決SubmitChanges時與資料庫衝突的問題</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-09-06T10:39:00+08:00">
-                2013-09-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>一樣參考保哥的<a href="http://blog.miniasp.com/post/2008/05/24/Resolve-LINQ-to-SQL-Change-Conflict-Exception.aspx" target="_blank" rel="noopener">解決 LINQ to SQL 資料庫更新衝突的情形</a>與公司前輩的Source Code</li>
-<li><strong>發生原因：</strong>有可能我們在跟DB取得某個欄位時得到A這個值，但當我們改動這個值並嘗試更新回DB時，可能DB早就被其他使用者改成B了。DBContext SubmitChanges會去比對這個欄位最初值是否與DB目前的值一致避免Dirty Data的問題，但當上述情況發生時則會擲出Exception。各種處理方式如下:<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">   _dbContext.SubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (System.Data.Linq.ChangeConflictException ex)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">foreach</span> (System.Data.Linq.ObjectChangeConflict occ <span class="keyword">in</span> _dbContext.ChangeConflicts)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="comment">// 採用資料庫的查詢出來的值，目前物件的值將會被資料庫最新查到的複寫</span></span><br><span class="line">      <span class="comment">//occ.Resolve(System.Data.Linq.RefreshMode.OverwriteCurrentValues);</span></span><br><span class="line"></span><br><span class="line">          <span class="comment">// 採用目前物件中的值，並更新資料庫中的版本</span></span><br><span class="line">      <span class="comment">//occ.Resolve(System.Data.Linq.RefreshMode.KeepCurrentValues);</span></span><br><span class="line"></span><br><span class="line">          <span class="comment">// 僅更新此物件中變更的欄位，僅將變更的欄位寫入資料庫（或稱為合併更新）</span></span><br><span class="line">      occ.Resolve(System.Data.Linq.RefreshMode.KeepChanges);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 注意：解決完衝突之後要記得重新再 SubmitChanges() 一次，否則一樣不會更新資料庫</span></span><br><span class="line">    _dbContext.SubmitChanges();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/09/03/【SQL】SQL-2008R2-開啟SA帳號/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/09/03/【SQL】SQL-2008R2-開啟SA帳號/" itemprop="url">【SQL】SQL 2008R2 開啟SA帳號</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-09-03T09:57:00+08:00">
-                2013-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/09/03/【SQL】SQL-2008R2-開啟SA帳號/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2013/09/03/【SQL】SQL-2008R2-開啟SA帳號/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>這個東西做了八百萬遍了還是常常忘記在哪設定，所以決定寫起來方必查詢(汗)*   首先，SQL Server上右鍵 &gt; 屬性 &gt; 安全性 &gt; 選擇SQL Server及Windows驗證模式<br><a href="http://3.bp.blogspot.com/-mE-e_m1GG5A/UiU_U4zbxFI/AAAAAAAAEFU/iKr_d0k9Bcs/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-mE-e_m1GG5A/UiU_U4zbxFI/AAAAAAAAEFU/iKr_d0k9Bcs/s1600/1.png" alt=""></a><br><a href="http://1.bp.blogspot.com/-AP3hYPuC948/UiVAJIB5byI/AAAAAAAAEFc/bb-y_80CC30/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-AP3hYPuC948/UiVAJIB5byI/AAAAAAAAEFc/bb-y_80CC30/s1600/1.png" alt=""></a></li>
-<li>安全性 &gt; 登入 &gt; SA帳戶 &gt; 屬性<br><a href="http://3.bp.blogspot.com/-Jcp7Ew-tGO0/UiVAzjFHpuI/AAAAAAAAEFo/RkC9pLBz-lg/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-Jcp7Ew-tGO0/UiVAzjFHpuI/AAAAAAAAEFo/RkC9pLBz-lg/s1600/1.png" alt=""></a><br>狀態 &gt; 登入 &gt; 啟用<br><a href="http://1.bp.blogspot.com/-9DV1cn7WvxU/UiVBdtlhuBI/AAAAAAAAEFw/vIwxIh0Fhqw/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-9DV1cn7WvxU/UiVBdtlhuBI/AAAAAAAAEFw/vIwxIh0Fhqw/s1600/1.png" alt=""></a></li>
-<li>重新啟動SQL服務<br><a href="http://3.bp.blogspot.com/-o4plDe-GmWM/UiVByaHsp_I/AAAAAAAAEF4/MYqwyrFuSvI/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-o4plDe-GmWM/UiVByaHsp_I/AAAAAAAAEF4/MYqwyrFuSvI/s1600/1.png" alt=""></a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1695,7 +1690,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">171</span>
+                  <span class="site-state-item-count">174</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1717,7 +1712,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -1803,7 +1798,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
