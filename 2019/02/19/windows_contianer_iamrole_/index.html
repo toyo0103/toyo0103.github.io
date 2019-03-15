@@ -6,11 +6,11 @@
 
 
 <html class="theme-next gemini use-motion" lang="zh-tw">
-<head>
-  ﻿<meta charset="UTF-8"/>
-<meta name="google-site-verification" content="a-sIQSCKPw8MyRi4iUo9hmDiL3P1Txg2Ri8zx8Wk0G0" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  ﻿<meta charset="UTF-8">
+<meta name="google-site-verification" content="a-sIQSCKPw8MyRi4iUo9hmDiL3P1Txg2Ri8zx8Wk0G0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -21,8 +21,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -41,7 +41,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -49,9 +49,9 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
@@ -69,27 +69,28 @@
 
 
 
-  <meta name="keywords" content="docker,windows container," />
+  <meta name="keywords" content="docker,windows container,">
 
 
 
 
 
-  <link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
 
 
 
 
 
 
-<meta name="description" content="情境通常在使用 EC2 的建議上都是希望將機器掛上 IAM Role 的權限，在機器上面執行相關 AWS 資源時就可以透過該角色的權限來執行，避免將 Access Toke 、Secret Key 寫到程式中去跑。 但如果將程式包到 Container 裡面去執行時卻發現，Linux Container 可以吃到 Host 的 IAM Role 權限，而 Windows Container 卻不行">
+<meta name="description" content="情境通常在使用 EC2 的建議上都是希望將機器掛上 IAM Role 的權限，在機器上面執行相關 AWS 資源時就可以透過該角色的權限來執行，避免將 Access Toke 、Secret Key 寫到程式中去跑。 但如果將程式包到 Container 裡面去執行時卻發現，Linux Container 可以吃到 Host 的 IAM Role 權限，而 Windows Container 卻不">
 <meta name="keywords" content="docker,windows container">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Docker】Widows Container IAM Role 問題">
 <meta property="og:url" content="http://yoursite.com/2019/02/19/windows_contianer_iamrole_/index.html">
 <meta property="og:site_name" content="程式隨筆">
-<meta property="og:description" content="情境通常在使用 EC2 的建議上都是希望將機器掛上 IAM Role 的權限，在機器上面執行相關 AWS 資源時就可以透過該角色的權限來執行，避免將 Access Toke 、Secret Key 寫到程式中去跑。 但如果將程式包到 Container 裡面去執行時卻發現，Linux Container 可以吃到 Host 的 IAM Role 權限，而 Windows Container 卻不行">
+<meta property="og:description" content="情境通常在使用 EC2 的建議上都是希望將機器掛上 IAM Role 的權限，在機器上面執行相關 AWS 資源時就可以透過該角色的權限來執行，避免將 Access Toke 、Secret Key 寫到程式中去跑。 但如果將程式包到 Container 裡面去執行時卻發現，Linux Container 可以吃到 Host 的 IAM Role 權限，而 Windows Container 卻不">
 <meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="http://yoursite.com/images/20190219/0.png">
 <meta property="og:image" content="http://yoursite.com/images/20190219/1.png">
 <meta property="og:image" content="http://yoursite.com/images/20190219/2.png">
 <meta property="og:image" content="http://yoursite.com/images/20190219/3.png">
@@ -100,11 +101,11 @@
 <meta property="og:image" content="http://yoursite.com/images/20190219/8.png">
 <meta property="og:image" content="http://yoursite.com/images/20190219/9.png">
 <meta property="og:image" content="http://yoursite.com/images/20190219/10.png">
-<meta property="og:updated_time" content="2019-02-19T13:48:27.163Z">
+<meta property="og:updated_time" content="2019-02-28T11:26:54.934Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Docker】Widows Container IAM Role 問題">
-<meta name="twitter:description" content="情境通常在使用 EC2 的建議上都是希望將機器掛上 IAM Role 的權限，在機器上面執行相關 AWS 資源時就可以透過該角色的權限來執行，避免將 Access Toke 、Secret Key 寫到程式中去跑。 但如果將程式包到 Container 裡面去執行時卻發現，Linux Container 可以吃到 Host 的 IAM Role 權限，而 Windows Container 卻不行">
-<meta name="twitter:image" content="http://yoursite.com/images/20190219/1.png">
+<meta name="twitter:description" content="情境通常在使用 EC2 的建議上都是希望將機器掛上 IAM Role 的權限，在機器上面執行相關 AWS 資源時就可以透過該角色的權限來執行，避免將 Access Toke 、Secret Key 寫到程式中去跑。 但如果將程式包到 Container 裡面去執行時卻發現，Linux Container 可以吃到 Host 的 IAM Role 權限，而 Windows Container 卻不">
+<meta name="twitter:image" content="http://yoursite.com/images/20190219/0.png">
 
 
 
@@ -134,7 +135,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/02/19/windows_contianer_iamrole_/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/02/19/windows_contianer_iamrole_/">
 
 
 
@@ -177,7 +178,7 @@
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">程式隨筆</span>
         <span class="logo-line-after"><i></i></span>
@@ -207,7 +208,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首頁
           </a>
@@ -217,7 +218,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             關於
           </a>
@@ -227,7 +228,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             標籤
           </a>
@@ -237,7 +238,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             歸檔
           </a>
@@ -250,7 +251,7 @@
             <a href="javascript:;" class="popup-trigger">
           
             
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
             
             搜尋
           </a>
@@ -271,9 +272,7 @@
       <i class="fa fa-times-circle"></i>
     </span>
     <div class="local-search-input-wrapper">
-      <input autocomplete="off"
-             placeholder="搜索..." spellcheck="false"
-             type="text" id="local-search-input">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
     </div>
   </div>
   <div id="local-search-result"></div>
@@ -314,7 +313,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
@@ -339,7 +338,7 @@
               
                 <span class="post-meta-item-text">發表於</span>
               
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-02-19T16:24:00+08:00">
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-02-19T16:25:00+08:00">
                 2019-02-19
               </time>
             
@@ -359,8 +358,7 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2019/02/19/windows_contianer_iamrole_/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2019/02/19/windows_contianer_iamrole_/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/19/windows_contianer_iamrole_/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -388,7 +386,8 @@
       
 
       
-        <h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>通常在使用 EC2 的建議上都是希望將機器掛上 IAM Role 的權限，在機器上面執行相關 AWS 資源時就可以透過該角色的權限來執行，避免將 Access Toke 、Secret Key 寫到程式中去跑。</p>
+        <p><img src="/images/20190219/0.png" alt="/images/20190219/0.png"></p>
+<h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>通常在使用 EC2 的建議上都是希望將機器掛上 IAM Role 的權限，在機器上面執行相關 AWS 資源時就可以透過該角色的權限來執行，避免將 Access Toke 、Secret Key 寫到程式中去跑。</p>
 <p>但如果將程式包到 Container 裡面去執行時卻發現，Linux Container 可以吃到 Host 的 IAM Role 權限，而 Windows Container 卻不行，為何 ?</p>
 <p><br></p>
 <h1 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h1><p>原來 AWS 之所以能夠讓機器能知道執行權限為何是否過一個叫 Metadata Service 的服務來達成 </p>
@@ -477,6 +476,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2019/02/20/windows_container_dnsserver/" rel="prev" title="【Docker】Widows Container DNS Server 問題">
+                【Docker】Widows Container DNS Server 問題 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -551,9 +554,7 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
-                alt="Toyo" />
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Toyo">
             
               <p class="site-author-name" itemprop="name">Toyo</p>
               <p class="site-description motion-element" itemprop="description"></p>
@@ -566,7 +567,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">174</span>
+                  <span class="site-state-item-count">179</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -588,7 +589,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
