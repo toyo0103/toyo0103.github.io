@@ -293,6 +293,285 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/23/【C-】程式建立LocalDB-mdf-與刪除/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/23/【C-】程式建立LocalDB-mdf-與刪除/" itemprop="url">【C#】程式建立LocalDB(.mdf)與刪除</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-01-23T15:21:00+08:00">
+                2017-01-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/01/23/【C-】程式建立LocalDB-mdf-與刪除/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/23/【C-】程式建立LocalDB-mdf-與刪除/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>之前有寫如何對Repository層做單元測試<span style="background-color: white; font-family: inherit; font-style: inherit; font-weight: inherit;"><span style="border-color: initial; border-image: initial; border-style: initial; font-style: inherit; font-weight: inherit; outline-color: initial; outline-style: initial;"><a href="http://toyo0103.blogspot.tw/2016/07/unit-testrepository.html" target="_blank" rel="noopener">【Unit Test】針對Repository做單元測試 (一)</a>，當時是直接建立LocalDB放在專案之中，測試的時候對它執行，但因為公司導入CICD流程，這些MDF會殘留在佈署的機器上，造成資源的浪費，所以同事教了新的方法，用程式直接建立LocalDB，等到測試完畢後直接砍掉的方法。</span></span></p>
+<p>這邊記錄一下實作方法，以利之後查找<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">string</span> LocalDbMasterConnectionString =</span><br><span class="line">   <span class="string">@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">string</span> TestConnectionString =</span><br><span class="line">   <span class="string">@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=&#123;0&#125;;Integrated Security=True;</span></span><br><span class="line"><span class="string">                 MultipleActiveResultSets=True;AttachDBFilename=&#123;1&#125;.mdf"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">string</span> DatabaseName &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.DatabaseName = <span class="string">"TestCreateDB"</span>;</span><br><span class="line"> CreateDB();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 建立DB</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CreateDB</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="comment">//先看看有沒有相同的DB存在，如果有的話卸離並移除</span></span><br><span class="line"> <span class="keyword">this</span>.DetachDatabase();</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> fileName = <span class="keyword">this</span>.CleanupDatabase();</span><br><span class="line"></span><br><span class="line"> <span class="keyword">using</span> (<span class="keyword">var</span> connection = <span class="keyword">new</span> SqlConnection(LocalDbMasterConnectionString))</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">var</span> commandText = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">  <span class="comment">//Create DB的語法</span></span><br><span class="line">  commandText.AppendFormat(</span><br><span class="line">   <span class="string">"CREATE DATABASE &#123;0&#125; ON (NAME = N'&#123;0&#125;', FILENAME = '&#123;1&#125;.mdf');"</span>,</span><br><span class="line">   <span class="keyword">this</span>.DatabaseName,</span><br><span class="line">   fileName);</span><br><span class="line"></span><br><span class="line">  connection.Open();</span><br><span class="line">  <span class="keyword">var</span> cmd = connection.CreateCommand();</span><br><span class="line">  cmd.CommandText = commandText.ToString();</span><br><span class="line">  cmd.ExecuteNonQuery();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Detaches the database.</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DetachDatabase</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">using</span> (<span class="keyword">var</span> connection = <span class="keyword">new</span> SqlConnection(LocalDbMasterConnectionString))</span><br><span class="line"> &#123;</span><br><span class="line">  connection.Open();</span><br><span class="line">  <span class="keyword">var</span> cmd = connection.CreateCommand();</span><br><span class="line">  cmd.CommandText = <span class="keyword">string</span>.Format(<span class="string">"exec sp_detach_db '&#123;0&#125;'"</span>, <span class="keyword">this</span>.DatabaseName);</span><br><span class="line">  <span class="keyword">try</span></span><br><span class="line">  &#123;</span><br><span class="line">   cmd.ExecuteNonQuery();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">catch</span></span><br><span class="line">  &#123;</span><br><span class="line">   Console.WriteLine(<span class="string">"Could not detach"</span>);</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Cleanups the database.</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>System.String.<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">string</span> <span class="title">CleanupDatabase</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">var</span> fileName = <span class="keyword">string</span>.Concat(<span class="string">@"G:\"</span>,<span class="keyword">this</span>.DatabaseName);</span><br><span class="line"> <span class="keyword">try</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">var</span> mdfPath = <span class="keyword">string</span>.Concat(fileName, <span class="string">".mdf"</span>);</span><br><span class="line">  <span class="keyword">var</span> ldfPath = <span class="keyword">string</span>.Concat(fileName, <span class="string">"_log.ldf"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> mdfExists = File.Exists(mdfPath);</span><br><span class="line">  <span class="keyword">var</span> ldfExists = File.Exists(ldfPath);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (mdfExists) File.Delete(mdfPath);</span><br><span class="line">  <span class="keyword">if</span> (ldfExists) File.Delete(ldfPath);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">catch</span></span><br><span class="line"> &#123;</span><br><span class="line">  Console.WriteLine(<span class="string">"Could not delete the files (open in Visual Studio?)"</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">return</span> fileName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最後就會在你寫的位置看到產生的DB了</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-zochbU5phtw/WIWuOeDVZ4I/AAAAAAAAID0/MwBAkQ4YEyQCLFLHbWnBaUiXVbtGrIseACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-zochbU5phtw/WIWuOeDVZ4I/AAAAAAAAID0/MwBAkQ4YEyQCLFLHbWnBaUiXVbtGrIseACLcB/s1600/1.png" alt></a></div>
+
+<h3 id="刪除"><a href="#刪除" class="headerlink" title="刪除"></a>刪除</h3><p>首先要先在專案安裝Entity Framerok，並且補上以下的程式<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 使用 EntityFramework 的 Database 類別 Delete 方法，確認 LocalDB 存在後再移除.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DeleteLocalDb</span>(<span class="params"><span class="keyword">string</span> dbName</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">using</span> (<span class="keyword">var</span> connection = <span class="keyword">new</span> SqlConnection(</span><br><span class="line">                                        <span class="keyword">string</span>.Format(TestConnectionString,dbName, dbName)))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (Database.Exists(connection))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">try</span></span><br><span class="line">                    &#123;</span><br><span class="line">                        SqlConnection.ClearAllPools();</span><br><span class="line">                        Database.Delete(connection);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">catch</span> (Exception)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">using</span> (SqlConnection masterConnection = <span class="keyword">new</span> SqlConnection(LocalDbMasterConnectionString))</span><br><span class="line">                        &#123;</span><br><span class="line">                            SqlCommand cmd = masterConnection.CreateCommand();</span><br><span class="line">                            cmd.CommandText = <span class="keyword">string</span>.Format(</span><br><span class="line">                                <span class="string">@"ALTER DATABASE [&#123;0&#125;] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;</span></span><br><span class="line"><span class="string">                                 DROP DATABASE [&#123;0&#125;];"</span>, connection.Database);</span><br><span class="line"></span><br><span class="line">                            masterConnection.Open();</span><br><span class="line">                            cmd.ExecuteNonQuery();</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接著呼叫，就可以砍掉剛剛建立出來的MDF了<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> DatabaseName = <span class="string">"TestCreateDB"</span>;</span><br><span class="line">DeleteLocalDb(DatabaseName);</span><br></pre></td></tr></table></figure></p>
+<p>但有一點必須特別注意，如果你今天的專案結構跟我一樣</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-x8WxDPWuFrM/WIW661-YM_I/AAAAAAAAIEQ/kV7NxAeClFw5DllZUb6QK2QuKw25ksTKwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-x8WxDPWuFrM/WIW661-YM_I/AAAAAAAAIEQ/kV7NxAeClFw5DllZUb6QK2QuKw25ksTKwCLcB/s1600/1.png" alt></a></div>
+
+<p>刪除DB的程式碼寫在ControlLocalDB的專案中，並且在這個專案有安裝Entity Framework，而ConsoleApplication1只是引用ControlLocalDB專案來執行，而沒有安裝Entity Framework，那這時候<br><div class="note info"><p>Database.Exists(connection)</p></div><br>會永遠回傳<strong>False</strong>，所以不會去砍掉DB，而且也不會引發Exception的錯誤，不知道算不算是EF的Bug，當時找超久的(崩潰)，所以還請特別注意這個地方，有用到這個方法的專案都要記得專EF</p>
+<p>參考文章:<br>1.<a href="https://support.microsoft.com/zh-tw/help/307283/how-to-create-a-sql-server-database-programmatically-by-using-ado.net-and-visual-c-.net" target="_blank" rel="noopener">HOW TO：使用 ADO.NET 與 Visual C# .NET 程式建立 SQL Server 資料庫</a><br>2.<a href="http://kevintsengtw.blogspot.tw/2016/10/repository-localdb-part2.html" target="_blank" rel="noopener">Repository 測試使用 LocalDB - Part.2</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/20/【Regular-Expression】分群與取代/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/20/【Regular-Expression】分群與取代/" itemprop="url">【Regular Expression】分群與取代</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-01-20T10:25:00+08:00">
+                2017-01-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/01/20/【Regular-Expression】分群與取代/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/20/【Regular-Expression】分群與取代/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在正規表示法中，可以將比對的資料做分群與命名，而在.Net中的語法是<br><div class="note info"><p>(?:&lt;群組名稱&gt;)</p></div></p>
+<p>應用方法如下<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> Date = <span class="string">"2017/1/20"</span>;</span><br><span class="line">Regex reg = <span class="keyword">new</span> Regex(<span class="string">@"^(?&lt;Year&gt;\d&#123;4&#125;)/(?&lt;Month&gt;\d&#123;1,2&#125;)/(?&lt;Day&gt;\d&#123;1,2&#125;)"</span>);</span><br><span class="line"><span class="keyword">var</span> Match = reg.Match(Date);</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="keyword">string</span>.Concat(<span class="string">"年 :"</span>, Match.Groups[<span class="string">"Year"</span>].Value));</span><br><span class="line">Console.WriteLine(<span class="keyword">string</span>.Concat(<span class="string">"月 :"</span>,Match.Groups[<span class="string">"Month"</span>].Value));</span><br><span class="line">Console.WriteLine(<span class="keyword">string</span>.Concat(<span class="string">"日 :"</span>,Match.Groups[<span class="string">"Day"</span>].Value));</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://2.bp.blogspot.com/-CiGMf3bSGws/WIFyaQRw3PI/AAAAAAAAIDk/gPerLAyakjoD8gzowmXLB08hPVCK5rIXQCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-CiGMf3bSGws/WIFyaQRw3PI/AAAAAAAAIDk/gPerLAyakjoD8gzowmXLB08hPVCK5rIXQCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></p>
+<p>也可以用來做取代的用途<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> Date = <span class="string">"2017/1/20"</span>;</span><br><span class="line">Regex reg = <span class="keyword">new</span> Regex(<span class="string">@"^(\d&#123;4&#125;)/(\d&#123;1,2&#125;)/(\d&#123;1,2&#125;)"</span>);</span><br><span class="line"></span><br><span class="line">Console.WriteLine(reg.Replace(Date,<span class="string">@"$1年$2月$3日"</span>));</span><br></pre></td></tr></table></figure></p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-HQu1GmHFF_M/WIFzWkDPQQI/AAAAAAAAIDo/k5REjSoQ7fMeQBuCYZe7QRSQlXG0SXlFgCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-HQu1GmHFF_M/WIFzWkDPQQI/AAAAAAAAIDo/k5REjSoQ7fMeQBuCYZe7QRSQlXG0SXlFgCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></div>
+
+<p>括號()包起來的地方，正規表示法比對到時會把他當作一個群組，而其中Replace的地方寫著 <strong>$1</strong>代表第一個括號比對的東西放這邊，所以$1會變成2017，後面以此類推，就會變成<strong>2017年1月20日</strong>這種格式。</p>
+<p>所以也可以改成這樣，變成國外表示年份的格式<strong>$2-$3-$1</strong>，就會變成 1-20-2017</p>
+<p>以上筆記一下。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/11/【神奇事件】看不見的點/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1407,331 +1686,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/14/【Swagger】客製化可以輸入Header的欄位/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/14/【Swagger】客製化可以輸入Header的欄位/" itemprop="url">【Swagger】客製化可以輸入Header的欄位</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-14T14:26:00+08:00">
-                2016-10-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/10/14/【Swagger】客製化可以輸入Header的欄位/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/14/【Swagger】客製化可以輸入Header的欄位/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>上一篇<a href="http://toyo0103.blogspot.tw/2016/10/swaggerapi.html" target="_blank" rel="noopener">【Swagger】活著的API規格書</a>&nbsp;提到如何使用Swagger來產生規格與測試API，但遇到一個問題是，很多API會把驗證的Key放到Header傳遞，但Swagger產出來的頁面並沒有設定Header的地方，這時候就要來小調整一下已符合需求。</p>
-<p>首先我們先把原本的API改成要吃Header的Key值才算驗證通過</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestSwaggerController</span> : <span class="title">ApiController</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 測試Swagger的API</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="parameter"&gt;</span>The parameter.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        [<span class="meta">HttpGet</span>]</span><br><span class="line">        [<span class="meta">Route(<span class="meta-string">"api/testSwagger"</span>)</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> HttpResponseMessage <span class="title">Get</span>(<span class="params">[FromUri]testSwaggerGetParameter parameter</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//沒有帶Appkey在Header</span></span><br><span class="line">            <span class="keyword">if</span> (!Request.Headers.Contains(<span class="string">"X-Key"</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> Request.CreateResponse(HttpStatusCode.NotAcceptable, <span class="string">"必須輸入AppKey"</span>);</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> AppKey =  Request.Headers.GetValues(<span class="string">"X-Key"</span>).FirstOrDefault();</span><br><span class="line">            <span class="keyword">if</span> (AppKey != <span class="string">"MyKey"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> Request.CreateResponse(HttpStatusCode.NotAcceptable, <span class="string">"AppKey不正確!!!"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (parameter != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                parameter.ID == <span class="string">"toyo"</span> &amp;&amp; </span><br><span class="line">                parameter.PassWord == <span class="string">"123456"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> Request.CreateResponse(HttpStatusCode.OK, <span class="string">"帳號密碼正確"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Request.CreateResponse(HttpStatusCode.OK, <span class="string">"帳號密碼錯誤摟!!!!!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>這時候測試一下原本的API，會發現因為吃不到Header裡面的X-Key，導致輸出驗證失敗的錯誤</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-hntf0ZIC-cQ/WAB1wx9JTOI/AAAAAAAAIAU/R5nql0g5UZwtIU6pdfk82zPO7EjDp4FggCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-hntf0ZIC-cQ/WAB1wx9JTOI/AAAAAAAAIAU/R5nql0g5UZwtIU6pdfk82zPO7EjDp4FggCLcB/s640/1.png" alt></a></div>
-
-<p>Header中也再次確認沒有帶X-key在其中</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-pevW7o5r1eg/WAB2BE9-ayI/AAAAAAAAIAY/ErtqWFRqK7k0WBAKQXBZB32ghXOn3196gCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-pevW7o5r1eg/WAB2BE9-ayI/AAAAAAAAIAY/ErtqWFRqK7k0WBAKQXBZB32ghXOn3196gCLcB/s640/1.png" alt></a></div>
-
-<h3 id="開始客製化吧"><a href="#開始客製化吧" class="headerlink" title="開始客製化吧"></a>開始客製化吧</h3><ul>
-<li><p>首先先建立一個JS檔，讓Swagger的View能引用這支JS，然後透過這支JS與Jquery去改View，我將這支JS就命名為AppKey.js</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-VdaLRHRtOlI/WAB3LAbaafI/AAAAAAAAIAc/tDB1aQ-EzzEutJ0RXZkrr4TRwvcWwFUnwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-VdaLRHRtOlI/WAB3LAbaafI/AAAAAAAAIAc/tDB1aQ-EzzEutJ0RXZkrr4TRwvcWwFUnwCLcB/s1600/1.png" alt></a></div>
-</li>
-<li><p>接著請在這支JS檔案寫下以下JS</p>
-</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="string">'#input_apiKey'</span>).hide();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//加上Header區塊</span></span><br><span class="line">    <span class="keyword">var</span> HeaderBar = $(<span class="string">'&lt;div id="headerbar"&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;h2 class="heading"&gt;Header&lt;/h2&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;table style="background-color:#E8E8D0"&gt;&lt;thead&gt;&lt;tr&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;th style="width: 100px; max-width: 100px" data-sw-translate=""&gt;Parameter&lt;/th&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;th style="width: 310px; max-width: 310px" data-sw-translate=""&gt;Value&lt;/th&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;th style="width: 200px; max-width: 200px" data-sw-translate=""&gt;Description&lt;/th&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;/tr&gt;&lt;/thead&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;tbody class="operation-params"&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;tr&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;td class="code required"&gt;&lt;label for="custom_appkey"&gt;appkey&lt;/label&gt;&lt;/td&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;td&gt;&lt;input class="parameter required" minlength="1" name="custom_appkey" placeholder="(required)" id="custom_appkey" type="text" value=""&gt;&lt;/td&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;td class="markdown"&gt;&lt;p&gt;AppKey&lt;/p&gt;&lt;/td&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;/tr&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;/tbody&gt;&lt;/table&gt;'</span> +</span><br><span class="line">    <span class="string">'&lt;/div&gt;'</span>);</span><br><span class="line">    $(<span class="string">'#resources_container'</span>).before(HeaderBar);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//把值加到Header</span></span><br><span class="line">    $(<span class="string">'#custom_appkey'</span>).on(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> key = <span class="keyword">this</span>.value;</span><br><span class="line">        <span class="keyword">if</span> (key &amp;&amp; key.trim() !== <span class="string">''</span>) &#123;</span><br><span class="line">            swaggerUi.api.clientAuthorizations.add(<span class="string">"key"</span>, <span class="keyword">new</span> SwaggerClient.ApiKeyAuthorization(<span class="string">"X-Key"</span>, key, <span class="string">"header"</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>主要內容就是抓到特定區塊，然後組Html用Jquery的方式放上去，然後透過Swagger開放的API塞到Header裡面送出</p>
-<ul>
-<li>接著請將這支JS修改屬性 &gt; 建置動作 &gt; <strong>內嵌資源</strong></li>
-</ul>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-BwLvO5AMcYw/WAB4kuDTvUI/AAAAAAAAIAg/QBIkgR01zCYDIxd2UjHmhHLanbuwCchqQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-BwLvO5AMcYw/WAB4kuDTvUI/AAAAAAAAIAg/QBIkgR01zCYDIxd2UjHmhHLanbuwCchqQCLcB/s320/1.png" alt></a></div>
-
-<ul>
-<li><p>打開SwaggerConfig找到188~189行的地方把註解拿掉改成如下<br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-kG8umCQL1M0/WAB5FrxW2gI/AAAAAAAAIAo/RwoPyjGGq0YB1SE6f9jTvJ3h9mcveFFlQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-kG8umCQL1M0/WAB5FrxW2gI/AAAAAAAAIAo/RwoPyjGGq0YB1SE6f9jTvJ3h9mcveFFlQCLcB/s640/1.png" alt></a></div></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c.InjectJavaScript(thisAssembly, <span class="string">"WebApplication1.CustomSwagger.AppKey.js"</span>);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>接著再次執行專案<br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-jAdPbsrj5yI/WAB5_JNiKdI/AAAAAAAAIAs/7DMJc1iTBl4kAm6_7yTv2f4pmNCfqFEQQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-jAdPbsrj5yI/WAB5_JNiKdI/AAAAAAAAIAs/7DMJc1iTBl4kAm6_7yTv2f4pmNCfqFEQQCLcB/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Header欄位出現了</td></tr></tbody></table><br>試試看欄位是否有效，因為剛剛程式是改成要帶<strong>MyKey</strong>，所以來測試看看</p>
-</li>
-</ul>
-<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-v7nxyvIuGfs/WAB6YhN2EEI/AAAAAAAAIAw/luDPe_40Fpc-xvazlnkwp6qEPRdUbKMvgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-v7nxyvIuGfs/WAB6YhN2EEI/AAAAAAAAIAw/luDPe_40Fpc-xvazlnkwp6qEPRdUbKMvgCLcB/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">可以抓到X-Key了</td></tr></tbody></table>
-
-<p>完成!!!! 因為是透過Jquery的方式去改變欄位，所以只要透過上述的方式去載入JS，要怎麼改View應該都不是問題了，以上。</p>
-<h4 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a><strong>參考文章</strong></h4><p><a href="http://stevemichelotti.com/customize-authentication-header-in-swaggerui-using-swashbuckle/" target="_blank" rel="noopener">Customize Authentication Header in SwaggerUI using Swashbuckle</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/10/14/【Swagger】活著的API規格書/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/14/【Swagger】活著的API規格書/" itemprop="url">【Swagger】活著的API規格書</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-14T11:01:00+08:00">
-                2016-10-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/10/14/【Swagger】活著的API規格書/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/14/【Swagger】活著的API規格書/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>所謂的工程師就是，【接手別人專案時，總是問怎麼沒有規格書? 自己開發專案時卻又不喜歡寫規格書】的一群人，本人也是一個極度不喜歡寫規格書的人，簡單說就是懶到極致，懶到深處無怨尤。而且常常改版時來匆匆忙忙，寫程式的時間都不夠了，誰還管你規格書有沒有更新，就這樣恍神個兩三次忘記回去更新規格，這本規格書就光榮列入公司十大(搞不好百大?)不可思議天書，可謂極度麻煩費時討厭…..</p>
-<p>還好同事介紹了Swagger的用法，讓你邊開發程式時，規格就產生書產生出來了，而且還是本可以使用的規格書，讓你從今以後再也不用擔心規格書與實際規格脫鉤的問題，以下就筆記一下如何使用</p>
-<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-DHN0U1Vqe3U/WAA8GQA474I/AAAAAAAAH-o/idcyU1UFoPoM9sI2fs7Jga7vTRrA_Lz7gCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-DHN0U1Vqe3U/WAA8GQA474I/AAAAAAAAH-o/idcyU1UFoPoM9sI2fs7Jga7vTRrA_Lz7gCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Swagger-當開發完API時，規格書也就完成了!!</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-Q_gy5BypWEQ/WAA8wzGS32I/AAAAAAAAH-s/dbAyDeDRpPgfEc-OjH9_s2GIaafUpCBjACLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-Q_gy5BypWEQ/WAA8wzGS32I/AAAAAAAAH-s/dbAyDeDRpPgfEc-OjH9_s2GIaafUpCBjACLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">輸入的參數與說明也寫得清清楚楚</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-WbKmvP1AzgE/WAA-rbXKmUI/AAAAAAAAH-8/-tLhejDldqI_HmO2FNDS1gO6ImyOrrfngCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-WbKmvP1AzgE/WAA-rbXKmUI/AAAAAAAAH-8/-tLhejDldqI_HmO2FNDS1gO6ImyOrrfngCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;"><span style="font-size: 12.8px;">按下Try it Out後，可以馬上測試API跟觀看結果!!</span></td></tr></tbody></table>
-
-<h3 id="使用步驟"><a href="#使用步驟" class="headerlink" title="使用步驟"></a>使用步驟</h3><div><br><br><em>   首先我先開一個WebAPI專案，然後寫一支簡單的API讓他可以運作</em></div><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-esv5JivSR4Y/WABBED8FfQI/AAAAAAAAH_E/YiqAJZ5gpAoLo97p4H6T6hp6ipz9r54mgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-esv5JivSR4Y/WABBED8FfQI/AAAAAAAAH_E/YiqAJZ5gpAoLo97p4H6T6hp6ipz9r54mgCLcB/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">開一個WebAPI專案</td></tr></tbody></table><br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-VmbQGY5UMMU/WABBEd25TPI/AAAAAAAAH_I/MGng_1nDDSEQ-zLiXyahRK5GTT9XMtSEwCLcB/s1600/2.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-VmbQGY5UMMU/WABBEd25TPI/AAAAAAAAH_I/MGng_1nDDSEQ-zLiXyahRK5GTT9XMtSEwCLcB/s640/2.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">新增一個新的TestSwaggerController</td></tr></tbody></table><br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-AENbjbb3Ia4/WABBERDf0cI/AAAAAAAAH_M/Ea_va3RXz0kCcplepPRx-nBqaHHpLLsCwCLcB/s1600/3.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-AENbjbb3Ia4/WABBERDf0cI/AAAAAAAAH_M/Ea_va3RXz0kCcplepPRx-nBqaHHpLLsCwCLcB/s1600/3.png" alt></a></div><div><br></div><div><br></div><div><br></div><div><br><br>### 
-
-   <strong>開始撰寫幾個簡單的API跟輸入輸出參數</strong><br></div><div><br></div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">testSwaggerGetParameter</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;value&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> The identifier.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/value&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> ID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 密碼</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;value&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> The passWord.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/value&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> PassWord &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestSwaggerController</span> : <span class="title">ApiController</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 測試Swagger的API</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="parameter"&gt;</span>The parameter.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        [<span class="meta">HttpGet</span>]</span><br><span class="line">        [<span class="meta">Route(<span class="meta-string">"api/testSwagger"</span>)</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> HttpResponseMessage <span class="title">Get</span>(<span class="params">[FromUri]testSwaggerGetParameter parameter</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (parameter != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                parameter.ID == <span class="string">"toyo"</span> &amp;&amp; </span><br><span class="line">                parameter.PassWord == <span class="string">"123456"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> Request.CreateResponse(HttpStatusCode.OK, <span class="string">"帳號密碼正確"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Request.CreateResponse(HttpStatusCode.OK, <span class="string">"帳號密碼錯誤摟!!!!!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>###<br><br><em>   接著先來測試API的運作是否正常<br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-NGEX0U-saSw/WABFAd9ksPI/AAAAAAAAH_c/AQuEDjoIGL4jbBYZs2PJ7B7lnAS7fB8xQCLcB/s1600/2.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-NGEX0U-saSw/WABFAd9ksPI/AAAAAAAAH_c/AQuEDjoIGL4jbBYZs2PJ7B7lnAS7fB8xQCLcB/s640/2.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">輸入正確的測試</td></tr></tbody></table><br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-i923xx2aY30/WABFABbQrdI/AAAAAAAAH_Y/cvhLOl1x6xw3aJ5Yvd-T7gBcePHTb8GCwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-i923xx2aY30/WABFABbQrdI/AAAAAAAAH_Y/cvhLOl1x6xw3aJ5Yvd-T7gBcePHTb8GCwCLcB/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">輸入錯誤的測試</td></tr></tbody></table><br><br>### 
-
-</em>   <strong>API都準備就緒後，來安裝Swagger吧</strong><br>首先打開Nuget搜尋<strong>Swashbuckle</strong>並安裝<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-I6T6On4UU0I/WABGKKbp_4I/AAAAAAAAH_g/thsWbtJB9d8M-wBG3oHoBHct0d6N-7ohwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-I6T6On4UU0I/WABGKKbp_4I/AAAAAAAAH_g/thsWbtJB9d8M-wBG3oHoBHct0d6N-7ohwCLcB/s640/1.png" alt></a></div>
-
-<p>接著打開專案屬性，設定輸出XML說明格式</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-Q35LXg-ZAbc/WABHQqOA9II/AAAAAAAAH_o/IqpSnKPL7AIkGskPH8LPMKDBYKS-cJvNACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-Q35LXg-ZAbc/WABHQqOA9II/AAAAAAAAH_o/IqpSnKPL7AIkGskPH8LPMKDBYKS-cJvNACLcB/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-kTvzjXCAY7Q/WABHWnjk79I/AAAAAAAAH_s/WYApFDnj0RACcVPP3KQC9qGsgdxf3a3swCLcB/s1600/2.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-kTvzjXCAY7Q/WABHWnjk79I/AAAAAAAAH_s/WYApFDnj0RACcVPP3KQC9qGsgdxf3a3swCLcB/s640/2.png" alt></a></div>
-
-<p>打開SwaggerConfig做些設定</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-3KPOfrFBs7A/WABHvcNMO4I/AAAAAAAAH_w/-tsOz_SqAGcvVxxSOOwok_Q1yTpZyDAiQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-3KPOfrFBs7A/WABHvcNMO4I/AAAAAAAAH_w/-tsOz_SqAGcvVxxSOOwok_Q1yTpZyDAiQCLcB/s1600/1.png" alt></a></div>
-
-<p>在第一百行的地方把註解拿掉</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-sNuzZJH1_Tk/WABH-ckCYAI/AAAAAAAAH_0/dY91muQCTvAggbaSNAxXFuf687P37-f4wCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-sNuzZJH1_Tk/WABH-ckCYAI/AAAAAAAAH_0/dY91muQCTvAggbaSNAxXFuf687P37-f4wCLcB/s640/1.png" alt></a></div>
-
-<p>在最下面補上以下程式碼</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-LZWGCrO2m1E/WABIPqVRXuI/AAAAAAAAH_4/XDwqWQFF4zIfyBMKgjUfNqisGADqPMPvQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-LZWGCrO2m1E/WABIPqVRXuI/AAAAAAAAH_4/XDwqWQFF4zIfyBMKgjUfNqisGADqPMPvQCLcB/s640/1.png" alt></a></div>
-
-<p>### </p>
-<ul>
-<li>重新執行WebAPI，並且在網址列輸入……./Swagger<br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-VKr_8qKHN7Y/WABIxRpt8gI/AAAAAAAAH_8/XaVeA3uG-9whtv0DrZ7DQYIzKXjaHryYgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-VKr_8qKHN7Y/WABIxRpt8gI/AAAAAAAAH_8/XaVeA3uG-9whtv0DrZ7DQYIzKXjaHryYgCLcB/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">看到API被輸出成規格了，參數的註解是跟著Summary的</td></tr></tbody></table><div><br></div><div><br></div><div><br></div><div>來測試看看!!!</div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-651X7h-rIVw/WABJN-3Jf-I/AAAAAAAAIAA/iBthsKVDiscN_ItWjk4WUUSgemSLEfDLQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-651X7h-rIVw/WABJN-3Jf-I/AAAAAAAAIAA/iBthsKVDiscN_ItWjk4WUUSgemSLEfDLQCLcB/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-JPjRZMJusSE/WABJOPutBbI/AAAAAAAAIAE/aFON9GjhDe0HKHY_jjJ8M8JfstfCDLoLgCLcB/s1600/2.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-JPjRZMJusSE/WABJOPutBbI/AAAAAAAAIAE/aFON9GjhDe0HKHY_jjJ8M8JfstfCDLoLgCLcB/s640/2.png" alt></a></div><div><br></div><div><br></div><div><br></div><div><br></div><div>最後，Swagger雖然已經非常好用了，也能符合大部分的情境運用，但還是有些美中不足的地方，例如如果今天API部分資訊要帶在Header裡面傳給API，在預設產生的地方是沒有提供可以輸入的地方。</div><div><br></div><div>但慶幸的是Swagger可以很彈性的去改寫這張最後會產生的View，可以自己擴充需要的欄位，下一篇在來介紹如何客製化Swagger頁面!!!</div><div><br></div><div><br></div><div><br></div><div><br></div>
-
-</li>
-</ul>
-<h4 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h4><div><br><br>1.  <a href="http://kevintsengtw.blogspot.tw/2015/12/aspnet-web-api-swagger.html" target="_blank" rel="noopener">mrkt&nbsp;- ASP.NET Web API 文件產生器 - 使用 Swagger</a><br>2.  <a href="http://kevintsengtw.blogspot.tw/2015/12/swashbuckle-swagger-for-web-api.html" target="_blank" rel="noopener">mrkt-&nbsp;Swashbuckle - Swagger for Web Api 顯示內容的調整</a></div><div><br></div><div><br></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1779,7 +1738,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">179</span>
+                  <span class="site-state-item-count">181</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1801,7 +1760,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

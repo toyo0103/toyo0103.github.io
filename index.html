@@ -293,6 +293,312 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/23/windows_container_smb_/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/23/windows_container_smb_/" itemprop="url">【Docker】Widows Container SMB</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-03-23T17:53:00+08:00">
+                2019-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/23/windows_container_smb_/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/23/windows_container_smb_/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/images/20190323/0.png" alt="/images/20190323/0.png"></p>
+<p>之前在將公司某支程式移植到 Windows Container 時碰到一個問題，該程式會透過<a href="https://zh.wikipedia.org/wiki/%E4%BC%BA%E6%9C%8D%E5%99%A8%E8%A8%8A%E6%81%AF%E5%8D%80%E5%A1%8A" target="_blank" rel="noopener">網路磁碟 (SMB)</a> Eamil Template 來套版並寄出，但將網路磁碟透過 Volume 的方式 Mount 到 Container 卻抓不到檔案，查了一下才知道原來需要用 SmbGlobalMapping 掛載的網路磁碟才行</p>
+<div class="note info"><p><a href="https://docs.microsoft.com/zh-tw/virtualization/windowscontainers/manage-containers/container-storage" target="_blank" rel="noopener">Windows Server 容器儲存體</a></p></div>
+<p>以下這段是先將要用到的網路磁碟透過 New-SmbGlobalMapping 指令掛成 T: </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="variable">$User</span>=<span class="string">"yourUSerAccount"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="variable">$PWD</span> = ConvertTo-SecureString -String <span class="string">"yourPassword"</span> -AsPlainText -Force</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="variable">$Credential</span> = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList <span class="variable">$User</span>, <span class="variable">$PWD</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> New-SmbGlobalMapping -LocalPath T: -RemotePath \\my-company-Filer\Files -Credential <span class="variable">$Credential</span></span></span><br></pre></td></tr></table></figure>
+<p>然後在透過 Volume 即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -it -v T:\:C:\Files myContainer</span></span><br></pre></td></tr></table></figure>
+<p><br></p>
+<div class="note danger"><p>不過還要特別注意的是，在 Windows Server (版本 1709)，SMB 全域對應不支援 DFS、DFSN、DFSR 共用。</p></div>
+<p>所以如果是 <a href="https://zh.wikipedia.org/wiki/%E5%88%86%E6%95%A3%E5%BC%8F%E6%AA%94%E6%A1%88%E7%B3%BB%E7%B5%B1_(Microsoft" target="_blank" rel="noopener">DFS</a>) 那就只好先強制指到某一台，期待哪一天 Windows Container 可以支援了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/21/microservice_battlefield/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/21/microservice_battlefield/" itemprop="url">微服務的戰場</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-03-21T23:30:00+08:00">
+                2019-03-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/21/microservice_battlefield/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/21/microservice_battlefield/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/images/20190321/0.jpg" alt="/images/20190321/0.jpg"></p>
+<p>整理一下最近在學習的 Road map，大致上圍繞著微服務</p>
+<ul>
+<li><p>微服務</p>
+<ul>
+<li>什麼是微服務</li>
+<li><p>微服務的好幫手</p>
+<ul>
+<li>Container<ul>
+<li><a href="https://toyo0103.github.io/2019/02/21/dockerforwindows_vs_dockeronwindowserver/" target="_blank" rel="noopener">Docker for Windows 和 Docker on Windows Server 一樣嗎?</a></li>
+<li>Build Docker Image</li>
+<li>Docker Compose</li>
+<li><a href="https://toyo0103.github.io/2019/02/22/docker_debug_skill/" target="_blank" rel="noopener">偵錯技巧</a></li>
+<li><a href="https://toyo0103.github.io/2019/02/20/windows_container_dnsserver/" target="_blank" rel="noopener">Widows Container DNS Server 問題</a></li>
+<li><a href="https://toyo0103.github.io/2019/02/19/windows_contianer_iamrole_/" target="_blank" rel="noopener">Widows Container IAM Role 問題</a></li>
+<li><a href="/2019/03/23/windows_container_smb_/">Windosw Container SMB </a></li>
+</ul>
+</li>
+<li><p>Queue</p>
+<ul>
+<li>RabbitMQ</li>
+</ul>
+</li>
+<li>Self Hosting<ul>
+<li>Owin</li>
+</ul>
+</li>
+<li>Graceful Shutdown</li>
+</ul>
+</li>
+<li>部署<ul>
+<li>K8S</li>
+<li>docker swarm</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/15/yield_return_2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -999,7 +1305,7 @@
 <p><a href="https://docs.microsoft.com/zh-tw/virtualization/windowscontainers/deploy-containers/linux-containers" target="_blank" rel="noopener">Windows 上的 Linux 容器</a></p></div>
 <p><br></p>
 <h1 id="Windows-Containers-on-Windows-Server"><a href="#Windows-Containers-on-Windows-Server" class="headerlink" title="Windows Containers on Windows Server"></a>Windows Containers on Windows Server</h1><div class="note info"><p><a href="https://docs.docker.com/install/windows/docker-ee/" target="_blank" rel="noopener">Install Docker Engine - Enterprise on Windows Servers</a></p></div>
-<p>Windows Server 2016 或更新的版本才可使用，直接在 OS 上執行 Docker Engine，所以效能比需要 Hyper-V 的 Docker for Windows 好上一大截，但也因為如此只能跑 Windows Container。</p>
+<p>Windows Server 2016 或更新的版本才可使用，直接在 OS 上執行 Docker Engine，所以效能比需要 Hyper-V 的 Docker for Windows 好上一大截，如果要跑 Linux 類的 Container 也可以透過 <code>--isolation=hyperv</code> 的方式，不過有個限制是這個方法不能在 VM 中用，也就是說如果你今天是用雲端的 Windows Server，本身已經是在 VM 裡面了，就無法在裡面執行 <code>isolation</code>。</p>
 <p><img src="/images/20190221/3.png" alt="/images/20190221/3.png"></p>
 <p>圖片來源 : <a href="https://blogs.msdn.microsoft.com/msgulfcommunity/2015/06/20/what-is-windows-server-containers-and-hyper-v-containers/" target="_blank" rel="noopener">MSDN</a></p>
 <p>目前因為公司內部很多既有專案都是用 .Net Framework 開發的，所以轉移到 Container 也是選擇用 Windows Containers on Windows Server，畢竟如果是 Production Service，效能還是非常重要的一個考量</p>
@@ -1680,296 +1986,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/03/Task_WaitAll/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/03/Task_WaitAll/" itemprop="url">【C#】Task WaitAll</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-12-03T15:53:00+08:00">
-                2018-12-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/12/03/Task_WaitAll/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/03/Task_WaitAll/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>假設有一項任務，執行時會做三件事情，而這三件事情彼此並沒有相依關係，傳統程式寫法通常都是 1  &gt;  2  &gt; 3 依序呼叫下去做，但這樣有一個問題就是，假設 1 這個任務要執行特別久，那 2、3 都得等 1 做完才能執行到，整體來說效率並沒有最佳化。</p>
-<p><img src="/images/20181203/1.png" alt="/images/20181203/1.png"></p>
-<p>跑一次需要 2.012 秒完成，如果需要重複 10 次 、100 次，那所需時間會相當可觀。 </p>
-<h1 id="非同步版本"><a href="#非同步版本" class="headerlink" title="非同步版本"></a>非同步版本</h1><p>改成非同步版本後，它執行順序就不會被第一步給拖累，三個工作是併行處理</p>
-<p><img src="/images/20181203/2.png" alt="/images/20181203/2.png"></p>
-<p>但這會有一個問題，如果程式是 Run 在 Console Application 中，因為沒有等待非同步的程式都執行完，就已經跑到 Done ，而導致 Console Application 被關掉，其相應的 Process 也會被停掉，導致有些工作沒有執行完，所以必須要確保所有程式都執行完才關閉的機制在。</p>
-<p><img src="/images/20181203/3.png" alt="/images/20181203/3.png"></p>
-<h1 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h1><ol>
-<li><a href="https://docs.microsoft.com/zh-tw/dotnet/standard/parallel-programming/task-based-asynchronous-programming" target="_blank" rel="noopener">MSDN : 以工作為基礎的非同步程式設計</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/21/【日文】か_かどうか/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/21/【日文】か_かどうか/" itemprop="url">【日文】か、かどうか 如何使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-11-21T15:52:00+08:00">
-                2018-11-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/11/21/【日文】か_かどうか/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/21/【日文】か_かどうか/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>日文中的疑問子句</p>
-<p><strong>普通型 + かどうか + 子句</strong></p>
-<ol>
-<li><p>このカメラは日本で買ったかどうか、わからない<br>這個相機是不是在日本買的,我不知道</p>
-</li>
-<li><p>先生が上手に歌えるかどうか、わからない<br>老師唱歌拿不拿手,我不知道</p>
-</li>
-</ol>
-<p><strong>(前面出現疑問詞)+普通型 + か + 子句</strong></p>
-<ol>
-<li><p>このカメラは誰のか、わからない<br>這個相機是誰的,我並不知道</p>
-</li>
-<li><p>いつ日本へ行くか、知っていますか<br>何時要去日本,你知道嗎？</p>
-</li>
-</ol>
-<div class="note info"><p>參考文章</p>
-<p><a href="https://www.facebook.com/wangcolaneko/posts/%E3%81%8B%E3%81%A9%E3%81%86%E3%81%8B%E8%B7%9F%E3%81%8B%E5%BF%AB%E9%80%9F%E8%A7%A3%E9%A1%8C%E6%B3%95%E6%9C%AC%E6%95%99%E5%AD%B8%E7%82%BA-%E9%9B%B2%E7%AB%AF%E8%AA%B2%E7%A8%8B%E5%88%9D%E7%B4%9A%E2%85%A3n3%E4%B8%AD%E7%B4%9A%E7%AF%80%E9%8C%84%E6%97%A5%E6%96%87%E5%8F%A5%E4%B8%AD%E5%B8%B8%E6%9C%83%E7%9C%8B%E5%88%B0%E4%BB%8A%E4%BD%95%E6%99%82%E3%81%8B%E3%82%8F%E3%81%8B%E3%82%8A%E3%81%BE%E3%81%9B%E3%82%93%E4%BB%8A%E6%97%A5%E3%81%AF%E4%BD%95%E6%9B%9C%E6%97%A5%E3%81%8B%E6%95%99%E3%81%88%E3%81%A6%E3%81%8F%E3%81%A0%E3%81%95%E3%81%84%E7%9A%84%E9%96%93%E6%8E%A5%E5%95%8F%E5%8F%A5%E6%89%80%E8%AC%82%E7%9A%84%E5%95%8F%E5%8F%A5%E6%8C%87%E7%9A%84%E6%98%AF%E7%96%91%E5%95%8F%E8%A9%9E%E3%81%8B%E7%9A%84%E5%8F%A5/1624497210915932/" target="_blank" rel="noopener">王可樂的日文教室【「かどうか」跟「か」快速解題法！】</a></p>
-<p><a href="http://www2.nkfust.edu.tw/~jwd/playgrammar/1know/page2_10.htm" target="_blank" rel="noopener">間接句型的用法</a></p></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2017,7 +2038,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">179</span>
+                  <span class="site-state-item-count">181</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -2039,7 +2060,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

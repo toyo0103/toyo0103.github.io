@@ -293,6 +293,270 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/" itemprop="url">【C#】TreeView 的 CheckBox打勾後自動POST BACK</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-12-27T10:36:00+08:00">
+                2012-12-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>ASP.NET中的TreeView有<span style="color: red; font-weight: bold;">ontreenodecheckchanged</span>的事件，但當你在TreeView上打勾時，卻不會觸發Post Back的效果</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-hIBTtd4zrrQ/UNu4XQV-SvI/AAAAAAAAAd4/wxCJqnyVB8Q/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-hIBTtd4zrrQ/UNu4XQV-SvI/AAAAAAAAAd4/wxCJqnyVB8Q/s1600/111.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"></div><br>查了一下，原來.Net會記住你目前TreeView的狀態，當有任何東西造成Post Back的時候(例如按按鈕)，就會觸發<span style="color: red; font-weight: bold;">ontreenodecheckchanged</span>的事件<br><br>所以如果想要CheckBox點擊時能即時的Post Back就要做一些小加工<br><br>1.  先加一個按鈕，並請隱藏起來<br><a href="http://2.bp.blogspot.com/-3_qRRYC2YCw/UNuxhaRYEEI/AAAAAAAAAc0/wpMixmHLhJY/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-3_qRRYC2YCw/UNuxhaRYEEI/AAAAAAAAAc0/wpMixmHLhJY/s1600/111.png" alt></a><br><span style="font-size: x-small;">這裡需要特別注意不能直接用<span style="background-color: white; color: red;">Visible</span>=”<span style="color: blue;">false</span>“將按鈕隱藏，否則ASP不會將這個按鈕真的Render出來。所以請用CSS的方式隱藏吧!!</span><br>2.  透過JavaScript的方式(這邊利用JQuery撰寫)，偵測當CheckBox被點擊時去觸發我們隱藏起來的Button，透過這個Button達到Post Back的效果<a href="http://2.bp.blogspot.com/-PFXYV2-ACZE/UNuy2PgIT2I/AAAAAAAAAdQ/egXUmtK-uDA/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-PFXYV2-ACZE/UNuy2PgIT2I/AAAAAAAAAdQ/egXUmtK-uDA/s1600/111.png" alt></a><br><br>這樣就會進到<span style="color: red; font-weight: bold;">ontreenodecheckchanged</span>的事件<br><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-qkdq-K0tGW0/UNu0IfXO4qI/AAAAAAAAAdk/Gt2D8z_Ijyw/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-qkdq-K0tGW0/UNu0IfXO4qI/AAAAAAAAAdk/Gt2D8z_Ijyw/s1600/111.png" alt></a></div><div><br></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/26/【SharePoint】確認Web或List是否有權限讀取/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2012/12/26/【SharePoint】確認Web或List是否有權限讀取/" itemprop="url">【SharePoint】確認Web或List是否有權限讀取</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-12-26T18:14:00+08:00">
+                2012-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2012/12/26/【SharePoint】確認Web或List是否有權限讀取/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/12/26/【SharePoint】確認Web或List是否有權限讀取/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>詳細可以參考這個<a href="http://webcache.googleusercontent.com/search?q=cache:ubXwX-z3mF4J:blogs.salmanghani.info/check-if-user-has-permissions-on-list-or-web/+&amp;cd=4&amp;hl=zh-TW&amp;ct=clnk&amp;gl=tw" target="_blank" rel="noopener">網站</a></p>
+<p>節錄摘要，</p>
+<p><pre class="brush : csharp">if (oWeb.DoesUserHavePermissions(SPBasePermissions.ViewPages))<br>{<br>      SPList oList = oWeb.Lists[ListName];<br>      if (oList.DoesUserHavePermissions(SPBasePermissions.ViewListItems))<br>      {<br>          // some smart code<br>      }<br>}<br></pre><br>因為要先Get Web或是List的物件才能進行判斷，所以如果該使用者對該物件沒有權限，這樣寫可能會當掉，所以建議寫法如下</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">SPUser User = SPContext.Current.Web.CurrentUser; <span class="comment">//先記錄目前使用者</span></span><br><span class="line"></span><br><span class="line">SPSecurity.RunWithElevatedPrivileges(<span class="keyword">delegate</span> &#123;        <span class="comment">//進行升權的動作</span></span><br><span class="line">                        <span class="keyword">using</span> (SPSite Site = <span class="keyword">new</span> SPSite(SPContext.Current.Site.ID))</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="keyword">using</span> (SPWeb Web = Site.OpenWeb(WebName))</span><br><span class="line">                            &#123;</span><br><span class="line">                                <span class="comment">//在將剛剛紀錄的使用者丟到Function進行權限的判斷</span></span><br><span class="line">                                <span class="keyword">if</span>(Web.DoesUserHavePermissions(User.LoginName,SPBasePermissions.ViewPages))</span><br><span class="line">                                &#123;</span><br><span class="line">                                    SPList List = Web.GetList(URL);</span><br><span class="line">                                    <span class="keyword">if</span>(List.DoesUserHavePermissions(User, SPBasePermissions.ViewPages))</span><br><span class="line">                                    &#123;</span><br><span class="line">                                        HavePermission = <span class="literal">true</span>;</span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                             &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>或是<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果不把SPSecurity.CatchAccessDeniedException改回正常狀況，Sharepoint網站會直接返回無權限的頁面</span></span><br><span class="line"><span class="comment">//並停止執行接下來的程式</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">CheckPermission</span>(<span class="params">SPWeb _web</span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   Boolean catchException = SPSecurity.CatchAccessDeniedException;</span><br><span class="line">   SPSecurity.CatchAccessDeniedException = <span class="literal">false</span>;</span><br><span class="line">   <span class="keyword">try</span></span><br><span class="line">   &#123;</span><br><span class="line">      <span class="keyword">if</span> (_web.DoesUserHavePermissions(currentUser.LoginName, SPBasePermissions.ViewPages))</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> </span><br><span class="line">      &#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> </span><br><span class="line">    &#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">finally</span></span><br><span class="line">    &#123;</span><br><span class="line">         <span class="comment">//reset the flag to original value</span></span><br><span class="line">         SPSecurity.CatchAccessDeniedException = catchException;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/11/13/【SharePoint】讀取目前使用者的DispayName/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1393,154 +1657,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/10/16/【JavaScript】showModalDialog運用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/10/16/【JavaScript】showModalDialog運用/" itemprop="url">【JavaScript】showModalDialog運用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-10-16T14:09:00+08:00">
-                2012-10-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/10/16/【JavaScript】showModalDialog運用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/10/16/【JavaScript】showModalDialog運用/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近公司專案有使用到IE的showModalDialog，所以做一下筆記!!</p>
-<p>叫用方式：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">openWindow</span>(<span class="params">url</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">var</span> Feature = <span class="string">'dialogWidth:850px;dialogHeight:600px;status:0;help:0;'</span>;</span><br><span class="line">   <span class="keyword">var</span> showModalObj = <span class="built_in">window</span>.showModalDialog(url, <span class="built_in">window</span>, Feature)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>各項參數請參考MSDN文件:<a href="http://msdn.microsoft.com/en-us/library/ie/ms536759(v=vs.85" target="_blank" rel="noopener">參數設定</a>.aspx)</p>
-<p>我的是寫個function,如要使用時將url傳進來。其中第二個參數<span style="color: red;">window</span>是將這這個視窗傳遞給開啟的showModalDialog，之後方便showModalDialog叫用母視窗的function或是變數。</p>
-<p>例如我在母視窗有個alertMe的function<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">alertMe</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">   alert(<span class="string">'我是母視窗的一個function'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>我只要在showModalDialog視窗中使用&nbsp;<span style="color: red;">window.dialogArguments.alertMe(); </span>，就可以直接到母視窗的function。</p>
-<p>另外showModalDialog無論是postback或是location到別的網址都會開啟新視窗，所以在&lt;head&gt;裡面加上 </p>
-<p><pre class="brush: html">&lt;head&gt;<br>   &lt;base target=”_self” &gt;<br>&lt;/head&gt;<br></pre>這樣目標就會是showModalDialog自己。</p>
-<p>為了解決showModalDialog因為Cache的關係只有第一個會PostBack的問題，請加入以下的code在page_load事件，讓每次開啟modal dialog都會PostBack<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!Page.IsPostBack) </span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//為了解決showModalDialog常常會讀到舊頁面的問題</span></span><br><span class="line">   Page.Response.Expires = <span class="number">-1</span>;</span><br><span class="line">   Page.Response.AddHeader(<span class="string">"Pragma"</span>, <span class="string">"no-cache"</span>);</span><br><span class="line">   Page.Response.AddHeader(<span class="string">"cache-control"</span>,<span class="string">"no-store"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>或是在Head裡面加上 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Pragma"</span> <span class="attr">content</span>=<span class="string">"no-cache"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"expires"</span> <span class="attr">content</span>=<span class="string">"-1"</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"cache-control"</span> <span class="attr">content</span>=<span class="string">"no-store"</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p><strong>showModalDialog回傳True或false給母頁面的方法</strong><br>showModalDialog頁面寫以下Javascript<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.returnValue = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure></p>
-<p>母頁面寫以下Javascript<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.showModalDialog(url, <span class="built_in">window</span>, <span class="keyword">set</span>))</span><br><span class="line">&#123;</span><br><span class="line">   alert(<span class="string">'true'</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">   alert(<span class="string">'false'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>showModalDialog回傳值的方式</strong><br>showModalDialog頁面寫以下Javascript：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">GoReturnValue</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="comment">//宣告一個Object</span></span><br><span class="line">   <span class="keyword">var</span> ReturnObj = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">   <span class="comment">//給這個Object屬性值</span></span><br><span class="line">   ReturnObj.codeValue = <span class="string">"i'am return value"</span>;</span><br><span class="line">   <span class="comment">//將這個Object回傳</span></span><br><span class="line">   <span class="built_in">window</span>.returnValue = ReturnObj;</span><br><span class="line">   <span class="built_in">window</span>.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>母頁面取值方式：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> returnObj = <span class="built_in">window</span>.showModalDialog(url, <span class="built_in">window</span>, Feature);</span><br><span class="line"><span class="comment">//取得這個Object的屬性值，在這邊應該會得到"i'am return value"</span></span><br><span class="line">alert(returnObj .codeValue);</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span>
+    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1588,7 +1709,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">179</span>
+                  <span class="site-state-item-count">181</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1610,7 +1731,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

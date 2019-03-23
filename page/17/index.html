@@ -293,6 +293,277 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/04/29/【MVC】One-View-Two-Models-tuple-or-ViewModel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/04/29/【MVC】One-View-Two-Models-tuple-or-ViewModel/" itemprop="url">【MVC】One View Two Models --  tuple or ViewModel</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-04-29T10:48:00+08:00">
+                2013-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/04/29/【MVC】One-View-Two-Models-tuple-or-ViewModel/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/04/29/【MVC】One-View-Two-Models-tuple-or-ViewModel/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>如果有個View同時需要載入兩個model時可以使用tuple <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@model Tuple&lt;IEnumerable&lt;NTI.Models.ExhibitionList&gt;,NTI.Models.ExhibitionList&gt;</span><br></pre></td></tr></table></figure></p>
+<p><strong>Model</strong><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ExhibitionList</span> </span><br><span class="line">&#123;</span><br><span class="line">   [<span class="meta">Required</span>]</span><br><span class="line">   [<span class="meta">MaxLength(50)</span>]</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">string</span> ExhibitionName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> DateTime CreateDate &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> DateTime EditDate &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>Controller</strong><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">ExhibitionList</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">var</span> tuple = <span class="keyword">new</span> Tuple&lt;IEnumerable&lt;ExhibitionList&gt;, ExhibitionList&gt;(Repository.GetExhibitionList(), <span class="keyword">new</span> ExhibitionList());</span><br><span class="line">   <span class="keyword">return</span> PartialView(tuple);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>View</strong><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">if (Model.Item1.Count() == 0)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="tag">&lt;<span class="name">tr</span> <span class="attr">id</span>=<span class="string">"noExhibition"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">td</span> <span class="attr">colspan</span>=<span class="string">"4"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"text-left"</span>&gt;</span>沒有建立任何展覽喔....<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">tr</span>&gt;</span>     </span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">   foreach (var exhibitionItem in Model.Item1)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>1<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>@exhibitionItem.ExhibitionName<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>@exhibitionItem.CreateDate<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>@exhibitionItem.EditDate<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">   &#125;</span><br><span class="line">   @Html.TextBoxFor(m =&gt; Model.Item2.ExhibitionName)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在View中使用Model的方法為：<br><strong>Model.Item1</strong>代表載入的第一個Model<br><strong>Model.Item2</strong>代表載入的第二個Model</p>
+<p>第二種方式就是建立一個ViewModel的方式<br><strong>Model</strong><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> 展覽列表的ViewModel</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ExhibitionListViewModel</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> IEnumerable&lt;ExhibitionList&gt; IEmumerable_ExhibitionList &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">  <span class="keyword">public</span> ExhibitionList ExhibitionListModel &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>View</strong><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">ExhibitionList</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   ExhibitionListViewModel model = <span class="keyword">new</span> ExhibitionListViewModel();</span><br><span class="line">   model.IEmumerable_ExhibitionList = Repository.GetExhibitionList();</span><br><span class="line">   model.ExhibitionListModel = <span class="keyword">new</span> ExhibitionList();</span><br><span class="line">   <span class="keyword">return</span> PartialView(model);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>Controller</strong><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Html.TextBoxFor(model =&gt; model.ExhibitionListModel.ExhibitionName)</span><br><span class="line">@Html.ValidationMessageFor(model =&gt; model.ExhibitionListModel.ExhibitionName)</span><br><span class="line"></span><br><span class="line"><span class="comment">//and ....</span></span><br><span class="line"><span class="keyword">if</span> (Model.IEmumerable_ExhibitionList.Count() == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/04/28/Git-語法筆記/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/04/28/Git-語法筆記/" itemprop="url">Git 語法筆記</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-04-28T21:48:00+08:00">
+                2013-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/04/28/Git-語法筆記/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/04/28/Git-語法筆記/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>將狀態還原到當時的commit <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset <span class="string">"編碼"</span></span><br></pre></td></tr></table></figure></p>
+<p>將判斷現在source code的狀態 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure></p>
+<p>將改變過的source code全部add進去 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">add</span> .</span><br></pre></td></tr></table></figure></p>
+<p>Commit <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">"名稱"</span></span><br></pre></td></tr></table></figure></p>
+<p>push <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/04/24/【SQL】Split/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1372,275 +1643,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/" itemprop="url">【C#】TreeView 的 CheckBox打勾後自動POST BACK</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-12-27T10:36:00+08:00">
-                2012-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>ASP.NET中的TreeView有<span style="color: red; font-weight: bold;">ontreenodecheckchanged</span>的事件，但當你在TreeView上打勾時，卻不會觸發Post Back的效果</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-hIBTtd4zrrQ/UNu4XQV-SvI/AAAAAAAAAd4/wxCJqnyVB8Q/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-hIBTtd4zrrQ/UNu4XQV-SvI/AAAAAAAAAd4/wxCJqnyVB8Q/s1600/111.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"></div><br>查了一下，原來.Net會記住你目前TreeView的狀態，當有任何東西造成Post Back的時候(例如按按鈕)，就會觸發<span style="color: red; font-weight: bold;">ontreenodecheckchanged</span>的事件<br><br>所以如果想要CheckBox點擊時能即時的Post Back就要做一些小加工<br><br>1.  先加一個按鈕，並請隱藏起來<br><a href="http://2.bp.blogspot.com/-3_qRRYC2YCw/UNuxhaRYEEI/AAAAAAAAAc0/wpMixmHLhJY/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-3_qRRYC2YCw/UNuxhaRYEEI/AAAAAAAAAc0/wpMixmHLhJY/s1600/111.png" alt></a><br><span style="font-size: x-small;">這裡需要特別注意不能直接用<span style="background-color: white; color: red;">Visible</span>=”<span style="color: blue;">false</span>“將按鈕隱藏，否則ASP不會將這個按鈕真的Render出來。所以請用CSS的方式隱藏吧!!</span><br>2.  透過JavaScript的方式(這邊利用JQuery撰寫)，偵測當CheckBox被點擊時去觸發我們隱藏起來的Button，透過這個Button達到Post Back的效果<a href="http://2.bp.blogspot.com/-PFXYV2-ACZE/UNuy2PgIT2I/AAAAAAAAAdQ/egXUmtK-uDA/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-PFXYV2-ACZE/UNuy2PgIT2I/AAAAAAAAAdQ/egXUmtK-uDA/s1600/111.png" alt></a><br><br>這樣就會進到<span style="color: red; font-weight: bold;">ontreenodecheckchanged</span>的事件<br><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-qkdq-K0tGW0/UNu0IfXO4qI/AAAAAAAAAdk/Gt2D8z_Ijyw/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-qkdq-K0tGW0/UNu0IfXO4qI/AAAAAAAAAdk/Gt2D8z_Ijyw/s1600/111.png" alt></a></div><div><br></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/26/【SharePoint】確認Web或List是否有權限讀取/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/12/26/【SharePoint】確認Web或List是否有權限讀取/" itemprop="url">【SharePoint】確認Web或List是否有權限讀取</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-12-26T18:14:00+08:00">
-                2012-12-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/12/26/【SharePoint】確認Web或List是否有權限讀取/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/12/26/【SharePoint】確認Web或List是否有權限讀取/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>詳細可以參考這個<a href="http://webcache.googleusercontent.com/search?q=cache:ubXwX-z3mF4J:blogs.salmanghani.info/check-if-user-has-permissions-on-list-or-web/+&amp;cd=4&amp;hl=zh-TW&amp;ct=clnk&amp;gl=tw" target="_blank" rel="noopener">網站</a></p>
-<p>節錄摘要，</p>
-<p><pre class="brush : csharp">if (oWeb.DoesUserHavePermissions(SPBasePermissions.ViewPages))<br>{<br>      SPList oList = oWeb.Lists[ListName];<br>      if (oList.DoesUserHavePermissions(SPBasePermissions.ViewListItems))<br>      {<br>          // some smart code<br>      }<br>}<br></pre><br>因為要先Get Web或是List的物件才能進行判斷，所以如果該使用者對該物件沒有權限，這樣寫可能會當掉，所以建議寫法如下</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">SPUser User = SPContext.Current.Web.CurrentUser; <span class="comment">//先記錄目前使用者</span></span><br><span class="line"></span><br><span class="line">SPSecurity.RunWithElevatedPrivileges(<span class="keyword">delegate</span> &#123;        <span class="comment">//進行升權的動作</span></span><br><span class="line">                        <span class="keyword">using</span> (SPSite Site = <span class="keyword">new</span> SPSite(SPContext.Current.Site.ID))</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="keyword">using</span> (SPWeb Web = Site.OpenWeb(WebName))</span><br><span class="line">                            &#123;</span><br><span class="line">                                <span class="comment">//在將剛剛紀錄的使用者丟到Function進行權限的判斷</span></span><br><span class="line">                                <span class="keyword">if</span>(Web.DoesUserHavePermissions(User.LoginName,SPBasePermissions.ViewPages))</span><br><span class="line">                                &#123;</span><br><span class="line">                                    SPList List = Web.GetList(URL);</span><br><span class="line">                                    <span class="keyword">if</span>(List.DoesUserHavePermissions(User, SPBasePermissions.ViewPages))</span><br><span class="line">                                    &#123;</span><br><span class="line">                                        HavePermission = <span class="literal">true</span>;</span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125;</span><br><span class="line">                             &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>或是<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果不把SPSecurity.CatchAccessDeniedException改回正常狀況，Sharepoint網站會直接返回無權限的頁面</span></span><br><span class="line"><span class="comment">//並停止執行接下來的程式</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">CheckPermission</span>(<span class="params">SPWeb _web</span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   Boolean catchException = SPSecurity.CatchAccessDeniedException;</span><br><span class="line">   SPSecurity.CatchAccessDeniedException = <span class="literal">false</span>;</span><br><span class="line">   <span class="keyword">try</span></span><br><span class="line">   &#123;</span><br><span class="line">      <span class="keyword">if</span> (_web.DoesUserHavePermissions(currentUser.LoginName, SPBasePermissions.ViewPages))</span><br><span class="line">      &#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> </span><br><span class="line">      &#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> </span><br><span class="line">    &#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">finally</span></span><br><span class="line">    &#123;</span><br><span class="line">         <span class="comment">//reset the flag to original value</span></span><br><span class="line">         SPSecurity.CatchAccessDeniedException = catchException;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1688,7 +1695,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">179</span>
+                  <span class="site-state-item-count">181</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1710,7 +1717,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

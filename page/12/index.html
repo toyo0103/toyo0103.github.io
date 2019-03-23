@@ -293,6 +293,284 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/05/swift-NetWork-3-判斷手機是否有網路連線可用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/05/swift-NetWork-3-判斷手機是否有網路連線可用/" itemprop="url">[swift] NetWork (3) 判斷手機是否有網路連線可用</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-05T11:09:00+08:00">
+                2015-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/05/swift-NetWork-3-判斷手機是否有網路連線可用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/05/swift-NetWork-3-判斷手機是否有網路連線可用/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>主要參考兩篇文章做修改:<br><a href="http://yishenghsu.blogspot.tw/2014/08/detect-internet-status-programmatically.html" target="_blank" rel="noopener">Detect Internet status programmatically using Swift and Object-C language</a><br><a href="https://cg2010studio.wordpress.com/2014/03/25/ios-%E5%8D%B3%E6%99%82%E5%88%A4%E6%96%B7%E7%B6%B2%E8%B7%AF%E9%80%A3%E7%B7%9A%E7%8B%80%E6%85%8B-detect-network-status-on-real-time/" target="_blank" rel="noopener">[iOS] 即時判斷網路連線狀態 (Detect Network Status on Real-Time)</a></p>
+<ul>
+<li>Apple已經用Objective-C寫了判斷網路的套件給大家使用,所以接下來會解說如何用Swift專案載入Objective-C套件</li>
+<li>先到這邊下載<a href="https://developer.apple.com/library/ios/samplecode/Reachability/Introduction/Intro.html" target="_blank" rel="noopener">Reachability</a><br><a href="http://4.bp.blogspot.com/-ARSnk1PlmsA/VPfKweUAqBI/AAAAAAAAEek/VmW9EFmlEdI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.16.58.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-ARSnk1PlmsA/VPfKweUAqBI/AAAAAAAAEek/VmW9EFmlEdI/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.16.58.png" alt></a></li>
+<li>接著把Reachability專案中的Reachability.m和Reachability.h抓到專案中<br><a href="http://2.bp.blogspot.com/-tOe02e1PHi8/VPfMqYara3I/AAAAAAAAEew/8lk8Vhb0Ycw/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.24.31.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-tOe02e1PHi8/VPfMqYara3I/AAAAAAAAEew/8lk8Vhb0Ycw/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.24.31.png" alt></a></li>
+<li>在專案中新增Header檔<br><a href="http://3.bp.blogspot.com/-bT6x-uOyL18/VPfM_oRXMjI/AAAAAAAAEe4/tohKrlWN6Wc/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.26.24.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-bT6x-uOyL18/VPfM_oRXMjI/AAAAAAAAEe4/tohKrlWN6Wc/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.26.24.png" alt></a><br><a href="http://4.bp.blogspot.com/-WFeWY0XO3bg/VPfO2ffoduI/AAAAAAAAEfU/j1womd0gVtY/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.33.49.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-WFeWY0XO3bg/VPfO2ffoduI/AAAAAAAAEfU/j1womd0gVtY/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.33.49.png" alt></a></li>
+<li>打開Header檔,把Reachability.h掛進去,這樣以後專案中引用Reachability裡面的class都不再Import了<br><a href="http://3.bp.blogspot.com/-3dpVy1QW-_E/VPfNsxflCYI/AAAAAAAAEfA/aHDQvazuqfs/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.29.30.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-3dpVy1QW-_E/VPfNsxflCYI/AAAAAAAAEfA/aHDQvazuqfs/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.29.30.png" alt></a></li>
+<li>把Header檔加到專案的Build Setting中<br><a href="http://4.bp.blogspot.com/-9Hr8yXPHenQ/VPfOYYogTeI/AAAAAAAAEfM/rowTL9RSiCI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.31.48.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-9Hr8yXPHenQ/VPfOYYogTeI/AAAAAAAAEfM/rowTL9RSiCI/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.31.48.png" alt></a></li>
+<li><p>打開Reachability.m找到(void)dealloc改成 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)dealloc</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">self</span> stopNotifier];</span><br><span class="line">    <span class="keyword">if</span> (_reachabilityRef != <span class="type">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line"> <span class="type">CFRelease</span>(_reachabilityRef);</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="keyword">super</span> dealloc];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>到專案中的Build Phases,把Reachability.m加上-fno-objc-arc <a href="http://1.bp.blogspot.com/-iCs_Qc3MS_g/VPfP4egfeoI/AAAAAAAAEfg/loz5m7jQjpU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.38.54.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-iCs_Qc3MS_g/VPfP4egfeoI/AAAAAAAAEfg/loz5m7jQjpU/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.38.54.png" alt></a></p>
+</li>
+<li>以上就全部掛載完成了,接著來看看這個套件如何使用,並讓它告知我們網路狀態<br>打開view controller,新增一個監測網路的變數,並且在viewDidLoad寫下 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> internetReachability:<span class="type">Reachability!</span>; <span class="comment">//網路狀態監控</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        <span class="comment">//在通知中心註冊事件,當網路狀態有變動的時候會觸發</span></span><br><span class="line">        <span class="type">NSNotificationCenter</span>.defaultCenter().addObserverForName(kReachabilityChangedNotification, object: <span class="literal">nil</span>, queue: <span class="type">NSOperationQueue</span>.mainQueue()) &#123; (<span class="type">NSNotification</span>) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">let</span> networksStatus: <span class="type">NetworkStatus</span> = <span class="keyword">self</span>.internetReachability.currentReachabilityStatus()</span><br><span class="line">            <span class="keyword">var</span> status: <span class="type">String!</span></span><br><span class="line">            <span class="keyword">if</span> networksStatus.value == <span class="number">0</span> &#123;</span><br><span class="line">                status = <span class="string">"Disconnection"</span></span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> networksStatus.value == <span class="number">1</span> &#123;</span><br><span class="line">                status = <span class="string">"Connection"</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                status = <span class="string">"Connection"</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">UIAlertView</span>(title: <span class="string">"網路狀態"</span>, message: status, delegate: <span class="literal">nil</span>, cancelButtonTitle: <span class="string">"OK"</span>).show();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">self</span>.internetReachability = <span class="type">Reachability</span>.reachabilityForInternetConnection();</span><br><span class="line">        <span class="comment">//開始監控狀況</span></span><br><span class="line">        <span class="keyword">self</span>.internetReachability.startNotifier()</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>在Mac上面執行看看,測試方法就是把mac的wifi連線給關閉,就會看到App跳出提示訊息了<br><a href="http://4.bp.blogspot.com/-UXJAaO-c6dk/VPfVoHMIjHI/AAAAAAAAEfw/U_lcuavEFlM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.59.07.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-UXJAaO-c6dk/VPfVoHMIjHI/AAAAAAAAEfw/U_lcuavEFlM/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.59.07.png" alt></a></p>
+<ul>
+<li>接下來把viewDidLoad改成如下,這段是告訴你目前使用的網路是什麼?Wifi or 3G之類的 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        <span class="keyword">let</span> statusReach: <span class="type">Reachability</span> = <span class="type">Reachability</span>.reachabilityForInternetConnection()</span><br><span class="line">        <span class="keyword">let</span> networksStatus: <span class="type">NetworkStatus</span> = statusReach.currentReachabilityStatus()</span><br><span class="line">        <span class="keyword">var</span> status: <span class="type">String!</span></span><br><span class="line">        <span class="keyword">if</span> networksStatus.value == <span class="number">0</span> &#123;</span><br><span class="line">            status = <span class="string">"NoReachable"</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> networksStatus.value == <span class="number">1</span> &#123;</span><br><span class="line">            status = <span class="string">"ReachableViaWiFi"</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            status = <span class="string">"ReachableViaWWAN"</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">UIAlertView</span>(title: <span class="string">"網路狀態"</span>, message: status, delegate: <span class="literal">nil</span>, cancelButtonTitle: <span class="string">"OK"</span>).show();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>執行看看<br><a href="http://2.bp.blogspot.com/-CvlIif9Hk94/VPfvJxCKWfI/AAAAAAAAEgA/KRl1SzUlcXo/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8B%E5%8D%881.52.19.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-CvlIif9Hk94/VPfvJxCKWfI/AAAAAAAAEgA/KRl1SzUlcXo/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8B%E5%8D%881.52.19.png" alt></a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/04/swift-NetWork-2-非同步方式取得API資訊/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/04/swift-NetWork-2-非同步方式取得API資訊/" itemprop="url">[swift] NetWork (2) 非同步方式取得API資訊</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-04T15:39:00+08:00">
+                2015-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/04/swift-NetWork-2-非同步方式取得API資訊/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/04/swift-NetWork-2-非同步方式取得API資訊/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>為了避免撈取API資料太久而讓整個APP卡住,所以建議撈取API資料時都另外開出一個queue來非同步執行 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url:<span class="type">NSURL</span> = <span class="type">NSURL</span>(string: <span class="string">"http://xxx.com.tw/api/getdata"</span>)!;</span><br><span class="line"><span class="keyword">let</span> request:<span class="type">NSMutableURLRequest</span> = <span class="type">NSMutableURLRequest</span>(<span class="type">URL</span>: url, cachePolicy: <span class="type">NSURLRequestCachePolicy</span>.<span class="type">ReloadIgnoringLocalCacheData</span>, timeoutInterval: <span class="number">10</span>);</span><br><span class="line">request.<span class="type">HTTPMethod</span> = <span class="string">"POST"</span>;</span><br><span class="line">request.<span class="type">HTTPBody</span> = <span class="string">"yourdata"</span>.dataUsingEncoding(<span class="type">NSUTF8StringEncoding</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//新增一個queue來執行API,避免API撈取資料太久把整個APP卡住</span></span><br><span class="line"><span class="keyword">let</span> queue :<span class="type">NSOperationQueue</span> = <span class="type">NSOperationQueue</span>();</span><br><span class="line"><span class="comment">//非同步方式取得資料</span></span><br><span class="line"><span class="type">NSURLConnection</span>.sendAsynchronousRequest(request, queue: queue, completionHandler:&#123; (response: <span class="type">NSURLResponse!</span>, data: <span class="type">NSData!</span>, error: <span class="type">NSError!</span>) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">   <span class="keyword">var</span> err:<span class="type">String?</span> = error?.description;</span><br><span class="line">   <span class="keyword">if</span>(data != <span class="literal">nil</span>  &amp;&amp; error == <span class="literal">nil</span>)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="keyword">let</span> responseString = <span class="type">NSString</span>(data: data, encoding: <span class="type">NSUTF8StringEncoding</span>);</span><br><span class="line">      <span class="built_in">println</span>(<span class="string">"responseString = \(responseString)"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/04/swift-NetWork-1-以Get-和-Post方式傳送資料/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1394,285 +1672,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/02/swift-Navigation-Controller-1-畫面切換/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/02/swift-Navigation-Controller-1-畫面切換/" itemprop="url">[swift]Navigation Controller (1) 畫面切換</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-02T17:47:00+08:00">
-                2015-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/02/swift-Navigation-Controller-1-畫面切換/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/02/swift-Navigation-Controller-1-畫面切換/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>先拉一個Navigation Controller到StoryBoard,並將起始指標指向它<br><a href="http://2.bp.blogspot.com/-fA8zFXoGMn0/VPQxsX0y6hI/AAAAAAAAEY0/H95akka6mBU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.44.46.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-fA8zFXoGMn0/VPQxsX0y6hI/AAAAAAAAEY0/H95akka6mBU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.44.46.png" alt></a></li>
-<li>接著拉個ViewA並且設定他為root view並且執行看看<a href="http://4.bp.blogspot.com/-K4yeFlMFoh8/VPQ2RXPJkEI/AAAAAAAAEZo/KuZ33YI1kGg/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.05.57.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-K4yeFlMFoh8/VPQ2RXPJkEI/AAAAAAAAEZo/KuZ33YI1kGg/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.05.57.png" alt></a><br><a href="http://2.bp.blogspot.com/-xXMjStRghEU/VPQ0-TggsYI/AAAAAAAAEZY/SN_q-5qelSU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.00.08.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-xXMjStRghEU/VPQ0-TggsYI/AAAAAAAAEZY/SN_q-5qelSU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.00.08.png" alt></a><br>執行結果首頁就是剛剛指定root view的那一頁了<br><a href="http://4.bp.blogspot.com/-_qbQ9rm9jL8/VPQ1DhTqoJI/AAAAAAAAEZg/RACPJIajA6c/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.00.21.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-_qbQ9rm9jL8/VPQ1DhTqoJI/AAAAAAAAEZg/RACPJIajA6c/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.00.21.png" alt></a></li>
-<li><p>接著在拉第二個ViewB,並將ViewA與ViewB做Push的關聯<br><a href="http://1.bp.blogspot.com/-rCM22lv7ttI/VPQ5KGX6icI/AAAAAAAAEZ0/4w9YGq6810o/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.18.23.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-rCM22lv7ttI/VPQ5KGX6icI/AAAAAAAAEZ0/4w9YGq6810o/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.18.23.png" alt></a></p>
-<p>接著設定這個push segue的identifier<br><a href="http://3.bp.blogspot.com/-euQwt-_kxAU/VPQ7MEAWfUI/AAAAAAAAEaA/slK1nAB8tXQ/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.27.16.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-euQwt-_kxAU/VPQ7MEAWfUI/AAAAAAAAEaA/slK1nAB8tXQ/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.27.16.png" alt></a></p>
-</li>
-<li><p>在ViewA做已下修改 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Page_A_ViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">   <span class="comment">//NavBar</span></span><br><span class="line">   <span class="keyword">self</span>.navigationController?.navigationBar.barTintColor = <span class="type">UIColor</span>(red: <span class="number">0.58</span>, green: <span class="number">0.761</span>, blue: <span class="number">0.231</span>, alpha: <span class="number">1</span>)</span><br><span class="line">   <span class="keyword">let</span> titleDic : <span class="type">NSDictionary</span> = [<span class="type">NSForegroundColorAttributeName</span> : <span class="type">UIColor</span>.whiteColor()]; <span class="comment">//字的顏色</span></span><br><span class="line">   <span class="keyword">self</span>.navigationController?.navigationBar.titleTextAttributes = titleDic;</span><br><span class="line">   <span class="keyword">self</span>.navigationController?.navigationBar.tintColor = <span class="type">UIColor</span>.whiteColor() <span class="comment">//按鈕的顏色</span></span><br><span class="line">   <span class="comment">//設定右上角的按鈕let barOptionIcon : UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon-options"), style: UIBarButtonItemStyle.Plain, target: self, action: "PushToOptionController:");</span></span><br><span class="line">   <span class="keyword">self</span>.navigationController?.navigationBar.topItem?.setRightBarButtonItem(barOptionIcon, animated: <span class="literal">true</span>) ;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//右上角Button按下時觸發的事件</span></span><br><span class="line"> <span class="function"><span class="keyword">func</span> <span class="title">PushToOptionController</span><span class="params">(sender: UIBarButtonItem)</span></span> &#123;</span><br><span class="line">    <span class="keyword">self</span>.performSegueWithIdentifier(<span class="string">"toPageB"</span>, sender: <span class="keyword">self</span>);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>完成後試試看,點擊右上角的按鈕即可跳到第二頁了！！</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/" itemprop="url">[swift]使用Storyboard的情況下,設定App的第一頁</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-02T16:45:00+08:00">
-                2015-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>方法一:打開Storyboard移動起始指標,指到的Controller預設就會用那個ViewController為起始頁面<br><a href="http://3.bp.blogspot.com/-fc1xkF4wE-w/VPQn4-h-_cI/AAAAAAAAEYY/Ez9nyZzajF8/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.04.14.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-fc1xkF4wE-w/VPQn4-h-_cI/AAAAAAAAEYY/Ez9nyZzajF8/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.04.14.png" alt></a><li>方法二:<br>先對在Storyboard的Controller設定Storyboard ID<br><a href="http://2.bp.blogspot.com/-VSNrg7jwyqs/VPQp1XB-Q4I/AAAAAAAAEYk/_1bxDXnnMHM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.11.54.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-VSNrg7jwyqs/VPQp1XB-Q4I/AAAAAAAAEYk/_1bxDXnnMHM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.11.54.png" alt></a></li></p>
-<p>然後找到AppDelegate.swift檔案改寫didFinishLaunchingWithOptions <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">application</span><span class="params">(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?)</span></span> -&gt; <span class="type">Bool</span> &#123;  <span class="keyword">let</span> storyboard = <span class="type">UIStoryboard</span>(name:<span class="string">"Main"</span> , bundle: <span class="literal">nil</span>);</span><br><span class="line">  <span class="keyword">self</span>.window? = <span class="type">UIWindow</span>(frame: <span class="type">UIScreen</span>.mainScreen().bounds);</span><br><span class="line">  <span class="comment">//指定Storyboard ID</span></span><br><span class="line">  <span class="keyword">self</span>.window?.rootViewController = storyboard.instantiateViewControllerWithIdentifier(<span class="string">"testa"</span>) <span class="keyword">as</span>?   <span class="type">UIViewController</span>;</span><br><span class="line">  <span class="keyword">self</span>.window?.makeKeyAndVisible();</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1720,7 +1724,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">179</span>
+                  <span class="site-state-item-count">181</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1742,7 +1746,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

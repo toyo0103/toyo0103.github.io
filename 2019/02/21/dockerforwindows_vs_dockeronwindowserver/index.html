@@ -94,7 +94,7 @@
 <meta property="og:image" content="http://yoursite.com/images/20190221/1.png">
 <meta property="og:image" content="http://yoursite.com/images/20190221/2.png">
 <meta property="og:image" content="http://yoursite.com/images/20190221/3.png">
-<meta property="og:updated_time" content="2019-02-21T13:23:40.924Z">
+<meta property="og:updated_time" content="2019-03-23T11:46:06.319Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Docker】Docker for Windows 和 Docker on Windows Server 一樣嗎?">
 <meta name="twitter:description" content="一開始以為 Docker For Windows 跟 Windows Containers on Windows Server 是一樣的東西，結果在建置 CI 機器時碰到一些問題才發現原來是不同東西啊  Docker for WindowsDocker for Windows 底層是透過 Hyper-V 來乘載 Docker Engine，也因為需要多一層 Hyper-V  ，所以執行效率比之後">
@@ -392,7 +392,7 @@
 <p><a href="https://docs.microsoft.com/zh-tw/virtualization/windowscontainers/deploy-containers/linux-containers" target="_blank" rel="noopener">Windows 上的 Linux 容器</a></p></div>
 <p><br></p>
 <h1 id="Windows-Containers-on-Windows-Server"><a href="#Windows-Containers-on-Windows-Server" class="headerlink" title="Windows Containers on Windows Server"></a>Windows Containers on Windows Server</h1><div class="note info"><p><a href="https://docs.docker.com/install/windows/docker-ee/" target="_blank" rel="noopener">Install Docker Engine - Enterprise on Windows Servers</a></p></div>
-<p>Windows Server 2016 或更新的版本才可使用，直接在 OS 上執行 Docker Engine，所以效能比需要 Hyper-V 的 Docker for Windows 好上一大截，但也因為如此只能跑 Windows Container。</p>
+<p>Windows Server 2016 或更新的版本才可使用，直接在 OS 上執行 Docker Engine，所以效能比需要 Hyper-V 的 Docker for Windows 好上一大截，如果要跑 Linux 類的 Container 也可以透過 <code>--isolation=hyperv</code> 的方式，不過有個限制是這個方法不能在 VM 中用，也就是說如果你今天是用雲端的 Windows Server，本身已經是在 VM 裡面了，就無法在裡面執行 <code>isolation</code>。</p>
 <p><img src="/images/20190221/3.png" alt="/images/20190221/3.png"></p>
 <p>圖片來源 : <a href="https://blogs.msdn.microsoft.com/msgulfcommunity/2015/06/20/what-is-windows-server-containers-and-hyper-v-containers/" target="_blank" rel="noopener">MSDN</a></p>
 <p>目前因為公司內部很多既有專案都是用 .Net Framework 開發的，所以轉移到 Container 也是選擇用 Windows Containers on Windows Server，畢竟如果是 Production Service，效能還是非常重要的一個考量</p>
@@ -533,7 +533,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">179</span>
+                  <span class="site-state-item-count">181</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -555,7 +555,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

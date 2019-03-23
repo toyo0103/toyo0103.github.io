@@ -293,6 +293,280 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/02/swift-Navigation-Controller-1-畫面切換/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/02/swift-Navigation-Controller-1-畫面切換/" itemprop="url">[swift]Navigation Controller (1) 畫面切換</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-02T17:47:00+08:00">
+                2015-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/02/swift-Navigation-Controller-1-畫面切換/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/02/swift-Navigation-Controller-1-畫面切換/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>先拉一個Navigation Controller到StoryBoard,並將起始指標指向它<br><a href="http://2.bp.blogspot.com/-fA8zFXoGMn0/VPQxsX0y6hI/AAAAAAAAEY0/H95akka6mBU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.44.46.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-fA8zFXoGMn0/VPQxsX0y6hI/AAAAAAAAEY0/H95akka6mBU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.44.46.png" alt></a></li>
+<li>接著拉個ViewA並且設定他為root view並且執行看看<a href="http://4.bp.blogspot.com/-K4yeFlMFoh8/VPQ2RXPJkEI/AAAAAAAAEZo/KuZ33YI1kGg/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.05.57.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-K4yeFlMFoh8/VPQ2RXPJkEI/AAAAAAAAEZo/KuZ33YI1kGg/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.05.57.png" alt></a><br><a href="http://2.bp.blogspot.com/-xXMjStRghEU/VPQ0-TggsYI/AAAAAAAAEZY/SN_q-5qelSU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.00.08.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-xXMjStRghEU/VPQ0-TggsYI/AAAAAAAAEZY/SN_q-5qelSU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.00.08.png" alt></a><br>執行結果首頁就是剛剛指定root view的那一頁了<br><a href="http://4.bp.blogspot.com/-_qbQ9rm9jL8/VPQ1DhTqoJI/AAAAAAAAEZg/RACPJIajA6c/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.00.21.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-_qbQ9rm9jL8/VPQ1DhTqoJI/AAAAAAAAEZg/RACPJIajA6c/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.00.21.png" alt></a></li>
+<li><p>接著在拉第二個ViewB,並將ViewA與ViewB做Push的關聯<br><a href="http://1.bp.blogspot.com/-rCM22lv7ttI/VPQ5KGX6icI/AAAAAAAAEZ0/4w9YGq6810o/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.18.23.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-rCM22lv7ttI/VPQ5KGX6icI/AAAAAAAAEZ0/4w9YGq6810o/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.18.23.png" alt></a></p>
+<p>接著設定這個push segue的identifier<br><a href="http://3.bp.blogspot.com/-euQwt-_kxAU/VPQ7MEAWfUI/AAAAAAAAEaA/slK1nAB8tXQ/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.27.16.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-euQwt-_kxAU/VPQ7MEAWfUI/AAAAAAAAEaA/slK1nAB8tXQ/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%886.27.16.png" alt></a></p>
+</li>
+<li><p>在ViewA做已下修改 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Page_A_ViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">   <span class="comment">//NavBar</span></span><br><span class="line">   <span class="keyword">self</span>.navigationController?.navigationBar.barTintColor = <span class="type">UIColor</span>(red: <span class="number">0.58</span>, green: <span class="number">0.761</span>, blue: <span class="number">0.231</span>, alpha: <span class="number">1</span>)</span><br><span class="line">   <span class="keyword">let</span> titleDic : <span class="type">NSDictionary</span> = [<span class="type">NSForegroundColorAttributeName</span> : <span class="type">UIColor</span>.whiteColor()]; <span class="comment">//字的顏色</span></span><br><span class="line">   <span class="keyword">self</span>.navigationController?.navigationBar.titleTextAttributes = titleDic;</span><br><span class="line">   <span class="keyword">self</span>.navigationController?.navigationBar.tintColor = <span class="type">UIColor</span>.whiteColor() <span class="comment">//按鈕的顏色</span></span><br><span class="line">   <span class="comment">//設定右上角的按鈕let barOptionIcon : UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon-options"), style: UIBarButtonItemStyle.Plain, target: self, action: "PushToOptionController:");</span></span><br><span class="line">   <span class="keyword">self</span>.navigationController?.navigationBar.topItem?.setRightBarButtonItem(barOptionIcon, animated: <span class="literal">true</span>) ;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">//右上角Button按下時觸發的事件</span></span><br><span class="line"> <span class="function"><span class="keyword">func</span> <span class="title">PushToOptionController</span><span class="params">(sender: UIBarButtonItem)</span></span> &#123;</span><br><span class="line">    <span class="keyword">self</span>.performSegueWithIdentifier(<span class="string">"toPageB"</span>, sender: <span class="keyword">self</span>);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>完成後試試看,點擊右上角的按鈕即可跳到第二頁了！！</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/" itemprop="url">[swift]使用Storyboard的情況下,設定App的第一頁</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-02T16:45:00+08:00">
+                2015-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>方法一:打開Storyboard移動起始指標,指到的Controller預設就會用那個ViewController為起始頁面<br><a href="http://3.bp.blogspot.com/-fc1xkF4wE-w/VPQn4-h-_cI/AAAAAAAAEYY/Ez9nyZzajF8/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.04.14.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-fc1xkF4wE-w/VPQn4-h-_cI/AAAAAAAAEYY/Ez9nyZzajF8/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.04.14.png" alt></a><li>方法二:<br>先對在Storyboard的Controller設定Storyboard ID<br><a href="http://2.bp.blogspot.com/-VSNrg7jwyqs/VPQp1XB-Q4I/AAAAAAAAEYk/_1bxDXnnMHM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.11.54.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-VSNrg7jwyqs/VPQp1XB-Q4I/AAAAAAAAEYk/_1bxDXnnMHM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.11.54.png" alt></a></li></p>
+<p>然後找到AppDelegate.swift檔案改寫didFinishLaunchingWithOptions <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">application</span><span class="params">(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?)</span></span> -&gt; <span class="type">Bool</span> &#123;  <span class="keyword">let</span> storyboard = <span class="type">UIStoryboard</span>(name:<span class="string">"Main"</span> , bundle: <span class="literal">nil</span>);</span><br><span class="line">  <span class="keyword">self</span>.window? = <span class="type">UIWindow</span>(frame: <span class="type">UIScreen</span>.mainScreen().bounds);</span><br><span class="line">  <span class="comment">//指定Storyboard ID</span></span><br><span class="line">  <span class="keyword">self</span>.window?.rootViewController = storyboard.instantiateViewControllerWithIdentifier(<span class="string">"testa"</span>) <span class="keyword">as</span>?   <span class="type">UIViewController</span>;</span><br><span class="line">  <span class="keyword">self</span>.window?.makeKeyAndVisible();</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/02/swift-製作IOS-Table-4-利用xib客製Tabel-Cell/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1378,275 +1652,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/03/13/【SQL】SQL的foreach，逐筆執行/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2014/03/13/【SQL】SQL的foreach，逐筆執行/" itemprop="url">【SQL】SQL的foreach，逐筆執行</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-03-13T17:17:00+08:00">
-                2014-03-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2014/03/13/【SQL】SQL的foreach，逐筆執行/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/03/13/【SQL】SQL的foreach，逐筆執行/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>需求:將Table_A的資料塞到Table_B，並把Table_B產生的ID編號回寫回Table_A的對應欄位 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 宣告變數</span></span><br><span class="line"><span class="keyword">DECLARE</span> @para1 <span class="built_in">VARCHAR</span>(<span class="number">50</span>) </span><br><span class="line"><span class="keyword">DECLARE</span> @para2 uniqueidentifier</span><br><span class="line"><span class="keyword">DECLARE</span> @para3 <span class="built_in">VARCHAR</span>(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 宣告指標變數</span></span><br><span class="line"><span class="keyword">DECLARE</span> _cursor <span class="keyword">CURSOR</span> <span class="keyword">FOR</span></span><br><span class="line"><span class="keyword">SELECT</span> s1,s2,s3 <span class="keyword">FROM</span> Table_A <span class="keyword">where</span> eiplstatus = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 啟用指標變數</span></span><br><span class="line"><span class="keyword">OPEN</span> _cursor</span><br><span class="line"><span class="comment">-- 以指標變數為基準點, 將取出的欄位值,依序塞給我們自訂的變數，亦即將每筆s1 =&gt; @para1、 s2 =&gt; @para2 、s3 =&gt; @para3</span></span><br><span class="line"><span class="keyword">FETCH</span> <span class="keyword">NEXT</span> <span class="keyword">FROM</span> _cursor <span class="keyword">INTO</span> @para1,@para2,@para3</span><br><span class="line"></span><br><span class="line"><span class="keyword">WHILE</span> @@FETCH_STATUS = <span class="number">0</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">insert</span> <span class="keyword">into</span> Table_B(c1,c2,c3) <span class="keyword">values</span>(@para1,@para2,@para3)</span><br><span class="line">    <span class="keyword">SET</span> @<span class="keyword">id</span> = SCOPE_IDENTITY();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">update</span> Table_A <span class="keyword">set</span> <span class="keyword">id</span> = @<span class="keyword">id</span> <span class="keyword">where</span> <span class="keyword">CURRENT</span> <span class="keyword">of</span> _cursor</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 指標變數往下移動, 並將取出的欄位值, 設定給我們自訂的變數</span></span><br><span class="line">    <span class="keyword">FETCH</span> <span class="keyword">NEXT</span> <span class="keyword">FROM</span> _cursor <span class="keyword">INTO</span> @para1,@para2,@para3</span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 關閉指標變數</span></span><br><span class="line"><span class="keyword">CLOSE</span> _cursor</span><br><span class="line"><span class="comment">-- 釋放指標變數</span></span><br><span class="line"><span class="keyword">DEALLOCATE</span> _cursor</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/12/09/【心情】世殊事異/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/12/09/【心情】世殊事異/" itemprop="url">【心情】世殊事異</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-12-09T17:02:00+08:00">
-                2013-12-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/12/09/【心情】世殊事異/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/12/09/【心情】世殊事異/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><div style="position: relative; z-index: 5;"><a href="http://4.bp.blogspot.com/-O5EO2Xn1EKo/UqWGOc7xaRI/AAAAAAAAEM0/dPda1T6sNAI/s1600/IMG_0440.JPG" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-O5EO2Xn1EKo/UqWGOc7xaRI/AAAAAAAAEM0/dPda1T6sNAI/s400/IMG_0440.JPG" alt></a><br>最近心情持續低氣壓，想在FB上抒發一下心情卻又礙於人多口雜。希望能在這找到屬於自己的另一個僻靜小天地<br>剛剛看到有人用CSS畫出幾個下雨的樣式，正好也符合自己的心境就來跟部落格整合一下好了。<br><a href="http://www.blogger.com/blogger.g?blogID=6692337573339064262" target="_blank" rel="noopener">下雨CSS請參考</a><br>html<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"body"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">"rain"</span>&gt;</span><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></div></p>
-<p>javascript<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// number of drops created.</span></span><br><span class="line"><span class="keyword">var</span> nbDrop = <span class="number">858</span>; </span><br><span class="line"></span><br><span class="line"><span class="comment">// function to generate a random number range.</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">randRange</span>(<span class="params"> minNum, maxNum</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (maxNum - minNum + <span class="number">1</span>)) + minNum);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// function to generate drops</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createRain</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span>( i=<span class="number">1</span>;i &lt; nbDrop;i++) &#123;</span><br><span class="line"> <span class="keyword">var</span> dropLeft = randRange(<span class="number">0</span>,<span class="number">1600</span>);</span><br><span class="line"> <span class="keyword">var</span> dropTop = randRange(<span class="number">-1000</span>,<span class="number">1400</span>);</span><br><span class="line"></span><br><span class="line"> $(<span class="string">'.rain'</span>).append(<span class="string">'&lt;div class="drop" id="drop'</span>+i+<span class="string">'"&gt;&lt;/div&gt;'</span>);</span><br><span class="line"> $(<span class="string">'#drop'</span>+i).css(<span class="string">'left'</span>,dropLeft);</span><br><span class="line"> $(<span class="string">'#drop'</span>+i).css(<span class="string">'top'</span>,dropTop);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Make it rain</span></span><br><span class="line">createRain();</span><br></pre></td></tr></table></figure></p>
-<p>css<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">div</span><span class="selector-class">.body</span> &#123;</span><br><span class="line">            <span class="attribute">background</span>:<span class="number">#0D343A</span>;</span><br><span class="line">            <span class="attribute">background</span>:<span class="built_in">-webkit-gradient</span>(linear,0% 0%,0% 100%, from(rgba(13,52,58,1) ), <span class="built_in">to</span>(#000000)  );</span><br><span class="line">            <span class="attribute">background</span>: <span class="built_in">-moz-linear-gradient</span>(top, rgba(13,52,58,1) <span class="number">0%</span>, <span class="built_in">rgba</span>(0,0,0,1) <span class="number">100%</span>);</span><br><span class="line"></span><br><span class="line">            <span class="attribute">overflow</span>:hidden;&#125;</span><br><span class="line"></span><br><span class="line">            <span class="selector-class">.drop</span> &#123;</span><br><span class="line">              <span class="attribute">background</span>:<span class="built_in">-webkit-gradient</span>(linear,0% 0%,0% 100%, from(rgba(13,52,58,1) ), <span class="built_in">to</span>(rgba(255,255,255,0.6))  );</span><br><span class="line">              <span class="attribute">background</span>: <span class="built_in">-moz-linear-gradient</span>(top, rgba(13,52,58,1) <span class="number">0%</span>, <span class="built_in">rgba</span>(255,255,255,.6) <span class="number">100%</span>);</span><br><span class="line">                <span class="attribute">width</span>:<span class="number">1px</span>;</span><br><span class="line">                <span class="attribute">height</span>:<span class="number">89px</span>;</span><br><span class="line">                <span class="attribute">position</span>: absolute;</span><br><span class="line">                <span class="attribute">bottom</span>:<span class="number">200px</span>;</span><br><span class="line">                <span class="attribute">-webkit-animation</span>: fall .<span class="number">63s</span> linear infinite;</span><br><span class="line">              <span class="attribute">-moz-animation</span>: fall .<span class="number">63s</span> linear infinite;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* animate the drops*/</span></span><br><span class="line">        @-<span class="keyword">webkit</span>-<span class="keyword">keyframes</span> fall &#123;</span><br><span class="line">           <span class="selector-tag">to</span> &#123;<span class="attribute">margin-top</span>:<span class="number">900px</span>;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">        @-<span class="keyword">moz</span>-<span class="keyword">keyframes</span> fall &#123;</span><br><span class="line">           <span class="selector-tag">to</span> &#123;<span class="attribute">margin-top</span>:<span class="number">900px</span>;&#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p><div class="body" style="height: 500px; position: relative; z-index: 2;"></div></p>
-<p><section class="rain"></section><div style="position: relative; z-index: 5;"><a href="http://codepen.io/lbebber/full/uIiJp" target="_blank" rel="noopener">雨滴請參考</a></div> <!-- 下雨 --><style>        div.body {             background:#0D343A;             background:-webkit-gradient(linear,0% 0%,0% 100%, from(rgba(13,52,58,1) ), to(#000000)  );             background: -moz-linear-gradient(top, rgba(13,52,58,1) 0%, rgba(0,0,0,1) 100%);                          overflow:hidden;}                                       .drop {               background:-webkit-gradient(linear,0% 0%,0% 100%, from(rgba(13,52,58,1) ), to(rgba(255,255,255,0.6))  );               background: -moz-linear-gradient(top, rgba(13,52,58,1) 0%, rgba(255,255,255,.6) 100%);                 width:1px;                 height:89px;                 position: absolute;                 bottom:200px;                 -webkit-animation: fall .63s linear infinite;               -moz-animation: fall .63s linear infinite;         }                /<em> animate the drops</em>/         @-webkit-keyframes fall {            to {margin-top:900px;}         }         @-moz-keyframes fall {            to {margin-top:900px;}         } </style>  <script language="JavaScript">//&lt;![CDATA[  // number of drops created. var nbDrop = 858;   // function to generate a random number range. function randRange( minNum, maxNum) {   return (Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum); }  // function to generate drops function createRain() {   for( i=1;i &lt; nbDrop;i++) {  var dropLeft = randRange(0,1600);  var dropTop = randRange(-1000,1400);   $(‘.rain’).append(‘<div class="drop" id="drop'+i+'"></div>‘);  $(‘#drop’+i).css(‘left’,dropLeft);  $(‘#drop’+i).css(‘top’,dropTop);  }  } // Make it rain createRain();  //]]&gt;  </script><!-- 下雨 END --></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1694,7 +1704,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">179</span>
+                  <span class="site-state-item-count">181</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1716,7 +1726,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
