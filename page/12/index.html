@@ -293,6 +293,973 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/11/swift-將圖片做出霧化效果/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/11/swift-將圖片做出霧化效果/" itemprop="url">[swift] 將圖片做出霧化效果</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-11T11:18:00+08:00">
+                2015-03-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/11/swift-將圖片做出霧化效果/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/11/swift-將圖片做出霧化效果/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>以下範例是參考做成的筆記:<a href="http://www.books.com.tw/products/0010661108" target="_blank" rel="noopener">養成iOS8 App程式設計實力的25堂課：最新Swift開發教學</a></p>
+<ul>
+<li>IOS8有提供將圖片霧化的效果,如果我們將一張圖片擺進都不調整的情況下看到的結果如下<br><a href="http://4.bp.blogspot.com/-ELOEk0kal00/VP-zHXMlSfI/AAAAAAAAEiY/D7KPBndpUuw/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.13.13.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-ELOEk0kal00/VP-zHXMlSfI/AAAAAAAAEiY/D7KPBndpUuw/s320/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.13.13.png" alt></a></li>
+<li><div style="clear:both"></div>如果我們想把它變成這樣呢?<br><a href="http://4.bp.blogspot.com/-qGCntfEZsMQ/VP-ziaQFhLI/AAAAAAAAEig/GI3S3yTBTK0/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.16.07.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-qGCntfEZsMQ/VP-ziaQFhLI/AAAAAAAAEig/GI3S3yTBTK0/s320/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.16.07.png" alt></a><a href="http://1.bp.blogspot.com/-inhOmUeMfVU/VP-ztGG_pxI/AAAAAAAAEio/djWTqz97y0I/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.16.51.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-inhOmUeMfVU/VP-ztGG_pxI/AAAAAAAAEio/djWTqz97y0I/s320/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.16.51.png" alt></a><a href="http://3.bp.blogspot.com/-NJzO9xqbdbg/VP-z3nspMII/AAAAAAAAEiw/Ud6fxww0IgI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.17.30.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-NJzO9xqbdbg/VP-z3nspMII/AAAAAAAAEiw/Ud6fxww0IgI/s320/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.17.30.png" alt></a></li>
+<li><div style="clear:both"></div>程式碼撰寫如下: <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> backgroundImageView: <span class="type">UIImageView!</span><span class="comment">//背景圖    override func viewDidLoad() &#123;</span></span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        <span class="comment">//.Dark等於圖1</span></span><br><span class="line">        <span class="comment">//.ExtraLight等於圖2</span></span><br><span class="line">        <span class="comment">//.Light等於圖3</span></span><br><span class="line">        <span class="keyword">var</span> blurEffect = <span class="type">UIBlurEffect</span>(style: <span class="type">UIBlurEffectStyle</span>.<span class="type">Light</span>)</span><br><span class="line">        <span class="keyword">var</span> blurEffectView = <span class="type">UIVisualEffectView</span>(effect: blurEffect)</span><br><span class="line">        blurEffectView.frame = view.bounds</span><br><span class="line">        backgroundImageView.addSubview(blurEffectView)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/10/swift-製作IOS-Table-5-UITableViewRowAction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/10/swift-製作IOS-Table-5-UITableViewRowAction/" itemprop="url">[swift] 製作IOS Table (5) UITableViewRowAction</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-10T14:33:00+08:00">
+                2015-03-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/10/swift-製作IOS-Table-5-UITableViewRowAction/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/10/swift-製作IOS-Table-5-UITableViewRowAction/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>開始之前想推薦這本書:<a href="http://www.books.com.tw/products/0010661108" target="_blank" rel="noopener">養成iOS8 App程式設計實力的25堂課：最新Swift開發教學</a>,只能說看了對於初學者的我來說受益良多,而且對於IOS很多觀念也更加清楚了</p>
+<ul>
+<li>這邊要實作的功能如下圖<br><a href="http://2.bp.blogspot.com/-G5AuWE3jWkc/VP6PU-K4I5I/AAAAAAAAEh4/toN1sTUBTeA/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-10%2B%E4%B8%8B%E5%8D%882.29.02.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-G5AuWE3jWkc/VP6PU-K4I5I/AAAAAAAAEh4/toN1sTUBTeA/s320/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-10%2B%E4%B8%8B%E5%8D%882.29.02.png" alt></a></li>
+<li>IOS8的TableView當中,有個可以往左滑可以選擇更多動作的功能,Apple官方有提供相對應的事件可以實作它</li>
+<li>首先先Override TableView commitEditingStyle這個事件,什麼都先不要做就執行看看 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)</span></span> &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>立馬預設的Delete按鈕就跑出來了<br><a href="http://1.bp.blogspot.com/-maAldiH9hOE/VP6RASa2iQI/AAAAAAAAEiE/3px4PGz4sWU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-10%2B%E4%B8%8B%E5%8D%882.36.30.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-maAldiH9hOE/VP6RASa2iQI/AAAAAAAAEiE/3px4PGz4sWU/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-10%2B%E4%B8%8B%E5%8D%882.36.30.png" alt></a></p>
+<ul>
+<li><p>接著補上以下code,再實際執行看看就可以發現該列可以刪除了 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> editingStyle == <span class="type">UITableViewCellEditingStyle</span>.<span class="type">Delete</span>&#123;</span><br><span class="line">            <span class="comment">//將TableView的DataSource刪除</span></span><br><span class="line">            <span class="keyword">self</span>.restaurantArray.removeAtIndex(indexPath.row)</span><br><span class="line">            <span class="comment">//將TableView該列刪除</span></span><br><span class="line">            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: <span class="type">UITableViewRowAnimation</span>.<span class="type">Fade</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>但如果要客製更多按鈕呢？接下來改寫 editActionsForRowAtIndexPath這個事件,但需要特別注意的是如果我們新增了editActionsForRowAtIndexPath這個事件,則IOS就不會預設幫我們增加Delete的按鈕,所以Delete的按鈕也得自己做瞜～</p>
+<p>先把commitEditingStyle恢復成空值,只讓IOS知道我們要左滑出現功能列就好 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)</span></span> &#123;</span><br><span class="line">      <span class="comment">//把剛剛寫的都刪光光</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<p>接著改寫editActionsForRowAtIndexPath <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath)</span></span> -&gt; [<span class="type">AnyObject</span>]? &#123;</span><br><span class="line">        <span class="keyword">var</span> shareAction = <span class="type">UITableViewRowAction</span>(style: <span class="type">UITableViewRowActionStyle</span>.<span class="type">Default</span>, title: <span class="string">"Share"</span>, handler: <span class="literal">nil</span>)</span><br><span class="line">        <span class="comment">//delete按鈕自己做        var deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: "Delete", handler: &#123;</span></span><br><span class="line">            (action:<span class="type">UITableViewRowAction!</span> , indexPath:<span class="type">NSIndexPath!</span>) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">self</span>.restaurantArray.removeAtIndex(indexPath.row)</span><br><span class="line">            <span class="keyword">self</span>.restaurantTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: <span class="type">UITableViewRowAnimation</span>.<span class="type">Fade</span>)</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> [deleteAction,shareAction]</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>執行看看就可以看到多出了一過按鈕了,如果想改變按鈕的顏色可以這樣寫 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shareAction.backgroundColor = <span class="type">UIColor</span>(red: <span class="number">255</span>/<span class="number">255</span>, green: <span class="number">166</span>/<span class="number">255</span>, blue: <span class="number">51</span>/<span class="number">255</span>, alpha: <span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>最後就可以得出圖1的結果啦!!!!</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/09/swift-UIAlertController/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/09/swift-UIAlertController/" itemprop="url">[swift] UIAlertController</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-09T15:44:00+08:00">
+                2015-03-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/09/swift-UIAlertController/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/09/swift-UIAlertController/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>APP常常有一種狀況是當使用者按下某個選項時,從下面滑出更多的選項讓它做進一步動作,例如在iphone的照片點選垃圾桶時</p>
+<p><a href="http://2.bp.blogspot.com/-3nruP8qpby4/VP1MZiLDRrI/AAAAAAAAEhQ/AjByBZQXUfs/s1600/IMG_2020.PNG" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-3nruP8qpby4/VP1MZiLDRrI/AAAAAAAAEhQ/AjByBZQXUfs/s400/IMG_2020.PNG" alt></a></p>
+</li>
+<li>在IOS 8中多了一個UIAlertController的類別來取代UIAlerView,實際作法如下<br>首先將程式碼加到viewDidAppear,否則無法顯示效果,原因請看IOS生命週期的說明<a href="http://stablekernel.com/blog/uiviewcontroller-best-practices-viewwillappear-or-viewdidload/" target="_blank" rel="noopener">點我 </a><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidAppear</span><span class="params">(animated: Bool)</span></span> &#123;</span><br><span class="line">        <span class="comment">//建立UIAlertController</span></span><br><span class="line">        <span class="keyword">let</span> quetion = <span class="type">UIAlertController</span>(title: <span class="literal">nil</span>, message: <span class="string">"What Do u want?"</span>, preferredStyle: .<span class="type">ActionSheet</span>);</span><br><span class="line">        <span class="comment">//新增選項</span></span><br><span class="line">        <span class="keyword">let</span> callaction = <span class="type">UIAlertAction</span>(title: <span class="string">"call xxx"</span>, style: .<span class="type">Default</span> , handler:<span class="literal">nil</span>);</span><br><span class="line">        <span class="comment">//把選項加到UIAlertController</span></span><br><span class="line">        quetion.addAction(callaction);</span><br><span class="line">        <span class="comment">//Show</span></span><br><span class="line">        <span class="keyword">self</span>.presentViewController(quetion, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>執行看到的結果如下圖<br><a href="http://3.bp.blogspot.com/-FSopEARqG_0/VP1Oau8suBI/AAAAAAAAEhc/v6cpxkt6bWc/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8B%E5%8D%883.39.39.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-FSopEARqG_0/VP1Oau8suBI/AAAAAAAAEhc/v6cpxkt6bWc/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8B%E5%8D%883.39.39.png" alt></a></p>
+<ul>
+<li>如果將ActionSheet改成Alert,則結果 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> quetion = <span class="type">UIAlertController</span>(title: <span class="literal">nil</span>, message: <span class="string">"What Do u want?"</span>, preferredStyle: .<span class="type">Alert</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><a href="http://2.bp.blogspot.com/-Tn1snLcsaxI/VP1PGsV8gtI/AAAAAAAAEhk/r84kalhfkHw/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8B%E5%8D%883.43.05.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-Tn1snLcsaxI/VP1PGsV8gtI/AAAAAAAAEhk/r84kalhfkHw/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8B%E5%8D%883.43.05.png" alt></a></p>
+<ul>
+<li>如果更進階一些,在選擇選項後有些回應時<br>我們拉一個label到ViewController裡面來,並且在按下call xxx選項時,把label的字樣給改變 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AlertViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> showaction: <span class="type">UILabel!</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidAppear</span><span class="params">(animated: Bool)</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> quetion = <span class="type">UIAlertController</span>(title: <span class="literal">nil</span>, message: <span class="string">"What Do u want?"</span>, preferredStyle: .<span class="type">Alert</span>);</span><br><span class="line">        <span class="keyword">let</span> callaction = <span class="type">UIAlertAction</span>(title: <span class="string">"call xxx"</span>,style: .<span class="type">Default</span>, handler:&#123;</span><br><span class="line">            (action:<span class="type">UIAlertAction!</span>) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">self</span>.showaction.text = <span class="string">"Do call xxx"</span>;</span><br><span class="line">        &#125;);</span><br><span class="line">        quetion.addAction(callaction);</span><br><span class="line">        <span class="keyword">self</span>.presentViewController(quetion, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>執行看看吧！！</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/09/swift-String-To-MD5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/09/swift-String-To-MD5/" itemprop="url">[swift] String To MD5</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-09T10:20:00+08:00">
+                2015-03-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/09/swift-String-To-MD5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/09/swift-String-To-MD5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>我將這個Function寫在extension裡面,首先Swift要能用MD5的function必須先建立header檔並掛上(header檔如何建立請看<a href="http://toyo0103.blogspot.tw/2015/03/swift-network-3.html" target="_blank" rel="noopener">這篇</a>) <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#<span class="keyword">import</span> &lt;CommonCrypto/CommonCrypto.h&gt;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>然後 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">md5</span><span class="params">()</span></span> -&gt; <span class="type">String!</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> str = <span class="keyword">self</span>.cStringUsingEncoding(<span class="type">NSUTF8StringEncoding</span>)</span><br><span class="line">        <span class="keyword">let</span> strLen = <span class="type">CUnsignedInt</span>(<span class="keyword">self</span>.lengthOfBytesUsingEncoding(<span class="type">NSUTF8StringEncoding</span>))</span><br><span class="line">        <span class="keyword">let</span> digestLen = <span class="type">Int</span>(<span class="type">CC_MD5_DIGEST_LENGTH</span>)</span><br><span class="line">        <span class="keyword">let</span> result = <span class="type">UnsafeMutablePointer</span>&lt;<span class="type">CUnsignedChar</span>&gt;.alloc(digestLen)</span><br><span class="line">        <span class="type">CC_MD5</span>(str!, strLen, result)</span><br><span class="line">        <span class="keyword">var</span> hash = <span class="type">NSMutableString</span>()</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>..&lt;digestLen &#123;</span><br><span class="line">            hash.appendFormat(<span class="string">"%02x"</span>, result[i])</span><br><span class="line">        &#125;</span><br><span class="line">        result.destroy()</span><br><span class="line">        <span class="keyword">return</span> <span class="type">String</span>(format: hash)&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/09/swift-Extension/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/09/swift-Extension/" itemprop="url">[swift] Extension</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-09T09:58:00+08:00">
+                2015-03-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/09/swift-Extension/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/09/swift-Extension/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Swift這個語法常常會遇到參數型態間的轉換,寫慣了C#,常常遇到什麼參數轉換就會想要.toString() .toInt()阿之類的,偏偏Swift沒有這些function不打緊,還每種型態的變數互轉常常方式不一樣….搞得我每次遇到都要查一下到底這次又該用哪個function來轉換好,最後索性就把這些整理起來做成Extension,以後就跟C#一樣to啥to啥的就好.</p>
+<ul>
+<li>那接下來就來介紹怎麼擴充Swift的function語法</li>
+<li><p>extension是關鍵字,擴充String類別型態的function <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">String</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">toDoublue</span><span class="params">()</span></span> -&gt; <span class="type">Double</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">self</span> <span class="keyword">as</span> <span class="type">NSString</span>).doubleValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>結果<br><a href="http://2.bp.blogspot.com/-ScO8IMg64Mc/VPz-IPzpfGI/AAAAAAAAEg8/PUHhR5dzQrc/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8A%E5%8D%889.57.22.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-ScO8IMg64Mc/VPz-IPzpfGI/AAAAAAAAEg8/PUHhR5dzQrc/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8A%E5%8D%889.57.22.png" alt></a></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/07/SQL-2008-R2-繁體中文版安裝問題/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/07/SQL-2008-R2-繁體中文版安裝問題/" itemprop="url">[SQL] 2008 R2 繁體中文版安裝問題</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-07T12:24:00+08:00">
+                2015-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/07/SQL-2008-R2-繁體中文版安裝問題/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/07/SQL-2008-R2-繁體中文版安裝問題/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>如果你作業系統是從英文版安裝與語系版本成為中文版的話,安裝SQL繁體中文版應該會遇到不明的錯誤而停止,上網找了一下資料發現這篇:<br><a href="http://www.dotblogs.com.tw/hunterpo/archive/2010/07/14/16555.aspx" target="_blank" rel="noopener">解決 Windows 7 線上更新語言包後安裝 SQL Server 2008 R2 繁體中文版失敗的問題</a></p>
+<p>原因是從英文版透過語系包轉成的中文版的作業系統,他是香港繁體中文版,在安裝SQL時預設會去抓3076_ZHH_LP這個資料夾,但繁體中文版的SQL Server的資料夾為1028_CHT_LP。</p>
+<p>所以解決方法就是,把全部的光碟內容複製下來,並且將1028_CHT_LP複製一份並且改名為3076_ZHH_LP,用這個資料夾安裝就可以順利完成了</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-ygIcfJtBNic/VPp9GMAHE0I/AAAAAAAAEgk/oi6kUT_rkfc/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-ygIcfJtBNic/VPp9GMAHE0I/AAAAAAAAEgk/oi6kUT_rkfc/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt></a></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/05/swift-NetWork-4-解析Json/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/05/swift-NetWork-4-解析Json/" itemprop="url">[swift] NetWork (4) 解析Json</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-05T16:15:00+08:00">
+                2015-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/05/swift-NetWork-4-解析Json/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/05/swift-NetWork-4-解析Json/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li><p>先做一個json檔案來模擬接到時怎麼解析 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">"組織名稱"</span>:<span class="string">"普攏拱團隊"</span>,</span><br><span class="line"><span class="string">"組織成員"</span>:[</span><br><span class="line">    &#123;<span class="string">"姓名"</span>:<span class="string">"科科人"</span>,<span class="string">"年齡"</span>:<span class="number">11</span>&#125;,</span><br><span class="line">    &#123;<span class="string">"姓名"</span>:<span class="string">"可可狗"</span>,<span class="string">"年齡"</span>:<span class="number">120</span>&#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>在viewDidLoad加上,測試看看！！ <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將檔案讀出來</span></span><br><span class="line">        <span class="keyword">let</span> path = <span class="type">NSBundle</span>.mainBundle().pathForResource(<span class="string">"json"</span>, ofType: <span class="string">"txt"</span>);</span><br><span class="line">        <span class="keyword">var</span> data:<span class="type">NSData</span> = <span class="type">NSData</span>(contentsOfFile: path!)!;</span><br><span class="line">        <span class="comment">//解析Json</span></span><br><span class="line">        <span class="keyword">var</span> jsonobj = <span class="type">NSJSONSerialization</span>.<span class="type">JSONObjectWithData</span>(data, options: <span class="type">NSJSONReadingOptions</span>.<span class="type">MutableContainers</span>, error: <span class="literal">nil</span>) <span class="keyword">as</span> <span class="type">NSDictionary</span>;</span><br><span class="line">        <span class="built_in">println</span>(jsonobj[<span class="string">"組織名稱"</span>] <span class="keyword">as</span> <span class="type">String</span>);</span><br><span class="line">        <span class="built_in">println</span>(<span class="string">"組織成員"</span>);</span><br><span class="line">        <span class="keyword">var</span> arr = jsonobj[<span class="string">"組織成員"</span>] <span class="keyword">as</span> <span class="type">NSArray</span>;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> (<span class="number">0</span>...arr.<span class="built_in">count</span> - <span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">let</span> mdic = arr[i] <span class="keyword">as</span> <span class="type">NSDictionary</span>;</span><br><span class="line">            <span class="built_in">println</span>(mdic[<span class="string">"姓名"</span>] <span class="keyword">as</span> <span class="type">String</span>);</span><br><span class="line">            <span class="built_in">println</span>(mdic[<span class="string">"年齡"</span>] <span class="keyword">as</span> <span class="type">Int</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<p><a href="http://3.bp.blogspot.com/-QRs1yWks6qY/VPgZj3HwGJI/AAAAAAAAEgQ/IXGY0PKyPps/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8B%E5%8D%884.53.19.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-QRs1yWks6qY/VPgZj3HwGJI/AAAAAAAAEgQ/IXGY0PKyPps/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8B%E5%8D%884.53.19.png" alt></a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/05/swift-NetWork-3-判斷手機是否有網路連線可用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -694,984 +1661,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/04/swift-用Plist製作設定檔/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/04/swift-用Plist製作設定檔/" itemprop="url">[swift] 用Plist製作設定檔</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-04T09:50:00+08:00">
-                2015-03-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/04/swift-用Plist製作設定檔/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/04/swift-用Plist製作設定檔/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>很多APP都會有一些各人化設定檔,方便下次打開APP可以依照個人的喜好設定做出最適合的調整,接下來就實作如何將個人的設定檔存起來並在下次打開APP時Show出來</p>
-<div><br><br><em>   首先先拉一個畫面,輸入框,確定按鈕,呈現文字的按鈕,我們的目標是在輸入框輸入的文字會被系統儲存起來,在下次App重開時依然顯示最後設定的文字<br><a href="http://3.bp.blogspot.com/-wUh10dBlcgQ/VPWED2LwhlI/AAAAAAAAEdo/21KMM7HV0wY/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%885.48.44.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-wUh10dBlcgQ/VPWED2LwhlI/AAAAAAAAEdo/21KMM7HV0wY/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%885.48.44.png" alt></a>
-</em>   基本的code如下,只要在輸入框填好後按下確定按鈕就可以更改文字了,但你只要重開APP他就又會回到最原本Button的文字 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">plistViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> txtbox: <span class="type">UITextField!</span> <span class="comment">//輸入文字框</span></span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> btnShowText: <span class="type">UIButton!</span> <span class="comment">//show文字的button</span></span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> btnSetting: <span class="type">UIButton!</span> <span class="comment">//確定按鈕</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">btnSetting_click</span><span class="params">(sender: AnyObject)</span></span> &#123;</span><br><span class="line">        <span class="comment">//將輸入的文字設定給btnShowText</span></span><br><span class="line">        btnShowText.setTitle(txtbox.text, forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><br><a href="http://1.bp.blogspot.com/-9CI9oydHno0/VPWJqOmri8I/AAAAAAAAEd4/dbIiK5hekEI/s1600/image.gif" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-9CI9oydHno0/VPWJqOmri8I/AAAAAAAAEd4/dbIiK5hekEI/s400/image.gif" alt></a><br><em>   所以我們至少應該先把按鈕的文字改成抓Plist檔的來源,然後按下確定按鈕時將文字先存到plist檔中,但這邊有個觀念需要先釐清,<strong><span style="color: red;">基本上IOS APP是SandBox模式</span></strong>,所以只有特定資料夾內的檔案是可以寫入的,所以在這之前我們必須先新建一個Setting.plist檔案專門放設定值（建議不要用原本預設的info.plist,因為之後會移動這個檔案位置）,然後在APP開啟時檢查這個檔案是否在可讀寫的資料夾之中了,如果沒有則複製一份過去,步驟如下<br><br>    先在Setting.plist新增儲存按鈕文字的欄位<br><a href="http://3.bp.blogspot.com/-OC9a4bKFHCA/VPWKf_BN2oI/AAAAAAAAEeA/L_A21cnwvR4/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%886.17.54.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-OC9a4bKFHCA/VPWKf_BN2oI/AAAAAAAAEeA/L_A21cnwvR4/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%886.17.54.png" alt></a><br><br>    接著在AppDelegate.swift的didFinishLaunchingWithOptions寫下 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">application</span><span class="params">(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="comment">// Override point for customization after application launch.</span></span><br><span class="line">        <span class="comment">//Setting Plist因為要可以讀寫,所以要移到Documents的folder底下</span></span><br><span class="line">        <span class="keyword">let</span> path:<span class="type">String</span> = <span class="type">NSBundle</span>.mainBundle().pathForResource(<span class="string">"Setting"</span>, ofType: <span class="string">"plist"</span>)!;</span><br><span class="line">        <span class="keyword">let</span> destinationPath = <span class="type">String</span>(format: <span class="string">"%@/Documents/Setting.plist"</span>, arguments:[<span class="type">NSHomeDirectory</span>()]);</span><br><span class="line">        <span class="keyword">var</span> fm: <span class="type">NSFileManager</span> = <span class="type">NSFileManager</span>();</span><br><span class="line">        <span class="keyword">if</span> (!fm.fileExistsAtPath(destinationPath))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//如果在documents資料夾底下找不到該檔案,則複製一份過去</span></span><br><span class="line">            fm.copyItemAtPath(path, toPath: destinationPath, error: <span class="literal">nil</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>接下來將輸入的文字改存到plist中,然後按鈕文字的來源改成Setting.plist,全部程式碼如下 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">plistViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> txtbox: <span class="type">UITextField!</span> <span class="comment">//輸入文字框</span></span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> btnShowText: <span class="type">UIButton!</span> <span class="comment">//show文字的button</span></span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> btnSetting: <span class="type">UIButton!</span> <span class="comment">//確定按鈕</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad();</span><br><span class="line">        loadBtnText();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">loadBtnText</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//button預設的字由Setting plist來</span></span><br><span class="line">        btnShowText.setTitle(getSettingValue(), forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">btnSetting_click</span><span class="params">(sender: AnyObject)</span></span> &#123;</span><br><span class="line">        <span class="comment">//將輸入的文字設定給btnShowText</span></span><br><span class="line">        <span class="comment">//btnShowText.setTitle(txtbox.text, forState: UIControlState.Normal);</span></span><br><span class="line">        <span class="comment">//修改成將輸入的文字存到Setting.plist後,在由那邊load給button</span></span><br><span class="line">        <span class="type">Set_SettingPlist_Value</span>(txtbox.text);</span><br><span class="line">        loadBtnText();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//取得Setting.plist裡btnText欄位得值</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">getSettingValue</span><span class="params">()</span></span> -&gt; <span class="type">String</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> value:<span class="type">String!</span>;</span><br><span class="line">        <span class="comment">//取得document folder底下的Setting.plist路徑</span></span><br><span class="line">        <span class="keyword">let</span> <span class="type">SettingPath</span> = <span class="type">String</span>(format: <span class="string">"%@/Documents/Setting.plist"</span>, arguments:[<span class="type">NSHomeDirectory</span>()]);</span><br><span class="line">        <span class="keyword">var</span> dic:<span class="type">NSMutableDictionary?</span> = <span class="type">NSMutableDictionary</span>(contentsOfFile: <span class="type">SettingPath</span>);</span><br><span class="line">        <span class="comment">//欄位名稱</span></span><br><span class="line">        <span class="keyword">if</span> (dic?.objectForKey(<span class="string">"btnText"</span>) != <span class="literal">nil</span>)&#123;</span><br><span class="line">            value = dic!.objectForKey(<span class="string">"btnText"</span>) <span class="keyword">as</span> <span class="type">String</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//把值存到Setting.plist裡面</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">Set_SettingPlist_Value</span><span class="params">(value:String)</span></span>&#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="type">SettingPath</span> = <span class="type">String</span>(format: <span class="string">"%@/Documents/Setting.plist"</span>, arguments:[<span class="type">NSHomeDirectory</span>()]);</span><br><span class="line">        <span class="keyword">var</span> dic:<span class="type">NSMutableDictionary</span> = <span class="type">NSMutableDictionary</span>(contentsOfFile: <span class="type">SettingPath</span>)!;</span><br><span class="line">        <span class="keyword">if</span> (dic.objectForKey(<span class="string">"btnText"</span>) != <span class="literal">nil</span>) &#123;</span><br><span class="line">            dic.setValue(value, forKey: <span class="string">"btnText"</span>);</span><br><span class="line">            <span class="comment">//true表示IOS會先將資料寫入一個輔助檔案中,然後再將這個檔案改為最後真正的目的地,避免出現錯誤</span></span><br><span class="line">            dic.writeToFile(<span class="type">SettingPath</span>, atomically: <span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</em>   接下來再試試看程式,你會發現即便把APP關掉,下次進來時button的文字會被記錄下來！！<br>但這邊必須特別注意一點,隨著App的開發可能會對plist有刪減,重新部署到模擬器上時要記得先把舊的APP刪掉,讓Xode幫你重新安裝,原因是我們在AppDelegate.swift的didFinishLaunchingWithOptions寫了 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (!fm.fileExistsAtPath(destinationPath))</span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//如果在documents資料夾底下找不到該檔案,則複製一份過去</span></span><br><span class="line">   fm.copyItemAtPath(path, toPath: destinationPath, error: <span class="literal">nil</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><br>也就是說複製過一次後,之後的欄位有增減都無法改到Documents資料夾底下的那份plist了,所以只能刪除重裝！！</div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/03/swift-IOS地圖運用-5-計算點與點之間的距離/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/03/swift-IOS地圖運用-5-計算點與點之間的距離/" itemprop="url">[swift] IOS地圖運用 (5) 計算點與點之間的距離</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-03T17:02:00+08:00">
-                2015-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/03/swift-IOS地圖運用-5-計算點與點之間的距離/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-5-計算點與點之間的距離/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>網路上有找到Google的計算公式,把它翻譯成Swift的語法後如下,回傳單位為<strong>公里 </strong><br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">GetDistance_Google</span><span class="params">(pointA:CLLocationCoordinate2D , pointB:CLLocationCoordinate2D)</span></span> -&gt; <span class="type">Double</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">let</span> <span class="type">EARTH_RADIUS</span>:<span class="type">Double</span> = <span class="number">6378.137</span>;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">let</span> radlng1:<span class="type">Double</span> = pointA.longitude * <span class="type">M_PI</span> / <span class="number">180.0</span>;</span><br><span class="line">   <span class="keyword">let</span> radlng2:<span class="type">Double</span> = pointB.longitude * <span class="type">M_PI</span> / <span class="number">180.0</span>;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">let</span> a:<span class="type">Double</span> = radlng1 - radlng2;</span><br><span class="line">   <span class="keyword">let</span> b:<span class="type">Double</span> = (pointA.latitude - pointB.latitude) * <span class="type">M_PI</span> / <span class="number">180</span>;</span><br><span class="line">   <span class="keyword">var</span> s:<span class="type">Double</span> = <span class="number">2</span> * asin(sqrt(pow(sin(a/<span class="number">2</span>), <span class="number">2</span>) + cos(radlng1) * cos(radlng2) * pow(sin(b/<span class="number">2</span>), <span class="number">2</span>)));</span><br><span class="line"></span><br><span class="line">   s = s * <span class="type">EARTH_RADIUS</span>;</span><br><span class="line">   s = (round(s * <span class="number">10000</span>) / <span class="number">10000</span>);</span><br><span class="line">   <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/03/swift-IOS地圖運用-4-如何區分是User-Location與Annotation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/03/swift-IOS地圖運用-4-如何區分是User-Location與Annotation/" itemprop="url">[swift] IOS地圖運用 (4) 如何區分是User Location與Annotation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-03T16:15:00+08:00">
-                2015-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/03/swift-IOS地圖運用-4-如何區分是User-Location與Annotation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-4-如何區分是User-Location與Annotation/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>接著上一篇,如果這時候我們再把mapkit view的user location打開來試試看,結果會發現user location的點被吃掉了,原因是我們改寫了viewForAnnotation,所有的點都會變成我們客製座標的樣式<br><a href="http://4.bp.blogspot.com/-9qviobZt9JE/VPVvfQ0kraI/AAAAAAAAEdM/bYPxX4HccxE/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.23.15.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-9qviobZt9JE/VPVvfQ0kraI/AAAAAAAAEdM/bYPxX4HccxE/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.23.15.png" alt></a></li>
-<li>所以我們在viewForAnnotation補上判斷,讓user location不會被改變樣式 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mapView</span><span class="params">(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!)</span></span> -&gt; <span class="type">MKAnnotationView!</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(annotation <span class="keyword">is</span> <span class="type">MKUserLocation</span>)&#123;</span><br><span class="line">            <span class="comment">//return nil表示用預設值那個藍色發光圓形圖</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> ann : <span class="type">MyAnnotation?</span> = mapView.dequeueReusableAnnotationViewWithIdentifier(<span class="string">"CustomerPoint"</span>) <span class="keyword">as</span>? <span class="type">MyAnnotation</span>;</span><br><span class="line">        <span class="keyword">if</span>(ann == <span class="literal">nil</span>)&#123;</span><br><span class="line">            ann = <span class="type">MyAnnotation</span>(annotation: annotation, reuseIdentifier: <span class="string">"CustomerPoint"</span>);</span><br><span class="line">            ann?.canShowCallout = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ann?.<span class="type">DrawCustomerView</span>();</span><br><span class="line">        ann?.annotation = annotation;</span><br><span class="line">        <span class="keyword">return</span> ann;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>結果如下,user location又出來摟～<br><a href="http://2.bp.blogspot.com/-qYW44ZGAdl8/VPVxakiXQJI/AAAAAAAAEdY/tD0JfPFvwSM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.31.11.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-qYW44ZGAdl8/VPVxakiXQJI/AAAAAAAAEdY/tD0JfPFvwSM/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.31.11.png" alt></a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/03/swift-IOS地圖運用-3-客製Annotation-View/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/03/swift-IOS地圖運用-3-客製Annotation-View/" itemprop="url">[swift] IOS地圖運用 (3) 客製Annotation View</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-03T14:47:00+08:00">
-                2015-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/03/swift-IOS地圖運用-3-客製Annotation-View/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-3-客製Annotation-View/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>繼續接續上一篇,我們來把大頭針改成自己想要的樣子吧,已這張圖為例<br><a href="http://3.bp.blogspot.com/-4mt5Vk9Y36A/VPVgIcev6II/AAAAAAAAEcc/DaA8w4qoIvs/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.17.25.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-4mt5Vk9Y36A/VPVgIcev6II/AAAAAAAAEcc/DaA8w4qoIvs/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.17.25.png" alt></a></p>
-<ul>
-<li><p>從上面那張圖可以看出來需要畫一個長方形,長方形裡面有一個title與圓形Icon,還需要一個倒三角形把它組回去,所以先來把這些元素準備一下吧<br>首先先建立一個Class繼承MKAnnotationView <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"><span class="keyword">import</span> MapKit</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAnnotation</span> : <span class="title">MKAnnotationView</span>  </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> rectangoView:<span class="type">UIView!</span>; <span class="comment">//長方形</span></span><br><span class="line">    <span class="keyword">var</span> lblTitle:<span class="type">UILabel!</span>;<span class="comment">//Title</span></span><br><span class="line">    <span class="keyword">var</span> lblIcon:<span class="type">UILabel!</span>;<span class="comment">//圓形icon</span></span><br><span class="line">    <span class="keyword">var</span> circleView:<span class="type">UIView!</span>; <span class="comment">//原型view</span></span><br><span class="line">    <span class="keyword">var</span> triangle:<span class="type">UIView!</span>; <span class="comment">//三角形</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">init</span>(annotation: <span class="type">MKAnnotation!</span>, reuseIdentifier: <span class="type">String!</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(annotation: annotation, reuseIdentifier: reuseIdentifier);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">required</span> <span class="keyword">init</span>(coder aDecoder: <span class="type">NSCoder</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(coder: aDecoder);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>接著把每個圖形間的關係組合起來,例如圓形跟title都在大大的長方形裡面,所以先將他們add到rectangoView裡面 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"><span class="keyword">import</span> MapKit</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAnnotation</span> : <span class="title">MKAnnotationView</span>  </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> rectangoView:<span class="type">UIView!</span>; <span class="comment">//長方形</span></span><br><span class="line">    <span class="keyword">var</span> lblTitle:<span class="type">UILabel!</span>;<span class="comment">//Title</span></span><br><span class="line">    <span class="keyword">var</span> lblIcon:<span class="type">UILabel!</span>;<span class="comment">//圓形icon</span></span><br><span class="line">    <span class="keyword">var</span> circleView:<span class="type">UIView!</span>; <span class="comment">//原型view</span></span><br><span class="line">    <span class="keyword">var</span> triangle:<span class="type">UIView!</span>; <span class="comment">//三角形</span></span><br><span class="line">    <span class="keyword">var</span> <span class="type">DrawView</span>:<span class="type">UIView!</span>;<span class="comment">//整個客製座標的畫布</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">init</span>!(annotation: <span class="type">MKAnnotation!</span>, reuseIdentifier: <span class="type">String!</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(annotation: annotation, reuseIdentifier: reuseIdentifier);</span><br><span class="line">        <span class="comment">//先把每個圖層間的關係建立好,例如圓形跟title都在大大的長方形裡面,所以先add進去</span></span><br><span class="line">        lblTitle = <span class="type">UILabel</span>();</span><br><span class="line">        lblIcon = <span class="type">UILabel</span>();</span><br><span class="line">        rectangoView = <span class="type">UIView</span>();</span><br><span class="line">        circleView = <span class="type">UIView</span>();</span><br><span class="line"></span><br><span class="line">            circleView.addSubview(lblIcon);</span><br><span class="line">        rectangoView.addSubview(lblTitle)</span><br><span class="line">        rectangoView.addSubview(circleView);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//畫出三角形遮罩</span></span><br><span class="line">        <span class="comment">//原理：將遮罩蓋到長方形上面,他會將不再這個框框範圍內的都過濾掉,就可以跑出三角形了</span></span><br><span class="line">        <span class="keyword">let</span> path:<span class="type">UIBezierPath</span> = <span class="type">UIBezierPath</span> ();</span><br><span class="line">        path.moveToPoint(<span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="number">0</span>));</span><br><span class="line">        path.addLineToPoint(<span class="type">CGPoint</span>(x: <span class="number">10</span>, y: <span class="number">10</span>));</span><br><span class="line">        path.addLineToPoint(<span class="type">CGPoint</span>(x: <span class="number">20</span>, y: <span class="number">0</span>));</span><br><span class="line">        path.addLineToPoint(<span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> masklayer:<span class="type">CAShapeLayer</span> = <span class="type">CAShapeLayer</span> ();<span class="comment">//遮罩</span></span><br><span class="line">        masklayer.path = path.<span class="type">CGPath</span>;</span><br><span class="line">        <span class="comment">//遮罩遮出三角型</span></span><br><span class="line">        triangle = <span class="type">UIView</span>(frame: <span class="type">CGRect</span>(x: <span class="number">22</span>, y: <span class="number">28</span>, width: <span class="number">20</span>, height: <span class="number">20</span>));</span><br><span class="line">        triangle.layer.mask = masklayer;</span><br><span class="line">        <span class="type">DrawView</span> = <span class="type">UIView</span>();</span><br><span class="line">        <span class="type">DrawView</span>.addSubview(rectangoView);</span><br><span class="line">        <span class="type">DrawView</span>.addSubview(triangle);</span><br><span class="line">        <span class="keyword">self</span>.addSubview(<span class="type">DrawView</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">required</span> <span class="keyword">init</span>(coder aDecoder: <span class="type">NSCoder</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(coder: aDecoder);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>接著在MyAnnotation寫一個function來詳細畫這個View的內容 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">DrawCustomerView</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="comment">//Title</span></span><br><span class="line">        lblTitle.text = <span class="string">"5200萬"</span>;</span><br><span class="line">        lblTitle.textColor = <span class="type">UIColor</span>.whiteColor();</span><br><span class="line">        lblTitle.font = <span class="type">UIFont</span>.systemFontOfSize(<span class="number">12</span>);</span><br><span class="line">        lblTitle.sizeToFit();</span><br><span class="line">        <span class="comment">//大大的長方形</span></span><br><span class="line">        rectangoView.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: lblTitle.frame.width + <span class="number">30</span>, height: <span class="number">28</span>);<span class="comment">//整體</span></span><br><span class="line">        rectangoView.backgroundColor =  <span class="type">UIColor</span>(red: <span class="number">0.208</span>, green:<span class="number">0.596</span> , blue: <span class="number">0.859</span>, alpha: <span class="number">1</span>);</span><br><span class="line">        rectangoView.layer.cornerRadius = <span class="number">3</span>;<span class="comment">//設定圓角</span></span><br><span class="line">        <span class="comment">//“icon”圓型小字</span></span><br><span class="line">        lblIcon.font = <span class="type">UIFont</span>.systemFontOfSize(<span class="number">11</span>);</span><br><span class="line">        lblIcon.font = <span class="type">UIFont</span>.boldSystemFontOfSize(<span class="number">14</span>);</span><br><span class="line">        lblIcon.text = <span class="string">"成"</span>;</span><br><span class="line">        lblIcon.textColor = rectangoView.backgroundColor;</span><br><span class="line">        lblIcon.sizeToFit();</span><br><span class="line">        lblIcon.center = <span class="type">CGPoint</span> (x: <span class="number">10</span>, y: <span class="number">10</span>);</span><br><span class="line">        <span class="comment">//圓形</span></span><br><span class="line">        circleView.frame = <span class="type">CGRect</span>(x: <span class="number">2</span>, y: <span class="number">4</span>, width: <span class="number">20</span>, height: <span class="number">20</span>);<span class="comment">//圓形標籤</span></span><br><span class="line">        circleView.backgroundColor = <span class="type">UIColor</span>.whiteColor();</span><br><span class="line">        circleView.layer.cornerRadius = <span class="number">10</span>;</span><br><span class="line">        circleView.alpha = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//畫三角形</span></span><br><span class="line">        triangle.backgroundColor =  <span class="type">UIColor</span>(red: <span class="number">0.208</span>, green:<span class="number">0.596</span> , blue: <span class="number">0.859</span>, alpha: <span class="number">1</span>);</span><br><span class="line">        <span class="comment">//rectangoView.Transform 旋轉</span></span><br><span class="line">        <span class="type">DrawView</span>.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width:triangle.frame.width,height: <span class="number">48</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>接下來修改view controller的viewForAnnotation事件如下 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mapView</span><span class="params">(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!)</span></span> -&gt; <span class="type">MKAnnotationView!</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> ann : <span class="type">MyAnnotation?</span> = mapView.dequeueReusableAnnotationViewWithIdentifier(<span class="string">"CustomerPoint"</span>) <span class="keyword">as</span>? <span class="type">MyAnnotation</span>;</span><br><span class="line">        <span class="keyword">if</span>(ann == <span class="literal">nil</span>)&#123;</span><br><span class="line">            ann = <span class="type">MyAnnotation</span>(annotation: annotation, reuseIdentifier: <span class="string">"CustomerPoint"</span>);</span><br><span class="line">            ann?.canShowCallout = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ann?.<span class="type">DrawCustomerView</span>();</span><br><span class="line">        ann?.annotation = annotation;</span><br><span class="line">        <span class="keyword">return</span> ann;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>立馬執行看看,你會發現發生錯誤在MyAnnotation class,而且錯誤訊息寫得不清不楚的,這是第一個地雷,雖然繼承MKAnnotationView沒有要求一定要實作init(frame: CGRect),但不做會壞掉喔,那到底幹麻不列為required阿！！！所以乖乖補上到MyAnnotation就正常摟 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="keyword">init</span>(frame: <span class="type">CGRect</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(frame: frame);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>這時候會發現畫面長這樣…<br><a href="http://4.bp.blogspot.com/-OGPbgnJnyH0/VPVpfcMNstI/AAAAAAAAEcs/NGAf74G1IoU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.57.37.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-OGPbgnJnyH0/VPVpfcMNstI/AAAAAAAAEcs/NGAf74G1IoU/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.57.37.png" alt></a><br>請在DrawCustomerView這個地方補上下面這段code,讓文字位移後執行看看會變得正常多了 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lblTitle.frame.origin.x = <span class="number">24</span>;<span class="comment">//中心位移</span></span><br><span class="line">lblTitle.frame.origin.y = <span class="number">7</span>;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>接下來我們測試一下這個畫出來的點是否跟插大頭針指的位置相同,結果…..歪掉了<br><a href="http://4.bp.blogspot.com/-1SWxrDjmc4c/VPVr5NKYmcI/AAAAAAAAEc4/VFG_Zo4MqHE/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.07.30.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-1SWxrDjmc4c/VPVr5NKYmcI/AAAAAAAAEc4/VFG_Zo4MqHE/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.07.30.png" alt></a></p>
-</li>
-<li>但我們可以看出來他是在針頭的地方開始畫,所以來做點加工吧,在DrawCustomerView()最後面加上下面的code讓整個View位移來符合需求 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: rectangoView.frame.width, height: rectangoView.frame.height);</span><br><span class="line">        <span class="keyword">self</span>.centerOffset = <span class="type">CGPoint</span>(x: <span class="number">0</span>, y: -<span class="number">21</span>);</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>我們再看看…<br><a href="http://3.bp.blogspot.com/-mPNj85zu_a8/VPVsk5Xv-9I/AAAAAAAAEdA/faM54vpHC28/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.10.45.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-mPNj85zu_a8/VPVsk5Xv-9I/AAAAAAAAEdA/faM54vpHC28/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.10.45.png" alt></a></p>
-<ul>
-<li>看起來一切正常了,把一些測試的程式碼拿掉後完整如下<br>view controller <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> CoreLocation</span><br><span class="line"><span class="keyword">import</span> MapKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MapViewController</span>: <span class="title">UIViewController</span>,<span class="title">CLLocationManagerDelegate</span> , <span class="title">MKMapViewDelegate</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> uimap: <span class="type">MKMapView!</span><span class="comment">//地圖元件</span></span><br><span class="line">    <span class="keyword">var</span> location : <span class="type">CLLocationManager!</span>; <span class="comment">//座標管理元件</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad();</span><br><span class="line"></span><br><span class="line">            location = <span class="type">CLLocationManager</span>();</span><br><span class="line">        location.delegate = <span class="keyword">self</span>;</span><br><span class="line">        <span class="comment">//詢問使用者是否同意給APP定位功能</span></span><br><span class="line">        location.requestWhenInUseAuthorization();</span><br><span class="line">        <span class="comment">//開始接收目前位置資訊</span></span><br><span class="line">        location.startUpdatingLocation();</span><br><span class="line">        location.distanceFilter = <span class="type">CLLocationDistance</span>(<span class="number">10</span>); <span class="comment">//表示移動10公尺再更新座標資訊</span></span><br><span class="line">        uimap.delegate = <span class="keyword">self</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidDisappear</span><span class="params">(animated: Bool)</span></span> &#123;</span><br><span class="line">        <span class="comment">//因為ＧＰＳ功能很耗電,所以被敬執行時關閉定位功能</span></span><br><span class="line">        location.stopUpdatingLocation();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">locationManager</span><span class="params">(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!)</span></span> &#123;</span><br><span class="line">        <span class="comment">//取得目前的座標位置</span></span><br><span class="line">        <span class="keyword">let</span> <span class="built_in">c</span> = locations[<span class="number">0</span>] <span class="keyword">as</span> <span class="type">CLLocation</span>;</span><br><span class="line">        <span class="keyword">let</span> nowLocation = <span class="type">CLLocationCoordinate2D</span>(latitude: <span class="built_in">c</span>.coordinate.latitude, longitude: <span class="built_in">c</span>.coordinate.longitude);</span><br><span class="line">        <span class="comment">//將map中心點定在目前所在的位置</span></span><br><span class="line">        <span class="comment">//span是地圖zoom in, zoom out的級距</span></span><br><span class="line">        <span class="keyword">let</span> _span:<span class="type">MKCoordinateSpan</span> = <span class="type">MKCoordinateSpan</span>(latitudeDelta: <span class="number">0.0005</span>, longitudeDelta: <span class="number">0.0005</span>);</span><br><span class="line">        <span class="keyword">self</span>.uimap.setRegion(<span class="type">MKCoordinateRegion</span>(center: nowLocation, span: _span), animated: <span class="literal">true</span>);</span><br><span class="line">        <span class="comment">//加入座標</span></span><br><span class="line">        addPointAnnotation(<span class="built_in">c</span>.coordinate.latitude, longitude: <span class="built_in">c</span>.coordinate.longitude);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//新增座標</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">addPointAnnotation</span><span class="params">(latitude:CLLocationDegrees , longitude:CLLocationDegrees)</span></span>&#123;</span><br><span class="line">        <span class="comment">//大頭針</span></span><br><span class="line">        <span class="keyword">var</span> point:<span class="type">MKPointAnnotation</span> = <span class="type">MKPointAnnotation</span>();</span><br><span class="line">        <span class="comment">//設定大頭針的座標位置</span></span><br><span class="line">        point.coordinate = <span class="type">CLLocationCoordinate2D</span>(latitude: latitude, longitude: longitude);</span><br><span class="line">        uimap.addAnnotation(point);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">mapView</span><span class="params">(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!)</span></span> -&gt; <span class="type">MKAnnotationView!</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> ann : <span class="type">MyAnnotation?</span> = mapView.dequeueReusableAnnotationViewWithIdentifier(<span class="string">"CustomerPoint"</span>) <span class="keyword">as</span>? <span class="type">MyAnnotation</span>;</span><br><span class="line">        <span class="keyword">if</span>(ann == <span class="literal">nil</span>)&#123;</span><br><span class="line">            ann = <span class="type">MyAnnotation</span>(annotation: annotation, reuseIdentifier: <span class="string">"CustomerPoint"</span>);</span><br><span class="line">            ann?.canShowCallout = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ann?.<span class="type">DrawCustomerView</span>();</span><br><span class="line">        ann?.annotation = annotation;</span><br><span class="line">        <span class="keyword">return</span> ann;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>MyAnnotation Class完整如下<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"><span class="keyword">import</span> MapKit</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAnnotation</span> : <span class="title">MKAnnotationView</span>  </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> rectangoView:<span class="type">UIView!</span>; <span class="comment">//長方形</span></span><br><span class="line">    <span class="keyword">var</span> lblTitle:<span class="type">UILabel!</span>;<span class="comment">//Title</span></span><br><span class="line">    <span class="keyword">var</span> lblIcon:<span class="type">UILabel!</span>;<span class="comment">//圓形icon</span></span><br><span class="line">    <span class="keyword">var</span> circleView:<span class="type">UIView!</span>; <span class="comment">//原型view</span></span><br><span class="line">    <span class="keyword">var</span> triangle:<span class="type">UIView!</span>; <span class="comment">//三角形</span></span><br><span class="line">    <span class="keyword">var</span> <span class="type">DrawView</span>:<span class="type">UIView!</span>;<span class="comment">//整個客製座標的畫布</span></span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">init</span>(annotation: <span class="type">MKAnnotation!</span>, reuseIdentifier: <span class="type">String!</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(annotation: annotation, reuseIdentifier: reuseIdentifier);</span><br><span class="line">        <span class="comment">//先把每個圖層間的關係建立好,例如圓形跟title都在大大的長方形裡面,所以先add進去</span></span><br><span class="line">        lblTitle = <span class="type">UILabel</span>();</span><br><span class="line">        lblIcon = <span class="type">UILabel</span>();</span><br><span class="line">        rectangoView = <span class="type">UIView</span>();</span><br><span class="line">        circleView = <span class="type">UIView</span>();</span><br><span class="line"></span><br><span class="line">            circleView.addSubview(lblIcon);</span><br><span class="line">        rectangoView.addSubview(lblTitle)</span><br><span class="line">        rectangoView.addSubview(circleView);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//畫出三角形遮罩</span></span><br><span class="line">        <span class="comment">//原理：將遮罩蓋到長方形上面,他會將不再這個框框範圍內的都過濾掉,就可以跑出三角形了</span></span><br><span class="line">        <span class="keyword">let</span> path:<span class="type">UIBezierPath</span> = <span class="type">UIBezierPath</span> ();</span><br><span class="line">        path.moveToPoint(<span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="number">0</span>));</span><br><span class="line">        path.addLineToPoint(<span class="type">CGPoint</span>(x: <span class="number">10</span>, y: <span class="number">10</span>));</span><br><span class="line">        path.addLineToPoint(<span class="type">CGPoint</span>(x: <span class="number">20</span>, y: <span class="number">0</span>));</span><br><span class="line">        path.addLineToPoint(<span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> masklayer:<span class="type">CAShapeLayer</span> = <span class="type">CAShapeLayer</span> ();<span class="comment">//遮罩</span></span><br><span class="line">        masklayer.path = path.<span class="type">CGPath</span>;</span><br><span class="line">        <span class="comment">//遮罩遮出三角型</span></span><br><span class="line">        triangle = <span class="type">UIView</span>(frame: <span class="type">CGRect</span>(x: <span class="number">22</span>, y: <span class="number">28</span>, width: <span class="number">20</span>, height: <span class="number">20</span>));</span><br><span class="line">        triangle.layer.mask = masklayer;</span><br><span class="line">        <span class="type">DrawView</span> = <span class="type">UIView</span>();</span><br><span class="line">        <span class="type">DrawView</span>.addSubview(rectangoView);</span><br><span class="line">        <span class="type">DrawView</span>.addSubview(triangle);</span><br><span class="line">        <span class="keyword">self</span>.addSubview(<span class="type">DrawView</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">required</span>  <span class="keyword">init</span>(coder aDecoder: <span class="type">NSCoder</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(coder: aDecoder);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="keyword">init</span>(frame: <span class="type">CGRect</span>) &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(frame: frame);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">DrawCustomerView</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="comment">//Title</span></span><br><span class="line">        lblTitle.text = <span class="string">"5200萬"</span>;</span><br><span class="line">        lblTitle.textColor = <span class="type">UIColor</span>.whiteColor();</span><br><span class="line">        lblTitle.font = <span class="type">UIFont</span>.systemFontOfSize(<span class="number">12</span>);</span><br><span class="line">        lblTitle.frame.origin.x = <span class="number">24</span>;<span class="comment">//中心位移</span></span><br><span class="line">        lblTitle.frame.origin.y = <span class="number">7</span>;</span><br><span class="line">        lblTitle.sizeToFit();</span><br><span class="line">        <span class="comment">//大大的長方形</span></span><br><span class="line">        rectangoView.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: lblTitle.frame.width + <span class="number">30</span>, height: <span class="number">28</span>);<span class="comment">//整體</span></span><br><span class="line">        rectangoView.backgroundColor =  <span class="type">UIColor</span>(red: <span class="number">0.208</span>, green:<span class="number">0.596</span> , blue: <span class="number">0.859</span>, alpha: <span class="number">1</span>);</span><br><span class="line">        rectangoView.layer.cornerRadius = <span class="number">3</span>;<span class="comment">//設定圓角</span></span><br><span class="line">        <span class="comment">//“icon”圓型小字</span></span><br><span class="line">        lblIcon.font = <span class="type">UIFont</span>.systemFontOfSize(<span class="number">11</span>);</span><br><span class="line">        lblIcon.font = <span class="type">UIFont</span>.boldSystemFontOfSize(<span class="number">14</span>);</span><br><span class="line">        lblIcon.text = <span class="string">"成"</span>;</span><br><span class="line">        lblIcon.textColor = rectangoView.backgroundColor;</span><br><span class="line">        lblIcon.sizeToFit();</span><br><span class="line">        lblIcon.center = <span class="type">CGPoint</span> (x: <span class="number">10</span>, y: <span class="number">10</span>);</span><br><span class="line">        <span class="comment">//圓形</span></span><br><span class="line">        circleView.frame = <span class="type">CGRect</span>(x: <span class="number">2</span>, y: <span class="number">4</span>, width: <span class="number">20</span>, height: <span class="number">20</span>);<span class="comment">//圓形標籤</span></span><br><span class="line">        circleView.backgroundColor = <span class="type">UIColor</span>.whiteColor();</span><br><span class="line">        circleView.layer.cornerRadius = <span class="number">10</span>;</span><br><span class="line">        circleView.alpha = <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//畫三角形</span></span><br><span class="line">        triangle.backgroundColor =  <span class="type">UIColor</span>(red: <span class="number">0.208</span>, green:<span class="number">0.596</span> , blue: <span class="number">0.859</span>, alpha: <span class="number">1</span>);</span><br><span class="line">        <span class="comment">//rectangoView.Transform 旋轉</span></span><br><span class="line">        <span class="type">DrawView</span>.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width:triangle.frame.width,height: <span class="number">48</span>);</span><br><span class="line">        <span class="keyword">self</span>.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: rectangoView.frame.width, height: rectangoView.frame.height);</span><br><span class="line">        <span class="keyword">self</span>.centerOffset = <span class="type">CGPoint</span>(x: <span class="number">0</span>, y: -<span class="number">21</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/03/swift-IOS地圖運用-2-在地圖釘上大頭針/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/03/swift-IOS地圖運用-2-在地圖釘上大頭針/" itemprop="url">[swift] IOS地圖運用 (2) 在地圖釘上大頭針</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-03T11:30:00+08:00">
-                2015-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/03/swift-IOS地圖運用-2-在地圖釘上大頭針/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-2-在地圖釘上大頭針/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>承上一篇的Code我們繼續往下延伸,如何在地圖釘上大頭針呢?<br>首先我們把mapkit view的user location選項關閉,改成自己放上去的大頭針試試看</p>
-<ul>
-<li>把程式修改如下,這邊主要著重在<strong>addPointAnnotation</strong>這個function <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> CoreLocation</span><br><span class="line"><span class="keyword">import</span> MapKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MapViewController</span>: <span class="title">UIViewController</span>,<span class="title">CLLocationManagerDelegate</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> uimap: <span class="type">MKMapView!</span><span class="comment">//地圖元件</span></span><br><span class="line">    <span class="keyword">var</span> location : <span class="type">CLLocationManager!</span>; <span class="comment">//座標管理元件</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad();</span><br><span class="line"></span><br><span class="line">            location = <span class="type">CLLocationManager</span>();</span><br><span class="line">        location.delegate = <span class="keyword">self</span>;</span><br><span class="line">        <span class="comment">//詢問使用者是否同意給APP定位功能</span></span><br><span class="line">        location.requestWhenInUseAuthorization();</span><br><span class="line">        <span class="comment">//開始接收目前位置資訊</span></span><br><span class="line">        location.startUpdatingLocation();</span><br><span class="line">        location.distanceFilter = <span class="type">CLLocationDistance</span>(<span class="number">10</span>); <span class="comment">//表示移動10公尺再更新座標資訊</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidDisappear</span><span class="params">(animated: Bool)</span></span> &#123;</span><br><span class="line">        <span class="comment">//因為ＧＰＳ功能很耗電,所以被敬執行時關閉定位功能</span></span><br><span class="line">        location.stopUpdatingLocation();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">locationManager</span><span class="params">(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!)</span></span> &#123;</span><br><span class="line">        <span class="comment">//取得目前的座標位置</span></span><br><span class="line">        <span class="keyword">let</span> <span class="built_in">c</span> = locations[<span class="number">0</span>] <span class="keyword">as</span> <span class="type">CLLocation</span>;</span><br><span class="line">        <span class="keyword">let</span> nowLocation = <span class="type">CLLocationCoordinate2D</span>(latitude: <span class="built_in">c</span>.coordinate.latitude, longitude: <span class="built_in">c</span>.coordinate.longitude);</span><br><span class="line">        <span class="comment">//將map中心點定在目前所在的位置</span></span><br><span class="line">        <span class="comment">//span是地圖zoom in, zoom out的級距</span></span><br><span class="line">        <span class="keyword">let</span> _span:<span class="type">MKCoordinateSpan</span> = <span class="type">MKCoordinateSpan</span>(latitudeDelta: <span class="number">0.0005</span>, longitudeDelta: <span class="number">0.0005</span>);</span><br><span class="line">        <span class="keyword">self</span>.uimap.setRegion(<span class="type">MKCoordinateRegion</span>(center: nowLocation, span: _span), animated: <span class="literal">true</span>);</span><br><span class="line">        <span class="comment">//加入座標</span></span><br><span class="line">        addPointAnnotation(<span class="built_in">c</span>.coordinate.latitude, longitude: <span class="built_in">c</span>.coordinate.longitude);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//新增座標</span></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">addPointAnnotation</span><span class="params">(latitude:CLLocationDegrees , longitude:CLLocationDegrees)</span></span>&#123;</span><br><span class="line">        <span class="comment">//大頭針</span></span><br><span class="line">        <span class="keyword">var</span> point:<span class="type">MKPointAnnotation</span> = <span class="type">MKPointAnnotation</span>();</span><br><span class="line">        <span class="comment">//設定大頭針的座標位置</span></span><br><span class="line">        point.coordinate = <span class="type">CLLocationCoordinate2D</span>(latitude: latitude, longitude: longitude);</span><br><span class="line">        point.title = <span class="string">"I'm here"</span>;</span><br><span class="line">        point.subtitle = <span class="string">"緯度：\(latitude) 經度:\(longitude)"</span>;</span><br><span class="line">        uimap.addAnnotation(point);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>執行看看成果,點擊大頭貼可以看到剛剛設定的title與subtitle<br><a href="http://2.bp.blogspot.com/-sBszQR-gCvw/VPVRTFVx06I/AAAAAAAAEb8/wR8k2LQSLvI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%882.14.19.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-sBszQR-gCvw/VPVRTFVx06I/AAAAAAAAEb8/wR8k2LQSLvI/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%882.14.19.png" alt></a></p>
-<ul>
-<li><p>那如果想將大頭針變色呢?<br>首先先將view controller繼承MKMapViewDelegate,並將mapview kit delegate指定為自己這個veiew controller <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uimap.delegate = <span class="keyword">self</span>;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>接著override mapview的viewForAnnotation事件 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mapView</span><span class="params">(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!)</span></span> -&gt; <span class="type">MKAnnotationView!</span> &#123;</span><br><span class="line">   <span class="keyword">var</span> pointView : <span class="type">MKPinAnnotationView?</span> = mapView.dequeueReusableAnnotationViewWithIdentifier(<span class="string">"CustomerPoint"</span>) <span class="keyword">as</span>?<span class="type">MKPinAnnotationView</span>;</span><br><span class="line">   <span class="keyword">if</span>(pointView == <span class="literal">nil</span>)&#123;</span><br><span class="line">      pointView = <span class="type">MKPinAnnotationView</span>(annotation: annotation, reuseIdentifier: <span class="string">"CustomerPoint"</span>);</span><br><span class="line">      <span class="comment">//因為已經改寫了Annotation View,所以要將canShowCallout改成true,否則點擊大頭針不會跑出來我們剛剛指定的title跟subtitle</span></span><br><span class="line">      pointView?.canShowCallout = <span class="literal">true</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   pointView!.pinColor = <span class="type">MKPinAnnotationColor</span>.<span class="type">Green</span>;</span><br><span class="line">   <span class="keyword">return</span> pointView;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>結果如下<br><a href="http://3.bp.blogspot.com/-o61FEuAowEI/VPVXMMc1FdI/AAAAAAAAEcM/wuAceakTI7w/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%882.39.25.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-o61FEuAowEI/VPVXMMc1FdI/AAAAAAAAEcM/wuAceakTI7w/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%882.39.25.png" alt></a></p>
-</li>
-<li>這邊應該看出來整個Annotation的顯示方式都可以透過viewForAnnotation這個事件來改寫,所以下一篇就來介紹如何客製化Annotation的View</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/03/swift-IOS地圖運用-1-取得目前座標位置/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/03/swift-IOS地圖運用-1-取得目前座標位置/" itemprop="url">[swift] IOS地圖運用 (1) 取得目前座標位置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-03T10:23:00+08:00">
-                2015-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/03/swift-IOS地圖運用-1-取得目前座標位置/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-1-取得目前座標位置/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>地圖資訊是手機很大量運用的資訊之一,接下來是來整理關於目前學到的MapKit View地圖的運用</p>
-<ul>
-<li>首先先拉一個新的ViewController,並將MapKit View拉近去<br><a href="http://1.bp.blogspot.com/-E-lEkbuEGuw/VPUcOLnXUCI/AAAAAAAAEak/lUCmZ1i9-RA/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8810.27.49.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-E-lEkbuEGuw/VPUcOLnXUCI/AAAAAAAAEak/lUCmZ1i9-RA/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8810.27.49.png" alt></a></li>
-<li><p>接著在ViewController建立參數與MapKit View做對應,這邊需要注意的地方是用Map元件需要<strong>import MapKit</strong><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> MapKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MapViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> uimap: <span class="type">MKMapView!</span><span class="comment">//地圖元件</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">didReceiveMemoryWarning</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.didReceiveMemoryWarning()</span><br><span class="line">        <span class="comment">// Dispose of any resources that can be recreated.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>取得座標資訊是由一個叫要做CLLocationManager來控制的,又IOS8取得座標資訊必須先取得使用者的授權才可以,所以必須到Info.plist新增NSLocationAlwaysUsageDescription或NSLocationWhenInUseUsageDescription兩種鍵值,而前者表示不管ＡＰＰ在前景或背景執行都會持續取得座標資訊,而後者只有在需要時才會去取座標定位資訊,而這兩個鍵值分別對應到CLLocationManager的requestAlwaysAuthorization和requestWhenInUseAuthorization,這邊的範例已NSLocationWhenInUseUsageDescription為例 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> CoreLocation</span><br><span class="line"><span class="keyword">import</span> MapKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MapViewController</span>: <span class="title">UIViewController</span>,<span class="title">CLLocationManagerDelegate</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> uimap: <span class="type">MKMapView!</span><span class="comment">//地圖元件</span></span><br><span class="line">    <span class="keyword">var</span> location : <span class="type">CLLocationManager!</span>; <span class="comment">//座標管理元件</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad();</span><br><span class="line"></span><br><span class="line">            location = <span class="type">CLLocationManager</span>();</span><br><span class="line">        location.delegate = <span class="keyword">self</span>;</span><br><span class="line">        <span class="comment">//詢問使用者是否同意給APP定位功能</span></span><br><span class="line">        location.requestWhenInUseAuthorization();</span><br><span class="line">        <span class="comment">//開始接收目前位置資訊</span></span><br><span class="line">        location.startUpdatingLocation();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidDisappear</span><span class="params">(animated: Bool)</span></span> &#123;</span><br><span class="line">        <span class="comment">//因為ＧＰＳ功能很耗電,所以被敬執行時關閉定位功能</span></span><br><span class="line">        location.stopUpdatingLocation();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">locationManager</span><span class="params">(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!)</span></span> &#123;</span><br><span class="line">        <span class="comment">//取得目前的座標位置</span></span><br><span class="line">        <span class="keyword">let</span> <span class="built_in">c</span> = locations[<span class="number">0</span>] <span class="keyword">as</span> <span class="type">CLLocation</span>;</span><br><span class="line">        <span class="comment">//c.coordinate.latitude 目前緯度</span></span><br><span class="line">        <span class="comment">//c.coordinate.longitude 目前經度</span></span><br><span class="line">        <span class="keyword">let</span> nowLocation = <span class="type">CLLocationCoordinate2D</span>(latitude: <span class="built_in">c</span>.coordinate.latitude, longitude: <span class="built_in">c</span>.coordinate.longitude);</span><br><span class="line">        <span class="comment">//將map中心點定在目前所在的位置</span></span><br><span class="line">        <span class="comment">//span是地圖zoom in, zoom out的級距</span></span><br><span class="line">        <span class="keyword">let</span> _span:<span class="type">MKCoordinateSpan</span> = <span class="type">MKCoordinateSpan</span>(latitudeDelta: <span class="number">0.0005</span>, longitudeDelta: <span class="number">0.0005</span>);</span><br><span class="line">        <span class="keyword">self</span>.uimap.setRegion(<span class="type">MKCoordinateRegion</span>(center: nowLocation, span: _span), animated: <span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-<p>接著別忘了去Info.plist新增NSLocationWhenInUsageDescription</p>
-<pre><code>[![](http://2.bp.blogspot.com/-FwRtS6qlxv0/VPUmFe5sNwI/AAAAAAAAEbI/ZBcSw4FmZKY/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.09.07.png)](http://2.bp.blogspot.com/-FwRtS6qlxv0/VPUmFe5sNwI/AAAAAAAAEbI/ZBcSw4FmZKY/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.09.07.png)
-</code></pre><ul>
-<li><p>接著執行看看！！</p>
-<p>詢問是否授權取得座標資訊<br><a href="http://4.bp.blogspot.com/-83KznhU8x60/VPUmGa8My2I/AAAAAAAAEbQ/KcQPz9Qjhrk/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.28.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-83KznhU8x60/VPUmGa8My2I/AAAAAAAAEbQ/KcQPz9Qjhrk/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.28.png" alt></a><br>地圖中心點移到你目前的位置摟~<a href="http://3.bp.blogspot.com/-QvR128Ffqwk/VPUmImiWVqI/AAAAAAAAEbY/JihYA7S-IiI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.40.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-QvR128Ffqwk/VPUmImiWVqI/AAAAAAAAEbY/JihYA7S-IiI/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.40.png" alt></a></p>
-</li>
-<li><p>順帶一提,如果需要把使用者的位置座標顯示出來,在mapkit view設定檔將User Location打勾即可！！<a href="http://3.bp.blogspot.com/-k22IlXdhDv4/VPUnkb4FXnI/AAAAAAAAEbk/0zrmSaQchns/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.15.45.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-k22IlXdhDv4/VPUnkb4FXnI/AAAAAAAAEbk/0zrmSaQchns/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.15.45.png" alt></a></p>
-<p><a href="http://4.bp.blogspot.com/-pgo8PxqY7R8/VPUn0drmU1I/AAAAAAAAEbs/3WRtslmNJTM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.17.10.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-pgo8PxqY7R8/VPUn0drmU1I/AAAAAAAAEbs/3WRtslmNJTM/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.17.10.png" alt></a></p>
-</li>
-<li>如果你有實際run過這段程式應該會發現你滑動map時,它會一直彈回你目前所在的位置,原因是我們沒有指定移動多少距離才會更新座標位置,所以didUpdateLocations會一直被呼叫,也就一直被彈回你的所在位置摟,告訴app移動多少距離再更新座標資訊即可 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">location.distanceFilter = <span class="type">CLLocationDistance</span>(<span class="number">10</span>); <span class="comment">//表示移動10公尺再更新座標資訊</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/03/swift-Navigation-Controller-2-傳遞參數/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/03/swift-Navigation-Controller-2-傳遞參數/" itemprop="url">[swift]Navigation Controller  (2) 傳遞參數</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-03T09:28:00+08:00">
-                2015-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/03/swift-Navigation-Controller-2-傳遞參數/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-Navigation-Controller-2-傳遞參數/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>如果要在換頁時讓PageA傳遞數值給PageB,並且在PageB顯示傳遞的參數時作法如下</p>
-<ul>
-<li><p>先在PageB的Controller新增一個Label,我們將用它來顯示PageA究竟傳了什麼過來<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Page_B_ViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> lblValue: <span class="type">UILabel!</span>  <span class="comment">//顯示傳遞數值的Label</span></span><br><span class="line">    <span class="keyword">var</span> fromA_Value:<span class="type">String!</span>;<span class="comment">//儲存Page_A傳遞過來的數值</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad();</span><br><span class="line">        lblValue.text = fromA_Value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>接著在PageA Controller新增<strong>prepareForSegue</strong>事件 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Page_A_ViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        <span class="comment">//NavBar</span></span><br><span class="line">        <span class="keyword">self</span>.navigationController?.navigationBar.barTintColor = <span class="type">UIColor</span>(red: <span class="number">0.58</span>, green: <span class="number">0.761</span>, blue: <span class="number">0.231</span>, alpha: <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">let</span> titleDic : <span class="type">NSDictionary</span> = [<span class="type">NSForegroundColorAttributeName</span> : <span class="type">UIColor</span>.whiteColor()]; <span class="comment">//字的顏色</span></span><br><span class="line">        <span class="keyword">self</span>.navigationController?.navigationBar.titleTextAttributes = titleDic;</span><br><span class="line">        <span class="keyword">self</span>.navigationController?.navigationBar.tintColor = <span class="type">UIColor</span>.whiteColor() <span class="comment">//按鈕的顏色</span></span><br><span class="line">        <span class="keyword">let</span> barOptionIcon : <span class="type">UIBarButtonItem</span> = <span class="type">UIBarButtonItem</span>(image: <span class="type">UIImage</span>(named: <span class="string">"icon-options"</span>), style: <span class="type">UIBarButtonItemStyle</span>.<span class="type">Plain</span>, target: <span class="keyword">self</span>, action: <span class="string">"PushToOptionController:"</span>);</span><br><span class="line">        <span class="keyword">self</span>.navigationController?.navigationBar.topItem?.setRightBarButtonItem(barOptionIcon, animated: <span class="literal">true</span>) ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">didReceiveMemoryWarning</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.didReceiveMemoryWarning()</span><br><span class="line">        <span class="comment">// Dispose of any resources that can be recreated.</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//右上角Button按下時觸發的事件</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">PushToOptionController</span><span class="params">(sender: UIBarButtonItem)</span></span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.performSegueWithIdentifier(<span class="string">"toPageB"</span>, sender: <span class="keyword">self</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//準備跳轉頁面的設定</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">prepareForSegue</span><span class="params">(segue: UIStoryboardSegue, sender: AnyObject?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(segue.identifier == <span class="string">"toPageB"</span>)&#123;</span><br><span class="line">            <span class="keyword">var</span> page_b:<span class="type">Page_B_ViewController?</span> = segue.destinationViewController <span class="keyword">as</span>? <span class="type">Page_B_ViewController</span></span><br><span class="line">            <span class="keyword">if</span>(page_b != <span class="literal">nil</span>)&#123;</span><br><span class="line">                page_b?.fromA_Value = <span class="string">"來自Ａ的數值"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>完成!!!<br><a href="http://2.bp.blogspot.com/-s0lUoWMEDbc/VPUU1BIWAsI/AAAAAAAAEaU/i8iqxSCNW_w/s1600/image.gif" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-s0lUoWMEDbc/VPUU1BIWAsI/AAAAAAAAEaU/i8iqxSCNW_w/s400/image.gif" alt></a></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1724,7 +1713,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">181</span>
+                  <span class="site-state-item-count">188</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1746,7 +1735,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -1807,6 +1796,10 @@
                 
                   <li class="links-of-blogroll-item">
                     <a href="/categories/LeetCode" title="LeetCode" target="_blank">LeetCode</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/2019/03/21/microservice_battlefield/" title="微服務" target="_blank">微服務</a>
                   </li>
                 
               </ul>
