@@ -84,7 +84,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="程式隨筆">
-<meta property="og:url" content="http://yoursite.com/tags/docker/index.html">
+<meta property="og:url" content="http://yoursite.com/tags/Docker/index.html">
 <meta property="og:site_name" content="程式隨筆">
 <meta property="og:locale" content="zh-tw">
 <meta name="twitter:card" content="summary">
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/docker/">
+  <link rel="canonical" href="http://yoursite.com/tags/Docker/">
 
 
 
 
 
-  <title>標籤: docker | 程式隨筆</title>
+  <title>標籤: Docker | 程式隨筆</title>
   
 
 
@@ -285,7 +285,7 @@
 
     <div id="posts" class="posts-collapse">
       <div class="collection-title">
-        <h1>docker<small>標籤</small>
+        <h1>Docker<small>標籤</small>
         </h1>
       </div>
 
@@ -297,17 +297,17 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2019/03/23/windows_container_smb_/" itemprop="url">
+            <a class="post-title-link" href="/2019/04/30/jenkins_update_remote_docker_container/" itemprop="url">
               
-                <span itemprop="name">【Docker】Widows Container SMB</span>
+                <span itemprop="name">【Docker】透過 Jenkins 重新部屬遠端機器 Container</span>
               
             </a>
         
       </h2>
 
       <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-23T17:53:00+08:00" content="2019-03-23">
-          03-23
+        <time class="post-time" itemprop="dateCreated" datetime="2019-04-30T10:00:00+08:00" content="2019-04-30">
+          04-30
         </time>
       </div>
 
@@ -323,17 +323,17 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2019/02/22/docker_debug_skill/" itemprop="url">
+            <a class="post-title-link" href="/2019/04/22/Docker_build/" itemprop="url">
               
-                <span itemprop="name">【Docker】偵錯技巧</span>
+                <span itemprop="name">【Docker】Build Image</span>
               
             </a>
         
       </h2>
 
       <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-22T16:48:00+08:00" content="2019-02-22">
-          02-22
+        <time class="post-time" itemprop="dateCreated" datetime="2019-04-22T10:19:00+08:00" content="2019-04-22">
+          04-22
         </time>
       </div>
 
@@ -349,69 +349,17 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2019/02/21/dockerforwindows_vs_dockeronwindowserver/" itemprop="url">
+            <a class="post-title-link" href="/2019/03/21/microservice_battlefield/" itemprop="url">
               
-                <span itemprop="name">【Docker】Docker for Windows 和 Docker on Windows Server 一樣嗎?</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-21T10:36:00+08:00" content="2019-02-21">
-          02-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/02/20/windows_container_dnsserver/" itemprop="url">
-              
-                <span itemprop="name">【Docker】Widows Container DNS Server 問題</span>
+                <span itemprop="name">微服務的戰場</span>
               
             </a>
         
       </h2>
 
       <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-20T15:10:00+08:00" content="2019-02-20">
-          02-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/02/19/windows_contianer_iamrole_/" itemprop="url">
-              
-                <span itemprop="name">【Docker】Widows Container IAM Role 問題</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-19T16:25:00+08:00" content="2019-02-19">
-          02-19
+        <time class="post-time" itemprop="dateCreated" datetime="2019-03-21T23:30:00+08:00" content="2019-03-21">
+          03-21
         </time>
       </div>
 
@@ -495,7 +443,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">64</span>
+                  <span class="site-state-item-count">65</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -1020,6 +968,75 @@
                 searchResultList += result.item;
               })
               searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+    searchResultList += "</ul>";
               resultContent.innerHTML = searchResultList;
             }
           }
