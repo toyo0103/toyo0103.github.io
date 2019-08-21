@@ -74,6 +74,8 @@
 
 
 
+  
+
 
   <link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
 
@@ -94,7 +96,7 @@
 <meta property="og:image" content="http://yoursite.com/images/20190819/1.png">
 <meta property="og:image" content="http://yoursite.com/images/20190819/2.png">
 <meta property="og:image" content="http://yoursite.com/images/20190819/3.png">
-<meta property="og:updated_time" content="2019-08-19T16:18:25.364Z">
+<meta property="og:updated_time" content="2019-08-21T13:43:28.148Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NATS Streaming 調查報告書">
 <meta name="twitter:description" content="最近因為任務關係對 NATS Streaming 做了一些研究跟 POC，這邊把一些研究到的NATS Streaming 特性記錄下來 什麼是 NATSNATS 是一種 Queue , 它效能比一般的 Queue 好上許多，號稱 Sender / Reciever 每秒可高達 20 萬筆 Message，這是非常驚人的數字。  （來源：https://bravenewgeek.com/disse">
@@ -393,12 +395,10 @@
 <p>NATS 也支援 Queu Group，NATS 會對同一個 Queue Group 的所有 Subscriber 分配訂閱的 Message，而不會重複</p>
 <p><img src="/images/20190819/3.png" alt="/images/20190819/3.png"></p>
 <p>（來源：<a href="https://nats-io.github.io/docs/developer/concepts/queue.html）" target="_blank" rel="noopener">https://nats-io.github.io/docs/developer/concepts/queue.html）</a></p>
-<p><br></p>
 <p>不過這些都不算太特別，畢竟 RabbitMQ 一樣能做到相同的功能，最特別的是 NATS Streaming</p>
+<p><br></p>
 <h1 id="什麼是-NATS-Streaming"><a href="#什麼是-NATS-Streaming" class="headerlink" title="什麼是 NATS Streaming"></a>什麼是 NATS Streaming</h1><p>NATS Streaming 是附加在 NATS 之上的加值功能，他可以永久的保留所有的 Message，並且支援 Cursor（指標）功能，你可以任意的讓 Subscriber 回到特定的點 <strong>重播</strong> 所有的 Message。</p>
-<p><br></p>
 <p>這一點相當有用，試想一下，如果今天我們將所有交易的過程都透過 NATS Streaming 記錄下來，假設資料庫或記錄的地方損毀，我們只要重新 Replay 所有 Message，即能重建最後的結果。這也是 <a href="https://microservices.io/patterns/data/event-sourcing.html" target="_blank" rel="noopener">Event Sourcing</a> 中最重要的的一環。</p>
-<p><br></p>
 <p>為了達成 Event Sourcing 這個設計模式的目標，演練了一些特定的情境</p>
 <ol>
 <li>為了達成 HA 及加快處理速度的需求，需要多個 Subscriber 同時訂閱相同 Subject，並且彼此不會做到重複的 Message。</li>
@@ -417,12 +417,10 @@
 <p>SDK 其實有提供 <strong>StartAt()</strong> 的 API</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Receive messages starting at a specific sequence number</span></span><br><span class="line"><span class="keyword">var</span> subOptions = StanSubscriptionOptions.GetDefaultOptions();</span><br><span class="line">subOptions.StartAt(<span class="number">22</span>);</span><br></pre></td></tr></table></figure>
 <p>不過這邊需特別注意，同一個 Queue Group 只有在第一個 Subscriber 進來時（也就建立這個 Queue Group 的時候）<strong>StartAt 才會生效</strong>，之後進來的 Subscriber 帶這個值都會被直接忽略掉。</p>
-<p><br></p>
 <p>這邊問題就來了，當我們帶了 Queue Group ＋ Durable Name，即便所有的 Subscriber 都離線了，NATS 還是會貼心的幫你記錄最後執行到的地方，所以之後進來的 Subscriber 也都不可能是第一個了，換言之這樣的狀況是無法重新設定指標的。</p>
 <p>所以如果要刪除  Queue Group ＋ Durable Name 的 Queue Group 唯一的方法只有讓所有的 Subscriber 退訂閱</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 取消訂閱 刪除該Group</span></span><br><span class="line">s.Unsubscribe();</span><br></pre></td></tr></table></figure>
 <p>這邊跟上面的範例程式不一樣，上面的是用 <strong>Close()</strong>，這樣並不會讓 Subscriber 退訂閱，只會是離線而已，唯有用 <strong>Unsubscribe()</strong> 將 Subscriber 全部退訂閱後，有 Durable Name 的 Queue Group 才會被刪除掉。</p>
-<p><br></p>
 <p>另外 NATS SDK 並沒有提供查詢 Queue Group 所有 Subscriber 的 Client ID，依據官方的說法，這份清單應該是使用者需要自己維護的，在上面這個案例上，就會需要將所有 <strong>Subscriber</strong> 用相同 Client ID 連上線後退訂閱。</p>
 <p><br></p>
 <h2 id="4-ManualAcks"><a href="#4-ManualAcks" class="headerlink" title="4. ManualAcks"></a>4. ManualAcks</h2><p>用上述的方法成功刪除 Queue Group 後，下一步就是重新讓第一個 <strong>Subscriber</strong> 去建立 Queue Group 並指定 <strong>StartAt</strong> ，不過這邊有點麻煩的地方是，<strong>Subscriber</strong> 一連線後馬上就會開始拋 Message 過來，這時後如果你是希望災難還原與重新執行 Replay 分開做時就會很困擾。</p>
