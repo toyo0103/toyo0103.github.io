@@ -84,7 +84,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="程式隨筆">
-<meta property="og:url" content="http://yoursite.com/page/18/index.html">
+<meta property="og:url" content="https://toyo0103.github.io/page/18/index.html">
 <meta property="og:site_name" content="程式隨筆">
 <meta property="og:locale" content="zh-tw">
 <meta name="twitter:card" content="summary">
@@ -118,7 +118,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/page/18/">
+  <link rel="canonical" href="https://toyo0103.github.io/page/18/">
 
 
 
@@ -293,7 +293,141 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/04/21/Forms-Authentication-in-MVC/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/04/24/【SQL】Split/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/04/24/【SQL】Split/" itemprop="url">【SQL】Split</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-04-24T16:33:00+08:00">
+                2013-04-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/04/24/【SQL】Split/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/04/24/【SQL】Split/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>今天遇到一個需求如下<br>Table1  T1<br>裡面有問候語加上一群使用者的代碼(用逗號區隔開來)<br><a href="http://3.bp.blogspot.com/-OzkM7YK0R78/UXeV_oe2GBI/AAAAAAAACkE/B3UB92iezUg/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-OzkM7YK0R78/UXeV_oe2GBI/AAAAAAAACkE/B3UB92iezUg/s320/1.png" alt></a></p>
+<p>Table1  T2<br>裡面有使用者代碼跟其對應的名稱<br><a href="http://3.bp.blogspot.com/-13Y4NMNrPEI/UXeWZzSIyVI/AAAAAAAACkM/YxhNCCQCzOs/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-13Y4NMNrPEI/UXeWZzSIyVI/AAAAAAAACkM/YxhNCCQCzOs/s320/1.png" alt></a></p>
+<p>目標搜尋出來的結果如下：<br>意即代碼要被換成其對應的名稱<br><a href="http://1.bp.blogspot.com/-wMsczC4e4XU/UXeW9nyRJ8I/AAAAAAAACkU/Wql8AdNj2ow/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-wMsczC4e4XU/UXeW9nyRJ8I/AAAAAAAACkU/Wql8AdNj2ow/s320/1.png" alt></a></p>
+<p>首先先建立一個可以將分隔符號拆開，並且去搜尋對應名稱的function (抓網路上高手寫的Code回來修改而成) <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">FUNCTION</span> [dbo].[ufn_Split]( @InputString <span class="keyword">nvarchar</span>(<span class="number">4000</span>))</span><br><span class="line"><span class="keyword">RETURNS</span> <span class="built_in">varchar</span>(<span class="number">1000</span>) <span class="comment">--執行這個function會回傳字串</span></span><br><span class="line"><span class="keyword">AS</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="comment">--用來儲存分隔符號的Index</span></span><br><span class="line">    <span class="keyword">DECLARE</span> @CIndex <span class="built_in">smallint</span> </span><br><span class="line">    <span class="comment">--用來串接字串並最後回傳回去的字串</span></span><br><span class="line">    <span class="keyword">declare</span> @OutputString <span class="built_in">varchar</span>(<span class="number">1000</span>) =<span class="string">''</span> </span><br><span class="line">    <span class="keyword">declare</span> @tempString <span class="built_in">varchar</span>(<span class="number">500</span>) =<span class="string">''</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">WHILE</span> (@InputString&lt;&gt;<span class="string">''</span>)</span><br><span class="line"> <span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">SET</span> @CIndex=<span class="keyword">CHARINDEX</span>(<span class="string">','</span>,@InputString) <span class="comment">--抓到第一個分隔符號的Index</span></span><br><span class="line">  <span class="keyword">IF</span> @CIndex=<span class="number">0</span> <span class="keyword">SET</span> @CIndex=<span class="keyword">LEN</span>(@InputString)+<span class="number">1</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">--將第一組代碼拆解出來並帶到T2去搜尋對應的名稱，如果搜尋出來為null的話則當作空字串處理</span></span><br><span class="line">                <span class="keyword">set</span> @tempString = <span class="keyword">isnull</span>((<span class="keyword">select</span> <span class="keyword">name</span> <span class="keyword">from</span> t2 <span class="keyword">where</span> <span class="keyword">id</span> = (<span class="keyword">SUBSTRING</span>(@InputString,<span class="number">1</span>,@CIndex<span class="number">-1</span>))),<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">--這串if else純粹只是要解決多餘的逗號問題而已，就不多加解釋了</span></span><br><span class="line">  <span class="keyword">if</span> @tempString &lt;&gt; <span class="string">''</span> </span><br><span class="line">  <span class="keyword">begin</span></span><br><span class="line">     <span class="keyword">if</span> @OutputString = <span class="string">''</span></span><br><span class="line">     <span class="keyword">begin</span></span><br><span class="line">        <span class="keyword">set</span> @OutputString = @tempString</span><br><span class="line">     <span class="keyword">end</span></span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">set</span> @OutputString = @OutputString +<span class="string">','</span>+@tempString</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">IF</span> @CIndex=<span class="keyword">LEN</span>(@InputString)+<span class="number">1</span> BREAK</span><br><span class="line"></span><br><span class="line">  <span class="comment">--把剛剛搜尋過的代碼挑掉後，剩下的繼續跑迴圈</span></span><br><span class="line">  <span class="keyword">SET</span> @InputString=<span class="keyword">SUBSTRING</span>(@InputString,@CIndex+<span class="number">1</span>,<span class="keyword">LEN</span>(@InputString)-@CIndex)</span><br><span class="line"> <span class="keyword">END</span></span><br><span class="line"> <span class="keyword">RETURN</span> @OutputString</span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure></p>
+<p>最後SQL command如下，就可以得到上述合併的結果了!!! <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> title,dbo.ufn_Split(<span class="built_in">number</span>) <span class="keyword">from</span> t1</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/04/21/Forms-Authentication-in-MVC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -435,7 +569,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/04/21/Entity-Framwork-使用-SQL的PWDCOMPARE函數/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/04/21/Entity-Framwork-使用-SQL的PWDCOMPARE函數/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -573,7 +707,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/04/13/【SharePoint-2013】開啟以不同使用者登入選項/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/04/13/【SharePoint-2013】開啟以不同使用者登入選項/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -715,7 +849,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/01/31/【C-】GridView動態加入textbox/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/01/31/【C-】GridView動態加入textbox/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -845,7 +979,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2013/01/08/【C-】GridView更改Pager的樣式/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/01/08/【C-】GridView更改Pager的樣式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -975,7 +1109,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/27/【SharePoint】判斷清單屬性/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/12/27/【SharePoint】判斷清單屬性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1114,7 +1248,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/27/【SharePoint】VisualWebPart/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/12/27/【SharePoint】VisualWebPart/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1251,7 +1385,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1381,7 +1515,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/12/26/【SharePoint】確認Web或List是否有權限讀取/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/12/26/【SharePoint】確認Web或List是否有權限讀取/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1502,136 +1636,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2012/11/13/【SharePoint】讀取目前使用者的DispayName/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/11/13/【SharePoint】讀取目前使用者的DispayName/" itemprop="url">【SharePoint】讀取目前使用者的DispayName</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-11-13T10:57:00+08:00">
-                2012-11-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/11/13/【SharePoint】讀取目前使用者的DispayName/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/11/13/【SharePoint】讀取目前使用者的DispayName/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>是DisplayName不是Account喔!!</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-NaAuRmyrQd0/UKG2nwaZzcI/AAAAAAAAAOM/dE6rh8dC8PI/s1600/1.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-NaAuRmyrQd0/UKG2nwaZzcI/AAAAAAAAAOM/dE6rh8dC8PI/s1600/1.png" alt></a></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1684,7 +1688,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">188</span>
+                  <span class="site-state-item-count">189</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1706,7 +1710,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

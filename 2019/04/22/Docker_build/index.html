@@ -86,27 +86,27 @@
 <meta name="keywords" content="microservice,Docker">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Docker】Build Image">
-<meta property="og:url" content="http://yoursite.com/2019/04/22/Docker_build/index.html">
+<meta property="og:url" content="https://toyo0103.github.io/2019/04/22/Docker_build/index.html">
 <meta property="og:site_name" content="程式隨筆">
 <meta property="og:description" content="前言剛開始使用 Docker 的時候，我常常都是使用別人已經包好的 Image，但難免會有不符使用需要客製的時候，又或是將公司的某些服務做成 Docker Image ，再從多台機器上 Pull Docker Image  直接執行，所以 Docker Build 幾乎是玩 Docker 必學的技巧了   從 Docker Hub 尋找適合的 Image 來使用  前陣子將公司一些服務包成 Do">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:image" content="http://yoursite.com/images/20190422/0.png">
-<meta property="og:image" content="http://yoursite.com/images/20190422/1.png">
-<meta property="og:image" content="http://yoursite.com/images/20190422/2.png">
-<meta property="og:image" content="http://yoursite.com/images/20190422/3.png">
-<meta property="og:image" content="http://yoursite.com/images/20190422/4.png">
-<meta property="og:image" content="http://yoursite.com/images/20190422/5.png">
-<meta property="og:image" content="http://yoursite.com/images/20190422/6.png">
-<meta property="og:image" content="http://yoursite.com/images/20190422/7.png">
-<meta property="og:image" content="http://yoursite.com/images/20190422/8.png">
-<meta property="og:image" content="http://yoursite.com/images/20190422/9.png">
-<meta property="og:image" content="http://yoursite.com/images/20190422/10.png">
-<meta property="og:image" content="http://yoursite.com/images/20190422/11.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190422/0.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190422/1.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190422/2.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190422/3.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190422/4.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190422/5.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190422/6.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190422/7.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190422/8.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190422/9.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190422/10.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190422/11.png">
 <meta property="og:updated_time" content="2019-08-19T14:51:08.962Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Docker】Build Image">
 <meta name="twitter:description" content="前言剛開始使用 Docker 的時候，我常常都是使用別人已經包好的 Image，但難免會有不符使用需要客製的時候，又或是將公司的某些服務做成 Docker Image ，再從多台機器上 Pull Docker Image  直接執行，所以 Docker Build 幾乎是玩 Docker 必學的技巧了   從 Docker Hub 尋找適合的 Image 來使用  前陣子將公司一些服務包成 Do">
-<meta name="twitter:image" content="http://yoursite.com/images/20190422/0.png">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20190422/0.png">
 
 
 
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/04/22/Docker_build/">
+  <link rel="canonical" href="https://toyo0103.github.io/2019/04/22/Docker_build/">
 
 
 
@@ -310,7 +310,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/22/Docker_build/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/04/22/Docker_build/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -416,13 +416,13 @@
 <p><code>From</code> : 表示你這個 Image 是以哪一個當作 Base，以這次的案例為例，我們選擇微軟官方提供的 mcr.microsoft.com/dotnet/framework/aspnet Image 作為 base，因為它已經幫我們安裝好 IIS 、.net Framework，這樣我們只要專注在我們開發的程式即可。</p>
 <p><code>COPY</code> : dockerfile 所屬資料夾所有的內容複製到 container 裡面的 <code>c:/inetpub/wwwroot</code>，也就是 IIS 的預設目錄</p>
 <p><br></p>
-<h2 id="Docker-build"><a href="#Docker-build" class="headerlink" title="Docker build"></a>Docker build</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker build -t &lt;ImageName&gt;:&lt;Tag&gt; &lt;Dockerfile Path&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker build -t my_first_docker_image:latest -t my_first_docker_image:1.0.0 .</span></span><br></pre></td></tr></table></figure>
+<h2 id="Docker-build"><a href="#Docker-build" class="headerlink" title="Docker build"></a>Docker build</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker build -t &lt;ImageName&gt;:&lt;Tag&gt; &lt;Dockerfile Path&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker build -t my_first_docker_image:latest -t my_first_docker_image:1.0.0 .</span><br></pre></td></tr></table></figure>
 <p>docker build 時我為這個 Image 下了兩個 tag，分別為 latest、1.0.0</p>
 <p><img src="/images/20190422/10.png" alt="/images/20190422/10.png"></p>
 <p><br></p>
 <h2 id="Docker-Run"><a href="#Docker-Run" class="headerlink" title="Docker Run"></a>Docker Run</h2><p>執行剛剛我們自建的 Image，並且將本機的 9999 port mapping 到 container 內的 80 port</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d -p 9999:80 my_first_docker_image:latest</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker run -d -p 9999:80 my_first_docker_image:latest</span><br></pre></td></tr></table></figure>
 <p>這樣就可以看到網站啦</p>
 <p><img src="/images/20190422/11.png" alt="/images/20190422/11.png"></p>
 <p><br></p>
@@ -562,7 +562,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">188</span>
+                  <span class="site-state-item-count">189</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -584,7 +584,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -840,7 +840,7 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2019/04/22/Docker_build/';
+          this.page.url = 'https://toyo0103.github.io/2019/04/22/Docker_build/';
           this.page.identifier = '2019/04/22/Docker_build/';
           this.page.title = '【Docker】Build Image';
         };

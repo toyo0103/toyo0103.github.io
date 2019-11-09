@@ -84,7 +84,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="程式隨筆">
-<meta property="og:url" content="http://yoursite.com/page/13/index.html">
+<meta property="og:url" content="https://toyo0103.github.io/page/13/index.html">
 <meta property="og:site_name" content="程式隨筆">
 <meta property="og:locale" content="zh-tw">
 <meta name="twitter:card" content="summary">
@@ -118,7 +118,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/page/13/">
+  <link rel="canonical" href="https://toyo0103.github.io/page/13/">
 
 
 
@@ -293,7 +293,143 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/04/swift-用Plist製作設定檔/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/04/swift-NetWork-1-以Get-和-Post方式傳送資料/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/04/swift-NetWork-1-以Get-和-Post方式傳送資料/" itemprop="url">[swift] NetWork (1) 以Get 和 Post方式傳送資料</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-04T11:21:00+08:00">
+                2015-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/04/swift-NetWork-1-以Get-和-Post方式傳送資料/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/04/swift-NetWork-1-以Get-和-Post方式傳送資料/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>用Post方式傳遞資料<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url:<span class="type">NSURL</span> = <span class="type">NSURL</span>(string: <span class="string">"http://xxx.com.tw/api/postdata"</span>)!;</span><br><span class="line">        <span class="keyword">let</span> request:<span class="type">NSMutableURLRequest</span> = <span class="type">NSMutableURLRequest</span>(<span class="type">URL</span>: url, cachePolicy: <span class="type">NSURLRequestCachePolicy</span>.<span class="type">ReloadIgnoringLocalCacheData</span>, timeoutInterval: <span class="number">10</span>);</span><br><span class="line">        request.<span class="type">HTTPMethod</span> = <span class="string">"POST"</span>;</span><br><span class="line">        request.<span class="type">HTTPBody</span> = <span class="string">"yourPostData"</span>.dataUsingEncoding(<span class="type">NSUTF8StringEncoding</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> task = <span class="type">NSURLSession</span>.sharedSession().dataTaskWithRequest(request) &#123;</span><br><span class="line">            data, response, error <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> error != <span class="literal">nil</span> &#123;</span><br><span class="line">                <span class="built_in">println</span>(<span class="string">"error=\(error)"</span>)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">println</span>(<span class="string">"response = \(response)"</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment">//將收到的資料轉成字串print出來看看</span></span><br><span class="line">            <span class="keyword">let</span> responseString = <span class="type">NSString</span>(data: data, encoding: <span class="type">NSUTF8StringEncoding</span>)</span><br><span class="line">            <span class="built_in">println</span>(<span class="string">"responseString = \(responseString)"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        task.resume();</span><br></pre></td></tr></table></figure></p>
+<p>用Get方式傳遞資料 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url:<span class="type">NSURL</span> = <span class="type">NSURL</span>(string: <span class="string">"http://xxx.com.tw/api/getdata?id=5008&amp;id=5009"</span>)!;</span><br><span class="line"><span class="keyword">let</span> request:<span class="type">NSURLRequest</span> = <span class="type">NSURLRequest</span>(<span class="type">URL</span>: url, cachePolicy: <span class="type">NSURLRequestCachePolicy</span>.<span class="type">ReloadIgnoringLocalCacheData</span>, timeoutInterval: <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> task = <span class="type">NSURLSession</span>.sharedSession().dataTaskWithRequest(request) &#123; data, response, error <span class="keyword">in</span></span><br><span class="line">   <span class="keyword">if</span> error != <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="built_in">println</span>(<span class="string">"error=\(error)"</span>)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="built_in">println</span>(<span class="string">"response = \(response)"</span>)</span><br><span class="line"></span><br><span class="line">   <span class="keyword">let</span> responseString = <span class="type">NSString</span>(data: data, encoding: <span class="type">NSUTF8StringEncoding</span>)</span><br><span class="line">   <span class="built_in">println</span>(<span class="string">"responseString = \(responseString)"</span>)</span><br><span class="line">&#125;</span><br><span class="line">task.resume();</span><br></pre></td></tr></table></figure></p>
+<p>這邊整理一下從網路上找的NSURLRequestCachePolicy相關資訊,轉載自：<a href="http://mypaper.pchome.com.tw/reantoilpc/post/1322520632" target="_blank" rel="noopener">iOS?存?存</a></p>
+<ul>
+<li><span style="color: blue;">ReloadIgnoringCacheData</span>：忽略Cache數據,直接從原始網址下載。</li>
+<li><span style="color: blue;">ReloadRevalidatingCacheData</span>：驗證本地的數據和遠端數據是否相同，如果不同則下?遠端?據，否?使用本地數據。<em>   <span style="color: blue;">ReturnCacheDataDontLoad</span>：只使用cache?據，如果不存在cache，請求失敗；用於?有建立網路連接離線模式；</em>   <span style="color: blue;">ReturnCacheDataElseLoad：</span>&nbsp;只有在cache中不存在data時才從原始地址下?。<em>   <span style="color: blue;">UseProtocolCachePolicy</span>： NSURLRequest默認的cache policy，使用Protocol協議定義。</em>   <span style="color: blue;">ReloadIgnoringLocalAndRemoteCacheData</span>：忽略本地和遠端的緩存數據，直接從原始地址下?，與ReloadIgnoringCacheData類似。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/04/swift-用Plist製作設定檔/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -426,7 +562,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/03/swift-IOS地圖運用-5-計算點與點之間的距離/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS地圖運用-5-計算點與點之間的距離/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -556,7 +692,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/03/swift-IOS地圖運用-4-如何區分是User-Location與Annotation/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS地圖運用-4-如何區分是User-Location與Annotation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -690,7 +826,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/03/swift-IOS地圖運用-3-客製Annotation-View/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS地圖運用-3-客製Annotation-View/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -842,7 +978,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/03/swift-IOS地圖運用-2-在地圖釘上大頭針/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS地圖運用-2-在地圖釘上大頭針/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -985,7 +1121,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/03/swift-IOS地圖運用-1-取得目前座標位置/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS地圖運用-1-取得目前座標位置/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1133,7 +1269,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/03/swift-Navigation-Controller-2-傳遞參數/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-Navigation-Controller-2-傳遞參數/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1271,7 +1407,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/02/swift-Navigation-Controller-1-畫面切換/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/02/swift-Navigation-Controller-1-畫面切換/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1411,7 +1547,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1532,146 +1668,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/02/swift-製作IOS-Table-4-利用xib客製Tabel-Cell/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/02/swift-製作IOS-Table-4-利用xib客製Tabel-Cell/" itemprop="url">[swift] 製作IOS Table (4)利用xib客製Tabel Cell</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-02T15:50:00+08:00">
-                2015-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/02/swift-製作IOS-Table-4-利用xib客製Tabel-Cell/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/02/swift-製作IOS-Table-4-利用xib客製Tabel-Cell/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>前幾篇是透過StoryBoard來建立客製的cell view<br>這篇則是要寫如何透過xib來完成cell view</p>
-<ul>
-<li><p>一樣先建立一個對應的Class <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Uikit</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XibCell</span> : <span class="title">UITableViewCell</span></span>&#123;</span><br><span class="line">   <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> lblTitle: <span class="type">UILabel!</span> <span class="comment">//title的label</span></span><br><span class="line">   <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> imgIcon: <span class="type">UIImageView!</span> <span class="comment">//icon的小圖片</span></span><br><span class="line"></span><br><span class="line">       <span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">init</span>()&#123;</span><br><span class="line">      <span class="keyword">super</span>.<span class="keyword">init</span>();</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">required</span> <span class="keyword">init</span>(coder aDecoder: <span class="type">NSCoder</span>) &#123;</span><br><span class="line">      <span class="keyword">super</span>.<span class="keyword">init</span>(coder: aDecoder);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>建立一個.xib的View<br><a href="http://3.bp.blogspot.com/-i547UQ5vRNc/VPQbuDo0_LI/AAAAAAAAEXo/zna_SQsYioA/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%884.12.47.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-i547UQ5vRNc/VPQbuDo0_LI/AAAAAAAAEXo/zna_SQsYioA/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%884.12.47.png" alt></a></p>
-</li>
-<li>指定xib的class為XibCell<br><a href="http://3.bp.blogspot.com/-CkRdJKdxYcs/VPQcWDhQ8rI/AAAAAAAAEXw/e334Wa4ZKFc/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%884.14.39.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-CkRdJKdxYcs/VPQcWDhQ8rI/AAAAAAAAEXw/e334Wa4ZKFc/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%884.14.39.png" alt></a></li>
-<li>把UI的關聯拉起來<br><a href="http://2.bp.blogspot.com/-qDluWRV2fRc/VPQeGTJOPfI/AAAAAAAAEX8/Cna7u8bnTWc/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%884.23.35.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-qDluWRV2fRc/VPQeGTJOPfI/AAAAAAAAEX8/Cna7u8bnTWc/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%884.23.35.png" alt></a></li>
-<li>controller的寫法大同小異,但請注意cellForRowAtIndexPath的寫法改變 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">xibTableViewController</span>: <span class="title">UIViewController</span> ,<span class="title">UITableViewDelegate</span> , <span class="title">UITableViewDataSource</span></span>&#123;</span><br><span class="line">   <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> uitable: <span class="type">UITableView!</span></span><br><span class="line">   <span class="keyword">var</span> data :[<span class="type">String</span>]!; <span class="comment">//資料來源</span></span><br><span class="line">   <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">   <span class="keyword">super</span>.viewDidLoad();</span><br><span class="line">      data = [];</span><br><span class="line">      data.append(<span class="string">"籃球"</span>);</span><br><span class="line">      data.append(<span class="string">"棒球"</span>);</span><br><span class="line">      data.append(<span class="string">"足球"</span>);</span><br><span class="line">      uitable.delegate = <span class="keyword">self</span>;</span><br><span class="line">      uitable.dataSource = <span class="keyword">self</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//這個table包含幾個section</span></span><br><span class="line">   <span class="function"><span class="keyword">func</span> <span class="title">numberOfSectionsInTableView</span><span class="params">(tableView: UITableView!)</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//每個section有幾個row</span></span><br><span class="line">   <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, numberOfRowsInSection section: Int)</span></span> -&gt; <span class="type">Int</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> data.<span class="built_in">count</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">//每個row顯示的內容</span></span><br><span class="line">   <span class="function"><span class="keyword">func</span> <span class="title">tableView</span><span class="params">(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath)</span></span> -&gt; <span class="type">UITableViewCell</span> &#123;</span><br><span class="line">      <span class="keyword">let</span> identifier = <span class="string">"cellid"</span>;</span><br><span class="line">      <span class="keyword">var</span> cell : <span class="type">XibCell?</span> = <span class="keyword">self</span>.uitable.dequeueReusableCellWithIdentifier(identifier) <span class="keyword">as</span>? <span class="type">XibCell</span>;</span><br><span class="line">      <span class="keyword">if</span> cell == <span class="literal">nil</span>&#123;</span><br><span class="line">         <span class="comment">//載入xib當作cell view</span></span><br><span class="line">         uitable.registerNib(<span class="type">UINib</span>(nibName: <span class="string">"xibcell"</span>, bundle: <span class="literal">nil</span>), forCellReuseIdentifier: identifier);</span><br><span class="line">         cell =  <span class="keyword">self</span>.uitable.dequeueReusableCellWithIdentifier(identifier) <span class="keyword">as</span>? <span class="type">XibCell</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">//indexPath.row 可以知道目前是要製作第幾列的view</span></span><br><span class="line">      cell?.lblTitle?.text = data[indexPath.row];</span><br><span class="line">      cell?.imgIcon.image = <span class="type">UIImage</span>(named: <span class="string">"icon-factory"</span>);</span><br><span class="line">      <span class="keyword">return</span> cell!;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>最後呈現結果<br><a href="http://1.bp.blogspot.com/-wwckeTM90jU/VPQhlTYBXjI/AAAAAAAAEYI/zGIaok2jCHM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%884.38.21.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-wwckeTM90jU/VPQhlTYBXjI/AAAAAAAAEYI/zGIaok2jCHM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%884.38.21.png" alt></a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1724,7 +1720,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">188</span>
+                  <span class="site-state-item-count">189</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1746,7 +1742,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

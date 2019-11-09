@@ -84,7 +84,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="程式隨筆">
-<meta property="og:url" content="http://yoursite.com/page/5/index.html">
+<meta property="og:url" content="https://toyo0103.github.io/page/5/index.html">
 <meta property="og:site_name" content="程式隨筆">
 <meta property="og:locale" content="zh-tw">
 <meta name="twitter:card" content="summary">
@@ -118,7 +118,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/page/5/">
+  <link rel="canonical" href="https://toyo0103.github.io/page/5/">
 
 
 
@@ -293,7 +293,187 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/25/雜湊表-Hash-Table/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/04/25/【MVC教學】5.Controller簡介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/25/【MVC教學】5.Controller簡介/" itemprop="url">【MVC教學】5.Controller簡介</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-04-25T23:08:00+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/學習MVC/" itemprop="url" rel="index">
+                    <span itemprop="name">學習MVC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/25/【MVC教學】5.Controller簡介/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/04/25/【MVC教學】5.Controller簡介/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <div class="note info"><p>Demo範例 ： <a href="https://github.com/toyo0103/HelloDotNetMVC" target="_blank" rel="noopener">Git位置</a></p></div>
+<p>前面幾篇解說了Route設定，讓我們的程式能順利找到對應的Controller來執行，那今天要來談談Controller幫我們做些什麼？<br>我們通常會在Controller這層就將使用者的參數<strong>驗證</strong>完畢，並且依據傳入的參數，找到對應的商業邏輯去執行，並且回傳結果給使用者知道，已註冊頁面作為實際應用來解說。</p>
+<p><a href="https://4.bp.blogspot.com/-1s0A__te0ws/WuCCI7_4QvI/AAAAAAAAIq0/qwTcF7tfpGAajtSMNZ8FPKhw0q7ImxPrgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.26.31.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-1s0A__te0ws/WuCCI7_4QvI/AAAAAAAAIq0/qwTcF7tfpGAajtSMNZ8FPKhw0q7ImxPrgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.26.31.png" alt></a></p>
+<p>接著我們來實作上述的內容，但因為只是MVC初學，所以我們還不加入分層、資料庫溝通之類比較深的內容，只專注在Controller怎麼做。</p>
+<p>&nbsp;</p>
+<h1 id="建立Controller"><a href="#建立Controller" class="headerlink" title="建立Controller"></a>建立Controller</h1><p>&nbsp;<br>我們先建立一個UserController，專門處理User相關的服務跟邏輯</p>
+<p><a href="https://2.bp.blogspot.com/-y9ZNRe-qPbw/WuCDIfd8kUI/AAAAAAAAIq8/KA_bBs97zp8l7YrYxSwSNRqS14cqyA9KwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.30.36.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-y9ZNRe-qPbw/WuCDIfd8kUI/AAAAAAAAIq8/KA_bBs97zp8l7YrYxSwSNRqS14cqyA9KwCLcBGAs/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.30.36.png" alt></a></p>
+<p>接著寫一個SignUp的Action，這邊有看到我們掛HttpGet的Attribute，只是指定呼叫動詞必須是Get的方式才會執行到這個Action</p>
+<div class="note info"><p>如果不知道Http動詞的話可以參考 : <a href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Methods" target="_blank" rel="noopener">HTTP請求方法</a></p></div>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-KA_M1a5AopU/WuCDeRZvUuI/AAAAAAAAIrI/C66BwZf0wvw7Z2PDngjof-IgAzSwUE3bwCEwYBhgL/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.32.27.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-KA_M1a5AopU/WuCDeRZvUuI/AAAAAAAAIrI/C66BwZf0wvw7Z2PDngjof-IgAzSwUE3bwCEwYBhgL/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.32.27.png" alt></a></div>
+
+<p>&nbsp;</p>
+<h1 id="建立View"><a href="#建立View" class="headerlink" title="建立View"></a>建立View</h1><p>&nbsp;<br>而這個Action沒有任何內容，只有回傳一個View而已，接著我們來實作出回傳的頁面，在這個Action中點擊右鍵 &gt; 新增檢視</p>
+<p><a href="https://3.bp.blogspot.com/-qEISXaQUqlA/WuCFCh80daI/AAAAAAAAIrQ/k2MbagqBBpk_iw-y7YRUKoTOwjjeWnazwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.37.38.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-qEISXaQUqlA/WuCFCh80daI/AAAAAAAAIrQ/k2MbagqBBpk_iw-y7YRUKoTOwjjeWnazwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.37.38.png" alt></a><br><a href="https://1.bp.blogspot.com/-x2w81z28D6c/WuCFRqP49VI/AAAAAAAAIrU/c--eosiD0rU7Y_7j1c1ZZY3-k7YUGbeIQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.40.03.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-x2w81z28D6c/WuCFRqP49VI/AAAAAAAAIrU/c--eosiD0rU7Y_7j1c1ZZY3-k7YUGbeIQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.40.03.png" alt></a><br><a href="https://3.bp.blogspot.com/-RrarAQWIu6c/WuCFl5E-wvI/AAAAAAAAIrg/b6Lj5N-NGaU5dSZ3zM165O1zvvpzvA_gwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.41.30.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-RrarAQWIu6c/WuCFl5E-wvI/AAAAAAAAIrg/b6Lj5N-NGaU5dSZ3zM165O1zvvpzvA_gwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.41.30.png" alt></a><br><a href="https://4.bp.blogspot.com/-j3xcFnMknHg/WuCF98nE2SI/AAAAAAAAIro/HOo9hoZwb6wAUQOJBcIRTqAeXTMSv8vXwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.42.21.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-j3xcFnMknHg/WuCF98nE2SI/AAAAAAAAIro/HOo9hoZwb6wAUQOJBcIRTqAeXTMSv8vXwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.42.21.png" alt></a></p>
+<p>接著直接執行，應該就能看到我們剛剛做出來的SignUp頁面</p>
+<p><a href="https://3.bp.blogspot.com/-SED-4nfjecw/WuCNG2uok7I/AAAAAAAAIr4/nOzZXjfM_FETp1KLNMU6-aLcf20L-IKCgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.13.28.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-SED-4nfjecw/WuCNG2uok7I/AAAAAAAAIr4/nOzZXjfM_FETp1KLNMU6-aLcf20L-IKCgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.13.28.png" alt></a><br>而這邊網址是 /user/signup，我覺得不夠直覺，所以到RouteConfig改一下<br><a href="https://3.bp.blogspot.com/-Ci1v26GtXFs/WuCODEjjM2I/AAAAAAAAIsI/EzpX1P_LRGU278UAsSeZb6S4BBTo-FZOQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.16.53.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-Ci1v26GtXFs/WuCODEjjM2I/AAAAAAAAIsI/EzpX1P_LRGU278UAsSeZb6S4BBTo-FZOQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.16.53.png" alt></a><br><a href="https://3.bp.blogspot.com/-mB5dxE3pyMQ/WuCOPhH0dhI/AAAAAAAAIsM/SZiLCNuxCWoI78quWen_W5o97Dy_4qUlACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.18.20.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-mB5dxE3pyMQ/WuCOPhH0dhI/AAAAAAAAIsM/SZiLCNuxCWoI78quWen_W5o97Dy_4qUlACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.18.20.png" alt></a></p>
+<p>接著把頁面簡單做起來</p>
+<p><a href="https://2.bp.blogspot.com/-mBcGm-zF5Ac/WuCPANF6GMI/AAAAAAAAIsc/-GE55rw9U1Q2cnTS8lL8ou0jXsAecxLzgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.21.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-mBcGm-zF5Ac/WuCPANF6GMI/AAAAAAAAIsc/-GE55rw9U1Q2cnTS8lL8ou0jXsAecxLzgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.21.png" alt></a><br><a href="https://4.bp.blogspot.com/-pBkzKrxXseo/WuCPK5DBR6I/AAAAAAAAIsg/hpxvNjOdxQAczfyTuTyNsAC4OnRP7jYfwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.35.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-pBkzKrxXseo/WuCPK5DBR6I/AAAAAAAAIsg/hpxvNjOdxQAczfyTuTyNsAC4OnRP7jYfwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.35.png" alt></a><br>寫一個Action來接收傳過來的資料</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpPost</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">SignUp</span>(<span class="params"><span class="keyword">string</span> account,<span class="keyword">string</span> password</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> Result = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">//帳號密碼都不能為空值</span></span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">string</span>.IsNullOrWhiteSpace(account) &amp;amp;&amp;amp;</span><br><span class="line">        !<span class="keyword">string</span>.IsNullOrWhiteSpace(password))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//帳號必須要有@字元</span></span><br><span class="line">        <span class="comment">//密碼必須大於六個字元</span></span><br><span class="line">        <span class="keyword">if</span> (account.Contains(<span class="string">"@"</span>) &amp;amp;&amp;amp; password.Length &amp;gt; <span class="number">6</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//我們判斷是否有註冊過的帳號,因為還沒有連結資料庫</span></span><br><span class="line">            <span class="comment">//所以先假定steven@mymail.com被註冊過</span></span><br><span class="line">            <span class="keyword">if</span> (account != <span class="string">"steven@mymail.com"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                TempData[<span class="string">"Message"</span>] = <span class="string">"註冊成功!!"</span>;</span><br><span class="line">                Result = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                TempData[<span class="string">"Message"</span>] = <span class="string">"帳號已經存在"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            TempData[<span class="string">"Message"</span>] = <span class="string">"帳號密碼不符合格式"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        TempData[<span class="string">"Message"</span>] = <span class="string">"帳號密碼不能為空值"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (Result)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//註冊成功,導到首頁 </span></span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"index"</span>, <span class="string">"home"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"signup"</span>, <span class="string">"user"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這邊注意到我們的Attribute就下了HttpPost，表示只有Post可以呼叫到這個Action，而我們在Form那邊也設定了方法用Post</p>
+<p><a href="https://2.bp.blogspot.com/-H9l67uz1TCk/WuCUxsRdhXI/AAAAAAAAIs4/SvdmC3Fc8nkKSVrlqhA6zSGoLOwfsvVkQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.45.44.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-H9l67uz1TCk/WuCUxsRdhXI/AAAAAAAAIs4/SvdmC3Fc8nkKSVrlqhA6zSGoLOwfsvVkQCLcBGAs/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.45.44.png" alt></a><br>接著你可能會注意到裡面有用到TempData，通常TempData是用來跨Action傳遞資料用的，底層其實是將資料存在Session之中，而且你只要取用過一次裡面的值就會被清掉。 而因為我們這個Action只是在處理註冊的相關邏輯，執行完後可以看到最後回傳的都是RedirectToAction，也就是導到我們指定的Action去回傳頁面，所以會跨兩個Action以上，存在TempData是個簡單的處理方式。</p>
+<p>接著執行看看你會發現，好像一切有照著我們的邏輯在執行，但唯獨訊息不會顯示出來，因為我們雖然將TempData之中，卻沒有寫顯示訊息的那一段，通常這一段邏輯我們會放在共用的_Layout裡面。</p>
+<p><a href="https://1.bp.blogspot.com/-ozg16dsOSrE/WuCd9w_QvKI/AAAAAAAAItw/vCUtqPBHZHwgPF4bVbw47tKhBfhEPIkNACLcBGAs/s1600/14.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-ozg16dsOSrE/WuCd9w_QvKI/AAAAAAAAItw/vCUtqPBHZHwgPF4bVbw47tKhBfhEPIkNACLcBGAs/s400/14.png" alt></a></p>
+<p><a href="https://2.bp.blogspot.com/-E1x50TUS8NQ/WuCXYxIgwPI/AAAAAAAAItI/aLOGjZ82wJ0Pjy-OxOBEdaa6kPXFmN9DQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.57.06.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-E1x50TUS8NQ/WuCXYxIgwPI/AAAAAAAAItI/aLOGjZ82wJ0Pjy-OxOBEdaa6kPXFmN9DQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.57.06.png" alt></a><br>因為還沒解說View的關係，這邊就先照著寫，之後會解說到。再次執行就會發現訊息會正確S顯示出來了。</p>
+<p><a href="https://1.bp.blogspot.com/-OFHFUMFcMwE/WuCX5I_64XI/AAAAAAAAItQ/FGMQUMK-RD4bq8lkfPJBI5aLPd_n2l2dgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.20.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-OFHFUMFcMwE/WuCX5I_64XI/AAAAAAAAItQ/FGMQUMK-RD4bq8lkfPJBI5aLPd_n2l2dgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.20.png" alt></a><br><a href="https://2.bp.blogspot.com/-XWHUszO3mxw/WuCX9g656vI/AAAAAAAAItU/DyrM8bb1848t9nO4xT8Pn4OgFGzhEEw2gCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.36.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-XWHUszO3mxw/WuCX9g656vI/AAAAAAAAItU/DyrM8bb1848t9nO4xT8Pn4OgFGzhEEw2gCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.36.png" alt></a></p>
+<p>上述的Controller撰寫方式，就是通常我們在Controller做的工作，驗證參數 、 依據使用者輸入的值執行對應的邏輯 、最後回傳結果。但你應該也會發現，整個Action邏輯裡面光是驗證參數就佔了大半的篇幅，這往往會讓程式碼複雜度提高，閱讀變得困難，這部分我們會在下一篇講解該如何把這類的邏輯分隔出去，讓程式碼更好維護美觀一些。另外Action其實還可以回傳很多種結果，前面範例用到了</p>
+<div class="note info"><p>View ： 回傳頁面<br>RedirectToAction ：回傳導頁結果</p></div>
+<p>底層還支援了一些回傳方式，靈活應用就可以達成大部分的功能了。詳細參考：&nbsp;<a href="https://msdn.microsoft.com/zh-tw/library/dd410269(v=vs.98).aspx" target="_blank" rel="noopener">ＭＳＤＮ</a></p>
+<p><a href="https://2.bp.blogspot.com/-68Q1RXjX860/WuCZYQn2b7I/AAAAAAAAItk/MkjLnK3AXeIj_LtiX_SUBJRJZUMpBzghwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258811.05.55.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-68Q1RXjX860/WuCZYQn2b7I/AAAAAAAAItk/MkjLnK3AXeIj_LtiX_SUBJRJZUMpBzghwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258811.05.55.png" alt></a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/04/25/雜湊表-Hash-Table/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -455,7 +635,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/05/【MVC教學】4-為你的Route加一點限制/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/04/05/【MVC教學】4-為你的Route加一點限制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -627,7 +807,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/17/【MVC教學】3-Route-一/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/03/17/【MVC教學】3-Route-一/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -786,7 +966,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/22/【MVC教學】2-什麼是MVC/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/02/22/【MVC教學】2-什麼是MVC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -954,7 +1134,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/21/【MVC教學】1-工欲善其事、必先利其器-Visual-Studio/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/02/21/【MVC教學】1-工欲善其事、必先利其器-Visual-Studio/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1138,7 +1318,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/26/【CI-CD】4-在佈署階段置換參數值，以Web-Config為例/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/26/【CI-CD】4-在佈署階段置換參數值，以Web-Config為例/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1331,7 +1511,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/26/【CI-CD】3-透過VSTS-切換Azure-AppService-Slot/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/26/【CI-CD】3-透過VSTS-切換Azure-AppService-Slot/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1495,7 +1675,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/26/【CI-CD】2-透過VSTS自動佈署程式到Azure-AppService/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/26/【CI-CD】2-透過VSTS自動佈署程式到Azure-AppService/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1662,7 +1842,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/25/【CI-CD】1-如何透過VSTS來達成CI的目標/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/25/【CI-CD】1-如何透過VSTS來達成CI的目標/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1814,180 +1994,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/24/【爬蟲】透過Selenium-WebDriver-爬網頁，以Instagram為例/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/24/【爬蟲】透過Selenium-WebDriver-爬網頁，以Instagram為例/" itemprop="url">【爬蟲】透過Selenium WebDriver 爬網頁，以Instagram為例</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-24T13:49:00+08:00">
-                2018-01-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/24/【爬蟲】透過Selenium-WebDriver-爬網頁，以Instagram為例/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/24/【爬蟲】透過Selenium-WebDriver-爬網頁，以Instagram為例/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>常常因為資料分析的需求，會有需要爬網頁資料的時候，而以往爬網頁不外乎將Html拉回來後，依據Tag去拆解資訊。 但現今的網站很大部分都是前端透過API拉版面，以Instagram來說，如果直接透過網址將Html拉回來，會只得到空空的外殼而已，什麼都找不到。 這時候就需要模擬瀏覽器行為來讓Javascript運作，甚至操作瀏覽器去點擊特定按鈕。</p>
-<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-6yR04AI5phg/Wmf7S3BE3TI/AAAAAAAAITs/gELt5or7tQkL60jmDRYwb1-YGuNU8cKggCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-6yR04AI5phg/Wmf7S3BE3TI/AAAAAAAAITs/gELt5or7tQkL60jmDRYwb1-YGuNU8cKggCLcBGAs/s400/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Instagram拉回來的網頁就只有一個空殼而已….</td></tr></tbody></table><br>透過Selenium.WebDriver，以及Seleium.WebDriver.ChromeDriver套件，可以寫程式操作Chrome的操作行為</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-DkheSsyDReI/Wmf8FTKy0VI/AAAAAAAAIT0/raZdEEh40xgGJQbTFwhZ2A3aQbOOh4VWACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-DkheSsyDReI/Wmf8FTKy0VI/AAAAAAAAIT0/raZdEEh40xgGJQbTFwhZ2A3aQbOOh4VWACLcBGAs/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-vnkv6jsDImY/Wmf8OnewkhI/AAAAAAAAIT4/FnlCPUMVsH05noZ1RVbhxFbWqMIYKZJ5gCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-vnkv6jsDImY/Wmf8OnewkhI/AAAAAAAAIT4/FnlCPUMVsH05noZ1RVbhxFbWqMIYKZJ5gCLcBGAs/s640/1.png" alt></a></div>
-
-<p>接著來一步一步分析如何透過它來爬網頁</p>
-<p>開啟Chrome瀏覽器，並且連到想爬的網頁 : <a href="https://www.instagram.com/mercci22/" target="_blank" rel="noopener">https://www.instagram.com/mercci22/</a><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (IWebDriver driver = <span class="keyword">new</span> ChromeDriver())</span><br><span class="line">            &#123;</span><br><span class="line"></span><br><span class="line">                driver.Navigate().GoToUrl(<span class="string">"https://www.instagram.com/mercci22/"</span>);            </span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></p>
-<p>接著分析目標網頁，會發現所有PO文資料都放在一個Div且Class為_cmdpi裡面</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-sbreT5cUils/Wmf99JegYUI/AAAAAAAAIUI/oIXZxzMGX7c9LU4uVQ9H0BSJUI67UgdGwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-sbreT5cUils/Wmf99JegYUI/AAAAAAAAIUI/oIXZxzMGX7c9LU4uVQ9H0BSJUI67UgdGwCLcBGAs/s640/1.png" alt></a></div>
-
-<p>往下找出每一行、每一格，在div[class=’_cmdpi’]底下會有div[class=’_70iju’]每一行</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-yluY12_h7T0/Wmf_JJsdiBI/AAAAAAAAIUQ/zLIRDslBbZQEYGRvu0qXp4JoSdObu-lPwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-yluY12_h7T0/Wmf_JJsdiBI/AAAAAAAAIUQ/zLIRDslBbZQEYGRvu0qXp4JoSdObu-lPwCLcBGAs/s640/1.png" alt></a></div>
-
-<p>而每一行裡面又有三個Div代表每一格</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-jnEHEexjkeM/Wmf_roHtA4I/AAAAAAAAIUY/4t6RR_UwEP8-1I7EipD7guWU4Ddyk3d5QCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-jnEHEexjkeM/Wmf_roHtA4I/AAAAAAAAIUY/4t6RR_UwEP8-1I7EipD7guWU4Ddyk3d5QCLcBGAs/s640/1.png" alt></a></div>
-
-<p>所以就來透過套件的API找出每一行，並點擊每一格吧<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (IWebDriver driver = <span class="keyword">new</span> ChromeDriver())</span><br><span class="line">            &#123;</span><br><span class="line">                driver.Navigate().GoToUrl(<span class="string">"https://www.instagram.com/mercci22/"</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//找到Post的Container</span></span><br><span class="line">                <span class="keyword">var</span> PostContainerElement = driver.FindElement(By.ClassName(<span class="string">"_cmdpi"</span>));</span><br><span class="line">                <span class="comment">//每一行</span></span><br><span class="line">                <span class="keyword">var</span> Rows = PostContainerElement.FindElements(By.ClassName(<span class="string">"_70iju"</span>));</span><br><span class="line">                <span class="keyword">foreach</span> (<span class="keyword">var</span> row <span class="keyword">in</span> Rows)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Boxs = row.FindElements(By.XPath(<span class="string">"div"</span>));</span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> box <span class="keyword">in</span> Boxs)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">//點擊每一格讓它展開Dialog</span></span><br><span class="line">                        box.Click();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></p>
-<p>這時候如果你執行程式，應該會看到它開啟Chrome並且連到網址然後點擊每一格打開視窗</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-UIjpEynpLcA/WmgBKT9R10I/AAAAAAAAIUk/WA64zbd-g-YoQdf33ZVlrfVbXDLsYJkhACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-UIjpEynpLcA/WmgBKT9R10I/AAAAAAAAIUk/WA64zbd-g-YoQdf33ZVlrfVbXDLsYJkhACLcBGAs/s640/1.png" alt></a></div>
-
-<p>接著來分析彈跳出來的視窗，會發現當視窗開啟時，網頁會出現以下Div[role=’dialog’]這個元素，關閉後就會移除</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-clgYAUdg4y0/WmgBoMCshoI/AAAAAAAAIUo/E3NwCF5n5i8Cpilg7m-OChlEQEgGHOGAwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-clgYAUdg4y0/WmgBoMCshoI/AAAAAAAAIUo/E3NwCF5n5i8Cpilg7m-OChlEQEgGHOGAwCLcBGAs/s640/1.png" alt></a></div>
-
-<p>所以我們要想辦法拿到這個Div Dialog，才有辦法擷取Po文的文案、日期、圖片，找到Dialog後，後面就重複上述步驟分析Tag，會發現</p>
-<p><strong>圖片</strong> : 放在Div[class=’_4rbun’]底下的Img Tag<br><strong>文案&nbsp;</strong>: 放在Img Tag的Alt裡面<br><strong>時間</strong> : 放在Article &gt; div &gt; div &gt; a &gt; time這個Tag裡面</p>
-<p>所以目前程式如下<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (IWebDriver driver = <span class="keyword">new</span> ChromeDriver())</span><br><span class="line">            &#123;</span><br><span class="line">                driver.Navigate().GoToUrl(<span class="string">"https://www.instagram.com/mercci22/"</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//找到Post的Container</span></span><br><span class="line">                <span class="keyword">var</span> PostContainerElement = driver.FindElement(By.ClassName(<span class="string">"_cmdpi"</span>));</span><br><span class="line">                <span class="comment">//每一行</span></span><br><span class="line">                <span class="keyword">var</span> Rows = PostContainerElement.FindElements(By.ClassName(<span class="string">"_70iju"</span>));</span><br><span class="line">                <span class="keyword">foreach</span> (<span class="keyword">var</span> row <span class="keyword">in</span> Rows)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Boxs = row.FindElements(By.XPath(<span class="string">"div"</span>));</span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> box <span class="keyword">in</span> Boxs)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">//點擊每一格讓它展開Dialog</span></span><br><span class="line">                        box.Click();</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//取得Dialog底下的Article元素</span></span><br><span class="line">                        <span class="keyword">var</span> article = driver.FindElement(By.XPath(<span class="string">"//div[@role='dialog']/div/div/article"</span>));</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//如果Dialog裡面放的是影片，則_4rbun會不存在</span></span><br><span class="line">                        <span class="keyword">if</span> (article.FindElements(By.ClassName(<span class="string">"_4rbun"</span>)).Count == <span class="number">0</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="comment">//跳過這則，這次目標只抓出圖片</span></span><br><span class="line">                            <span class="keyword">continue</span>;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//第一張圖</span></span><br><span class="line">                        <span class="keyword">var</span> ImgContainer = article.FindElement(By.ClassName(<span class="string">"_4rbun"</span>));</span><br><span class="line">                        <span class="keyword">var</span> Img = ImgContainer.FindElement(By.TagName(<span class="string">"img"</span>));                       </span><br><span class="line">                        <span class="keyword">var</span> Date = article.FindElement(By.XPath(<span class="string">"div/div/a/time"</span>));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></p>
-<p>這時候執行的時候可能會發生Exception，原因嘗試取得Dialog底下的Artilce，但Dialog點擊後產生會有時間差導致</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-TUSU5eY99xU/WmgWjs_9uBI/AAAAAAAAIVE/QnOtvHvoW38zNLWZQ7m6NpICJluVxyc2QCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-TUSU5eY99xU/WmgWjs_9uBI/AAAAAAAAIVE/QnOtvHvoW38zNLWZQ7m6NpICJluVxyc2QCLcBGAs/s640/1.png" alt></a></div>
-
-<p>優化這段程式，加上Wait的限制，而Selenium提供兩種Wait的方式<br><div class="note info"><p>implicitly Wait: 預設等待，當元件暫時找不到時，會嘗試等待，直到timeout時間到。<br>Explicit Wait: 針對特別元件等待。</p>
-<p>參考文件:<br><a href="http://selenium-python.readthedocs.io/waits.html" target="_blank" rel="noopener">Selenium 5. Waits 官方文件</a></p></div></p>
-<p>我們這邊加上第一種預設等待<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(<span class="number">2</span>);</span><br></pre></td></tr></table></figure></p>
-<p>讀取每個Element時，如果暫時不存在兩秒後TimeOut，之後再執行看看，會發現跑到第二次box.Click()的時候跳Exception。</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-y0clUXejLl4/WmgZwH5ZmeI/AAAAAAAAIVQ/bDTSCWKn9jkNDem1AxJ-TAQPwPQpW-7hACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-y0clUXejLl4/WmgZwH5ZmeI/AAAAAAAAIVQ/bDTSCWKn9jkNDem1AxJ-TAQPwPQpW-7hACLcBGAs/s640/1.png" alt></a></div>
-
-<p>原因是當我們打開Dialog時，如果爬完不點擊關閉視窗，會點不到第二隔的元素</p>
-<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-gPgFjISg5XI/WmgaJ1qWtUI/AAAAAAAAIVU/ii1yaeglfDgqvpH05tnhPa8Soxe3OszjACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-gPgFjISg5XI/WmgaJ1qWtUI/AAAAAAAAIVU/ii1yaeglfDgqvpH05tnhPa8Soxe3OszjACLcBGAs/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">蓋住了第二格元素，所以要執行關閉視窗按鈕</td></tr></tbody></table><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (IWebDriver driver = <span class="keyword">new</span> ChromeDriver())</span><br><span class="line">            &#123;</span><br><span class="line">                driver.Navigate().GoToUrl(<span class="string">"https://www.instagram.com/mercci22/"</span>);</span><br><span class="line">                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(<span class="number">2</span>);</span><br><span class="line">                <span class="comment">//找到Post的Container</span></span><br><span class="line">                <span class="keyword">var</span> PostContainerElement = driver.FindElement(By.ClassName(<span class="string">"_cmdpi"</span>));</span><br><span class="line">                <span class="comment">//每一行</span></span><br><span class="line">                <span class="keyword">var</span> Rows = PostContainerElement.FindElements(By.ClassName(<span class="string">"_70iju"</span>));</span><br><span class="line">                <span class="keyword">foreach</span> (<span class="keyword">var</span> row <span class="keyword">in</span> Rows)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Boxs = row.FindElements(By.XPath(<span class="string">"div"</span>));</span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> box <span class="keyword">in</span> Boxs)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">//點擊每一格讓它展開Dialog</span></span><br><span class="line">                        box.Click();</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//取得Dialog底下的Article元素</span></span><br><span class="line">                        <span class="keyword">var</span> article = driver.FindElement(By.XPath(<span class="string">"//div[@role='dialog']/div/div/article"</span>));</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//如果Dialog裡面放的是影片，則_4rbun會不存在</span></span><br><span class="line">                        <span class="keyword">if</span> (article.FindElements(By.ClassName(<span class="string">"_4rbun"</span>)).Count == <span class="number">0</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="comment">//關閉Dialog</span></span><br><span class="line">                            driver.FindElement(By.ClassName(<span class="string">"_dcj9f"</span>)).Click();</span><br><span class="line">                            <span class="comment">//跳過這則，這次目標只抓出圖片</span></span><br><span class="line">                            <span class="keyword">continue</span>;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//第一張圖</span></span><br><span class="line">                        <span class="keyword">var</span> ImgContainer = article.FindElement(By.ClassName(<span class="string">"_4rbun"</span>));</span><br><span class="line">                        <span class="keyword">var</span> Img = ImgContainer.FindElement(By.TagName(<span class="string">"img"</span>));</span><br><span class="line">                        <span class="keyword">var</span> Date = article.FindElement(By.XPath(<span class="string">"div/div/a/time"</span>));</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//關閉Dialog</span></span><br><span class="line">                        driver.FindElement(By.ClassName(<span class="string">"_dcj9f"</span>)).Click();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></p>
-<p>這樣就可以順利地走完每一格，並且把圖片、文案、時間資料都讀出來了</p>
-<p><strong>
-</strong></p>
-<h4 id="多圖片的情境"><a href="#多圖片的情境" class="headerlink" title="多圖片的情境"></a><strong>多圖片的情境</strong></h4><p>加下來是應用的第二部分，Instagram是可以分享多圖片的，而多張圖片是在點擊向右按鈕後，才會動態透過JS撈出來</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-S8AFeQpjcHk/WmgbnCX9SgI/AAAAAAAAIVk/2jcAH-RsJ4cg7IN6X2_UwCWVmbNX1BJeACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-S8AFeQpjcHk/WmgbnCX9SgI/AAAAAAAAIVk/2jcAH-RsJ4cg7IN6X2_UwCWVmbNX1BJeACLcBGAs/s400/1.png" alt></a></div><br>所以必須寫程式判斷是否有這個按鈕，如果有，表示有多張圖片，要求Driver去點擊那個按鈕，並且撈取Img的Src路徑<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一張圖</span></span><br><span class="line">                        <span class="keyword">var</span> ImgContainer = article.FindElement(By.ClassName(<span class="string">"_4rbun"</span>));</span><br><span class="line">                        <span class="keyword">var</span> Img = ImgContainer.FindElement(By.TagName(<span class="string">"img"</span>));</span><br><span class="line">                        <span class="comment">//存放Image的Src List</span></span><br><span class="line">                        List&lt;<span class="keyword">string</span>&gt; ImgUrls = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt; &#123; Img.GetAttribute(<span class="string">"src"</span>) &#125;;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//如果有第二張圖以上,則會出現a[class=''_8kphn _by8kl coreSpriteRightChevron']</span></span><br><span class="line">                        <span class="comment">//直到不再出現表示最後一張圖到了</span></span><br><span class="line">                        <span class="keyword">while</span> (article.FindElements(By.CssSelector(<span class="string">"a[class='_8kphn _by8kl coreSpriteRightChevron']"</span>)).Count &gt; <span class="number">0</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="comment">//點擊按鈕</span></span><br><span class="line">                            <span class="keyword">var</span> nextBtn = article.FindElement(By.CssSelector(<span class="string">"a[class='_8kphn _by8kl coreSpriteRightChevron']"</span>));</span><br><span class="line">                            nextBtn.Click();</span><br><span class="line"></span><br><span class="line">                            <span class="comment">//因為Instagram是透過同一個Img Tag動態去換Src，因為程式點擊下一張按鈕太快</span></span><br><span class="line">                            <span class="comment">//會導致有Img Tag存在，但Src還來不及換，導致抓到空白的Src</span></span><br><span class="line">                            <span class="comment">//所以不是元素沒出現的問題，只好要求Thread換下一張圖時先暫停0.5秒再抓</span></span><br><span class="line">                            Thread.Sleep(<span class="number">500</span>);</span><br><span class="line"></span><br><span class="line">                            Img = ImgContainer.FindElement(By.TagName(<span class="string">"img"</span>));</span><br><span class="line">                            ImgUrls.Add(Img.GetAttribute(<span class="string">"src"</span>));</span><br><span class="line">                        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>這樣就能順利拿到多張圖的路徑了</p>
-<h4 id="讀取第二頁的情境"><a href="#讀取第二頁的情境" class="headerlink" title="讀取第二頁的情境"></a>讀取第二頁的情境</h4><p><div>Instagram是滑鼠移到最下方才會動態載入第二頁，所以需要能控制視窗移到最下方來觸發它</div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IJavaScriptExecutor js = (IJavaScriptExecutor)driver;</span><br><span class="line">            <span class="comment">//如果爬完第一頁還沒爬完，則執行JS讓視窗滾到最下方，觸發讀取第二頁</span></span><br><span class="line">            js.ExecuteScript(<span class="string">"window.scrollTo(0,1000000)"</span>);</span><br></pre></td></tr></table></figure></p>
-<p>目前綜合以上所提的應用，應該已經能完全將Instagram的網站資料爬回來，只能說Selenium真的是一個強大的東西阿!!</p>
-<p>參考文章:<br><a href="http://www.hosp.ncku.edu.tw/mis/48-netdisk/57-xml-xpath.html" target="_blank" rel="noopener">XML XPath的選擇節點語法</a><br><a href="http://www.seleniumhq.org/docs/" target="_blank" rel="noopener">Selenium Documentation</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2040,7 +2046,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">188</span>
+                  <span class="site-state-item-count">189</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -2062,7 +2068,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

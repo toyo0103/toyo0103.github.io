@@ -84,7 +84,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="程式隨筆">
-<meta property="og:url" content="http://yoursite.com/page/7/index.html">
+<meta property="og:url" content="https://toyo0103.github.io/page/7/index.html">
 <meta property="og:site_name" content="程式隨筆">
 <meta property="og:locale" content="zh-tw">
 <meta name="twitter:card" content="summary">
@@ -118,7 +118,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/page/7/">
+  <link rel="canonical" href="https://toyo0103.github.io/page/7/">
 
 
 
@@ -293,7 +293,181 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/19/【Unit-Test】Day-3-專注於邏輯，隔離與外部的關聯/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/20/【Unit-Test】Day-4-Mock/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/04/20/【Unit-Test】Day-4-Mock/" itemprop="url">【Unit Test】Day 4 - Mock</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-20T16:59:00+08:00">
+                2017-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/學習單元測試/" itemprop="url" rel="index">
+                    <span itemprop="name">學習單元測試</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/20/【Unit-Test】Day-4-Mock/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/20/【Unit-Test】Day-4-Mock/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <div class="note info"><p>Demo檔案 : <a href="https://github.com/toyo0103/UnitTest_Day3/tree/UnitTest_Day4" target="_blank" rel="noopener">Git傳送門</a><br>因為程式是昨天的延續，所以是同一個Repository切出UnitTest_Day4的Branch</p></div>
+<p>讓繼續我們昨天的議題，節錄昨天最後的結論<br><div class="note info"><p>…這個方法也不是百分之百沒有缺點，你應該也可以觀察到其中一段在這單元測試中無法被涵蓋到，<br>那就是組API Url那段，在這種透過繼承解耦合的方式中，因為回傳結果是自己設定的，<br>實際上組成的URL正確與否我們並不知道，換句話說，如果我們今天這樣寫測試可能會過，<br>但上線後才會發現錯誤，檢查之下發現原來是在串Url的時候錯字之類的。</p></div><br>身為一位專業有責任感的工程師，你一定想著「爾等豈能如此<strike><span style="font-size: xx-small;">苟且偷生便宜行事</span></strike>草率」，所以今天就來談談另一種方法，Mock。<br><div class="note info"><p>何謂Mock。<br>當測試時你關注與外部相依物件互動時其狀態的變化，並且驗證它，則此就是Mock物件。</p></div><br>很抽象對吧，沒關係讓我們來改改昨天的實作，重中瞭解Stub與Mock的差異。</p>
+<p><strong>先將呼叫API的地方徹底隔離出去</strong><br>開一個NetTool的資料夾，建立一個IRestSharp的介面</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-cvva5eQ2U_4/WPhm4hWfpZI/AAAAAAAAIJk/65nHytvwgT4QxLHwZL44KK4dmIJV1-xSACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25883.44.02.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-cvva5eQ2U_4/WPhm4hWfpZI/AAAAAAAAIJk/65nHytvwgT4QxLHwZL44KK4dmIJV1-xSACLcB/s200/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25883.44.02.png" alt></a></div>該介面定義出呼叫API該傳入Url，回傳得到的結果<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IRestSharp</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 用Get的方法呼叫API</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="url"&gt;</span>Url<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>回傳的內容<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">string</span> <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> url</span>)</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>實做這個介面<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-eC21gpDf_0k/WPhoKU1dJVI/AAAAAAAAIJs/lLuPr3k2Yus1qBm3VHltK9zSz1gZ7fDTgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25883.49.03.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-eC21gpDf_0k/WPhoKU1dJVI/AAAAAAAAIJs/lLuPr3k2Yus1qBm3VHltK9zSz1gZ7fDTgCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25883.49.03.png" alt></a></div><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyRestSharp</span> : <span class="title">IRestSharp</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 用Get的方法呼叫API</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="url"&gt;</span>Url<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>回傳的內容<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> url</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//Use RestSharp Call API</span></span><br><span class="line">            <span class="keyword">var</span> client = <span class="keyword">new</span> RestClient(url);</span><br><span class="line">            <span class="keyword">var</span> request = <span class="keyword">new</span> RestRequest(Method.GET);</span><br><span class="line">            request.AddHeader(<span class="string">"cache-control"</span>, <span class="string">"no-cache"</span>);</span><br><span class="line">            IRestResponse response = client.Execute(request);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (response.StatusCode == HttpStatusCode.OK)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> response.Content;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">string</span>.Empty;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br><strong>修改PTX的程式</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTX</span></span><br><span class="line">    &#123;</span><br><span class="line">        IRestSharp _MyRestSharp;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Construct</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="myRestSharp"&gt;</span>外部注入呼叫API的實體<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">PTX</span>(<span class="params">IRestSharp myRestSharp</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//改由外部注入呼叫API的實體</span></span><br><span class="line">            <span class="keyword">this</span>._MyRestSharp = myRestSharp;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 取得巴士路線資料</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="city"&gt;</span>縣市名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="routeName"&gt;</span>巴士路線名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> BusRouteDTO <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> city,<span class="keyword">string</span> routeName</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            BusRouteDTO Result = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//要呼叫的API Url</span></span><br><span class="line">            <span class="keyword">string</span> Url = <span class="keyword">string</span>.Format(<span class="string">$"http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/<span class="subst">&#123;city&#125;</span>/<span class="subst">&#123;routeName&#125;</span>?%24top=1&amp;%24format=JSON"</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> JsonResult = _MyRestSharp.Get(Url);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">string</span>.IsNullOrEmpty(JsonResult))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> APIResult = JsonConvert.DeserializeObject&lt;List&lt;PTXBusRouteResult&gt;&gt;(JsonResult);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (APIResult != <span class="literal">null</span> &amp;&amp; APIResult.Count &gt; <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Route = APIResult.First();</span><br><span class="line">                    Result = <span class="keyword">new</span> BusRouteDTO</span><br><span class="line">                    &#123;</span><br><span class="line">                        Name = Route.RouteName.Zh_tw,</span><br><span class="line">                        BusStops = <span class="keyword">new</span> List&lt;BusRouteDTO.BusStop&gt;()</span><br><span class="line">                    &#125;;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> stop <span class="keyword">in</span> Route.Stops)</span><br><span class="line">                    &#123;</span><br><span class="line">                        Result.BusStops.Add(<span class="keyword">new</span> BusRouteDTO.BusStop</span><br><span class="line">                        &#123;</span><br><span class="line">                            ID = stop.StopUID,</span><br><span class="line">                            Name = stop.StopName.Zh_tw</span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br><strong>修改Program.cs</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//new PTX時變成要帶入呼叫API的實體</span></span><br><span class="line">            <span class="keyword">var</span> PTXFunction = <span class="keyword">new</span> PTX(<span class="keyword">new</span> MyRestSharp());</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> Result = PTXFunction.Get(<span class="string">"Taipei"</span>,<span class="string">"307"</span>);</span><br><span class="line"></span><br><span class="line">            Console.Write(JsonConvert.SerializeObject(Result));</span><br><span class="line"></span><br><span class="line">            Console.ReadKey();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>執行後結果是對的！！<br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-umwBITYCb_Y/WPhq7RbpxfI/AAAAAAAAIJ4/GK1TVxOKx2U6rlKhuePmBD4S1RyjuA3QACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25883.55.53.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-umwBITYCb_Y/WPhq7RbpxfI/AAAAAAAAIJ4/GK1TVxOKx2U6rlKhuePmBD4S1RyjuA3QACLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25883.55.53.png" alt></a></div>
+
+<h4 id="單元測試"><a href="#單元測試" class="headerlink" title="單元測試"></a>單元測試</h4><p>到目前為止都沒有解釋太多為何要這樣改，不過這跟物件導向設計比較有關，即所謂的外部注入即依賴介面，但這比較偏設計的範疇這邊就不特別討論，不過之後應該會漸漸的發現，如果單元測試要能寫，很多地方都會必須要有物件導向的設計方式才有辦法。</p>
+<p>讓我們回頭看單元測試，首先昨天做的PTXStub就沒用了，因為目前的PTX沒有將呼叫API封裝起來，也就沒有可以override的CallAPI方法了，把它砍掉了。</p>
+<p>這時就會看到昨天的單元測試壞掉了，因為找不到PTXStub</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-Uq_dKbo7G8Q/WPhsMNWenvI/AAAAAAAAIKA/yLCKydQzNJs0uHSUapDP3LihRXtxgKnTgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.06.34.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-Uq_dKbo7G8Q/WPhsMNWenvI/AAAAAAAAIKA/yLCKydQzNJs0uHSUapDP3LihRXtxgKnTgCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.06.34.png" alt></a></div>
+
+<p><strong>開始做我們的假物件MyRestSharpMock吧</strong></p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-ZDXJ_Arjt2o/WPhtjaZXn7I/AAAAAAAAIKI/35r-33sGq6ol4iSwqgTJj1gtLGdtoO0awCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.12.06.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-ZDXJ_Arjt2o/WPhtjaZXn7I/AAAAAAAAIKI/35r-33sGq6ol4iSwqgTJj1gtLGdtoO0awCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.12.06.png" alt></a></div><strong>
+</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MyRestSharpMock</span> : <span class="title">IRestSharp</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> url</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (url == <span class="string">"http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/Taipei/307?%24top=1&amp;%24format=JSON"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> sb = <span class="keyword">new</span> System.Text.StringBuilder(<span class="number">12766</span>);</span><br><span class="line">                sb.AppendLine(<span class="string">@"[&#123;""RouteUID"":""TPE16111"",""RouteID"":""16111"",""RouteName"":&#123;""Zh_tw"":""307"",""En"":""307""&#125;,.....省略"</span>);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> sb.ToString();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">string</span>.Empty;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>這邊特別注意一下if那邊，依據昨天的單元測試，最後網址應該要組成這樣才是正確的，所以我們MyRestSharpMock特地加上這段判斷，已經不像昨天override一樣，不關心它組的網址為何，一律依照我們設定的結果回傳，即便你其實Url組的是錯誤的。<br><br><strong>修改PTXTest.cs</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass()</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTXTests</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> GetTest_傳入縣市和公車路線名稱_如果查的到資料_應回傳該路線的BusRouteDTO()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> RestSharpMock = <span class="keyword">new</span> MyRestSharpMock();</span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> PTX(RestSharpMock); <span class="comment">//注入我們模擬的假物件MyRestSharpMock</span></span><br><span class="line">            <span class="keyword">var</span> City = <span class="string">"Taipei"</span>;</span><br><span class="line">            <span class="keyword">var</span> RouteName = <span class="string">"307"</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> expected = <span class="string">"307"</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Get(City, RouteName);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(actual.Name, expected);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>我們注入的是自己Mock的物件，他不會實際去呼叫API，但它關注我們傳入的值對不對，執行單元測試看看結果。<br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-4ez2utZWgfk/WPhwpoXVMlI/AAAAAAAAIKU/rT34UNZDtQcdRNNasA1cBkX_IquRVtmqQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.25.56.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-4ez2utZWgfk/WPhwpoXVMlI/AAAAAAAAIKU/rT34UNZDtQcdRNNasA1cBkX_IquRVtmqQCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.25.56.png" alt></a></div>
+
+<p>可能到這邊會有一個疑問是，「廢話，Mock的物件是我們自己做的，我們想怎麼樣都馬可以！！」，一開始學到這段的時候也有這個疑問，所以容我解釋一下，還記得先前提到的觀念嗎？<br><div class="note info"><p>單元測試關注本身的邏輯，而非外部的關聯</p></div><br>如果今天上線後發現錯誤，而發生錯誤的地方是在呼叫API的程式，那該修改的是誰？當然是MyRestSharp.cs，也絕對不是PTX這支程式，因為它職責掌管的邏輯全部都是正確的。而我們現在單元測試以及MyRestSharpMock都是在做什麼？ 都是在輔助我們驗證PTX所有包含到的邏輯，我們並不關注外部其他程式到底幹了什麼，退一萬步說（好啦其實退一步就可以了）（你好煩）今天IRestSharp這個Interface你的夥伴忘記去實作導致程式上線壞了，那也不會是改你的PTX吧，要改可以，over my dead body先，所以希望這囉說的補充可以幫助釐清這件事情。</p>
+<p>好的，上面這邊如果沒問題的話，那下一步應該心裡就會冒出一個OS :<strong>我的好天鵝啊！！ 如果外部相依的物件很多，每個都自己做Mock物件，做完都老了，單元測試沒寫完Deadline就到了，搞毛啊….</strong><br>看官稍安勿躁，你的心聲有人聽到了，所以接下來介紹一個可以省略掉剛剛一堆繁瑣的動作，登登登登，為您隆重介紹<a href="http://nsubstitute.github.io/" target="_blank" rel="noopener">NSubstitute</a>，怎麼用呢？讓我們在<strong>UnitTestDay3Tests</strong>這個專案透過Nuget安裝這個套件</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-VfiePWyp1vI/WPh09qCW9TI/AAAAAAAAIKg/uWpWPXnQyQUCseoMK9_Li286b-8LndYFwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.44.06.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-VfiePWyp1vI/WPh09qCW9TI/AAAAAAAAIKg/uWpWPXnQyQUCseoMK9_Li286b-8LndYFwCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-20%2B%25E4%25B8%258B%25E5%258D%25884.44.06.png" alt></a></div>
+
+<p>怎麼用呢？先Using<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> NSubstitute;</span><br></pre></td></tr></table></figure></p>
+<p>然後…<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass()</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTXTests</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> GetTest_傳入縣市和公車路線名稱_如果查的到資料_應回傳該路線的BusRouteDTO()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="comment">//透過NSubstitute跟它說你想Mock實作的Interface</span></span><br><span class="line">            <span class="keyword">var</span> NsubRestSharpMock = Substitute.For&lt;IRestSharp&gt;();</span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> PTX(NsubRestSharpMock); <span class="comment">//注入</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//期望API回傳的Json </span></span><br><span class="line">            <span class="keyword">var</span> sb = <span class="keyword">new</span> System.Text.StringBuilder(<span class="number">12766</span>);</span><br><span class="line">            sb.AppendLine(<span class="string">@"[&#123;""RouteUID"":""TPE16111"",""RouteID"":""16111"",""RouteName"":...後略"</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//這邊的意思是,當這個透過NSubstitute Mock的物件</span></span><br><span class="line">            <span class="comment">//被呼叫Get的方法時,且帶入的參數是我們這邊寫的字串</span></span><br><span class="line">            <span class="comment">//就回傳Returns那裡面我們設定的字串</span></span><br><span class="line">            NsubRestSharpMock.Get(<span class="string">"http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/Taipei/307?%24top=1&amp;%24format=JSON"</span>)</span><br><span class="line">                             .Returns(sb.ToString());</span><br><span class="line">            <span class="keyword">var</span> City = <span class="string">"Taipei"</span>;</span><br><span class="line">            <span class="keyword">var</span> RouteName = <span class="string">"307"</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> expected = <span class="string">"307"</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Get(City, RouteName);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(actual.Name, expected);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>因為NSubstitute Mock出來實作IRestSharp的物件也會有Get的方法，他還可以設定帶入參數為何才回傳值，如果比對的Url不符合預期，則就會回傳String的預設值Null，是不是超方便的！！</p>
+<p>當然如果你的方法是要回傳物件，一樣往Returns擺進去就對了，且它驗證參數的方法還有很多種而且很彈性，例如帶入如果是數字，你可以說大於100才回傳結果之類的，因為太多有需要的話還是直接參考他的文件比較快。</p>
+<p>那今天的部分就談到這邊，能幫助我們做到Mock的套件還有很多，這邊只是其中一種我使用的而已，不一定要一樣，但只要了解原來Mock是這麼回事即可。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/19/【Unit-Test】Day-3-專注於邏輯，隔離與外部的關聯/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -478,7 +652,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/18/【Unit-Test】Day-2-如何寫一個好的單元測試/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/18/【Unit-Test】Day-2-如何寫一個好的單元測試/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -646,7 +820,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/17/【Unit-Test】Day-1-為何要寫單元測試/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/17/【Unit-Test】Day-1-為何要寫單元測試/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -812,7 +986,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/29/【FluentValidation】與MVC-5綁定Model-Validation/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/03/29/【FluentValidation】與MVC-5綁定Model-Validation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -951,7 +1125,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/22/如何設定檔案、資料夾匿名驗證存取權限/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/03/22/如何設定檔案、資料夾匿名驗證存取權限/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1082,7 +1256,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/13/【生產力】SmartPaster/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/03/13/【生產力】SmartPaster/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1220,7 +1394,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/14/【UnitTest】Mock-Controller-Request/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/02/14/【UnitTest】Mock-Controller-Request/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1356,7 +1530,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/23/【C-】程式建立LocalDB-mdf-與刪除/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/01/23/【C-】程式建立LocalDB-mdf-與刪除/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1497,7 +1671,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/20/【Regular-Expression】分群與取代/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/01/20/【Regular-Expression】分群與取代/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1622,142 +1796,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/11/【神奇事件】看不見的點/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/11/【神奇事件】看不見的點/" itemprop="url">【神奇事件】看不見的點</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-01-11T11:18:00+08:00">
-                2017-01-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/01/11/【神奇事件】看不見的點/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/11/【神奇事件】看不見的點/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近遇到一個Token怎麼送都錯誤的問題，找遍了程式都找不到原因出在哪，最後沒招只好把傳輸的封包都截下來，看看到底哪邊出了問題，結果發現….</p>
-<div class="note info"><p>“Te6g5R?”</p></div>
-<p>這串部分Token看起來沒有什麼特別的，但如果你把滑鼠放到最後”的位置開始用鍵盤的往前鍵遍覽整串字，你會發現在R”中間需要按兩次才跳得過去，從封包監視器看到的結果卻是多了一個”點”</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-XRCi-hr6diU/WHWjX1QA3RI/AAAAAAAAIDI/qTjeVZqBPm0M81EFKCe0Q1b_8UnOHU7dACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-XRCi-hr6diU/WHWjX1QA3RI/AAAAAAAAIDI/qTjeVZqBPm0M81EFKCe0Q1b_8UnOHU7dACLcB/s640/1.png" alt></a></div>保哥有篇文章提到類似的問題 : <span style="font-size: x-small;">&nbsp;</span><a href="http://blog.miniasp.com/post/2014/01/15/C-Sharp-String-Trim-ZWSP-Zero-width-space.aspx" target="_blank" rel="noopener">魔鬼般的細節：使用 C# 的 String.Trim() 方法刪除空白字元</a></p>
-<p>雖然我碰到的字元跟文章中碰到的不同，但應該是類似的問題，用BackSpace把那個看不到的點移除掉後，API就都正常了。</p>
-<p>紀錄一下，提醒自己以後可能是因為這種…..奇怪的事情導致的，不要只顧著埋頭找程式Bug</p>
-<p><strong><span style="color: red;">#更新</span></strong><br>那個看不見的點應該是 : <a href="http://www.fileformat.info/info/unicode/char/200b/index.htm" target="_blank" rel="noopener">Unicode Character ‘ZERO WIDTH SPACE’</a><span style="background-color: white; color: #333333; font-family: &quot;open sans&quot; , &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif;">&nbsp;</span></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1810,7 +1848,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">188</span>
+                  <span class="site-state-item-count">189</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1832,7 +1870,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

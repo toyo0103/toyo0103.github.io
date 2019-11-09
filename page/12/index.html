@@ -84,7 +84,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="程式隨筆">
-<meta property="og:url" content="http://yoursite.com/page/12/index.html">
+<meta property="og:url" content="https://toyo0103.github.io/page/12/index.html">
 <meta property="og:site_name" content="程式隨筆">
 <meta property="og:locale" content="zh-tw">
 <meta name="twitter:card" content="summary">
@@ -118,7 +118,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/page/12/">
+  <link rel="canonical" href="https://toyo0103.github.io/page/12/">
 
 
 
@@ -293,7 +293,146 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/11/swift-將圖片做出霧化效果/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/11/swift-製作動畫/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/11/swift-製作動畫/" itemprop="url">[swift] 製作動畫</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-11T17:33:00+08:00">
+                2015-03-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/11/swift-製作動畫/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/11/swift-製作動畫/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>目標結果如圖<br><a href="http://4.bp.blogspot.com/-fKXQDTPrOC8/VQALsuP92ZI/AAAAAAAAEjA/RTTpI5_XcNo/s1600/test.gif" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-fKXQDTPrOC8/VQALsuP92ZI/AAAAAAAAEjA/RTTpI5_XcNo/s400/test.gif" alt></a> </p>
+<ul>
+<li>首先先把最後所有按鈕要放的位置擺好<a href="http://2.bp.blogspot.com/-dYH-zlfMbWQ/VQAMMcsEqkI/AAAAAAAAEjI/lr2ibFIk0ho/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8B%E5%8D%885.33.36.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-dYH-zlfMbWQ/VQAMMcsEqkI/AAAAAAAAEjI/lr2ibFIk0ho/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8B%E5%8D%885.33.36.png" alt></a></li>
+<li><p>把每個按鈕跟ViewController做對應 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> backgroundImageView: <span class="type">UIImageView!</span></span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> fbButton: <span class="type">UIButton!</span></span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> twitterButton: <span class="type">UIButton!</span></span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> messageButton: <span class="type">UIButton!</span></span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> mailButton: <span class="type">UIButton!</span></span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>接著用CGAffineTransformMakeTranslation的方式將所有按鈕移到動畫的起始位置,<br>這邊解釋一下程式中那些數字怎麼決定的,CGAffineTransformMakeTranslation需要給定x y值,如果(0, -300)表示x軸不動,Y軸比原本你在StoryBoard放的位置還要<strong><span style="color: red;">往上</span></strong>移300個點的位置,反之(0, 300)則表示比原本擺放的位置<strong><span style="color: red;">往下</span></strong>移動300點 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        <span class="keyword">self</span>.fbButton.transform = <span class="type">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, -<span class="number">300</span>)</span><br><span class="line">        <span class="keyword">self</span>.messageButton.transform = <span class="type">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, -<span class="number">364</span>)</span><br><span class="line">        <span class="keyword">self</span>.mailButton.transform = <span class="type">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, <span class="number">300</span>)</span><br><span class="line">        <span class="keyword">self</span>.twitterButton.transform = <span class="type">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, <span class="number">364</span>)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>接著大家測試一下程式,應該會發現東西的確是跑出螢幕了,接著在viewDidAppear補上以下程式碼就大功告成了！！ <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidAppear</span><span class="params">(animated: Bool)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidAppear(animated)</span><br><span class="line"></span><br><span class="line">            <span class="comment">//動畫,分成兩個區塊是因為有快有慢,差別在於delay多久再發動,usingSpringWithDamping是彈跳的反作用力,越小越劇烈</span></span><br><span class="line">        <span class="type">UIView</span>.animateWithDuration(<span class="number">0.9</span>, delay: <span class="number">0</span>, usingSpringWithDamping: <span class="number">0.5</span>, initialSpringVelocity: <span class="number">0.5</span>, options: <span class="literal">nil</span>, animations: &#123;</span><br><span class="line">            <span class="comment">//跑回原來的點</span></span><br><span class="line">            <span class="keyword">let</span> translate = <span class="type">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">self</span>.messageButton.transform = translate</span><br><span class="line">            <span class="keyword">self</span>.twitterButton.transform = translate</span><br><span class="line">        &#125;, completion: <span class="literal">nil</span>)</span><br><span class="line">        <span class="type">UIView</span>.animateWithDuration(<span class="number">0.9</span>, delay: <span class="number">0.1</span>, usingSpringWithDamping: <span class="number">0.5</span>, initialSpringVelocity: <span class="number">0.5</span>, options: <span class="literal">nil</span>, animations: &#123;</span><br><span class="line">            <span class="keyword">let</span> translate = <span class="type">CGAffineTransformMakeTranslation</span>(<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">self</span>.fbButton.transform = translate</span><br><span class="line">            <span class="keyword">self</span>.mailButton.transform = translate</span><br><span class="line">        &#125;, completion: <span class="literal">nil</span>)</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/11/swift-將圖片做出霧化效果/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -428,7 +567,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/10/swift-製作IOS-Table-5-UITableViewRowAction/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/10/swift-製作IOS-Table-5-UITableViewRowAction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -576,7 +715,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/09/swift-UIAlertController/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/09/swift-UIAlertController/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -720,7 +859,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/09/swift-String-To-MD5/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/09/swift-String-To-MD5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -855,7 +994,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/09/swift-Extension/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/09/swift-Extension/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -992,7 +1131,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/07/SQL-2008-R2-繁體中文版安裝問題/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/07/SQL-2008-R2-繁體中文版安裝問題/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1124,7 +1263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/05/swift-NetWork-4-解析Json/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/05/swift-NetWork-4-解析Json/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1260,7 +1399,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/05/swift-NetWork-3-判斷手機是否有網路連線可用/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/05/swift-NetWork-3-判斷手機是否有網路連線可用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1408,7 +1547,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/04/swift-NetWork-2-非同步方式取得API資訊/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/04/swift-NetWork-2-非同步方式取得API資訊/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1525,142 +1664,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/03/04/swift-NetWork-1-以Get-和-Post方式傳送資料/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/04/swift-NetWork-1-以Get-和-Post方式傳送資料/" itemprop="url">[swift] NetWork (1) 以Get 和 Post方式傳送資料</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-04T11:21:00+08:00">
-                2015-03-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/04/swift-NetWork-1-以Get-和-Post方式傳送資料/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/04/swift-NetWork-1-以Get-和-Post方式傳送資料/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>用Post方式傳遞資料<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url:<span class="type">NSURL</span> = <span class="type">NSURL</span>(string: <span class="string">"http://xxx.com.tw/api/postdata"</span>)!;</span><br><span class="line">        <span class="keyword">let</span> request:<span class="type">NSMutableURLRequest</span> = <span class="type">NSMutableURLRequest</span>(<span class="type">URL</span>: url, cachePolicy: <span class="type">NSURLRequestCachePolicy</span>.<span class="type">ReloadIgnoringLocalCacheData</span>, timeoutInterval: <span class="number">10</span>);</span><br><span class="line">        request.<span class="type">HTTPMethod</span> = <span class="string">"POST"</span>;</span><br><span class="line">        request.<span class="type">HTTPBody</span> = <span class="string">"yourPostData"</span>.dataUsingEncoding(<span class="type">NSUTF8StringEncoding</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> task = <span class="type">NSURLSession</span>.sharedSession().dataTaskWithRequest(request) &#123;</span><br><span class="line">            data, response, error <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> error != <span class="literal">nil</span> &#123;</span><br><span class="line">                <span class="built_in">println</span>(<span class="string">"error=\(error)"</span>)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">println</span>(<span class="string">"response = \(response)"</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment">//將收到的資料轉成字串print出來看看</span></span><br><span class="line">            <span class="keyword">let</span> responseString = <span class="type">NSString</span>(data: data, encoding: <span class="type">NSUTF8StringEncoding</span>)</span><br><span class="line">            <span class="built_in">println</span>(<span class="string">"responseString = \(responseString)"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        task.resume();</span><br></pre></td></tr></table></figure></p>
-<p>用Get方式傳遞資料 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url:<span class="type">NSURL</span> = <span class="type">NSURL</span>(string: <span class="string">"http://xxx.com.tw/api/getdata?id=5008&amp;id=5009"</span>)!;</span><br><span class="line"><span class="keyword">let</span> request:<span class="type">NSURLRequest</span> = <span class="type">NSURLRequest</span>(<span class="type">URL</span>: url, cachePolicy: <span class="type">NSURLRequestCachePolicy</span>.<span class="type">ReloadIgnoringLocalCacheData</span>, timeoutInterval: <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> task = <span class="type">NSURLSession</span>.sharedSession().dataTaskWithRequest(request) &#123; data, response, error <span class="keyword">in</span></span><br><span class="line">   <span class="keyword">if</span> error != <span class="literal">nil</span> &#123;</span><br><span class="line">      <span class="built_in">println</span>(<span class="string">"error=\(error)"</span>)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="built_in">println</span>(<span class="string">"response = \(response)"</span>)</span><br><span class="line"></span><br><span class="line">   <span class="keyword">let</span> responseString = <span class="type">NSString</span>(data: data, encoding: <span class="type">NSUTF8StringEncoding</span>)</span><br><span class="line">   <span class="built_in">println</span>(<span class="string">"responseString = \(responseString)"</span>)</span><br><span class="line">&#125;</span><br><span class="line">task.resume();</span><br></pre></td></tr></table></figure></p>
-<p>這邊整理一下從網路上找的NSURLRequestCachePolicy相關資訊,轉載自：<a href="http://mypaper.pchome.com.tw/reantoilpc/post/1322520632" target="_blank" rel="noopener">iOS?存?存</a></p>
-<ul>
-<li><span style="color: blue;">ReloadIgnoringCacheData</span>：忽略Cache數據,直接從原始網址下載。</li>
-<li><span style="color: blue;">ReloadRevalidatingCacheData</span>：驗證本地的數據和遠端數據是否相同，如果不同則下?遠端?據，否?使用本地數據。<em>   <span style="color: blue;">ReturnCacheDataDontLoad</span>：只使用cache?據，如果不存在cache，請求失敗；用於?有建立網路連接離線模式；</em>   <span style="color: blue;">ReturnCacheDataElseLoad：</span>&nbsp;只有在cache中不存在data時才從原始地址下?。<em>   <span style="color: blue;">UseProtocolCachePolicy</span>： NSURLRequest默認的cache policy，使用Protocol協議定義。</em>   <span style="color: blue;">ReloadIgnoringLocalAndRemoteCacheData</span>：忽略本地和遠端的緩存數據，直接從原始地址下?，與ReloadIgnoringCacheData類似。</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1713,7 +1716,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">188</span>
+                  <span class="site-state-item-count">189</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1735,7 +1738,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

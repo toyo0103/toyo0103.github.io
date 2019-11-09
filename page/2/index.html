@@ -84,7 +84,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="程式隨筆">
-<meta property="og:url" content="http://yoursite.com/page/2/index.html">
+<meta property="og:url" content="https://toyo0103.github.io/page/2/index.html">
 <meta property="og:site_name" content="程式隨筆">
 <meta property="og:locale" content="zh-tw">
 <meta name="twitter:card" content="summary">
@@ -118,7 +118,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/page/2/">
+  <link rel="canonical" href="https://toyo0103.github.io/page/2/">
 
 
 
@@ -293,7 +293,151 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/01/centos_jenkins_hexo/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/03/15/yield_return_2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/15/yield_return_2/" itemprop="url">【C#】Yield Return (二)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-03-15T17:30:00+08:00">
+                2019-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/15/yield_return_2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/15/yield_return_2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/images/20190315/0.jpg" alt="/images/20190315/0.jpg"></p>
+<p>最近經過大師的指導後，對於 Yield Return 又或是迭代器有更深的感受，先來看一段以前常常會寫的程式</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">var</span> users = GetUser(idList);</span><br><span class="line">	<span class="comment">//過濾黑名單</span></span><br><span class="line">	<span class="keyword">var</span> notInBlackList = users.Where(x=&gt; !x.InBlackList);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//往下做其他邏輯</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">GetUser</span>(<span class="params">List&lt;<span class="keyword">int</span>&gt; ids</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//透過 ID 取得會員的詳細資料</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果 Id 一次有一百萬筆，為了避免擊沉 Database 做了分批查詢也是很合理的</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">var</span> users = GetUser(idList);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//過濾黑名單</span></span><br><span class="line">	<span class="keyword">var</span> notInBlackList = users.Where(x=&gt; !x.InBlackList);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//往下做其他邏輯</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">GetUser</span>(<span class="params">List&lt;<span class="keyword">int</span>&gt; ids</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;User&gt;();</span><br><span class="line">	<span class="comment">// 每批搜尋 1000筆</span></span><br><span class="line">	<span class="keyword">var</span> batchCount = <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//計算出搜尋次數後分批查詢</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; 搜尋次數; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		Result.AddRange(</span><br><span class="line">			UserRepository.Get(ids.Skip(i * batchCount).Take(batchCount)));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>當然也可以從呼叫端分批處理</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 每批搜尋 1000筆</span></span><br><span class="line">	<span class="keyword">var</span> batchCount = <span class="number">1000</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; 搜尋次數; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">var</span> users = GetUser(idList);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//過濾黑名單</span></span><br><span class="line">		<span class="keyword">var</span> notInBlackList = users.Where(x=&gt; !x.InBlackList);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//往下做其他邏輯</span></span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">GetUser</span>(<span class="params">List&lt;<span class="keyword">int</span>&gt; ids</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//透過 ID 取得會員的詳細資料</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果需要再更複雜一些，要依據使用者的設定濾掉一些人，最終要將處理過程都填回 DB ，以便追蹤那些人是因為那些條件被過濾掉的 (不然被客戶抱怨沒收到通知，不知道往哪找)，這時候程式就會變成這樣….</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 每批搜尋 1000筆</span></span><br><span class="line">	<span class="keyword">var</span> batchCount = <span class="number">1000</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">var</span> temp = <span class="keyword">new</span> List&lt;User&gt;()</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; 搜尋次數; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">var</span> users = GetUser(idList);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">var</span> notInBlackList = users.Where(x=&gt; !x.InBlackList);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">var</span> wantToReceiveThisMessage = notInBlackList.Where(x =&gt; x.BlockMessageType != ThisMessageType);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//統計誰在黑名單被過濾掉</span></span><br><span class="line">		<span class="comment">//統計誰不想收到這種類型的 DB</span></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//可能批次更新是 5000 筆最有效率</span></span><br><span class="line">		temp.Add(InBlackList);</span><br><span class="line">		temp.Add(DontWantToReceiveThisMessage);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span> (temp.Count &gt; <span class="number">5000</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// Insert Log</span></span><br><span class="line">			LogRepository.Add(temp);</span><br><span class="line">			temp.Clear();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;User&gt; <span class="title">GetUser</span>(<span class="params">List&lt;<span class="keyword">int</span>&gt; ids</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//透過 ID 取得會員的詳細資料</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>條件可以無限增長上去，程式也會變得越來越複雜，當然這時候可以採取一些物件導向的設計將功能職責拆開，不過這不是這篇的重點所以跳過。</p>
+<h1 id="更符合語意的寫法"><a href="#更符合語意的寫法" class="headerlink" title="更符合語意的寫法"></a>更符合語意的寫法</h1><p>如果有用過 <a href="https://fluentassertions.com/" target="_blank" rel="noopener">FluentAssertion</a>、<a href="https://nsubstitute.github.io/" target="_blank" rel="noopener">Nsubstitute</a> 等套件，應該會發現它 API 設計得非常好讀好懂</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">customer.Active.Should().BeTrue(because, becauseArgs);</span><br><span class="line"></span><br><span class="line">theObject.Should().NotBeSameAs(otherObject);</span><br></pre></td></tr></table></figure>
+<p>讓程式不再是一段一段的，而是一看程式就能理解這邊在做什麼，而且也因為如此讓每個方法的職責更清楚單一，所以我們可以將上述的程式改成</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//從使用端傳來一大批 Ids List</span></span><br><span class="line">	Ids.GetUser().NotInBlackList().WantToReceiveThisMessage(ThisMessageType).Record();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;User&gt; <span class="title">GetUser</span>(<span class="params"><span class="keyword">this</span> IEnumerable&lt;<span class="keyword">int</span>&gt; ids</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">var</span> temp = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line">	<span class="keyword">foreach</span> (<span class="keyword">var</span> id <span class="keyword">in</span> ids)</span><br><span class="line">	&#123;</span><br><span class="line">		temp.Add(id);</span><br><span class="line">		<span class="comment">// 假設每 1000 筆是有最好的搜尋效率</span></span><br><span class="line">		<span class="keyword">if</span> (temp.Count == <span class="number">1000</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">foreach</span> (<span class="keyword">var</span> user <span class="keyword">in</span> UserRepository.Get(temp))</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">yield</span> <span class="keyword">return</span> user;</span><br><span class="line">			&#125;</span><br><span class="line">			temp.Clear();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">if</span> (temp.Count &gt; <span class="number">0</span> )</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">foreach</span> (<span class="keyword">var</span> user <span class="keyword">in</span> UserRepository.Get(temp))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">yield</span> <span class="keyword">return</span> user;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">yield</span> <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;User&gt; <span class="title">NotInBlackList</span>(<span class="params"><span class="keyword">this</span> IEnumerable&lt;User&gt; users</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">foreach</span> (<span class="keyword">var</span> user <span class="keyword">in</span> users)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (user.InBlackList == <span class="literal">false</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">yield</span> <span class="keyword">return</span> user;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">yield</span> <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;User&gt; <span class="title">NotInBlackList</span>(<span class="params"><span class="keyword">this</span> IEnumerable&lt;User&gt; users, MessageType type</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">foreach</span> (<span class="keyword">var</span> user <span class="keyword">in</span> users)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (user.BlockMessageType != type)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">yield</span> <span class="keyword">return</span> user;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">yield</span> <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> IEnumerable&lt;User&gt; <span class="title">Record</span>(<span class="params"><span class="keyword">this</span> IEnumerable&lt;User&gt; users</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">var</span> temp = <span class="keyword">new</span> List&lt;User&gt;();</span><br><span class="line">	<span class="keyword">foreach</span> (<span class="keyword">var</span> user <span class="keyword">in</span> users)</span><br><span class="line">	&#123;</span><br><span class="line">		temp.Add(user);</span><br><span class="line">		<span class="keyword">if</span> (temp.Count == <span class="number">5000</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// Insert Log</span></span><br><span class="line">			LogRepository.Add(temp);</span><br><span class="line">			temp.Clear();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">yield</span> <span class="keyword">return</span> user;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (temp.Count &gt; <span class="number">5000</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		LogRepository.Add(temp);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">yield</span> <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果還需要紀錄每個過程的分別過濾的狀態，只需要在方法開個統計的物件參數，在每筆過程中做紀錄即可，不只讓整個程式可讀性更高、內聚更強，之後如果不想要紀錄或不想要過濾黑名單，也可以很快的調整完成</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ids.GetUser().WantToReceiveThisMessage(ThisMessageType);</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/03/01/centos_jenkins_hexo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -590,7 +734,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/22/docker_debug_skill/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/02/22/docker_debug_skill/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -761,7 +905,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/21/dockerforwindows_vs_dockeronwindowserver/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/02/21/dockerforwindows_vs_dockeronwindowserver/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -911,7 +1055,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/20/windows_container_dnsserver/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/02/20/windows_container_dnsserver/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1065,7 +1209,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/19/windows_contianer_iamrole_/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/02/19/windows_contianer_iamrole_/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1244,7 +1388,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/12/anycpu_x86_x64/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/02/12/anycpu_x86_x64/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1406,7 +1550,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/21/【C-】yield_retuen/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/12/21/【C-】yield_retuen/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1551,7 +1695,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/03/Task_WaitAll/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/12/03/Task_WaitAll/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1690,7 +1834,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/21/【日文】か_かどうか/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/11/21/【日文】か_かどうか/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1823,168 +1967,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/14/MissingMethodException/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/14/MissingMethodException/" itemprop="url">MissingMethodException</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-11-14T17:04:00+08:00">
-                2018-11-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/11/14/MissingMethodException/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/14/MissingMethodException/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>寫單元測試的時候編譯都沒問題，但在執行時一直報錯 <strong>System.MissingMethodException</strong> 的錯誤，查了一下發現跟 <code>System.Net.Http</code> 有關</p>
-<div class="note info"><p>System.MissingMethodException with message</p>
-<p>“Method not found: ‘System.Web.Http.Results.ResponseMessageResult</p>
-<p>System.Web.Http.ApiController.ResponseMessage(System.Net.Http.HttpResponseMessage)”</p></div>
-<p>檢查測試專案與受測專案的 <code>System.Net.Http</code> Nuget套件皆為同一個版本</p>
-<p><img src="/images/20181114/1.png" alt="/images/20181114/1.png"></p>
-<p>但意外發現兩個專案的 <code>System.Net.Http</code> 參考卻為不同位置</p>
-<p><img src="/images/20181114/2.png" alt="/images/20181114/2.png"></p>
-<p><img src="/images/20181114/3.png" alt="/images/20181114/3.png"></p>
-<p>照理來說應該都要參考到專案內的 packages 底下才對，檢查 <code>.csproj</code> 裡面的 Reference 並沒有寫錯</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Net.Http, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"</span>&gt;</span> 		  </span><br><span class="line"><span class="tag">&lt;<span class="name">HintPath</span>&gt;</span>..\..\packages\System.Net.Http.4.3.2\lib\net46\System.Net.Http.dll<span class="tag">&lt;/<span class="name">HintPath</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Reference</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>在網路上也搜尋到相關文章討論似乎是 Visual Studio Bug 導致</p>
-<p><img src="/images/20181114/4.png" alt="/images/20181114/4.png"></p>
-<p>這位仁兄也碰到一樣問題</p>
-<ol>
-<li><p>他開啟了一個新專案</p>
-</li>
-<li><p>Nuget 安裝 System.Net.Http v4.3.3 </p>
-</li>
-<li><p>建置時 System.Net.Http 參考都還是來自於 Package 資料夾底下</p>
-</li>
-<li>Nuget 安裝 System.Collections.Immutable v1.4.0 </li>
-<li>建置時 System.Net.Http 參考就跑到 C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.Http.dll 底下</li>
-</ol>
-<div class="note info"><p>討論串</p>
-<p><a href="https://github.com/dotnet/corefx/issues/25773" target="_blank" rel="noopener">System.Net.Http v4.2.0.0 being copied/loaded from MSBuild tooling</a></p></div>
-<h1 id="解決方法"><a href="#解決方法" class="headerlink" title="解決方法"></a>解決方法</h1><p>檢查 Microsoft.NET.Build.Extensions 資料夾底下的 dll 版本為 <code>4.2.0.0</code> ，而 Nuget  System.Net.Http 4.3.2 的 dll 版本則為 <code>4.1.1.1</code> ，這也是間接導致發生此錯誤的原因。</p>
-<p>但 Reference HintPath也沒寫錯，VS 裡面也沒辦法調整 dll 位置 ， 最後索性直接刪除 Microsoft.NET.Build.Extensions 資料夾底下的 System.Net.Http ，重新建置後 dll 就重新指向 Package了，此問題得到解決</p>
-<p>世界又再一次恢復了和平，!@#$%</p>
-<h1 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h1><ol>
-<li><a href="https://stackoverflow.com/questions/46451247/missing-method-in-system-web-http-apicontroller-get-request" target="_blank" rel="noopener">MIssing method in System.Web.Http.ApiController.get_Request()</a></li>
-<li><a href="https://github.com/dotnet/corefx/issues/22781" target="_blank" rel="noopener">System.Net.Http package 4.3.2 - redirect to 4.2.0.0, assembly loading failure</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2037,7 +2019,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">188</span>
+                  <span class="site-state-item-count">189</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -2059,7 +2041,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

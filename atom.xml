@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
-  <updated>2019-08-21T13:43:28.148Z</updated>
-  <id>http://yoursite.com/</id>
+  <link href="https://toyo0103.github.io/"/>
+  <updated>2019-11-09T15:14:44.061Z</updated>
+  <id>https://toyo0103.github.io/</id>
   
   <author>
     <name>Toyo</name>
@@ -17,9 +17,35 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Service Discovery</title>
+    <link href="https://toyo0103.github.io/2019/11/09/service_discovery/"/>
+    <id>https://toyo0103.github.io/2019/11/09/service_discovery/</id>
+    <published>2019-11-09T04:32:00.000Z</published>
+    <updated>2019-11-09T15:14:44.061Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/images/20191109/0.png" alt="/images/20191109/0.png"></p><p>( <a href="https://www.codeprimers.com/service-discovery-in-microservice-architecture/" target="_blank" rel="noopener">https://www.codeprimers.com/service-discovery-in-microservice-architecture/</a> )</p><p><br></p><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>傳統上一組服務通常都會搭配 DNS + Load balance + serivce cluster, 服務要呼叫時也都是直接打 Domain 讓 Load balance 去導流。</p><p>不過這也面臨了管理 Domain 與服務間的複雜度, 例如服務要加一台新的機器需要去設定 Load balance 才有辦法服務(當然也是可以搭配一些 cloud autoscaling 機制來簡化流程); Client 在呼叫 Service 時通常需要真的打打看才有辦法知道服務是否還正常, 無法事先知道服務狀態再決定是否要呼叫。</p><p>近年微服務與容器化運用的盛行, 上述方式就顯得有點卡卡的，如果你的服務在 k8s 內那可能還好, 大部分它都幫忙處理掉了, 但如果像我們公司一樣, 很多服務雖然容器化但還無法進到 k8s 內, container 可以在短時間內 scale 成數倍來因應大流量, 但卡在這些服務需要去 load balance 註冊才有辦法讓流量導進來,  那顯然就有點做半套的感覺， Service Discovery 的應用就成為了重要的課題</p><p><br></p><h1 id="什麼是-Service-Discovery"><a href="#什麼是-Service-Discovery" class="headerlink" title="什麼是 Service Discovery"></a>什麼是 Service Discovery</h1><p>翻譯成中文就是服務發現(廢話…)，顧名思義就是呼叫端在需要時先透過搜尋來找到對應的服務，而要達成這點需要一些配合才能達成。</p><p>首先第一步, 當某個服務起來時應該主動向提供 service discovery service 註冊自己是什麼服務? 位置在哪? 是否已經可以開始服務了? </p><p><img src="/images/20191109/1.gif" alt="/images/20191109/1.gif"></p><p>註冊時會搭配著 Health check 的機制, 告訴 service discovery service 如何檢核這個節點是否健康的</p><p><img src="/images/20191109/2.png" alt="/images/20191109/2.png"></p><p>Client 在要叫用 service 時, 先透過 service name 詢問有哪些節點可用, 而 service discovery service 也能準確地回應有哪些目前還是健康的節點可供呼叫 </p><p><img src="/images/20191109/3.png" alt="/images/20191109/3.png"></p><p>當節點損壞時, 以 container 的案例, 會直接換掉不健康的 container 重長一組, 而這又會回到圖一註冊的流程。</p><p>更細緻一點的作法還有對 service discovery 回應的列表做快取，例如快取 1s，當服務自己要被收掉時, 做好 graceful shutdown 先把自己從服務列表中 deregister , 並且等待 3s 後才關機，避免快取到一秒的 Client 打來你剛好停止服務。</p><p><br></p><h1 id="面臨的問題"><a href="#面臨的問題" class="headerlink" title="面臨的問題"></a>面臨的問題</h1><p>但並不是所有事情都是如此美好, 公司目前導入這些機制雖然可以大幅簡化管理內部服務 domain 這類的問題, 但對於 load balance，即選取適合的節點這點上還有一些問題要克服，例如傳統 ELB 這類的服務都會依據每個節點的回應速度來判斷接下來導流的分配，但 service discovery service 因為 request 並不會經過它，所以相關 latancy 也無從監控與觀察, 所以 load balance 這題必須額外拉出來做相對應的監控機制。</p><p>再來當服務橫跨 vm 跟 k8s 時情境就變得更複雜，不過這些題目等到之後有明確的方向再做整理好了，久違的文章雖然都沒寫到 code，但還是把一些觀念記錄下來。相關的實作等之後有空再補吧 (逃)</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;/images/20191109/0.png&quot; alt=&quot;/images/20191109/0.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;( &lt;a href=&quot;https://www.codeprimers.com/service-discovery-in-micros
+      
+    
+    </summary>
+    
+    
+      <category term="microservice" scheme="https://toyo0103.github.io/tags/microservice/"/>
+    
+      <category term="service discovery" scheme="https://toyo0103.github.io/tags/service-discovery/"/>
+    
+  </entry>
+  
+  <entry>
     <title>NATS Streaming 調查報告書</title>
-    <link href="http://yoursite.com/2019/08/19/nats_streaming/"/>
-    <id>http://yoursite.com/2019/08/19/nats_streaming/</id>
+    <link href="https://toyo0103.github.io/2019/08/19/nats_streaming/"/>
+    <id>https://toyo0103.github.io/2019/08/19/nats_streaming/</id>
     <published>2019-08-19T15:00:00.000Z</published>
     <updated>2019-08-21T13:43:28.148Z</updated>
     
@@ -36,16 +62,16 @@
     </summary>
     
     
-      <category term="microservice" scheme="http://yoursite.com/tags/microservice/"/>
+      <category term="microservice" scheme="https://toyo0103.github.io/tags/microservice/"/>
     
-      <category term="NATS" scheme="http://yoursite.com/tags/NATS/"/>
+      <category term="NATS" scheme="https://toyo0103.github.io/tags/NATS/"/>
     
   </entry>
   
   <entry>
     <title>ThreadPool</title>
-    <link href="http://yoursite.com/2019/08/01/threadpool/"/>
-    <id>http://yoursite.com/2019/08/01/threadpool/</id>
+    <link href="https://toyo0103.github.io/2019/08/01/threadpool/"/>
+    <id>https://toyo0103.github.io/2019/08/01/threadpool/</id>
     <published>2019-08-01T11:14:00.000Z</published>
     <updated>2019-08-19T14:51:08.965Z</updated>
     
@@ -61,16 +87,16 @@
     </summary>
     
     
-      <category term="LeetCode" scheme="http://yoursite.com/tags/LeetCode/"/>
+      <category term="LeetCode" scheme="https://toyo0103.github.io/tags/LeetCode/"/>
     
-      <category term="精神時光屋" scheme="http://yoursite.com/tags/%E7%B2%BE%E7%A5%9E%E6%99%82%E5%85%89%E5%B1%8B/"/>
+      <category term="精神時光屋" scheme="https://toyo0103.github.io/tags/%E7%B2%BE%E7%A5%9E%E6%99%82%E5%85%89%E5%B1%8B/"/>
     
   </entry>
   
   <entry>
     <title>【.Net Core】dotnet tool</title>
-    <link href="http://yoursite.com/2019/05/30/dotnet_tool/"/>
-    <id>http://yoursite.com/2019/05/30/dotnet_tool/</id>
+    <link href="https://toyo0103.github.io/2019/05/30/dotnet_tool/"/>
+    <id>https://toyo0103.github.io/2019/05/30/dotnet_tool/</id>
     <published>2019-05-30T08:37:00.000Z</published>
     <updated>2019-08-19T14:51:08.963Z</updated>
     
@@ -87,14 +113,14 @@
     </summary>
     
     
-      <category term=".Net Core" scheme="http://yoursite.com/tags/Net-Core/"/>
+      <category term=".Net Core" scheme="https://toyo0103.github.io/tags/Net-Core/"/>
     
   </entry>
   
   <entry>
     <title>【SQL】Output</title>
-    <link href="http://yoursite.com/2019/05/07/sql_output/"/>
-    <id>http://yoursite.com/2019/05/07/sql_output/</id>
+    <link href="https://toyo0103.github.io/2019/05/07/sql_output/"/>
+    <id>https://toyo0103.github.io/2019/05/07/sql_output/</id>
     <published>2019-05-07T02:36:00.000Z</published>
     <updated>2019-08-19T14:51:08.964Z</updated>
     
@@ -111,14 +137,14 @@
     </summary>
     
     
-      <category term="SQL" scheme="http://yoursite.com/tags/SQL/"/>
+      <category term="SQL" scheme="https://toyo0103.github.io/tags/SQL/"/>
     
   </entry>
   
   <entry>
     <title>【AWS】EC2 can&#39;t access metadata service</title>
-    <link href="http://yoursite.com/2019/04/30/aws_windows_ec2_cant_access_metadata/"/>
-    <id>http://yoursite.com/2019/04/30/aws_windows_ec2_cant_access_metadata/</id>
+    <link href="https://toyo0103.github.io/2019/04/30/aws_windows_ec2_cant_access_metadata/"/>
+    <id>https://toyo0103.github.io/2019/04/30/aws_windows_ec2_cant_access_metadata/</id>
     <published>2019-04-30T07:52:00.000Z</published>
     <updated>2019-08-19T14:51:08.963Z</updated>
     
@@ -134,14 +160,14 @@
     </summary>
     
     
-      <category term="aws" scheme="http://yoursite.com/tags/aws/"/>
+      <category term="aws" scheme="https://toyo0103.github.io/tags/aws/"/>
     
   </entry>
   
   <entry>
     <title>【Docker】透過 Jenkins 重新部屬遠端機器 Container</title>
-    <link href="http://yoursite.com/2019/04/30/jenkins_update_remote_docker_container/"/>
-    <id>http://yoursite.com/2019/04/30/jenkins_update_remote_docker_container/</id>
+    <link href="https://toyo0103.github.io/2019/04/30/jenkins_update_remote_docker_container/"/>
+    <id>https://toyo0103.github.io/2019/04/30/jenkins_update_remote_docker_container/</id>
     <published>2019-04-30T02:00:00.000Z</published>
     <updated>2019-08-19T14:51:08.964Z</updated>
     
@@ -158,20 +184,20 @@
     </summary>
     
     
-      <category term="microservice" scheme="http://yoursite.com/tags/microservice/"/>
+      <category term="microservice" scheme="https://toyo0103.github.io/tags/microservice/"/>
     
-      <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
+      <category term="Docker" scheme="https://toyo0103.github.io/tags/Docker/"/>
     
   </entry>
   
   <entry>
     <title>【Docker】Build Image</title>
-    <link href="http://yoursite.com/2019/04/22/Docker_build/"/>
-    <id>http://yoursite.com/2019/04/22/Docker_build/</id>
+    <link href="https://toyo0103.github.io/2019/04/22/Docker_build/"/>
+    <id>https://toyo0103.github.io/2019/04/22/Docker_build/</id>
     <published>2019-04-22T02:19:00.000Z</published>
     <updated>2019-08-19T14:51:08.962Z</updated>
     
-    <content type="html"><![CDATA[<p><img src="/images/20190422/0.png" alt="/images/20190422/0.png"></p><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>剛開始使用 Docker 的時候，我常常都是使用別人已經包好的 Image，但難免會有不符使用需要客製的時候，又或是將公司的某些服務做成 Docker Image ，再從多台機器上 Pull Docker Image  直接執行，所以 Docker Build 幾乎是玩 Docker 必學的技巧了  </p><p>從 Docker Hub 尋找適合的 Image 來使用</p><p><img src="/images/20190422/1.png" alt="/images/20190422/1.png"></p><p>前陣子將公司一些服務包成 Docker Image 並部署執行</p><p><img src="/images/20190422/2.png" alt="/images/20190422/2.png"></p><p><br></p><h1 id="製作第一個-Docker-Image"><a href="#製作第一個-Docker-Image" class="headerlink" title="製作第一個 Docker Image"></a>製作第一個 Docker Image</h1><p>下面的範例會透過一個簡單的範例來解說包 Docker Image 的過程，希望最後的成果是，我們透過執行自製的 Docker Image 就跑起來一個 ASP.Net 的網站</p><p><br></p><h2 id="開新專案"><a href="#開新專案" class="headerlink" title="開新專案"></a>開新專案</h2><p><img src="/images/20190422/3.png" alt="/images/20190422/1.png"></p><p><img src="/images/20190422/4.png" alt="/images/20190422/1.png"></p><p>直接用 VS 執行起來就是一個最原始的 MVC 網站</p><p><img src="/images/20190422/5.png" alt="/images/20190422/1.png"></p><p><br></p><h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p>Dockerfile 是 Build Docker Image 的根本，這個檔案會告訴 Docker 該把什麼東西放進 Image ? 步驟是什麼 ? 怎麼啟動 ?</p><p><br></p><p>先新增一個 Docker File 到剛剛的專案中</p><p><img src="/images/20190422/6.png" alt="/images/20190422/6.png"></p><p>調整屬性</p><p><img src="/images/20190422/7.png" alt="/images/20190422/7.png"></p><p>這樣如果發行這個專案，dockerfile 就會一起過去</p><p><img src="/images/20190422/8.png" alt="/images/20190422/8.png"></p><p><img src="/images/20190422/9.png" alt="/images/20190422/9.png"></p><p><br></p><p><strong>Dockerfile 內容</strong></p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">FROM</span> <span class="string">mcr.microsoft.com/dotnet/framework/aspnet:latest</span></span><br><span class="line"></span><br><span class="line"><span class="string">COPY</span> <span class="string">.</span> <span class="string">/inetpub/wwwroot</span></span><br></pre></td></tr></table></figure><p><code>From</code> : 表示你這個 Image 是以哪一個當作 Base，以這次的案例為例，我們選擇微軟官方提供的 mcr.microsoft.com/dotnet/framework/aspnet Image 作為 base，因為它已經幫我們安裝好 IIS 、.net Framework，這樣我們只要專注在我們開發的程式即可。</p><p><code>COPY</code> : dockerfile 所屬資料夾所有的內容複製到 container 裡面的 <code>c:/inetpub/wwwroot</code>，也就是 IIS 的預設目錄</p><p><br></p><h2 id="Docker-build"><a href="#Docker-build" class="headerlink" title="Docker build"></a>Docker build</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker build -t &lt;ImageName&gt;:&lt;Tag&gt; &lt;Dockerfile Path&gt;</span></span><br></pre></td></tr></table></figure><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker build -t my_first_docker_image:latest -t my_first_docker_image:1.0.0 .</span></span><br></pre></td></tr></table></figure><p>docker build 時我為這個 Image 下了兩個 tag，分別為 latest、1.0.0</p><p><img src="/images/20190422/10.png" alt="/images/20190422/10.png"></p><p><br></p><h2 id="Docker-Run"><a href="#Docker-Run" class="headerlink" title="Docker Run"></a>Docker Run</h2><p>執行剛剛我們自建的 Image，並且將本機的 9999 port mapping 到 container 內的 80 port</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d -p 9999:80 my_first_docker_image:latest</span></span><br></pre></td></tr></table></figure><p>這樣就可以看到網站啦</p><p><img src="/images/20190422/11.png" alt="/images/20190422/11.png"></p><p><br></p><h1 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h1><p>這邊只是小小演示如何 Build 一個最簡單的 docker image，其實 Dockerfile 還有很多可以發揮的地方，如果有需要，可以參考以下官方文件</p><div class="note info"><p>參考文章</p><p><a href="https://docs.docker.com/engine/reference/commandline/build/" target="_blank" rel="noopener">Docker build</a></p><p><a href="https://docs.microsoft.com/zh-tw/aspnet/mvc/overview/deployment/docker-aspnetmvc" target="_blank" rel="noopener">將 ASP.NET MVC 應用程式遷移到 Windows 容器</a></p></div>]]></content>
+    <content type="html"><![CDATA[<p><img src="/images/20190422/0.png" alt="/images/20190422/0.png"></p><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>剛開始使用 Docker 的時候，我常常都是使用別人已經包好的 Image，但難免會有不符使用需要客製的時候，又或是將公司的某些服務做成 Docker Image ，再從多台機器上 Pull Docker Image  直接執行，所以 Docker Build 幾乎是玩 Docker 必學的技巧了  </p><p>從 Docker Hub 尋找適合的 Image 來使用</p><p><img src="/images/20190422/1.png" alt="/images/20190422/1.png"></p><p>前陣子將公司一些服務包成 Docker Image 並部署執行</p><p><img src="/images/20190422/2.png" alt="/images/20190422/2.png"></p><p><br></p><h1 id="製作第一個-Docker-Image"><a href="#製作第一個-Docker-Image" class="headerlink" title="製作第一個 Docker Image"></a>製作第一個 Docker Image</h1><p>下面的範例會透過一個簡單的範例來解說包 Docker Image 的過程，希望最後的成果是，我們透過執行自製的 Docker Image 就跑起來一個 ASP.Net 的網站</p><p><br></p><h2 id="開新專案"><a href="#開新專案" class="headerlink" title="開新專案"></a>開新專案</h2><p><img src="/images/20190422/3.png" alt="/images/20190422/1.png"></p><p><img src="/images/20190422/4.png" alt="/images/20190422/1.png"></p><p>直接用 VS 執行起來就是一個最原始的 MVC 網站</p><p><img src="/images/20190422/5.png" alt="/images/20190422/1.png"></p><p><br></p><h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p>Dockerfile 是 Build Docker Image 的根本，這個檔案會告訴 Docker 該把什麼東西放進 Image ? 步驟是什麼 ? 怎麼啟動 ?</p><p><br></p><p>先新增一個 Docker File 到剛剛的專案中</p><p><img src="/images/20190422/6.png" alt="/images/20190422/6.png"></p><p>調整屬性</p><p><img src="/images/20190422/7.png" alt="/images/20190422/7.png"></p><p>這樣如果發行這個專案，dockerfile 就會一起過去</p><p><img src="/images/20190422/8.png" alt="/images/20190422/8.png"></p><p><img src="/images/20190422/9.png" alt="/images/20190422/9.png"></p><p><br></p><p><strong>Dockerfile 內容</strong></p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">FROM</span> <span class="string">mcr.microsoft.com/dotnet/framework/aspnet:latest</span></span><br><span class="line"></span><br><span class="line"><span class="string">COPY</span> <span class="string">.</span> <span class="string">/inetpub/wwwroot</span></span><br></pre></td></tr></table></figure><p><code>From</code> : 表示你這個 Image 是以哪一個當作 Base，以這次的案例為例，我們選擇微軟官方提供的 mcr.microsoft.com/dotnet/framework/aspnet Image 作為 base，因為它已經幫我們安裝好 IIS 、.net Framework，這樣我們只要專注在我們開發的程式即可。</p><p><code>COPY</code> : dockerfile 所屬資料夾所有的內容複製到 container 裡面的 <code>c:/inetpub/wwwroot</code>，也就是 IIS 的預設目錄</p><p><br></p><h2 id="Docker-build"><a href="#Docker-build" class="headerlink" title="Docker build"></a>Docker build</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker build -t &lt;ImageName&gt;:&lt;Tag&gt; &lt;Dockerfile Path&gt;</span><br></pre></td></tr></table></figure><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker build -t my_first_docker_image:latest -t my_first_docker_image:1.0.0 .</span><br></pre></td></tr></table></figure><p>docker build 時我為這個 Image 下了兩個 tag，分別為 latest、1.0.0</p><p><img src="/images/20190422/10.png" alt="/images/20190422/10.png"></p><p><br></p><h2 id="Docker-Run"><a href="#Docker-Run" class="headerlink" title="Docker Run"></a>Docker Run</h2><p>執行剛剛我們自建的 Image，並且將本機的 9999 port mapping 到 container 內的 80 port</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker run -d -p 9999:80 my_first_docker_image:latest</span><br></pre></td></tr></table></figure><p>這樣就可以看到網站啦</p><p><img src="/images/20190422/11.png" alt="/images/20190422/11.png"></p><p><br></p><h1 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h1><p>這邊只是小小演示如何 Build 一個最簡單的 docker image，其實 Dockerfile 還有很多可以發揮的地方，如果有需要，可以參考以下官方文件</p><div class="note info"><p>參考文章</p><p><a href="https://docs.docker.com/engine/reference/commandline/build/" target="_blank" rel="noopener">Docker build</a></p><p><a href="https://docs.microsoft.com/zh-tw/aspnet/mvc/overview/deployment/docker-aspnetmvc" target="_blank" rel="noopener">將 ASP.NET MVC 應用程式遷移到 Windows 容器</a></p></div>]]></content>
     
     <summary type="html">
     
@@ -184,16 +210,16 @@
     </summary>
     
     
-      <category term="microservice" scheme="http://yoursite.com/tags/microservice/"/>
+      <category term="microservice" scheme="https://toyo0103.github.io/tags/microservice/"/>
     
-      <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
+      <category term="Docker" scheme="https://toyo0103.github.io/tags/Docker/"/>
     
   </entry>
   
   <entry>
     <title>【Docker】Widows Container SMB</title>
-    <link href="http://yoursite.com/2019/03/23/windows_container_smb_/"/>
-    <id>http://yoursite.com/2019/03/23/windows_container_smb_/</id>
+    <link href="https://toyo0103.github.io/2019/03/23/windows_container_smb_/"/>
+    <id>https://toyo0103.github.io/2019/03/23/windows_container_smb_/</id>
     <published>2019-03-23T09:53:00.000Z</published>
     <updated>2019-03-23T11:46:06.320Z</updated>
     
@@ -210,16 +236,16 @@
     </summary>
     
     
-      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
+      <category term="docker" scheme="https://toyo0103.github.io/tags/docker/"/>
     
-      <category term="windows container" scheme="http://yoursite.com/tags/windows-container/"/>
+      <category term="windows container" scheme="https://toyo0103.github.io/tags/windows-container/"/>
     
   </entry>
   
   <entry>
     <title>微服務的戰場</title>
-    <link href="http://yoursite.com/2019/03/21/microservice_battlefield/"/>
-    <id>http://yoursite.com/2019/03/21/microservice_battlefield/</id>
+    <link href="https://toyo0103.github.io/2019/03/21/microservice_battlefield/"/>
+    <id>https://toyo0103.github.io/2019/03/21/microservice_battlefield/</id>
     <published>2019-03-21T15:30:00.000Z</published>
     <updated>2019-08-19T16:20:04.794Z</updated>
     
@@ -240,16 +266,16 @@
     </summary>
     
     
-      <category term="microservice" scheme="http://yoursite.com/tags/microservice/"/>
+      <category term="microservice" scheme="https://toyo0103.github.io/tags/microservice/"/>
     
-      <category term="Docker" scheme="http://yoursite.com/tags/Docker/"/>
+      <category term="Docker" scheme="https://toyo0103.github.io/tags/Docker/"/>
     
   </entry>
   
   <entry>
     <title>【C#】Yield Return (二)</title>
-    <link href="http://yoursite.com/2019/03/15/yield_return_2/"/>
-    <id>http://yoursite.com/2019/03/15/yield_return_2/</id>
+    <link href="https://toyo0103.github.io/2019/03/15/yield_return_2/"/>
+    <id>https://toyo0103.github.io/2019/03/15/yield_return_2/</id>
     <published>2019-03-15T09:30:00.000Z</published>
     <updated>2019-03-15T11:50:38.320Z</updated>
     
@@ -267,14 +293,14 @@
     </summary>
     
     
-      <category term="C#" scheme="http://yoursite.com/tags/C/"/>
+      <category term="C#" scheme="https://toyo0103.github.io/tags/C/"/>
     
   </entry>
   
   <entry>
     <title>Jenkins,GitHub自動化部署Hexo</title>
-    <link href="http://yoursite.com/2019/03/01/centos_jenkins_hexo/"/>
-    <id>http://yoursite.com/2019/03/01/centos_jenkins_hexo/</id>
+    <link href="https://toyo0103.github.io/2019/03/01/centos_jenkins_hexo/"/>
+    <id>https://toyo0103.github.io/2019/03/01/centos_jenkins_hexo/</id>
     <published>2019-02-28T23:38:00.000Z</published>
     <updated>2019-03-03T15:04:19.442Z</updated>
     
@@ -291,18 +317,18 @@
     </summary>
     
     
-      <category term="centos" scheme="http://yoursite.com/tags/centos/"/>
+      <category term="centos" scheme="https://toyo0103.github.io/tags/centos/"/>
     
-      <category term="jenkins" scheme="http://yoursite.com/tags/jenkins/"/>
+      <category term="jenkins" scheme="https://toyo0103.github.io/tags/jenkins/"/>
     
-      <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
+      <category term="hexo" scheme="https://toyo0103.github.io/tags/hexo/"/>
     
   </entry>
   
   <entry>
     <title>【Docker】偵錯技巧</title>
-    <link href="http://yoursite.com/2019/02/22/docker_debug_skill/"/>
-    <id>http://yoursite.com/2019/02/22/docker_debug_skill/</id>
+    <link href="https://toyo0103.github.io/2019/02/22/docker_debug_skill/"/>
+    <id>https://toyo0103.github.io/2019/02/22/docker_debug_skill/</id>
     <published>2019-02-22T08:48:00.000Z</published>
     <updated>2019-02-28T11:26:12.530Z</updated>
     
@@ -319,16 +345,16 @@
     </summary>
     
     
-      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
+      <category term="docker" scheme="https://toyo0103.github.io/tags/docker/"/>
     
-      <category term="windows container" scheme="http://yoursite.com/tags/windows-container/"/>
+      <category term="windows container" scheme="https://toyo0103.github.io/tags/windows-container/"/>
     
   </entry>
   
   <entry>
     <title>【Docker】Docker for Windows 和 Docker on Windows Server 一樣嗎?</title>
-    <link href="http://yoursite.com/2019/02/21/dockerforwindows_vs_dockeronwindowserver/"/>
-    <id>http://yoursite.com/2019/02/21/dockerforwindows_vs_dockeronwindowserver/</id>
+    <link href="https://toyo0103.github.io/2019/02/21/dockerforwindows_vs_dockeronwindowserver/"/>
+    <id>https://toyo0103.github.io/2019/02/21/dockerforwindows_vs_dockeronwindowserver/</id>
     <published>2019-02-21T02:36:00.000Z</published>
     <updated>2019-03-23T11:46:06.319Z</updated>
     
@@ -345,16 +371,16 @@
     </summary>
     
     
-      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
+      <category term="docker" scheme="https://toyo0103.github.io/tags/docker/"/>
     
-      <category term="windows container" scheme="http://yoursite.com/tags/windows-container/"/>
+      <category term="windows container" scheme="https://toyo0103.github.io/tags/windows-container/"/>
     
   </entry>
   
   <entry>
     <title>【Docker】Widows Container DNS Server 問題</title>
-    <link href="http://yoursite.com/2019/02/20/windows_container_dnsserver/"/>
-    <id>http://yoursite.com/2019/02/20/windows_container_dnsserver/</id>
+    <link href="https://toyo0103.github.io/2019/02/20/windows_container_dnsserver/"/>
+    <id>https://toyo0103.github.io/2019/02/20/windows_container_dnsserver/</id>
     <published>2019-02-20T07:10:00.000Z</published>
     <updated>2019-02-22T16:18:46.978Z</updated>
     
@@ -371,16 +397,16 @@
     </summary>
     
     
-      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
+      <category term="docker" scheme="https://toyo0103.github.io/tags/docker/"/>
     
-      <category term="windows container" scheme="http://yoursite.com/tags/windows-container/"/>
+      <category term="windows container" scheme="https://toyo0103.github.io/tags/windows-container/"/>
     
   </entry>
   
   <entry>
     <title>【Docker】Widows Container IAM Role 問題</title>
-    <link href="http://yoursite.com/2019/02/19/windows_contianer_iamrole_/"/>
-    <id>http://yoursite.com/2019/02/19/windows_contianer_iamrole_/</id>
+    <link href="https://toyo0103.github.io/2019/02/19/windows_contianer_iamrole_/"/>
+    <id>https://toyo0103.github.io/2019/02/19/windows_contianer_iamrole_/</id>
     <published>2019-02-19T08:25:00.000Z</published>
     <updated>2019-08-19T14:51:08.966Z</updated>
     
@@ -397,18 +423,18 @@
     </summary>
     
     
-      <category term="aws" scheme="http://yoursite.com/tags/aws/"/>
+      <category term="aws" scheme="https://toyo0103.github.io/tags/aws/"/>
     
-      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
+      <category term="docker" scheme="https://toyo0103.github.io/tags/docker/"/>
     
-      <category term="windows container" scheme="http://yoursite.com/tags/windows-container/"/>
+      <category term="windows container" scheme="https://toyo0103.github.io/tags/windows-container/"/>
     
   </entry>
   
   <entry>
     <title>將程式編譯成 x86、x64、Any CPU差別在哪</title>
-    <link href="http://yoursite.com/2019/02/12/anycpu_x86_x64/"/>
-    <id>http://yoursite.com/2019/02/12/anycpu_x86_x64/</id>
+    <link href="https://toyo0103.github.io/2019/02/12/anycpu_x86_x64/"/>
+    <id>https://toyo0103.github.io/2019/02/12/anycpu_x86_x64/</id>
     <published>2019-02-12T03:09:00.000Z</published>
     <updated>2019-02-19T13:48:27.163Z</updated>
     
@@ -425,14 +451,14 @@
     </summary>
     
     
-      <category term=".Net" scheme="http://yoursite.com/tags/Net/"/>
+      <category term=".Net" scheme="https://toyo0103.github.io/tags/Net/"/>
     
   </entry>
   
   <entry>
     <title>【C#】Yield Return與迭代器</title>
-    <link href="http://yoursite.com/2018/12/21/%E3%80%90C-%E3%80%91yield_retuen/"/>
-    <id>http://yoursite.com/2018/12/21/【C-】yield_retuen/</id>
+    <link href="https://toyo0103.github.io/2018/12/21/%E3%80%90C-%E3%80%91yield_retuen/"/>
+    <id>https://toyo0103.github.io/2018/12/21/【C-】yield_retuen/</id>
     <published>2018-12-21T05:54:00.000Z</published>
     <updated>2019-02-19T13:48:27.164Z</updated>
     
@@ -448,14 +474,14 @@
     </summary>
     
     
-      <category term="C#" scheme="http://yoursite.com/tags/C/"/>
+      <category term="C#" scheme="https://toyo0103.github.io/tags/C/"/>
     
   </entry>
   
   <entry>
     <title>【C#】Task WaitAll</title>
-    <link href="http://yoursite.com/2018/12/03/Task_WaitAll/"/>
-    <id>http://yoursite.com/2018/12/03/Task_WaitAll/</id>
+    <link href="https://toyo0103.github.io/2018/12/03/Task_WaitAll/"/>
+    <id>https://toyo0103.github.io/2018/12/03/Task_WaitAll/</id>
     <published>2018-12-03T07:53:00.000Z</published>
     <updated>2019-02-19T13:48:27.163Z</updated>
     
@@ -471,14 +497,14 @@
     </summary>
     
     
-      <category term="C#" scheme="http://yoursite.com/tags/C/"/>
+      <category term="C#" scheme="https://toyo0103.github.io/tags/C/"/>
     
   </entry>
   
   <entry>
     <title>【日文】か、かどうか 如何使用</title>
-    <link href="http://yoursite.com/2018/11/21/%E3%80%90%E6%97%A5%E6%96%87%E3%80%91%E3%81%8B_%E3%81%8B%E3%81%A9%E3%81%86%E3%81%8B/"/>
-    <id>http://yoursite.com/2018/11/21/【日文】か_かどうか/</id>
+    <link href="https://toyo0103.github.io/2018/11/21/%E3%80%90%E6%97%A5%E6%96%87%E3%80%91%E3%81%8B_%E3%81%8B%E3%81%A9%E3%81%86%E3%81%8B/"/>
+    <id>https://toyo0103.github.io/2018/11/21/【日文】か_かどうか/</id>
     <published>2018-11-21T07:52:00.000Z</published>
     <updated>2018-11-21T15:46:10.051Z</updated>
     
@@ -499,30 +525,7 @@
     </summary>
     
     
-      <category term="日文學習" scheme="http://yoursite.com/tags/%E6%97%A5%E6%96%87%E5%AD%B8%E7%BF%92/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MissingMethodException</title>
-    <link href="http://yoursite.com/2018/11/14/MissingMethodException/"/>
-    <id>http://yoursite.com/2018/11/14/MissingMethodException/</id>
-    <published>2018-11-14T09:04:00.000Z</published>
-    <updated>2018-11-19T13:07:33.286Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>寫單元測試的時候編譯都沒問題，但在執行時一直報錯 <strong>System.MissingMethodException</strong> 的錯誤，查了一下發現跟 <code>System.Net.Http</code> 有關</p><div class="note info"><p>System.MissingMethodException with message</p><p>“Method not found: ‘System.Web.Http.Results.ResponseMessageResult</p><p>System.Web.Http.ApiController.ResponseMessage(System.Net.Http.HttpResponseMessage)”</p></div><p>檢查測試專案與受測專案的 <code>System.Net.Http</code> Nuget套件皆為同一個版本</p><p><img src="/images/20181114/1.png" alt="/images/20181114/1.png"></p><p>但意外發現兩個專案的 <code>System.Net.Http</code> 參考卻為不同位置</p><p><img src="/images/20181114/2.png" alt="/images/20181114/2.png"></p><p><img src="/images/20181114/3.png" alt="/images/20181114/3.png"></p><p>照理來說應該都要參考到專案內的 packages 底下才對，檢查 <code>.csproj</code> 裡面的 Reference 並沒有寫錯</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Reference</span> <span class="attr">Include</span>=<span class="string">"System.Net.Http, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"</span>&gt;</span>   </span><br><span class="line"><span class="tag">&lt;<span class="name">HintPath</span>&gt;</span>..\..\packages\System.Net.Http.4.3.2\lib\net46\System.Net.Http.dll<span class="tag">&lt;/<span class="name">HintPath</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Reference</span>&gt;</span></span><br></pre></td></tr></table></figure><p>在網路上也搜尋到相關文章討論似乎是 Visual Studio Bug 導致</p><p><img src="/images/20181114/4.png" alt="/images/20181114/4.png"></p><p>這位仁兄也碰到一樣問題</p><ol><li><p>他開啟了一個新專案</p></li><li><p>Nuget 安裝 System.Net.Http v4.3.3 </p></li><li><p>建置時 System.Net.Http 參考都還是來自於 Package 資料夾底下</p></li><li>Nuget 安裝 System.Collections.Immutable v1.4.0 </li><li>建置時 System.Net.Http 參考就跑到 C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\MSBuild\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\System.Net.Http.dll 底下</li></ol><div class="note info"><p>討論串</p><p><a href="https://github.com/dotnet/corefx/issues/25773" target="_blank" rel="noopener">System.Net.Http v4.2.0.0 being copied/loaded from MSBuild tooling</a></p></div><h1 id="解決方法"><a href="#解決方法" class="headerlink" title="解決方法"></a>解決方法</h1><p>檢查 Microsoft.NET.Build.Extensions 資料夾底下的 dll 版本為 <code>4.2.0.0</code> ，而 Nuget  System.Net.Http 4.3.2 的 dll 版本則為 <code>4.1.1.1</code> ，這也是間接導致發生此錯誤的原因。</p><p>但 Reference HintPath也沒寫錯，VS 裡面也沒辦法調整 dll 位置 ， 最後索性直接刪除 Microsoft.NET.Build.Extensions 資料夾底下的 System.Net.Http ，重新建置後 dll 就重新指向 Package了，此問題得到解決</p><p>世界又再一次恢復了和平，!@#$%</p><h1 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h1><ol><li><a href="https://stackoverflow.com/questions/46451247/missing-method-in-system-web-http-apicontroller-get-request" target="_blank" rel="noopener">MIssing method in System.Web.Http.ApiController.get_Request()</a></li><li><a href="https://github.com/dotnet/corefx/issues/22781" target="_blank" rel="noopener">System.Net.Http package 4.3.2 - redirect to 4.2.0.0, assembly loading failure</a></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;情境&quot;&gt;&lt;a href=&quot;#情境&quot; class=&quot;headerlink&quot; title=&quot;情境&quot;&gt;&lt;/a&gt;情境&lt;/h1&gt;&lt;p&gt;寫單元測試的時候編譯都沒問題，但在執行時一直報錯 &lt;strong&gt;System.MissingMethodException&lt;/strong
-      
-    
-    </summary>
-    
-    
-      <category term="神奇事件" scheme="http://yoursite.com/tags/%E7%A5%9E%E5%A5%87%E4%BA%8B%E4%BB%B6/"/>
+      <category term="日文學習" scheme="https://toyo0103.github.io/tags/%E6%97%A5%E6%96%87%E5%AD%B8%E7%BF%92/"/>
     
   </entry>
   

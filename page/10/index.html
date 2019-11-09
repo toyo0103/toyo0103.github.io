@@ -84,7 +84,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="程式隨筆">
-<meta property="og:url" content="http://yoursite.com/page/10/index.html">
+<meta property="og:url" content="https://toyo0103.github.io/page/10/index.html">
 <meta property="og:site_name" content="程式隨筆">
 <meta property="og:locale" content="zh-tw">
 <meta name="twitter:card" content="summary">
@@ -118,7 +118,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/page/10/">
+  <link rel="canonical" href="https://toyo0103.github.io/page/10/">
 
 
 
@@ -293,7 +293,140 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/06/04/【SQL】Group-by-and-Top-1-用Linq實做/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/07/06/Config-幫自訂的Config新增Release與Debug版本/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/07/06/Config-幫自訂的Config新增Release與Debug版本/" itemprop="url">[Config] 幫自訂的Config新增Release與Debug版本</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-07-06T12:05:00+08:00">
+                2016-07-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/07/06/Config-幫自訂的Config新增Release與Debug版本/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/06/Config-幫自訂的Config新增Release與Debug版本/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><span style="font-family: Verdana, sans-serif;">一般開發的時候通常會有測試機、正式機、或是Release前的機器…等，而在發佈到每台機器都要去做調整Config確實是很惱人的事情，感覺一個分神可能就會把測試機的連線貼到正式機之類的，這可能就是一場大災難。</span><br><span style="font-family: Verdana, sans-serif;"><br></span><span style="font-family: Verdana, sans-serif;"><br></span><span style="font-family: Verdana, sans-serif;">還好Visual Studio很貼心的為WebConfig分出了Release版本跟Debug版本，並依據發佈時你所選擇的組態檔，去做對應的修改。(註:如果需要更多版本，請到<strong>建置</strong>&nbsp;&gt;&nbsp;<strong>組態管理員</strong>去新增)。</span></p>
+<div><span style="font-family: Verdana, sans-serif;"><br></span></div><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-bTABzkFPg84/V3yBI-o1a3I/AAAAAAAAHwE/Acz2x_EWkJMhQ6HTDpAVi3SuhLeuPiVCACLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><span style="font-family: Verdana, sans-serif;"><img src="https://1.bp.blogspot.com/-bTABzkFPg84/V3yBI-o1a3I/AAAAAAAAHwE/Acz2x_EWkJMhQ6HTDpAVi3SuhLeuPiVCACLcB/s320/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></span></a></td></tr><tr><td class="tr-caption" style="text-align: center;"><span style="font-size: small; text-align: start;"><span style="font-family: Verdana, sans-serif;">Release版本跟Debug版本</span></span></td></tr></tbody></table><span style="font-family: Verdana, sans-serif;"><br></span><span style="font-family: Verdana, sans-serif;"><br></span><span style="font-family: Verdana, sans-serif;">之前有寫篇文章<a href="http://toyo0103.blogspot.tw/2013/09/webconfigwebconfig.html" target="_blank" rel="noopener">【擴充WebConfig】</a>有提到如何在專案中加掛Config檔案，讓設定檔能做簡單的歸類整理。</span><br><span style="font-family: Verdana, sans-serif;"><br></span><span style="font-family: Verdana, sans-serif;">原本以為Visual Studio應該會有相關的功能，可以對這類自訂的Config分割出對應版本，結果東找西找都找不到方法去做對應，原來VS似乎沒有提供這個功能(?)</span><br><span style="font-family: Verdana, sans-serif;">還好在網路上找到了解決的套件跟方法</span><br><span style="font-family: Verdana, sans-serif;"><a href="http://stackoverflow.com/questions/34735132/how-to-add-config-transformations-for-a-custom-config-file-in-visual-studio" target="_blank" rel="noopener">How to add config transformations for a custom config file in Visual Studio?</a></span><br><br>簡單說就是先去下載VS擴充套件(註:目前似乎只支援到VS 2013)<br><a href="https://visualstudiogallery.msdn.microsoft.com/69023d00-a4f9-4a34-a6cd-7e854ba318b5" target="_blank" rel="noopener">SlowCheetah - XML Transforms</a><br><br>安裝完後，用VS 2013開啟專案，並且對著想要分割版本的Config檔案按右鍵，選擇Add Transfom即可<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-rH4cnE-93Gc/V3yDHDPxl2I/AAAAAAAAHwQ/RtNpbTiBOKYsVad-Vjb_McHswPnPJy_pwCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-rH4cnE-93Gc/V3yDHDPxl2I/AAAAAAAAHwQ/RtNpbTiBOKYsVad-Vjb_McHswPnPJy_pwCLcB/s320/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></div>
+
+<p>搞定!!!! 之後再來寫篇如何透過Release Config檔在發佈時置換屬性值好了~</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/06/04/【SQL】Group-by-and-Top-1-用Linq實做/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -426,7 +559,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/08/【SQL】PIVOT-讓搜尋結果橫式表現/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/03/08/【SQL】PIVOT-讓搜尋結果橫式表現/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -561,7 +694,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/07/【Unit-Test】重構-二-單元測試的可讀性/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/03/07/【Unit-Test】重構-二-單元測試的可讀性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -700,7 +833,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/02/【Unit-Test】重構-一-透過繼承解耦/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/03/02/【Unit-Test】重構-一-透過繼承解耦/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -843,7 +976,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/03/01/Regular-Expression-苦手筆記/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/03/01/Regular-Expression-苦手筆記/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -997,7 +1130,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/01/20/Async-Await-DeadLock問題/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/01/20/Async-Await-DeadLock問題/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1134,7 +1267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/01/11/Linq-動態組合Linq條件/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/01/11/Linq-動態組合Linq條件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1269,7 +1402,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/14/【SQL】遞迴/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/12/14/【SQL】遞迴/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1403,7 +1536,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/14/【WebAPI】Custom-ActionFilter-Order/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/12/14/【WebAPI】Custom-ActionFilter-Order/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -1539,148 +1672,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2015/12/08/AutoMapper與Json-NET-JObject對應問題/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/12/08/AutoMapper與Json-NET-JObject對應問題/" itemprop="url">AutoMapper與Json.NET JObject對應問題</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-08T16:42:00+08:00">
-                2015-12-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/12/08/AutoMapper與Json-NET-JObject對應問題/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/08/AutoMapper與Json-NET-JObject對應問題/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>使用套件:<br>Json.NET 7.0.1 :<a href="https://www.nuget.org/packages/Newtonsoft.Json/7.0.1" target="_blank" rel="noopener">&nbsp;https://www.nuget.org/packages/Newtonsoft.Json/7.0.1</a><br>AutoMapper 4.04 :&nbsp;<a href="https://www.nuget.org/packages/AutoMapper/4.0.4" target="_blank" rel="noopener">https://www.nuget.org/packages/AutoMapper/4.0.4</a></p>
-<p>今天碰到一個問題，就是有個API回傳值的欄位是不固定無法掌握的，所以只好在轉型成強型別時以object當做該屬性的類別，但JsonConvert碰到類別為Object的東西就會轉成JObject ,而AutoMapper對應JObject會炸掉。以下是簡單時間的範例Code</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> Mapper.CreateMap&lt;source, destination&gt;()</span><br><span class="line"> .ForMember(d =&gt; d.d_name, o =&gt; o.MapFrom(s =&gt; s.name))</span><br><span class="line"> .ForMember(d =&gt; d.d_obj, o =&gt; o.MapFrom(s =&gt; s.obj));</span><br><span class="line"></span><br><span class="line"> source test = <span class="keyword">new</span> source </span><br><span class="line"> &#123;</span><br><span class="line">  name = <span class="string">"test"</span>,</span><br><span class="line">  obj = <span class="keyword">new</span> &#123;code = <span class="number">100</span>&#125;,</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> result = Mapper.Map&lt;destination&gt;(test);</span><br><span class="line"> result.Dump();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">source</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">object</span> obj &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">destination</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> d_name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">object</span> d_obj &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Source與Destination都有個property為object的類別屬性，在Main()裡面也想好兩個類別的對應關係，並且先準備好Source 然後透過AutoMapper轉出Result,在以上的範例執行正確沒問題<br><a href="http://3.bp.blogspot.com/-C1ypPTW6LWE/VmaV1B7yBfI/AAAAAAAAHqc/M-ACZeUD5IU/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-C1ypPTW6LWE/VmaV1B7yBfI/AAAAAAAAHqc/M-ACZeUD5IU/s640/1.png" alt></a></p>
-<p>換個寫法</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> Mapper.CreateMap&lt;source, destination&gt;()</span><br><span class="line"> .ForMember(d =&gt; d.d_name, o =&gt; o.MapFrom(s =&gt; s.name))</span><br><span class="line"> .ForMember(d =&gt; d.d_obj, o =&gt; o.MapFrom(s =&gt; s.obj));</span><br><span class="line"></span><br><span class="line"> source test = JsonConvert.DeserializeObject&lt;source&gt;(<span class="string">"&#123;\"name\":\"test\",\"obj\" : &#123;\"code\":100&#125;&#125;"</span>);</span><br><span class="line"> <span class="keyword">var</span> result = Mapper.Map&lt;destination&gt;(test);</span><br><span class="line"> result.Dump();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">source</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">object</span> obj &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">destination</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> d_name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">object</span> d_obj &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>差別只在於原本Source改成透過Json.Net由字串轉回來而已，這時候只要執行到AutoMapper那一行就會爆炸，錯誤訊息如下<br><div class="note info"><p>AutoMapperMappingException: </p>
-<p>Mapping types:<br>JObject -&gt; JObject<br>Newtonsoft.Json.Linq.JObject -&gt; Newtonsoft.Json.Linq.JObject</p>
-<p>Destination path:<br>destination.d_obj.d_obj</p>
-<p>Source value:<br>{<br>  “code”: 100<br>}</p></div></p>
-<p>JsonConvert碰到目標為Object型別的欄位，會轉成JObject塞進去，AutoMapper用它來對應，<br>所以如果要解決這個問題需要做一些處理</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//將Mapper改成如下</span></span><br><span class="line"> Mapper.CreateMap&lt;source, destination&gt;()</span><br><span class="line"> .ForMember(d =&gt; d.d_name, o =&gt; o.MapFrom(s =&gt; s.name))</span><br><span class="line"> .ForMember(d =&gt; d.d_obj, o =&gt; o.ResolveUsing(s =&gt;</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">if</span> (s.obj <span class="keyword">is</span> JObject)</span><br><span class="line">  &#123;</span><br><span class="line">   <span class="keyword">var</span> temp = s.obj <span class="keyword">as</span> JObject;</span><br><span class="line">   <span class="keyword">return</span> temp.ToObject&lt;Dictionary&lt;<span class="keyword">string</span>, <span class="keyword">object</span>&gt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> s.obj;</span><br><span class="line"> &#125;));</span><br></pre></td></tr></table></figure>
-<p>這樣就可以正確地取出了<br><a href="http://2.bp.blogspot.com/-pT-gamin7D4/VmaX7zqy8ZI/AAAAAAAAHqo/shVBh49fMgQ/s1600/1.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-pT-gamin7D4/VmaX7zqy8ZI/AAAAAAAAHqo/shVBh49fMgQ/s640/1.png" alt></a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1733,7 +1724,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">188</span>
+                  <span class="site-state-item-count">189</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1755,7 +1746,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

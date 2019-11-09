@@ -86,43 +86,43 @@
 <meta name="keywords" content="centos,jenkins,hexo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jenkins,GitHub自動化部署Hexo">
-<meta property="og:url" content="http://yoursite.com/2019/03/01/centos_jenkins_hexo/index.html">
+<meta property="og:url" content="https://toyo0103.github.io/2019/03/01/centos_jenkins_hexo/index.html">
 <meta property="og:site_name" content="程式隨筆">
 <meta property="og:description" content="這個部落格是用 hexo 來製作的，優點是可以用 Markdown 寫法，且很多套件支援,讓我這個美感小白痴也可以輕鬆弄出富有質感的部落格(自己說)。 但也因為這樣,每次寫完文章都需要下 command 來編譯部落格、發佈到 Github ，讓我覺得不夠自動化 12$ hexo g $ hexo deploy 剛好最近在玩 AWS ，就想說來弄一台 t2.small Centos 機器來做 CI">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:image" content="http://yoursite.com/images/20190301/0.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/1.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/2.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/3.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/4.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/5.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/6.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/7.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/8.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/9.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/10.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/11.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/12.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/13.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/14.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/15.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/16.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/17.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/18.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/19.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/20.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/21.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/22.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/23.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/24.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/25.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/26.png">
-<meta property="og:image" content="http://yoursite.com/images/20190301/27.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/0.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/1.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/2.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/3.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/4.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/5.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/6.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/7.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/8.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/9.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/10.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/11.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/12.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/13.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/14.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/15.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/16.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/17.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/18.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/19.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/20.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/21.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/22.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/23.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/24.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/25.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/26.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/27.png">
 <meta property="og:updated_time" content="2019-03-03T15:04:19.442Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jenkins,GitHub自動化部署Hexo">
 <meta name="twitter:description" content="這個部落格是用 hexo 來製作的，優點是可以用 Markdown 寫法，且很多套件支援,讓我這個美感小白痴也可以輕鬆弄出富有質感的部落格(自己說)。 但也因為這樣,每次寫完文章都需要下 command 來編譯部落格、發佈到 Github ，讓我覺得不夠自動化 12$ hexo g $ hexo deploy 剛好最近在玩 AWS ，就想說來弄一台 t2.small Centos 機器來做 CI">
-<meta name="twitter:image" content="http://yoursite.com/images/20190301/0.png">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20190301/0.png">
 
 
 
@@ -152,7 +152,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/01/centos_jenkins_hexo/">
+  <link rel="canonical" href="https://toyo0103.github.io/2019/03/01/centos_jenkins_hexo/">
 
 
 
@@ -326,7 +326,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/01/centos_jenkins_hexo/">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/03/01/centos_jenkins_hexo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Toyo">
@@ -706,7 +706,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">188</span>
+                  <span class="site-state-item-count">189</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -728,7 +728,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">65</span>
+                  <span class="site-state-item-count">66</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
@@ -984,7 +984,7 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://yoursite.com/2019/03/01/centos_jenkins_hexo/';
+          this.page.url = 'https://toyo0103.github.io/2019/03/01/centos_jenkins_hexo/';
           this.page.identifier = '2019/03/01/centos_jenkins_hexo/';
           this.page.title = 'Jenkins,GitHub自動化部署Hexo';
         };
