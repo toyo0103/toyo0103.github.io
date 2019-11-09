@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://toyo0103.github.io/images/20191109/1.gif">
 <meta property="og:image" content="https://toyo0103.github.io/images/20191109/2.png">
 <meta property="og:image" content="https://toyo0103.github.io/images/20191109/3.png">
-<meta property="og:updated_time" content="2019-11-09T15:14:44.061Z">
+<meta property="og:updated_time" content="2019-11-09T16:01:57.128Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Service Discovery">
 <meta name="twitter:description" content="( https://www.codeprimers.com/service-discovery-in-microservice-architecture/ )  前言傳統上一組服務通常都會搭配 DNS + Load balance + serivce cluster, 服務要呼叫時也都是直接打 Domain 讓 Load balance 去導流。 不過這也面臨了管理 Domain 與服務間的複雜">
@@ -387,16 +387,16 @@
 <p>近年微服務與容器化運用的盛行, 上述方式就顯得有點卡卡的，如果你的服務在 k8s 內那可能還好, 大部分它都幫忙處理掉了, 但如果像我們公司一樣, 很多服務雖然容器化但還無法進到 k8s 內, container 可以在短時間內 scale 成數倍來因應大流量, 但卡在這些服務需要去 load balance 註冊才有辦法讓流量導進來,  那顯然就有點做半套的感覺， Service Discovery 的應用就成為了重要的課題</p>
 <p><br></p>
 <h1 id="什麼是-Service-Discovery"><a href="#什麼是-Service-Discovery" class="headerlink" title="什麼是 Service Discovery"></a>什麼是 Service Discovery</h1><p>翻譯成中文就是服務發現(廢話…)，顧名思義就是呼叫端在需要時先透過搜尋來找到對應的服務，而要達成這點需要一些配合才能達成。</p>
-<p>首先第一步, 當某個服務起來時應該主動向提供 service discovery service 註冊自己是什麼服務? 位置在哪? 是否已經可以開始服務了? </p>
+<p>首先第一步, 當某個服務起來時應該主動向提供 service discovery 註冊自己是什麼服務? 位置在哪? 是否已經可以開始服務了? </p>
 <p><img src="/images/20191109/1.gif" alt="/images/20191109/1.gif"></p>
-<p>註冊時會搭配著 Health check 的機制, 告訴 service discovery service 如何檢核這個節點是否健康的</p>
+<p>註冊時會搭配著 Health check 的機制, 告訴 service discovery 如何檢核這個節點是否健康的</p>
 <p><img src="/images/20191109/2.png" alt="/images/20191109/2.png"></p>
-<p>Client 在要叫用 service 時, 先透過 service name 詢問有哪些節點可用, 而 service discovery service 也能準確地回應有哪些目前還是健康的節點可供呼叫 </p>
+<p>Client 在要叫用 service 時, 先透過 service name 詢問有哪些節點可用, 而 service discovery 也能準確地回應有哪些目前還是健康的節點可供呼叫 </p>
 <p><img src="/images/20191109/3.png" alt="/images/20191109/3.png"></p>
 <p>當節點損壞時, 以 container 的案例, 會直接換掉不健康的 container 重長一組, 而這又會回到圖一註冊的流程。</p>
 <p>更細緻一點的作法還有對 service discovery 回應的列表做快取，例如快取 1s，當服務自己要被收掉時, 做好 graceful shutdown 先把自己從服務列表中 deregister , 並且等待 3s 後才關機，避免快取到一秒的 Client 打來你剛好停止服務。</p>
 <p><br></p>
-<h1 id="面臨的問題"><a href="#面臨的問題" class="headerlink" title="面臨的問題"></a>面臨的問題</h1><p>但並不是所有事情都是如此美好, 公司目前導入這些機制雖然可以大幅簡化管理內部服務 domain 這類的問題, 但對於 load balance，即選取適合的節點這點上還有一些問題要克服，例如傳統 ELB 這類的服務都會依據每個節點的回應速度來判斷接下來導流的分配，但 service discovery service 因為 request 並不會經過它，所以相關 latancy 也無從監控與觀察, 所以 load balance 這題必須額外拉出來做相對應的監控機制。</p>
+<h1 id="面臨的問題"><a href="#面臨的問題" class="headerlink" title="面臨的問題"></a>面臨的問題</h1><p>但並不是所有事情都是如此美好, 公司目前導入這些機制雖然可以大幅簡化管理內部服務 domain 這類的問題, 但對於 load balance，即選取適合的節點這點上還有一些問題要克服，例如傳統 ELB 這類的服務都會依據每個節點的回應速度來判斷接下來導流的分配，但 service discovery 因為 request 並不會經過它，所以相關 latancy 也無從監控與觀察, 所以 load balance 這題必須額外拉出來做相對應的監控機制。</p>
 <p>再來當服務橫跨 vm 跟 k8s 時情境就變得更複雜，不過這些題目等到之後有明確的方向再做整理好了，久違的文章雖然都沒寫到 code，但還是把一些觀念記錄下來。相關的實作等之後有空再補吧 (逃)</p>
 
       
