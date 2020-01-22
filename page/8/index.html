@@ -293,6 +293,144 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/01/20/【Regular-Expression】分群與取代/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/01/20/【Regular-Expression】分群與取代/" itemprop="url">【Regular Expression】分群與取代</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-01-20T10:25:00+08:00">
+                2017-01-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/01/20/【Regular-Expression】分群與取代/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/20/【Regular-Expression】分群與取代/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在正規表示法中，可以將比對的資料做分群與命名，而在.Net中的語法是<br><div class="note info"><p>(?:&lt;群組名稱&gt;)</p></div></p>
+<p>應用方法如下<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> Date = <span class="string">"2017/1/20"</span>;</span><br><span class="line">Regex reg = <span class="keyword">new</span> Regex(<span class="string">@"^(?&lt;Year&gt;\d&#123;4&#125;)/(?&lt;Month&gt;\d&#123;1,2&#125;)/(?&lt;Day&gt;\d&#123;1,2&#125;)"</span>);</span><br><span class="line"><span class="keyword">var</span> Match = reg.Match(Date);</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="keyword">string</span>.Concat(<span class="string">"年 :"</span>, Match.Groups[<span class="string">"Year"</span>].Value));</span><br><span class="line">Console.WriteLine(<span class="keyword">string</span>.Concat(<span class="string">"月 :"</span>,Match.Groups[<span class="string">"Month"</span>].Value));</span><br><span class="line">Console.WriteLine(<span class="keyword">string</span>.Concat(<span class="string">"日 :"</span>,Match.Groups[<span class="string">"Day"</span>].Value));</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://2.bp.blogspot.com/-CiGMf3bSGws/WIFyaQRw3PI/AAAAAAAAIDk/gPerLAyakjoD8gzowmXLB08hPVCK5rIXQCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-CiGMf3bSGws/WIFyaQRw3PI/AAAAAAAAIDk/gPerLAyakjoD8gzowmXLB08hPVCK5rIXQCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></p>
+<p>也可以用來做取代的用途<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> Date = <span class="string">"2017/1/20"</span>;</span><br><span class="line">Regex reg = <span class="keyword">new</span> Regex(<span class="string">@"^(\d&#123;4&#125;)/(\d&#123;1,2&#125;)/(\d&#123;1,2&#125;)"</span>);</span><br><span class="line"></span><br><span class="line">Console.WriteLine(reg.Replace(Date,<span class="string">@"$1年$2月$3日"</span>));</span><br></pre></td></tr></table></figure></p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-HQu1GmHFF_M/WIFzWkDPQQI/AAAAAAAAIDo/k5REjSoQ7fMeQBuCYZe7QRSQlXG0SXlFgCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-HQu1GmHFF_M/WIFzWkDPQQI/AAAAAAAAIDo/k5REjSoQ7fMeQBuCYZe7QRSQlXG0SXlFgCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></div>
+
+<p>括號()包起來的地方，正規表示法比對到時會把他當作一個群組，而其中Replace的地方寫著 <strong>$1</strong>代表第一個括號比對的東西放這邊，所以$1會變成2017，後面以此類推，就會變成<strong>2017年1月20日</strong>這種格式。</p>
+<p>所以也可以改成這樣，變成國外表示年份的格式<strong>$2-$3-$1</strong>，就會變成 1-20-2017</p>
+<p>以上筆記一下。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/01/11/【神奇事件】看不見的點/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1570,163 +1708,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/10/14/【Swagger】活著的API規格書/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/10/14/【Swagger】活著的API規格書/" itemprop="url">【Swagger】活著的API規格書</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-14T11:01:00+08:00">
-                2016-10-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/10/14/【Swagger】活著的API規格書/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/14/【Swagger】活著的API規格書/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>所謂的工程師就是，【接手別人專案時，總是問怎麼沒有規格書? 自己開發專案時卻又不喜歡寫規格書】的一群人，本人也是一個極度不喜歡寫規格書的人，簡單說就是懶到極致，懶到深處無怨尤。而且常常改版時來匆匆忙忙，寫程式的時間都不夠了，誰還管你規格書有沒有更新，就這樣恍神個兩三次忘記回去更新規格，這本規格書就光榮列入公司十大(搞不好百大?)不可思議天書，可謂極度麻煩費時討厭…..</p>
-<p>還好同事介紹了Swagger的用法，讓你邊開發程式時，規格就產生書產生出來了，而且還是本可以使用的規格書，讓你從今以後再也不用擔心規格書與實際規格脫鉤的問題，以下就筆記一下如何使用</p>
-<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-DHN0U1Vqe3U/WAA8GQA474I/AAAAAAAAH-o/idcyU1UFoPoM9sI2fs7Jga7vTRrA_Lz7gCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-DHN0U1Vqe3U/WAA8GQA474I/AAAAAAAAH-o/idcyU1UFoPoM9sI2fs7Jga7vTRrA_Lz7gCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Swagger-當開發完API時，規格書也就完成了!!</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-Q_gy5BypWEQ/WAA8wzGS32I/AAAAAAAAH-s/dbAyDeDRpPgfEc-OjH9_s2GIaafUpCBjACLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-Q_gy5BypWEQ/WAA8wzGS32I/AAAAAAAAH-s/dbAyDeDRpPgfEc-OjH9_s2GIaafUpCBjACLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">輸入的參數與說明也寫得清清楚楚</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-WbKmvP1AzgE/WAA-rbXKmUI/AAAAAAAAH-8/-tLhejDldqI_HmO2FNDS1gO6ImyOrrfngCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-WbKmvP1AzgE/WAA-rbXKmUI/AAAAAAAAH-8/-tLhejDldqI_HmO2FNDS1gO6ImyOrrfngCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;"><span style="font-size: 12.8px;">按下Try it Out後，可以馬上測試API跟觀看結果!!</span></td></tr></tbody></table>
-
-<h3 id="使用步驟"><a href="#使用步驟" class="headerlink" title="使用步驟"></a>使用步驟</h3><div><br><br><em>   首先我先開一個WebAPI專案，然後寫一支簡單的API讓他可以運作</em></div><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-esv5JivSR4Y/WABBED8FfQI/AAAAAAAAH_E/YiqAJZ5gpAoLo97p4H6T6hp6ipz9r54mgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-esv5JivSR4Y/WABBED8FfQI/AAAAAAAAH_E/YiqAJZ5gpAoLo97p4H6T6hp6ipz9r54mgCLcB/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">開一個WebAPI專案</td></tr></tbody></table><br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-VmbQGY5UMMU/WABBEd25TPI/AAAAAAAAH_I/MGng_1nDDSEQ-zLiXyahRK5GTT9XMtSEwCLcB/s1600/2.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-VmbQGY5UMMU/WABBEd25TPI/AAAAAAAAH_I/MGng_1nDDSEQ-zLiXyahRK5GTT9XMtSEwCLcB/s640/2.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">新增一個新的TestSwaggerController</td></tr></tbody></table><br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-AENbjbb3Ia4/WABBERDf0cI/AAAAAAAAH_M/Ea_va3RXz0kCcplepPRx-nBqaHHpLLsCwCLcB/s1600/3.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-AENbjbb3Ia4/WABBERDf0cI/AAAAAAAAH_M/Ea_va3RXz0kCcplepPRx-nBqaHHpLLsCwCLcB/s1600/3.png" alt></a></div><div><br></div><div><br></div><div><br></div><div><br><br>### 
-
-   <strong>開始撰寫幾個簡單的API跟輸入輸出參數</strong><br></div><div><br></div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">testSwaggerGetParameter</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;value&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> The identifier.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/value&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> ID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 密碼</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;value&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> The passWord.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/value&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">string</span> PassWord &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestSwaggerController</span> : <span class="title">ApiController</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 測試Swagger的API</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="parameter"&gt;</span>The parameter.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        [<span class="meta">HttpGet</span>]</span><br><span class="line">        [<span class="meta">Route(<span class="meta-string">"api/testSwagger"</span>)</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> HttpResponseMessage <span class="title">Get</span>(<span class="params">[FromUri]testSwaggerGetParameter parameter</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (parameter != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                parameter.ID == <span class="string">"toyo"</span> &amp;&amp; </span><br><span class="line">                parameter.PassWord == <span class="string">"123456"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> Request.CreateResponse(HttpStatusCode.OK, <span class="string">"帳號密碼正確"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Request.CreateResponse(HttpStatusCode.OK, <span class="string">"帳號密碼錯誤摟!!!!!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>###<br><br><em>   接著先來測試API的運作是否正常<br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-NGEX0U-saSw/WABFAd9ksPI/AAAAAAAAH_c/AQuEDjoIGL4jbBYZs2PJ7B7lnAS7fB8xQCLcB/s1600/2.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-NGEX0U-saSw/WABFAd9ksPI/AAAAAAAAH_c/AQuEDjoIGL4jbBYZs2PJ7B7lnAS7fB8xQCLcB/s640/2.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">輸入正確的測試</td></tr></tbody></table><br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-i923xx2aY30/WABFABbQrdI/AAAAAAAAH_Y/cvhLOl1x6xw3aJ5Yvd-T7gBcePHTb8GCwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-i923xx2aY30/WABFABbQrdI/AAAAAAAAH_Y/cvhLOl1x6xw3aJ5Yvd-T7gBcePHTb8GCwCLcB/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">輸入錯誤的測試</td></tr></tbody></table><br><br>### 
-
-</em>   <strong>API都準備就緒後，來安裝Swagger吧</strong><br>首先打開Nuget搜尋<strong>Swashbuckle</strong>並安裝<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-I6T6On4UU0I/WABGKKbp_4I/AAAAAAAAH_g/thsWbtJB9d8M-wBG3oHoBHct0d6N-7ohwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-I6T6On4UU0I/WABGKKbp_4I/AAAAAAAAH_g/thsWbtJB9d8M-wBG3oHoBHct0d6N-7ohwCLcB/s640/1.png" alt></a></div>
-
-<p>接著打開專案屬性，設定輸出XML說明格式</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-Q35LXg-ZAbc/WABHQqOA9II/AAAAAAAAH_o/IqpSnKPL7AIkGskPH8LPMKDBYKS-cJvNACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-Q35LXg-ZAbc/WABHQqOA9II/AAAAAAAAH_o/IqpSnKPL7AIkGskPH8LPMKDBYKS-cJvNACLcB/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-kTvzjXCAY7Q/WABHWnjk79I/AAAAAAAAH_s/WYApFDnj0RACcVPP3KQC9qGsgdxf3a3swCLcB/s1600/2.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-kTvzjXCAY7Q/WABHWnjk79I/AAAAAAAAH_s/WYApFDnj0RACcVPP3KQC9qGsgdxf3a3swCLcB/s640/2.png" alt></a></div>
-
-<p>打開SwaggerConfig做些設定</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-3KPOfrFBs7A/WABHvcNMO4I/AAAAAAAAH_w/-tsOz_SqAGcvVxxSOOwok_Q1yTpZyDAiQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-3KPOfrFBs7A/WABHvcNMO4I/AAAAAAAAH_w/-tsOz_SqAGcvVxxSOOwok_Q1yTpZyDAiQCLcB/s1600/1.png" alt></a></div>
-
-<p>在第一百行的地方把註解拿掉</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-sNuzZJH1_Tk/WABH-ckCYAI/AAAAAAAAH_0/dY91muQCTvAggbaSNAxXFuf687P37-f4wCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-sNuzZJH1_Tk/WABH-ckCYAI/AAAAAAAAH_0/dY91muQCTvAggbaSNAxXFuf687P37-f4wCLcB/s640/1.png" alt></a></div>
-
-<p>在最下面補上以下程式碼</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-LZWGCrO2m1E/WABIPqVRXuI/AAAAAAAAH_4/XDwqWQFF4zIfyBMKgjUfNqisGADqPMPvQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-LZWGCrO2m1E/WABIPqVRXuI/AAAAAAAAH_4/XDwqWQFF4zIfyBMKgjUfNqisGADqPMPvQCLcB/s640/1.png" alt></a></div>
-
-<p>### </p>
-<ul>
-<li>重新執行WebAPI，並且在網址列輸入……./Swagger<br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-VKr_8qKHN7Y/WABIxRpt8gI/AAAAAAAAH_8/XaVeA3uG-9whtv0DrZ7DQYIzKXjaHryYgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-VKr_8qKHN7Y/WABIxRpt8gI/AAAAAAAAH_8/XaVeA3uG-9whtv0DrZ7DQYIzKXjaHryYgCLcB/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">看到API被輸出成規格了，參數的註解是跟著Summary的</td></tr></tbody></table><div><br></div><div><br></div><div><br></div><div>來測試看看!!!</div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-651X7h-rIVw/WABJN-3Jf-I/AAAAAAAAIAA/iBthsKVDiscN_ItWjk4WUUSgemSLEfDLQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-651X7h-rIVw/WABJN-3Jf-I/AAAAAAAAIAA/iBthsKVDiscN_ItWjk4WUUSgemSLEfDLQCLcB/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-JPjRZMJusSE/WABJOPutBbI/AAAAAAAAIAE/aFON9GjhDe0HKHY_jjJ8M8JfstfCDLoLgCLcB/s1600/2.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-JPjRZMJusSE/WABJOPutBbI/AAAAAAAAIAE/aFON9GjhDe0HKHY_jjJ8M8JfstfCDLoLgCLcB/s640/2.png" alt></a></div><div><br></div><div><br></div><div><br></div><div><br></div><div>最後，Swagger雖然已經非常好用了，也能符合大部分的情境運用，但還是有些美中不足的地方，例如如果今天API部分資訊要帶在Header裡面傳給API，在預設產生的地方是沒有提供可以輸入的地方。</div><div><br></div><div>但慶幸的是Swagger可以很彈性的去改寫這張最後會產生的View，可以自己擴充需要的欄位，下一篇在來介紹如何客製化Swagger頁面!!!</div><div><br></div><div><br></div><div><br></div><div><br></div>
-
-</li>
-</ul>
-<h4 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h4><div><br><br>1.  <a href="http://kevintsengtw.blogspot.tw/2015/12/aspnet-web-api-swagger.html" target="_blank" rel="noopener">mrkt&nbsp;- ASP.NET Web API 文件產生器 - 使用 Swagger</a><br>2.  <a href="http://kevintsengtw.blogspot.tw/2015/12/swashbuckle-swagger-for-web-api.html" target="_blank" rel="noopener">mrkt-&nbsp;Swashbuckle - Swagger for Web Api 顯示內容的調整</a></div><div><br></div><div><br></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1779,7 +1760,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">189</span>
+                  <span class="site-state-item-count">190</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1891,7 +1872,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

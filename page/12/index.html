@@ -293,6 +293,143 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/" itemprop="url">[swift]  IOS地圖運用 (6) 透過CLGeocoder轉換經緯度與地址</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-12T11:03:00+08:00">
+                2015-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>IOS提供CLGeocoder將地址轉成經緯度,或是把經緯度轉換成地址,詳細語法如下 </p>
+<ul>
+<li>記得先Import MapKit</li>
+<li><p>地址轉經緯度(geocodeAddressString) <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> geoCoder = <span class="type">CLGeocoder</span>()</span><br><span class="line">geoCoder.geocodeAddressString(<span class="string">"這邊帶入地址"</span>, completionHandler: &#123;</span><br><span class="line">   (placemarks:[<span class="type">AnyObject</span>]!,error:<span class="type">NSError!</span>) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">   <span class="keyword">if</span> error != <span class="literal">nil</span>&#123;</span><br><span class="line">      <span class="built_in">println</span>(error)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> placemarks != <span class="literal">nil</span> &amp;&amp; placemarks.<span class="built_in">count</span> &gt; <span class="number">0</span>&#123;</span><br><span class="line">      <span class="keyword">let</span> placemark = placemarks[<span class="number">0</span>] <span class="keyword">as</span> <span class="type">CLPlacemark</span></span><br><span class="line">      <span class="comment">//placemark.location.coordinate 取得經緯度的參數   &#125;</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+</li>
+<li><p>經緯度轉地址的方法 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> geoCoder = <span class="type">CLGeocoder</span>()</span><br><span class="line">geoCoder.reverseGeocodeLocation(<span class="type">CLLocation</span>(latitude: <span class="number">25.024839</span> , longitude: <span class="number">121.549170</span>), completionHandler: &#123;</span><br><span class="line">   (placemarks:[<span class="type">AnyObject</span>]!,error:<span class="type">NSError!</span>) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">   <span class="keyword">if</span> error != <span class="literal">nil</span>&#123;</span><br><span class="line">      <span class="built_in">println</span>(error)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//name         街道地址</span></span><br><span class="line">   <span class="comment">//country      國家</span></span><br><span class="line">   <span class="comment">//province     省</span></span><br><span class="line">   <span class="comment">//locality     市</span></span><br><span class="line">   <span class="comment">//sublocality  縣.區</span></span><br><span class="line">   <span class="comment">//route        街道、路</span></span><br><span class="line">   <span class="comment">//streetNumber 門牌號碼</span></span><br><span class="line">   <span class="comment">//postalCode   郵遞區號</span></span><br><span class="line">   <span class="keyword">if</span> placemarks != <span class="literal">nil</span> &amp;&amp; placemarks.<span class="built_in">count</span> &gt; <span class="number">0</span>&#123;</span><br><span class="line">      <span class="keyword">let</span> placemark = placemarks[<span class="number">0</span>] <span class="keyword">as</span> <span class="type">CLPlacemark</span></span><br><span class="line">      <span class="comment">//這邊拼湊轉回來的地址</span></span><br><span class="line">      <span class="comment">//placemark.name</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/11/swift-製作動畫/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1534,136 +1671,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/04/swift-NetWork-2-非同步方式取得API資訊/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/04/swift-NetWork-2-非同步方式取得API資訊/" itemprop="url">[swift] NetWork (2) 非同步方式取得API資訊</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-04T15:39:00+08:00">
-                2015-03-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/04/swift-NetWork-2-非同步方式取得API資訊/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/04/swift-NetWork-2-非同步方式取得API資訊/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>為了避免撈取API資料太久而讓整個APP卡住,所以建議撈取API資料時都另外開出一個queue來非同步執行 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url:<span class="type">NSURL</span> = <span class="type">NSURL</span>(string: <span class="string">"http://xxx.com.tw/api/getdata"</span>)!;</span><br><span class="line"><span class="keyword">let</span> request:<span class="type">NSMutableURLRequest</span> = <span class="type">NSMutableURLRequest</span>(<span class="type">URL</span>: url, cachePolicy: <span class="type">NSURLRequestCachePolicy</span>.<span class="type">ReloadIgnoringLocalCacheData</span>, timeoutInterval: <span class="number">10</span>);</span><br><span class="line">request.<span class="type">HTTPMethod</span> = <span class="string">"POST"</span>;</span><br><span class="line">request.<span class="type">HTTPBody</span> = <span class="string">"yourdata"</span>.dataUsingEncoding(<span class="type">NSUTF8StringEncoding</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//新增一個queue來執行API,避免API撈取資料太久把整個APP卡住</span></span><br><span class="line"><span class="keyword">let</span> queue :<span class="type">NSOperationQueue</span> = <span class="type">NSOperationQueue</span>();</span><br><span class="line"><span class="comment">//非同步方式取得資料</span></span><br><span class="line"><span class="type">NSURLConnection</span>.sendAsynchronousRequest(request, queue: queue, completionHandler:&#123; (response: <span class="type">NSURLResponse!</span>, data: <span class="type">NSData!</span>, error: <span class="type">NSError!</span>) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">   <span class="keyword">var</span> err:<span class="type">String?</span> = error?.description;</span><br><span class="line">   <span class="keyword">if</span>(data != <span class="literal">nil</span>  &amp;&amp; error == <span class="literal">nil</span>)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="keyword">let</span> responseString = <span class="type">NSString</span>(data: data, encoding: <span class="type">NSUTF8StringEncoding</span>);</span><br><span class="line">      <span class="built_in">println</span>(<span class="string">"responseString = \(responseString)"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1716,7 +1723,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">189</span>
+                  <span class="site-state-item-count">190</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1828,7 +1835,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

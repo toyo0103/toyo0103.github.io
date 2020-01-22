@@ -293,6 +293,140 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/12/14/【SQL】遞迴/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/12/14/【SQL】遞迴/" itemprop="url">【SQL】遞迴</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+08:00">
+                2015-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/14/【SQL】遞迴/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/14/【SQL】遞迴/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>有張表格如下，Parent欄位代表他的父層的RegionID，所以裡面包含所有縣市、行政區、鄉里等資料，那要如何用SQL遞迴的方式把台北市用階層的方式表列出來呢?<br>台北市 &gt; 信義區、大安區、中正區…. &gt;&nbsp;港華里、老泉里…..</p>
+<p><a href="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" alt></a></p>
+<p>用CTE的寫法可以解決，把台北市當做茅點，然後Join自己即可達到遞迴的效果</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> 遞迴 <span class="keyword">as</span>(</span><br><span class="line"><span class="comment">------茅點 start-------</span></span><br><span class="line"><span class="keyword">SELECT</span> RegionID , <span class="keyword">Name</span></span><br><span class="line"><span class="keyword">FROM</span> Region a</span><br><span class="line"><span class="keyword">WHERE</span> RegionID = <span class="number">1</span> <span class="comment">--台北市</span></span><br><span class="line"><span class="comment">------茅點 end ---------</span></span><br><span class="line"><span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"><span class="keyword">select</span> b.RegionID , b.name</span><br><span class="line"><span class="keyword">from</span> Region b</span><br><span class="line"><span class="keyword">join</span> 遞迴 <span class="keyword">on</span>  b.Parent = 遞迴.RegionID</span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 遞迴</span><br></pre></td></tr></table></figure>
+<p>搜尋出來的結果<br><a href="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" alt></a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/12/08/AutoMapper與Json-NET-JObject對應問題/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1576,143 +1710,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/" itemprop="url">[swift]  IOS地圖運用 (6) 透過CLGeocoder轉換經緯度與地址</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-12T11:03:00+08:00">
-                2015-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>IOS提供CLGeocoder將地址轉成經緯度,或是把經緯度轉換成地址,詳細語法如下 </p>
-<ul>
-<li>記得先Import MapKit</li>
-<li><p>地址轉經緯度(geocodeAddressString) <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> geoCoder = <span class="type">CLGeocoder</span>()</span><br><span class="line">geoCoder.geocodeAddressString(<span class="string">"這邊帶入地址"</span>, completionHandler: &#123;</span><br><span class="line">   (placemarks:[<span class="type">AnyObject</span>]!,error:<span class="type">NSError!</span>) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">   <span class="keyword">if</span> error != <span class="literal">nil</span>&#123;</span><br><span class="line">      <span class="built_in">println</span>(error)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> placemarks != <span class="literal">nil</span> &amp;&amp; placemarks.<span class="built_in">count</span> &gt; <span class="number">0</span>&#123;</span><br><span class="line">      <span class="keyword">let</span> placemark = placemarks[<span class="number">0</span>] <span class="keyword">as</span> <span class="type">CLPlacemark</span></span><br><span class="line">      <span class="comment">//placemark.location.coordinate 取得經緯度的參數   &#125;</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>經緯度轉地址的方法 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> geoCoder = <span class="type">CLGeocoder</span>()</span><br><span class="line">geoCoder.reverseGeocodeLocation(<span class="type">CLLocation</span>(latitude: <span class="number">25.024839</span> , longitude: <span class="number">121.549170</span>), completionHandler: &#123;</span><br><span class="line">   (placemarks:[<span class="type">AnyObject</span>]!,error:<span class="type">NSError!</span>) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">   <span class="keyword">if</span> error != <span class="literal">nil</span>&#123;</span><br><span class="line">      <span class="built_in">println</span>(error)</span><br><span class="line">      <span class="keyword">return</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//name         街道地址</span></span><br><span class="line">   <span class="comment">//country      國家</span></span><br><span class="line">   <span class="comment">//province     省</span></span><br><span class="line">   <span class="comment">//locality     市</span></span><br><span class="line">   <span class="comment">//sublocality  縣.區</span></span><br><span class="line">   <span class="comment">//route        街道、路</span></span><br><span class="line">   <span class="comment">//streetNumber 門牌號碼</span></span><br><span class="line">   <span class="comment">//postalCode   郵遞區號</span></span><br><span class="line">   <span class="keyword">if</span> placemarks != <span class="literal">nil</span> &amp;&amp; placemarks.<span class="built_in">count</span> &gt; <span class="number">0</span>&#123;</span><br><span class="line">      <span class="keyword">let</span> placemark = placemarks[<span class="number">0</span>] <span class="keyword">as</span> <span class="type">CLPlacemark</span></span><br><span class="line">      <span class="comment">//這邊拼湊轉回來的地址</span></span><br><span class="line">      <span class="comment">//placemark.name</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1765,7 +1762,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">189</span>
+                  <span class="site-state-item-count">190</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1877,7 +1874,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

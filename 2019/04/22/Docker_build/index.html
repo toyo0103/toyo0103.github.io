@@ -416,13 +416,13 @@
 <p><code>From</code> : 表示你這個 Image 是以哪一個當作 Base，以這次的案例為例，我們選擇微軟官方提供的 mcr.microsoft.com/dotnet/framework/aspnet Image 作為 base，因為它已經幫我們安裝好 IIS 、.net Framework，這樣我們只要專注在我們開發的程式即可。</p>
 <p><code>COPY</code> : dockerfile 所屬資料夾所有的內容複製到 container 裡面的 <code>c:/inetpub/wwwroot</code>，也就是 IIS 的預設目錄</p>
 <p><br></p>
-<h2 id="Docker-build"><a href="#Docker-build" class="headerlink" title="Docker build"></a>Docker build</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker build -t &lt;ImageName&gt;:&lt;Tag&gt; &lt;Dockerfile Path&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker build -t my_first_docker_image:latest -t my_first_docker_image:1.0.0 .</span></span><br></pre></td></tr></table></figure>
+<h2 id="Docker-build"><a href="#Docker-build" class="headerlink" title="Docker build"></a>Docker build</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker build -t &lt;ImageName&gt;:&lt;Tag&gt; &lt;Dockerfile Path&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker build -t my_first_docker_image:latest -t my_first_docker_image:1.0.0 .</span><br></pre></td></tr></table></figure>
 <p>docker build 時我為這個 Image 下了兩個 tag，分別為 latest、1.0.0</p>
 <p><img src="/images/20190422/10.png" alt="/images/20190422/10.png"></p>
 <p><br></p>
 <h2 id="Docker-Run"><a href="#Docker-Run" class="headerlink" title="Docker Run"></a>Docker Run</h2><p>執行剛剛我們自建的 Image，並且將本機的 9999 port mapping 到 container 內的 80 port</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d -p 9999:80 my_first_docker_image:latest</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker run -d -p 9999:80 my_first_docker_image:latest</span><br></pre></td></tr></table></figure>
 <p>這樣就可以看到網站啦</p>
 <p><img src="/images/20190422/11.png" alt="/images/20190422/11.png"></p>
 <p><br></p>
@@ -562,7 +562,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">189</span>
+                  <span class="site-state-item-count">190</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -690,7 +690,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

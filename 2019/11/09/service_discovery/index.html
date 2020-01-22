@@ -94,7 +94,8 @@
 <meta property="og:image" content="https://toyo0103.github.io/images/20191109/1.gif">
 <meta property="og:image" content="https://toyo0103.github.io/images/20191109/2.png">
 <meta property="og:image" content="https://toyo0103.github.io/images/20191109/3.png">
-<meta property="og:updated_time" content="2019-11-09T16:01:57.128Z">
+<meta property="og:image" content="https://toyo0103.github.io/images/20191109/4.png">
+<meta property="og:updated_time" content="2020-01-22T11:19:58.395Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Service Discovery">
 <meta name="twitter:description" content="( https://www.codeprimers.com/service-discovery-in-microservice-architecture/ )  前言傳統上一組服務通常都會搭配 DNS + Load balance + serivce cluster, 服務要呼叫時也都是直接打 Domain 讓 Load balance 去導流。 不過這也面臨了管理 Domain 與服務間的複雜">
@@ -394,7 +395,9 @@
 <p>Client 在要叫用 service 時, 先透過 service name 詢問有哪些節點可用, 而 service discovery 也能準確地回應有哪些目前還是健康的節點可供呼叫 </p>
 <p><img src="/images/20191109/3.png" alt="/images/20191109/3.png"></p>
 <p>當節點損壞時, 以 container 的案例, 會直接換掉不健康的 container 重長一組, 而這又會回到圖一註冊的流程。</p>
-<p>更細緻一點的作法還有對 service discovery 回應的列表做快取，例如快取 1s，當服務自己要被收掉時, 做好 graceful shutdown 先把自己從服務列表中 deregister , 並且等待 3s 後才關機，避免快取到一秒的 Client 打來你剛好停止服務。</p>
+<p>更細緻一點的作法還有對 service discovery 回應的列表做快取，例如快取 1 秒，當服務自己要被收掉時, 做好 graceful shutdown 先把自己從服務列表中 deregister , 並且等待 3 秒後才關機，避免快取到的 Client 打來你剛好停止服務。</p>
+<p>或是對服務加上 Tag ，當特定用戶或 VIP 連進來時可以透過搜尋特定機器去執行</p>
+<p><img src="/images/20191109/4.png" alt="/images/20191109/4.png"></p>
 <p><br></p>
 <h1 id="面臨的問題"><a href="#面臨的問題" class="headerlink" title="面臨的問題"></a>面臨的問題</h1><p>但並不是所有事情都是如此美好, 公司目前導入這些機制雖然可以大幅簡化管理內部服務 domain 這類的問題, 但對於 load balance，即選取適合的節點這點上還有一些問題要克服，例如傳統 ELB 這類的服務都會依據每個節點的回應速度來判斷接下來導流的分配，但 service discovery 因為 request 並不會經過它，所以相關 latancy 也無從監控與觀察, 所以 load balance 這題必須額外拉出來做相對應的監控機制。</p>
 <p>再來當服務橫跨 vm 跟 k8s 時情境就變得更複雜，不過這些題目等到之後有明確的方向再做整理好了，久違的文章雖然都沒寫到 code，但還是把一些觀念記錄下來。相關的實作等之後有空再補吧 (逃)</p>
@@ -439,6 +442,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/22/aynclocal_threadlocal/" rel="prev" title="AsyncLocal and ThreadLocal">
+                AsyncLocal and ThreadLocal <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -527,7 +534,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">189</span>
+                  <span class="site-state-item-count">190</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -655,7 +662,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

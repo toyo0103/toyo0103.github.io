@@ -293,6 +293,171 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/25/【CI-CD】1-如何透過VSTS來達成CI的目標/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/25/【CI-CD】1-如何透過VSTS來達成CI的目標/" itemprop="url">【CI/CD】1. 如何透過VSTS來達成CI的目標</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-25T17:28:00+08:00">
+                2018-01-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/VSTS建置CI-CD/" itemprop="url" rel="index">
+                    <span itemprop="name">VSTS建置CI-CD</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/25/【CI-CD】1-如何透過VSTS來達成CI的目標/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/25/【CI-CD】1-如何透過VSTS來達成CI的目標/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>以下是Wiki對於CI的解釋</p>
+<div class="note info"><p>持續整合（英語：Continuous integration，縮寫CI）是一種軟體工程流程，是將所有軟體工程師對於軟體的工作副本持續整合到共用主線（mainline）的一種舉措。<br>該名稱最早由[1]葛來迪·布區（Grady Booch）在他的布區方法[2]中提出，不過他並沒有提到要每天整合數次。之後該舉措成為極限編程（extreme programming）的一部份時，其中建議每天應整合超過一次，甚至達到數十次。<br>[3]在測試驅動開發（TDD）的作法中，通常還會搭配自動單元測試。持續整合的提出主要是為解決軟體進行系統整合時面臨的各項問題，極限編程稱這些問題為整合地獄（integration hell）。</p></div>
+<p>而自己對CI的見解是，透過軟體版本控管機制，持續將每個分支每次修改進行整合，並且透過<strong>自動化</strong>的測試、佈署、執行報告來控管軟體品質。</p>
+<div class="note info"><p>參考 : <a href="https://dotblogs.com.tw/hatelove/archive/2011/12/25/introducing-continuous-integration.aspx" target="_blank" rel="noopener">[軟體工程]持續整合 (Continuous integration, CI) 簡介 - 91</a></p></div>
+<p>而這篇是要寫如何透過VSTS來達成此目標，跟整個設定的過程，先來整理要達成的目標項目。</p>
+<p>希望<br>1.<strong>版控更新時，自動建置</strong><br>2.<strong>自動執行單元測試</strong><br>3.<strong>將建置好的檔案放到佈署資料夾(</strong>之後讓CD接手，做自動化佈署到正式機、測試機..等<strong>)</strong><br>4.<strong>回報上述執行結果</strong></p>
+<h3 id="版控更新時，自動建置"><a href="#版控更新時，自動建置" class="headerlink" title="版控更新時，自動建置"></a>版控更新時，自動建置</h3><div><br><br>#### 1.<span style="font-weight: normal;">到VSTS網站頁面，選擇</span><strong>Build and Release&nbsp; &gt;&nbsp; +New</strong><br></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-XS-Ogl-wsag/WmmPVNrH_bI/AAAAAAAAIV8/cjl3VdVp6gsL11fiftfSCIcec9EsE_gGgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-XS-Ogl-wsag/WmmPVNrH_bI/AAAAAAAAIV8/cjl3VdVp6gsL11fiftfSCIcec9EsE_gGgCLcBGAs/s640/1.png" alt></a></div><div><strong>
+</strong></div><div><br></div><div><br><br>#### 2.<span style="font-weight: normal;">選擇</span><strong>Empty process</strong><br></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-qw_0GPoI3i4/WmmPmH3ClGI/AAAAAAAAIWA/pMV4k7v1uZQlucvGW5U0dy_Mu2MjwCVdQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-qw_0GPoI3i4/WmmPmH3ClGI/AAAAAAAAIWA/pMV4k7v1uZQlucvGW5U0dy_Mu2MjwCVdQCLcBGAs/s400/1.png" alt></a></div>
+
+<p>Process Agent queue設定</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-nv9FB-OKBu8/WmmiC6TnyPI/AAAAAAAAIYs/unfIYRSe9wgUs1490wBHMKwp9_bOsAC_QCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-nv9FB-OKBu8/WmmiC6TnyPI/AAAAAAAAIYs/unfIYRSe9wgUs1490wBHMKwp9_bOsAC_QCLcBGAs/s640/1.png" alt></a></div>
+
+<h4 id="3-加入Nuget-restore-Task，因為我們專案都有用Nuget，所以需要在建置之前先還原Nuget，設定如下"><a href="#3-加入Nuget-restore-Task，因為我們專案都有用Nuget，所以需要在建置之前先還原Nuget，設定如下" class="headerlink" title="3.加入Nuget restore Task，因為我們專案都有用Nuget，所以需要在建置之前先還原Nuget，設定如下"></a>3.<span style="font-weight: normal;">加入</span><strong>Nuget restore Task</strong>，<span style="font-weight: normal;">因為我們專案都有用Nuget，所以需要在建置之前先還原Nuget，設定如下</span></h4><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-hFBqYKbzhfI/WmmUkjd318I/AAAAAAAAIWc/VnQOMKDfOWUFlsdbTwtgOzDsuEo1HyDWwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-hFBqYKbzhfI/WmmUkjd318I/AAAAAAAAIWc/VnQOMKDfOWUFlsdbTwtgOzDsuEo1HyDWwCLcBGAs/s640/1.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-8bU6NhV_axk/WmmSF6nLdzI/AAAAAAAAIWQ/xR8dyhcgSP8e9s4c5pukjKhgmiqKKmyYwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-8bU6NhV_axk/WmmSF6nLdzI/AAAAAAAAIWQ/xR8dyhcgSP8e9s4c5pukjKhgmiqKKmyYwCLcBGAs/s640/1.png" alt></a></div><br>這邊Feed to use 我選擇Feeds in my Nuget.config，原因是公司專案有用自己開發的Nuget套件，而那些Nuget放的位置就需要自訂的Config讓建置機器知道，否則抓不到那些套件，待會建置就會錯誤，如果專案沒有用內部Nuget Server的套件，就選第一個即可。<br><br><div class="note info"><p>通常如果我們有用私人的Nuget套件，一定會在VS設定套件來源，而這個設定檔就會放在底下這個位置<br>%appdata%\NuGet\NuGet.Config<br>把檔案放進版控中，就可以讓VSTS選的到了</p></div><br><br><br>#### 4.<span style="font-weight: normal;">加入</span><strong>Build Solution Task</strong><br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-P83wkuHiW_Q/WmmU9NttxhI/AAAAAAAAIWg/eKcneONO0H0amRUTTrN0KmMSpKnIHFaCgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-P83wkuHiW_Q/WmmU9NttxhI/AAAAAAAAIWg/eKcneONO0H0amRUTTrN0KmMSpKnIHFaCgCLcBGAs/s400/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-VpXPU2_Rkb8/WmmVvzSQSBI/AAAAAAAAIWs/Mpu-mZu4gqEzXQBfEqurgLBwRxTc2fp_ACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-VpXPU2_Rkb8/WmmVvzSQSBI/AAAAAAAAIWs/Mpu-mZu4gqEzXQBfEqurgLBwRxTc2fp_ACLcBGAs/s640/1.png" alt></a></div><strong><br>*</strong>這邊MSBuild Arguments裡面的PublishProfile=CICD，意思是說我們要用的發行檔名稱，而名稱就做CICD，所以等等我們會回VisualStudio建立一個名叫CICD的發行檔<br><br>*Configuration，是說我要用Debug的組態檔來建置，如果你不知道組態檔是什麼，請看<br><div class="note info"><p>參考 : <a href="http://kevintsengtw.blogspot.tw/2014/08/webconfig.html" target="_blank" rel="noopener">發佈網站時依據組態設定的不同而轉換 Web.Config   -  MRKT</a></p></div><br><br><br>#### 5.建立CICD發行檔<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-fXHi2n6VZFM/WmmYCGCjFAI/AAAAAAAAIW4/5zbkFrA19Fon58CJBVLTEUJR3Chqz50iQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-fXHi2n6VZFM/WmmYCGCjFAI/AAAAAAAAIW4/5zbkFrA19Fon58CJBVLTEUJR3Chqz50iQCLcBGAs/s400/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-l1gb4UnmpmM/WmmYYZTNDxI/AAAAAAAAIW8/0HjBNGwjRNMIErNyx8lrVf4Hy7TZ88x9ACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-l1gb4UnmpmM/WmmYYZTNDxI/AAAAAAAAIW8/0HjBNGwjRNMIErNyx8lrVf4Hy7TZ88x9ACLcBGAs/s400/1.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-32aEvFZCe6g/WmmZW11jZ0I/AAAAAAAAIXI/2Ei-9zh3KhQx06veBMtbWEa7H4tc3idvgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-32aEvFZCe6g/WmmZW11jZ0I/AAAAAAAAIXI/2Ei-9zh3KhQx06veBMtbWEa7H4tc3idvgCLcBGAs/s400/1.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-1RqfQqrD0C8/WmmZoZZViaI/AAAAAAAAIXM/34faHBlj3c4KF4xz7FwZnZmWayUpSodlwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-1RqfQqrD0C8/WmmZoZZViaI/AAAAAAAAIXM/34faHBlj3c4KF4xz7FwZnZmWayUpSodlwCLcBGAs/s320/1.png" alt></a></div><br>你可以先用VS發行看看，應該會在專案的Root資料夾底下長出一個Publish的資料夾，底下內容如下<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-PzHy8-PeILA/WmmaFi-990I/AAAAAAAAIXU/lms69Y9-8BcER7sAvGlMt2x38tEUFQcagCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-PzHy8-PeILA/WmmaFi-990I/AAAAAAAAIXU/lms69Y9-8BcER7sAvGlMt2x38tEUFQcagCLcBGAs/s640/1.png" alt></a></div>之後WebDeply就靠這些檔案了。 回到VSTS繼續設定<br><br>#### 6.<span style="font-weight: normal;">加入</span>Visual Studio Test Task<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-QBXq7Esdoro/WmmarbzFXlI/AAAAAAAAIXc/yTYh8E4y8Uwq1NX4NTjHjxUJFoxvAJKvACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-QBXq7Esdoro/WmmarbzFXlI/AAAAAAAAIXc/yTYh8E4y8Uwq1NX4NTjHjxUJFoxvAJKvACLcBGAs/s400/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-Ik2JJshPoNw/WmmbErAetqI/AAAAAAAAIXg/iBT1z4W5SfUMPIwsR6Cgk8O5FC2Ox-KjwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-Ik2JJshPoNw/WmmbErAetqI/AAAAAAAAIXg/iBT1z4W5SfUMPIwsR6Cgk8O5FC2Ox-KjwCLcBGAs/s400/1.png" alt></a></div><div><br></div><div>紅框處是告訴這個Task，如何找到你的單元測試Dll來執行，如果你建立單元測試專案都是用預設的方式，那單元測試的專案名稱應該都會是 xxxTest，所以建置出來的Dll也會是xxxTest.dll，符合紅框預設尋找的條件，所以不用調整</div><div><br></div><div><br></div><div><br><br>#### 7.<span style="font-weight: 400;">加入</span>Copy Files Task<br></div><div>目的是如果前面幾個Task都通過執行到這邊，表示建置沒有問題，且單元測試全部通過，所發行出來的檔案，加下來要把這些檔案複製出來，準備移到成品資料夾</div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-Tr8vDR0SmDU/WmmciCbYKwI/AAAAAAAAIXw/5i0cUOgtWDQLXiCveVshcpqSZa1ZQscNACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-Tr8vDR0SmDU/WmmciCbYKwI/AAAAAAAAIXw/5i0cUOgtWDQLXiCveVshcpqSZa1ZQscNACLcBGAs/s400/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-kmgOU-k_3jY/Wmmc_n-HXlI/AAAAAAAAIX0/0P0WAy6oXRUmGStC-upMnLfFPWck3ydFACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-kmgOU-k_3jY/Wmmc_n-HXlI/AAAAAAAAIX0/0P0WAy6oXRUmGStC-upMnLfFPWck3ydFACLcBGAs/s640/1.png" alt></a></div><div><br></div><div>黑框遮掉的部分就跟之前一樣是專案名稱，我的專案名稱是XXX.Application，所以那個區段請自行置換。</div><div><br></div><div>另外還記得Publish這個資料夾嗎?這就是我們剛剛在Visual Studio設定在CICD發行檔的建置發行檔存放的位置，套上預設VSTS建置專案的資料夾變數位置，就變成這行的值了</div><div><br></div><div class="note info"><p>參考 : <a href="https://docs.microsoft.com/en-us/vsts/build-release/concepts/definitions/build/variables?tabs=batch" target="_blank" rel="noopener">VSTS Build variables</a> </p></div><br><br><br>####<br><br>#### 8.將成品資料夾內容丟到Drop資料夾<br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-88XzfFqDwog/WmmeuQ9zKzI/AAAAAAAAIYE/oIV5xH2wEgADVD-jNi-boqu6ZySliBYnwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-88XzfFqDwog/WmmeuQ9zKzI/AAAAAAAAIYE/oIV5xH2wEgADVD-jNi-boqu6ZySliBYnwCLcBGAs/s400/1.png" alt></a></div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-RJHr9xJXX60/Wmme3l784sI/AAAAAAAAIYI/Az3zsxDNF38IududQuL3s8zkk7WEDpGmQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-RJHr9xJXX60/Wmme3l784sI/AAAAAAAAIYI/Az3zsxDNF38IududQuL3s8zkk7WEDpGmQCLcBGAs/s640/1.png" alt></a></div><div><br></div><div><br></div><div><br></div><div>到這邊CI的任務大致完成，已經能將專案自動建置、單元測試、將成品打包準備佈署到Server，接下來如何將這成品佈署到Server就是CD的議題了，留待之後在說。</div><div><br></div><div><br></div><div>這邊還有最重要的一點，既然是持續整合，那這些任務如何自動化的持續整合，如果每次版控有異動都還要人來操作這些任務，那就失去了持續整合的意義。</div><div><br></div>
+
+<h3 id="將CI任務加上Trigger條件"><a href="#將CI任務加上Trigger條件" class="headerlink" title="將CI任務加上Trigger條件"></a>將CI任務加上Trigger條件</h3><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-mpvJaiE8Apc/WmmgTg2yIJI/AAAAAAAAIYY/7FH7zn14ovMWFtsIKCMYhFcW4k4Hm3SSACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-mpvJaiE8Apc/WmmgTg2yIJI/AAAAAAAAIYY/7FH7zn14ovMWFtsIKCMYhFcW4k4Hm3SSACLcBGAs/s640/1.png" alt></a></div><div>這邊設定意思是說，當這個專案的Develop分支有新的Commit進來時，剛剛設定的那些任務就會被自動化的執行。</div><div><br></div><div>而每次執行的結果如下</div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-22JmmaFCkjs/Wmmg5b-NLhI/AAAAAAAAIYg/H9clp3fIeF0NQsHTs96xEr3uSkvnExEfwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-22JmmaFCkjs/Wmmg5b-NLhI/AAAAAAAAIYg/H9clp3fIeF0NQsHTs96xEr3uSkvnExEfwCLcBGAs/s400/1.png" alt></a></div><div><br></div><div>點擊每一次進去可以看到執行的狀況，或是以及錯誤的Log</div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-GNDMtKmEkwg/WmmhlqGuDTI/AAAAAAAAIYo/7tgSawThmfQw6sYKRu9B9k2TkyHwXBG2ACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-GNDMtKmEkwg/WmmhlqGuDTI/AAAAAAAAIYo/7tgSawThmfQw6sYKRu9B9k2TkyHwXBG2ACLcBGAs/s640/1.png" alt></a></div><div><br></div><div><br></div><div><br></div><div><br></div><div>也可以手動排Queue，讓他立即依據現在最新版本或是特定版本去執行</div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-EJjqIGXvgro/Wmmik_1pz3I/AAAAAAAAIY4/8QLNaTEmJrMhAK871kW4yf_YLSyUlMQ5QCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-EJjqIGXvgro/Wmmik_1pz3I/AAAAAAAAIY4/8QLNaTEmJrMhAK871kW4yf_YLSyUlMQ5QCLcBGAs/s640/1.png" alt></a></div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-X-V_2Mj63Cs/Wmmi0um07kI/AAAAAAAAIY8/hEtz4yx2s94wJppHAoL2eT6jR0a9DIzgACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-X-V_2Mj63Cs/Wmmi0um07kI/AAAAAAAAIY8/hEtz4yx2s94wJppHAoL2eT6jR0a9DIzgACLcBGAs/s400/1.png" alt></a></div><div><br></div><div><br></div><div><br></div><div>Commit可以填入Git的Commit ID，如果不填就會用最新版執行建置。</div><div><br></div><div><br></div><div><br>下一篇預計接著寫CD的部分，如何接著將以上建置完的檔案分別佈署到Azure AppService以及VM機器上。<br><br>參考文章<br><br><a href="https://docs.microsoft.com/en-us/vsts/build-release/actions/ci-cd-part-1" target="_blank" rel="noopener">Create your first build and release | Microsoft Docs</a><br><br><a href="http://kevintsengtw.blogspot.tw/2014/08/webconfig.html" target="_blank" rel="noopener">發佈網站時依據組態設定的不同而轉換 Web.Config&nbsp; &nbsp;-&nbsp; MRKT</a><br><br><a href="https://dotblogs.com.tw/hatelove/archive/2011/12/25/introducing-continuous-integration.aspx" target="_blank" rel="noopener">[軟體工程]持續整合 (Continuous integration, CI) 簡介 - 91</a></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/24/【爬蟲】透過Selenium-WebDriver-爬網頁，以Instagram為例/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1657,169 +1822,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/21/【Unit-Test】Day-5-透過InternalsVisibleTo來達成單元測試的外部注入/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/21/【Unit-Test】Day-5-透過InternalsVisibleTo來達成單元測試的外部注入/" itemprop="url">【Unit Test】Day 5 - 透過InternalsVisibleTo來達成單元測試的外部注入</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-21T14:34:00+08:00">
-                2017-04-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/學習單元測試/" itemprop="url" rel="index">
-                    <span itemprop="name">學習單元測試</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/04/21/【Unit-Test】Day-5-透過InternalsVisibleTo來達成單元測試的外部注入/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/21/【Unit-Test】Day-5-透過InternalsVisibleTo來達成單元測試的外部注入/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="note info"><p>Demo檔案 : <a href="https://github.com/toyo0103/UnitTest_Day3/tree/UnitTest_Day5" target="_blank" rel="noopener">Git傳送門</a><br>請參照UnitTest_Day5的Branch</p></div>
-<p>延續昨日的進度，我們將呼叫API的RestSharp獨立出來，並且用依賴介面及外部注入的方式將IRestSharp注入到PTX來達成隔離，並且做到可測試性。</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-HjInxsBTGiI/WPmXSYDpTRI/AAAAAAAAIKw/KgSB2yeC2T48twP-CxCExImX9ijhXqHxwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.23.02.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-HjInxsBTGiI/WPmXSYDpTRI/AAAAAAAAIKw/KgSB2yeC2T48twP-CxCExImX9ijhXqHxwCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.23.02.png" alt></a></div>
-
-<p>但面臨令一個問題，如果今天開發的是共用套件類的專案，這樣變成要使用物件都必須知道該用什麼東西注入才可使用，這往往會造成使用者困擾，封裝性也不佳，因外部注入的IRestSharp是每個人都可以另外實作的。 甚至更深一層去想，究竟IRestSharp是否需要用Public讓外部使用者都知道有這個東西呢？ 是不是反而因為要達到可測試性而讓封裝這件事做得更差？</p>
-<p><strong>來看看另一種方式</strong></p>
-<p>假設我認為使用這個套件的人只要簡單的建立PTX後即可使用，至於內部如何呼叫API的實作使用者並不需要關心，那麼我們先將IRestSharp從建構子拿掉吧，並且做一個專門產生IRestSharp實體的Factory來滿足需求。</p>
-<p>撰寫IRestSharpFactory</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-8W6FoK7MRiA/WPmcVCDx-VI/AAAAAAAAILA/qpjugEjgNw06nPLvv6RqLB28XqGRWW78ACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.32.57.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-8W6FoK7MRiA/WPmcVCDx-VI/AAAAAAAAILA/qpjugEjgNw06nPLvv6RqLB28XqGRWW78ACLcB/s200/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.32.57.png" alt></a></div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 製作IRestSharp的工廠</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">IRestSharpFactory</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//這邊特別注意存取修飾子是用Internal</span></span><br><span class="line">        <span class="comment">//原因是我並不希望專案之外的人使用且知道有這東西</span></span><br><span class="line">        <span class="comment">//而internal剛好能滿足這需求</span></span><br><span class="line">        <span class="function"><span class="keyword">internal</span> <span class="keyword">static</span> IRestSharp <span class="title">Generate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//產生實體</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MyRestSharp();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>接著修改原本的PTX.cs<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTX</span></span><br><span class="line">    &#123;</span><br><span class="line">        IRestSharp _MyRestSharp</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//這邊改成用工廠建立MyRestSharp實體</span></span><br><span class="line">                <span class="keyword">return</span> IRestSharpFactory.Generate();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Construct</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">PTX</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//建構子參數移除</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        以下省略.....</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>這邊馬上面臨到一個問題，那我們怎麼Mock IRestSharp，昨天是放在建構子中並透過Nsubstitute來Mock<br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-gPv3l1uHmls/WPmehkxafVI/AAAAAAAAILQ/iR_X30LEPAcPwhxGNHDSUrjTx_AGPJ7rQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.53.09.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-gPv3l1uHmls/WPmehkxafVI/AAAAAAAAILQ/iR_X30LEPAcPwhxGNHDSUrjTx_AGPJ7rQCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.53.09.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;"><div class="separator" style="clear: both; text-align: left;">封裝性變好了，但也變得難以介入模擬外部行為</div></td></tr></tbody></table><br><strong>從IRestSharpFactory著手吧！！</strong><br><div class="note info"><p>想辦法讓<strong>IRestSharpFactory</strong>可以讓我們注入Mock的假物件</p></div><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 製作IRestSharp的工廠</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">IRestSharpFactory</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 此屬性只供UnitTest注入</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">internal</span> <span class="keyword">static</span> IRestSharp _IRestSharpForUnitTest;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">internal</span> <span class="keyword">static</span> IRestSharp <span class="title">Generate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//如果這個值不為Null,則表示單元測試所注入,直接回傳</span></span><br><span class="line">            <span class="keyword">if</span> (_IRestSharpForUnitTest != <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> _IRestSharpForUnitTest;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//產生實體</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MyRestSharp();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>這邊開了一個_IRestSharpForUnitTest屬性，讓外部能夠注入它，接著在Generate的方法中判斷，如果當_IRestSharpForUnitTest不為Null時，直接回傳（通常會特別在這個屬性寫上說明僅供單元測試使用，正常Production Code禁止使用！！）<br><br><strong>想辦法在單元測試中注入_IRestSharpForUnitTest</strong><br>你可能會發現在單元測試中看不到IRestSharpFactory….<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-432-uYA3xzA/WPmi7ubMQPI/AAAAAAAAILc/lRWIC9z0Rl4J-gDK4S3FqFH-IFAOb4dMQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.12.43.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-432-uYA3xzA/WPmi7ubMQPI/AAAAAAAAILc/lRWIC9z0Rl4J-gDK4S3FqFH-IFAOb4dMQCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.12.43.png" alt></a></div><br>原因是我們宣告成Internal，如果要能在專案之外看到就只能開成Public了，但回到最一開始討論的，不就是為了封裝才把他宣告成Internal嗎？如果又改回Public那我們這段工不就白費了，還好還有別的方法可以達成。<br><br><strong>告訴UnitTestDay3這個專案，除了它自己之外，還有誰能看到它宣告成Internal的類別與屬性方法</strong><br><strong>
-</strong>讓我們先打開<strong>UnitTestDay3</strong>專案的AssemblyInfo<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-xJUoNFOIdrs/WPmkLQsBL2I/AAAAAAAAILk/ZZ0cCPNog9QCsdYvinuDtv5sdIQmojNJQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.17.36.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-xJUoNFOIdrs/WPmkLQsBL2I/AAAAAAAAILk/ZZ0cCPNog9QCsdYvinuDtv5sdIQmojNJQCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.17.36.png" alt></a></div>寫下這行<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-IZGTMVt3-Lo/WPmkhpuNB7I/AAAAAAAAILo/uiMhb0tvoP8qSxl8ql46g_fS4VsrTxBRACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.19.05.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-IZGTMVt3-Lo/WPmkhpuNB7I/AAAAAAAAILo/uiMhb0tvoP8qSxl8ql46g_fS4VsrTxBRACLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.19.05.png" alt></a></div><br>InternalsVisibleTo這邊是要填AssemblyName，透過這個Attribute告訴<strong>UnitTestDay3</strong>這個專案還有誰能看到它內部的Internal。<br>而AssemblyName怎麼看呢？在專案上右鍵 &gt; 屬性<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-HfxlXJV0Eqw/WPml-pvikQI/AAAAAAAAIL0/VeJoBU8c2XEOV2StCNpE-njJpvnWsE6nQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.25.13.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-HfxlXJV0Eqw/WPml-pvikQI/AAAAAAAAIL0/VeJoBU8c2XEOV2StCNpE-njJpvnWsE6nQCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.25.13.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-8jsc7ogPU80/WPmmNjXGWVI/AAAAAAAAIL4/pKT3iPG1rIYC5c4-5yLrzjrACSJzaxeJQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.26.18.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-8jsc7ogPU80/WPmmNjXGWVI/AAAAAAAAIL4/pKT3iPG1rIYC5c4-5yLrzjrACSJzaxeJQCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.26.18.png" alt></a></div><br>如果你有很多單元測試專案需要能看到，InternalsVisibleTo是可以很多組的。<br><br>接著在單元測試中就可以看到啦<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-FJOWCQNSfqE/WPmnDZpn4dI/AAAAAAAAIMA/OnLezxrmtFcC-FrJT-E3FO1gyQlcgbNnACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.29.57.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-FJOWCQNSfqE/WPmnDZpn4dI/AAAAAAAAIMA/OnLezxrmtFcC-FrJT-E3FO1gyQlcgbNnACLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.29.57.png" alt></a></div>
-
-<p>這樣就達成我們想封裝起來的需求，卻也能讓單元測試進行注入，那今天就談到這吧！！</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1872,7 +1874,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">189</span>
+                  <span class="site-state-item-count">190</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1984,7 +1986,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

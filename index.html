@@ -293,6 +293,144 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2020/01/22/aynclocal_threadlocal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/01/22/aynclocal_threadlocal/" itemprop="url">AsyncLocal and ThreadLocal</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-01-22T14:00:00+08:00">
+                2020-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/01/22/aynclocal_threadlocal/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/01/22/aynclocal_threadlocal/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> ThreadLocal&lt;<span class="keyword">string</span>&gt; LocalString = <span class="keyword">new</span> ThreadLocal&lt;<span class="keyword">string</span>&gt;();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	LocalString.Value = <span class="string">"Value 1"</span>;</span><br><span class="line">	Console.WriteLine(<span class="string">$"【A】 Thread: <span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>, ExcutionContext: <span class="subst">&#123;Thread.CurrentThread.ExecutionContext.GetHashCode()&#125;</span> ,value: <span class="subst">&#123;LocalString.Value&#125;</span>"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> t1 = AsyncMethod();</span><br><span class="line"></span><br><span class="line">	Console.WriteLine(<span class="string">$"【D】 Thread: <span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>, ExcutionContext: <span class="subst">&#123;Thread.CurrentThread.ExecutionContext.GetHashCode()&#125;</span> ,value: <span class="subst">&#123;LocalString.Value&#125;</span>"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">await</span> t1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">AsyncMethod</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Console.WriteLine(<span class="string">$"【B】 Thread: <span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>, ExcutionContext: <span class="subst">&#123;Thread.CurrentThread.ExecutionContext.GetHashCode()&#125;</span> ,value: <span class="subst">&#123;LocalString.Value&#125;</span>"</span>);</span><br><span class="line"></span><br><span class="line">	LocalString.Value = <span class="string">"Value 3"</span>;</span><br><span class="line">	Console.WriteLine(<span class="string">$"【C】 Thread: <span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>, ExcutionContext: <span class="subst">&#123;Thread.CurrentThread.ExecutionContext.GetHashCode()&#125;</span> ,value: <span class="subst">&#123;LocalString.Value&#125;</span>"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">await</span> Task.Delay(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">	Console.WriteLine(<span class="string">$"【E】 Thread: <span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>, ExcutionContext: <span class="subst">&#123;Thread.CurrentThread.ExecutionContext.GetHashCode()&#125;</span> ,value: <span class="subst">&#123;LocalString.Value&#125;</span>"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//【A】 Thread: 14, ExcutionContext: 37151951 ,value: Value 1</span></span><br><span class="line"><span class="comment">//【B】 Thread: 14, ExcutionContext: 51676517 ,value: Value 1</span></span><br><span class="line"><span class="comment">//【C】 Thread: 14, ExcutionContext: 51676517 ,value: Value 3</span></span><br><span class="line"><span class="comment">//【D】 Thread: 14, ExcutionContext: 37151951 ,value: Value 3</span></span><br><span class="line"><span class="comment">//【E】 Thread: 16, ExcutionContext: 46128400 ,value:</span></span><br></pre></td></tr></table></figure>
+<p>ThreadLocal 非常容易理解, 每個 Thread 之間彼此是隔離的, 即便 ExcutionContext 不同, 但只要是同一個 Thread 都會是共用的。</p>
+<p>所以可以看到 await 之後, 因為不同 Thread 執行剩下的 Code , ThreadLocal 的值就變成預設的空值</p>
+<p><br></p>
+<h1 id="AsyncLocal"><a href="#AsyncLocal" class="headerlink" title="AsyncLocal"></a>AsyncLocal</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> AsyncLocal&lt;<span class="keyword">string</span>&gt; LocalString = <span class="keyword">new</span> AsyncLocal&lt;<span class="keyword">string</span>&gt;();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	LocalString.Value = <span class="string">"Value 1"</span>;</span><br><span class="line">	Console.WriteLine(<span class="string">$"【A】 Thread: <span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>, ExcutionContext: <span class="subst">&#123;Thread.CurrentThread.ExecutionContext.GetHashCode()&#125;</span> ,value: <span class="subst">&#123;LocalString.Value&#125;</span>"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> t1 = AsyncMethod();</span><br><span class="line"></span><br><span class="line">	Console.WriteLine(<span class="string">$"【D】 Thread: <span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>, ExcutionContext: <span class="subst">&#123;Thread.CurrentThread.ExecutionContext.GetHashCode()&#125;</span> ,value: <span class="subst">&#123;LocalString.Value&#125;</span>"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">await</span> t1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">AsyncMethod</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Console.WriteLine(<span class="string">$"【B】 Thread: <span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>, ExcutionContext: <span class="subst">&#123;Thread.CurrentThread.ExecutionContext.GetHashCode()&#125;</span> ,value: <span class="subst">&#123;LocalString.Value&#125;</span>"</span>);</span><br><span class="line"></span><br><span class="line">	LocalString.Value = <span class="string">"Value 3"</span>;</span><br><span class="line">	Console.WriteLine(<span class="string">$"【C】 Thread: <span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>, ExcutionContext: <span class="subst">&#123;Thread.CurrentThread.ExecutionContext.GetHashCode()&#125;</span> ,value: <span class="subst">&#123;LocalString.Value&#125;</span>"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">await</span> Task.Delay(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">	Console.WriteLine(<span class="string">$"【E】 Thread: <span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>, ExcutionContext: <span class="subst">&#123;Thread.CurrentThread.ExecutionContext.GetHashCode()&#125;</span> ,value: <span class="subst">&#123;LocalString.Value&#125;</span>"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//【A】 Thread: 14, ExcutionContext: 5705933 ,value: Value 1</span></span><br><span class="line"><span class="comment">//【B】 Thread: 14, ExcutionContext: 12517624 ,value: Value 1</span></span><br><span class="line"><span class="comment">//【C】 Thread: 14, ExcutionContext: 12517624 ,value: Value 3</span></span><br><span class="line"><span class="comment">//【D】 Thread: 14, ExcutionContext: 5705933 ,value: Value 1</span></span><br><span class="line"><span class="comment">//【E】 Thread: 8, ExcutionContext: 35765882 ,value: Value 3</span></span><br></pre></td></tr></table></figure>
+<p>AsyncLocal 會在每次需要切出 ExcutionContext 時複製一份給新的 ExcutionContext , 所以每個 ExcutionContext間的 AsyncLocal 都是獨立的，但同時可達跨 Thread , ExcutionContext 往下傳遞的特性。</p>
+<div class="note info"><p>參考文章</p>
+<p><a href="https://www.cnblogs.com/zkweb/p/7747162.html" target="_blank" rel="noopener">AsyncLocal的运作机制和陷阱</a></p>
+<p><a href="https://www.cnblogs.com/tcjiaan/p/5007737.html" target="_blank" rel="noopener">【.NET深呼吸】基於異步上下文的本地變量（AsyncLocal）</a></p>
+<p><a href="https://docs.microsoft.com/zh-tw/dotnet/api/system.threading.executioncontext?view=netframework-4.8" target="_blank" rel="noopener">ExecutionContext 類別</a></p></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/11/09/service_discovery/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -389,7 +527,9 @@
 <p>Client 在要叫用 service 時, 先透過 service name 詢問有哪些節點可用, 而 service discovery 也能準確地回應有哪些目前還是健康的節點可供呼叫 </p>
 <p><img src="/images/20191109/3.png" alt="/images/20191109/3.png"></p>
 <p>當節點損壞時, 以 container 的案例, 會直接換掉不健康的 container 重長一組, 而這又會回到圖一註冊的流程。</p>
-<p>更細緻一點的作法還有對 service discovery 回應的列表做快取，例如快取 1s，當服務自己要被收掉時, 做好 graceful shutdown 先把自己從服務列表中 deregister , 並且等待 3s 後才關機，避免快取到一秒的 Client 打來你剛好停止服務。</p>
+<p>更細緻一點的作法還有對 service discovery 回應的列表做快取，例如快取 1 秒，當服務自己要被收掉時, 做好 graceful shutdown 先把自己從服務列表中 deregister , 並且等待 3 秒後才關機，避免快取到的 Client 打來你剛好停止服務。</p>
+<p>或是對服務加上 Tag ，當特定用戶或 VIP 連進來時可以透過搜尋特定機器去執行</p>
+<p><img src="/images/20191109/4.png" alt="/images/20191109/4.png"></p>
 <p><br></p>
 <h1 id="面臨的問題"><a href="#面臨的問題" class="headerlink" title="面臨的問題"></a>面臨的問題</h1><p>但並不是所有事情都是如此美好, 公司目前導入這些機制雖然可以大幅簡化管理內部服務 domain 這類的問題, 但對於 load balance，即選取適合的節點這點上還有一些問題要克服，例如傳統 ELB 這類的服務都會依據每個節點的回應速度來判斷接下來導流的分配，但 service discovery 因為 request 並不會經過它，所以相關 latancy 也無從監控與觀察, 所以 load balance 這題必須額外拉出來做相對應的監控機制。</p>
 <p>再來當服務橫跨 vm 跟 k8s 時情境就變得更複雜，不過這些題目等到之後有明確的方向再做整理好了，久違的文章雖然都沒寫到 code，但還是把一些觀念記錄下來。相關的實作等之後有空再補吧 (逃)</p>
@@ -1524,13 +1664,13 @@
 <p><code>From</code> : 表示你這個 Image 是以哪一個當作 Base，以這次的案例為例，我們選擇微軟官方提供的 mcr.microsoft.com/dotnet/framework/aspnet Image 作為 base，因為它已經幫我們安裝好 IIS 、.net Framework，這樣我們只要專注在我們開發的程式即可。</p>
 <p><code>COPY</code> : dockerfile 所屬資料夾所有的內容複製到 container 裡面的 <code>c:/inetpub/wwwroot</code>，也就是 IIS 的預設目錄</p>
 <p><br></p>
-<h2 id="Docker-build"><a href="#Docker-build" class="headerlink" title="Docker build"></a>Docker build</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker build -t &lt;ImageName&gt;:&lt;Tag&gt; &lt;Dockerfile Path&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker build -t my_first_docker_image:latest -t my_first_docker_image:1.0.0 .</span></span><br></pre></td></tr></table></figure>
+<h2 id="Docker-build"><a href="#Docker-build" class="headerlink" title="Docker build"></a>Docker build</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker build -t &lt;ImageName&gt;:&lt;Tag&gt; &lt;Dockerfile Path&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker build -t my_first_docker_image:latest -t my_first_docker_image:1.0.0 .</span><br></pre></td></tr></table></figure>
 <p>docker build 時我為這個 Image 下了兩個 tag，分別為 latest、1.0.0</p>
 <p><img src="/images/20190422/10.png" alt="/images/20190422/10.png"></p>
 <p><br></p>
 <h2 id="Docker-Run"><a href="#Docker-Run" class="headerlink" title="Docker Run"></a>Docker Run</h2><p>執行剛剛我們自建的 Image，並且將本機的 9999 port mapping 到 container 內的 80 port</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -d -p 9999:80 my_first_docker_image:latest</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker run -d -p 9999:80 my_first_docker_image:latest</span><br></pre></td></tr></table></figure>
 <p>這樣就可以看到網站啦</p>
 <p><img src="/images/20190422/11.png" alt="/images/20190422/11.png"></p>
 <p><br></p>
@@ -1711,174 +1851,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/03/21/microservice_battlefield/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/21/microservice_battlefield/" itemprop="url">微服務的戰場</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-03-21T23:30:00+08:00">
-                2019-03-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/03/21/microservice_battlefield/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/21/microservice_battlefield/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="/images/20190321/0.jpg" alt="/images/20190321/0.jpg"></p>
-<p>整理一下最近在學習的 Road map，大致上圍繞著微服務</p>
-<ul>
-<li><p>微服務</p>
-<ul>
-<li>什麼是微服務</li>
-<li><p>微服務的好幫手</p>
-<ul>
-<li>Container<ul>
-<li><a href="/2019/02/21/dockerforwindows_vs_dockeronwindowserver/">Docker for Windows 和 Docker on Windows Server 一樣嗎?</a></li>
-<li><a href="/2019/04/22/Docker_build/">Docker Build Image</a></li>
-<li>Docker Compose</li>
-<li><a href="/2019/02/22/docker_debug_skill/">偵錯技巧</a></li>
-<li><a href="/2019/02/20/windows_container_dnsserver/">Widows Container DNS Server 問題</a></li>
-<li><a href="/2019/02/19/windows_contianer_iamrole_/">Widows Container IAM Role 問題</a></li>
-<li><a href="/2019/03/23/windows_container_smb_/">Windosw Container SMB </a></li>
-</ul>
-</li>
-<li>Queue<ul>
-<li>RabbitMQ</li>
-<li><a href="/2019/08/19/nats_streaming/">NATS</a></li>
-</ul>
-</li>
-<li>Self Hosting<ul>
-<li>Owin</li>
-</ul>
-</li>
-<li>Graceful Shutdown</li>
-</ul>
-</li>
-<li>部署<ul>
-<li>K8S</li>
-<li>docker swarm</li>
-<li><a href="/2019/04/30/jenkins_update_remote_docker_container/">透過 Jenkins 重新部屬遠端機器 Container</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1931,7 +1903,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">189</span>
+                  <span class="site-state-item-count">190</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -2043,7 +2015,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -293,6 +293,189 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/06/27/【LeetCode】Fraction to Recurring Decimal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/27/【LeetCode】Fraction to Recurring Decimal/" itemprop="url">【LeetCode】Fraction to Recurring Decimal</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-06-27T14:41:00+08:00">
+                2018-06-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
+                    <span itemprop="name">LeetCode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/27/【LeetCode】Fraction to Recurring Decimal/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/27/【LeetCode】Fraction to Recurring Decimal/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="題目"><a href="#題目" class="headerlink" title="#題目"></a>#題目</h1><p>Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.</p>
+<p>If the fractional part is repeating, enclose the repeating part in parentheses.</p>
+<p>Example 1:</p>
+<div class="note info"><p>Input: numerator = 1, denominator = 2<br>Output: “0.5”</p></div>
+<p>Example 2:</p>
+<div class="note info"><p>Input: numerator = 2, denominator = 1<br>Output: “2”</p></div>
+<p>Example 3:</p>
+<div class="note info"><p>Input: numerator = 2, denominator = 3<br>Output: “0.(6)”</p></div>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Solution</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">FractionToDecimal</span>(<span class="params"><span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator</span>)</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="解題"><a href="#解題" class="headerlink" title="#解題"></a>#解題</h1><h2 id="案例一"><a href="#案例一" class="headerlink" title="案例一"></a>案例一</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> FractionToDecimalTest_輸入numerator_1_denominator_2()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">var</span> numerator = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">var</span> denominator = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"0.5"</span>;</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.FractionToDecimal(numerator, denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">FractionToDecimal</span>(<span class="params"><span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">decimal</span> result = Convert.ToDecimal(numerator) / Convert.ToDecimal(denominator);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="案例二"><a href="#案例二" class="headerlink" title="案例二"></a>案例二</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> FractionToDecimalTest_輸入numerator_2_denominator_1()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">var</span> numerator = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">var</span> denominator = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"2"</span>;</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.FractionToDecimal(numerator, denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>直接通過測試</strong></p>
+<h2 id="案例三"><a href="#案例三" class="headerlink" title="案例三"></a>案例三</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> FractionToDecimalTest_輸入numerator_2_denominator_3()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">var</span> numerator = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">var</span> denominator = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"0.(6)"</span>;</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.FractionToDecimal(numerator, denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">FractionToDecimal</span>(<span class="params"><span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">    sb.Append(numerator / denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//餘數</span></span><br><span class="line">    <span class="keyword">var</span> Remainder = (numerator % denominator);</span><br><span class="line">    <span class="keyword">if</span> (Remainder == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> sb.ToString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sb.Append(<span class="string">"."</span>);</span><br><span class="line">    <span class="keyword">var</span> Map = <span class="keyword">new</span> Dictionary&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;();</span><br><span class="line">    Map.Add(Remainder, sb.Length);</span><br><span class="line">    <span class="keyword">while</span> (Remainder != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sb.Append((Remainder *<span class="number">10</span>) / denominator);</span><br><span class="line">        Remainder = (Remainder * <span class="number">10</span>) % denominator;</span><br><span class="line">        <span class="keyword">if</span> (Map.ContainsKey(Remainder))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> Index = Map[Remainder];</span><br><span class="line">            <span class="comment">//開始重複</span></span><br><span class="line">            sb.Insert(Index, <span class="string">"("</span>);</span><br><span class="line">            sb.Append(<span class="string">")"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Map.Add(Remainder, sb.Length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sb.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>關鍵在找出<strong>餘數相同時的那一刻</strong>，餘數開始重複代表規律產生了，因為餘數乘10等於下次的被除數，除數永遠不變的情況下將開始循環。</p>
+<p>記錄下每次餘數當下字串的長度，當下次產生相同餘數，則從Dictionary取得上一次出現的位置補上括號即可</p>
+<h1 id="解析"><a href="#解析" class="headerlink" title="#解析"></a>#解析</h1><h2 id="溢位問題"><a href="#溢位問題" class="headerlink" title="溢位問題"></a>溢位問題</h2><p>LeetCode測試錯誤</p>
+<p><img src="/images/20180627/leetcode/1.jpg" alt="/images/20180627/leetcode/1.jpg"></p>
+<p><img src="/images/20180627/leetcode/2.jpg" alt="/images/20180627/leetcode/2.jpg"></p>
+<h3 id="補上案例"><a href="#補上案例" class="headerlink" title="補上案例"></a>補上案例</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> FractionToDecimalTest_輸入numerator_負<span class="number">2147483648</span>_denominator_負<span class="number">1</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">var</span> numerator = <span class="number">-2147483648</span>;</span><br><span class="line">    <span class="keyword">var</span> denominator = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"2147483648"</span>;</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.FractionToDecimal(numerator, denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">FractionToDecimal</span>(<span class="params"><span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> _numerator = Convert.ToInt64(numerator);</span><br><span class="line">    <span class="keyword">var</span> _denominator = Convert.ToInt64(denominator);</span><br><span class="line">    sb.Append(_numerator / _denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//餘數</span></span><br><span class="line">    <span class="keyword">var</span> Remainder = (_numerator % _denominator);</span><br><span class="line">    <span class="keyword">if</span> (Remainder == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> sb.ToString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sb.Append(<span class="string">"."</span>);</span><br><span class="line">    <span class="keyword">var</span> Map = <span class="keyword">new</span> Dictionary&lt;Int64, <span class="keyword">int</span>&gt;();</span><br><span class="line">    Map.Add(Remainder, sb.Length);</span><br><span class="line">    <span class="keyword">while</span> (Remainder != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sb.Append((Remainder *<span class="number">10</span>) / denominator);</span><br><span class="line">        Remainder = (Remainder * <span class="number">10</span>) % denominator;</span><br><span class="line">        <span class="keyword">if</span> (Map.ContainsKey(Remainder))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> Index = Map[Remainder];</span><br><span class="line">            <span class="comment">//開始重複</span></span><br><span class="line">            sb.Insert(Index, <span class="string">"("</span>);</span><br><span class="line">            sb.Append(<span class="string">")"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Map.Add(Remainder, sb.Length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sb.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="負數問題"><a href="#負數問題" class="headerlink" title="負數問題"></a>負數問題</h2><p><img src="/images/20180627/leetcode/3.jpg" alt="/images/20180627/leetcode/3.jpg"></p>
+<h3 id="補上案例-1"><a href="#補上案例-1" class="headerlink" title="補上案例"></a>補上案例</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> FractionToDecimalTest_輸入numerator_負<span class="number">50</span>_denominator_8()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">var</span> numerator = <span class="number">-50</span>;</span><br><span class="line">    <span class="keyword">var</span> denominator = <span class="number">8</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"-6.25"</span>;</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.FractionToDecimal(numerator, denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果運算之中有正負號時，則可能組出來的字串為 -6.-2-5，顯然這不是我們要的，要將負號在最前面優先處理，接著後面的計算都用正數來處理</p>
+<p>結果為<strong>負數</strong>，只有在兩個數為一正一負時，當兩正或兩負算出來的皆還是會正值，可以用^(XOR)來判別</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">FractionToDecimal</span>(<span class="params"><span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//考慮負數</span></span><br><span class="line">    sb.Append((numerator &gt;= <span class="number">0</span>) ^ (denominator &gt;= <span class="number">0</span>) ? <span class="string">"-"</span> : <span class="keyword">string</span>.Empty);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//只取正數</span></span><br><span class="line">    <span class="keyword">var</span> _numerator =Math.Abs(Convert.ToInt64(numerator));</span><br><span class="line">    <span class="keyword">var</span> _denominator = Math.Abs(Convert.ToInt64(denominator));</span><br><span class="line">    sb.Append(_numerator / _denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//餘數</span></span><br><span class="line">    <span class="keyword">var</span> Remainder = (_numerator % _denominator);</span><br><span class="line">    <span class="keyword">if</span> (Remainder == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> sb.ToString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sb.Append(<span class="string">"."</span>);</span><br><span class="line">    <span class="keyword">var</span> Map = <span class="keyword">new</span> Dictionary&lt;Int64, <span class="keyword">int</span>&gt;();</span><br><span class="line">    Map.Add(Remainder, sb.Length);</span><br><span class="line">    <span class="keyword">while</span> (Remainder != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sb.Append((Remainder *<span class="number">10</span>) / _denominator);</span><br><span class="line">        Remainder = (Remainder * <span class="number">10</span>) % _denominator;</span><br><span class="line">        <span class="keyword">if</span> (Map.ContainsKey(Remainder))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> Index = Map[Remainder];</span><br><span class="line">            <span class="comment">//開始重複</span></span><br><span class="line">            sb.Insert(Index, <span class="string">"("</span>);</span><br><span class="line">            sb.Append(<span class="string">")"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Map.Add(Remainder, sb.Length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sb.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="被除數為0問題"><a href="#被除數為0問題" class="headerlink" title="被除數為0問題"></a>被除數為0問題</h2><p>當被除數為0時，回傳結果應為0且無關正負</p>
+<p><img src="/images/20180627/leetcode/4.jpg" alt></p>
+<h3 id="補上案例-2"><a href="#補上案例-2" class="headerlink" title="補上案例"></a>補上案例</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> FractionToDecimalTest_輸入numerator_0_denominator_負<span class="number">5</span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line">    <span class="keyword">var</span> numerator = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">var</span> denominator = <span class="number">-5</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"0"</span>;</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.FractionToDecimal(numerator, denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">FractionToDecimal</span>(<span class="params"><span class="keyword">int</span> numerator, <span class="keyword">int</span> denominator</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (numerator == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"0"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//考慮負數</span></span><br><span class="line">    sb.Append((numerator &gt;= <span class="number">0</span>) ^ (denominator &gt;= <span class="number">0</span>) ? <span class="string">"-"</span> : <span class="keyword">string</span>.Empty);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//只取正數</span></span><br><span class="line">    <span class="keyword">var</span> _numerator =Math.Abs(Convert.ToInt64(numerator));</span><br><span class="line">    <span class="keyword">var</span> _denominator = Math.Abs(Convert.ToInt64(denominator));</span><br><span class="line">    sb.Append(_numerator / _denominator);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//餘數</span></span><br><span class="line">    <span class="keyword">var</span> Remainder = (_numerator % _denominator);</span><br><span class="line">    <span class="keyword">if</span> (Remainder == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> sb.ToString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sb.Append(<span class="string">"."</span>);</span><br><span class="line">    <span class="keyword">var</span> Map = <span class="keyword">new</span> Dictionary&lt;Int64, <span class="keyword">int</span>&gt;();</span><br><span class="line">    Map.Add(Remainder, sb.Length);</span><br><span class="line">    <span class="keyword">while</span> (Remainder != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        sb.Append((Remainder *<span class="number">10</span>) / _denominator);</span><br><span class="line">        Remainder = (Remainder * <span class="number">10</span>) % _denominator;</span><br><span class="line">        <span class="keyword">if</span> (Map.ContainsKey(Remainder))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> Index = Map[Remainder];</span><br><span class="line">            <span class="comment">//開始重複</span></span><br><span class="line">            sb.Insert(Index, <span class="string">"("</span>);</span><br><span class="line">            sb.Append(<span class="string">")"</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Map.Add(Remainder, sb.Length);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> sb.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20180627/leetcode/5.jpg" alt="/images/20180627/leetcode/5.jpg"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/06/27/【MVC教學】8.View(一)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2126,188 +2309,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/" itemprop="url">【MVC教學】6.驗證參數- 透過FluentValidation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-05-07T18:23:00+08:00">
-                2018-05-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/學習MVC/" itemprop="url" rel="index">
-                    <span itemprop="name">學習MVC</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/05/07/【MVC教學】6.驗證參數-透過FluentValidation/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="note info"><p>Demo範例 ：<a href="https://github.com/toyo0103/HelloDotNetMVC" target="_blank" rel="noopener">Git位置</a></p></div>
-<p>上一篇簡介了Controller如何安排程式邏輯流程、驗證參數，卻也發現了驗證參數導致程式寫得冗長不易維護，這一篇要介紹【FluentValidation】這個套件來解決這個問題。</p>
-<h1 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h1><p><a href="https://1.bp.blogspot.com/-xZDktMEHvG4/WvAKIceF2VI/AAAAAAAAIuQ/psmk0OXE26sun-H3XramjrzcSCNrD3QgACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-xZDktMEHvG4/WvAKIceF2VI/AAAAAAAAIuQ/psmk0OXE26sun-H3XramjrzcSCNrD3QgACLcBGAs/s400/1.png" alt></a><br><a href="https://2.bp.blogspot.com/-uGUzfrokFpI/WvAKaNzXTKI/AAAAAAAAIuY/1O8SMAL7FgkP5wX5l2BBYOKhcPSAF_o_gCLcBGAs/s1600/2.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-uGUzfrokFpI/WvAKaNzXTKI/AAAAAAAAIuY/1O8SMAL7FgkP5wX5l2BBYOKhcPSAF_o_gCLcBGAs/s400/2.png" alt></a><br><a href="https://3.bp.blogspot.com/-kfFy1Iqdl1M/WvALDvzwBKI/AAAAAAAAIug/YO4AjyC_No42Xg24hCgC02nf1Qjwb1ZeACLcBGAs/s1600/3.png" title="安裝完後應該會在參考中看到多出兩個FluentValidation的組件" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-kfFy1Iqdl1M/WvALDvzwBKI/AAAAAAAAIug/YO4AjyC_No42Xg24hCgC02nf1Qjwb1ZeACLcBGAs/s320/3.png" alt></a></p>
-<h1 id="設定"><a href="#設定" class="headerlink" title="設定"></a>設定</h1><p>把之前的程式碼稍作整理，將Account與Password新建一個類型(Class)來封裝起來，原本Controller裡面的程式整理一下</p>
-<p><a href="https://3.bp.blogspot.com/-7bpU-eurJAI/WvANP8ghptI/AAAAAAAAIus/ayYDM6pHzhwgsRgEigXWwUNGCRGIc7X6wCLcBGAs/s1600/4.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-7bpU-eurJAI/WvANP8ghptI/AAAAAAAAIus/ayYDM6pHzhwgsRgEigXWwUNGCRGIc7X6wCLcBGAs/s400/4.png" alt></a></p>
-<p><a href="https://4.bp.blogspot.com/-eIdaQ522IWo/WvAOfKE3BBI/AAAAAAAAIu0/wUYV51Bv-qAP5Dl-vmOAd_fNomrKCjFYwCLcBGAs/s1600/5.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-eIdaQ522IWo/WvAOfKE3BBI/AAAAAAAAIu0/wUYV51Bv-qAP5Dl-vmOAd_fNomrKCjFYwCLcBGAs/s640/5.png" alt></a></p>
-<h2 id="自定義驗證Class"><a href="#自定義驗證Class" class="headerlink" title="自定義驗證Class"></a>自定義驗證Class</h2><p>建立一個Class命名為UserSignUpParameterValidation</p>
-<p><a href="https://2.bp.blogspot.com/-CGzCYQgNgpI/WvAQfRjh6rI/AAAAAAAAIvA/W__122acCJg4ivhkTljIzoKdeB3JYM0jwCLcBGAs/s1600/6.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-CGzCYQgNgpI/WvAQfRjh6rI/AAAAAAAAIvA/W__122acCJg4ivhkTljIzoKdeB3JYM0jwCLcBGAs/s640/6.png" alt></a></p>
-<p>將UserSignUpParameter掛上Validator Attribute，意思是UserSignUpParameter請幫我用UserSignUpParameterValidation裡面的邏輯來驗證</p>
-<p><a href="https://4.bp.blogspot.com/-znw_JXDtBNI/WvARI9F6b8I/AAAAAAAAIvI/D4GtFgo5dQc06aEnUhlKjE503vuXegEmgCLcBGAs/s1600/7.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-znw_JXDtBNI/WvARI9F6b8I/AAAAAAAAIvI/D4GtFgo5dQc06aEnUhlKjE503vuXegEmgCLcBGAs/s400/7.png" alt></a></p>
-<h2 id="帳號密碼不能為空值"><a href="#帳號密碼不能為空值" class="headerlink" title="帳號密碼不能為空值"></a>帳號密碼不能為空值</h2><p><a href="https://1.bp.blogspot.com/-ZEqu3b-BvNc/WvARv5EsieI/AAAAAAAAIvQ/PZO_L_04kLsABp9rYw6dnXYYnKAymKEwACLcBGAs/s1600/8.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-ZEqu3b-BvNc/WvARv5EsieI/AAAAAAAAIvQ/PZO_L_04kLsABp9rYw6dnXYYnKAymKEwACLcBGAs/s400/8.png" alt></a></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Validation UserSignUpParameter</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;seealso cref="FluentValidation.AbstractValidator&#123;HelloDotNetMVC.Parameters.UserSignUpParameter&#125;" /&gt;</span></span></span><br><span class="line">public class UserSignUpParameterValidation:AbstractValidator&lt;UserSignUpParameter&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserSignUpParameterValidation</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//AbstractValidator為FluentValidation提供的抽象類別</span></span><br><span class="line">        <span class="comment">//目的是讓使用者可以透過繼承這個抽象類別後，實作自己的驗證邏輯</span></span><br><span class="line">        <span class="comment">//而泛型T， AbstractValidator&lt;T&gt; ，則帶入你想驗證的類別</span></span><br><span class="line">        <span class="comment">//所以這邊帶入UserSignUpParameter，這個我們剛剛製作的Class</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Account</span></span><br><span class="line">        RuleFor(x =&gt; x.Account)</span><br><span class="line">        .NotEmpty()</span><br><span class="line">        .WithMessage(<span class="string">"帳號不能為Empty"</span>)</span><br><span class="line">        .NotNull()</span><br><span class="line">        .WithMessage(<span class="string">"帳號不能為Null"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Password</span></span><br><span class="line">        RuleFor(x=&gt;x.Password)</span><br><span class="line">        .NotEmpty()</span><br><span class="line">        .WithMessage(<span class="string">"密碼不能為Empty"</span>)</span><br><span class="line">        .NotNull()</span><br><span class="line">        .WithMessage(<span class="string">"密碼不能為Null"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>RuleFor是FluentValidation提供的方法，意思是我為Account這個屬性建立驗證的Rule，而Rule分別是，NotEmpty(不能為空值)、NotNull(不能為Null)，而緊接在每個驗證邏輯下面的WithMessage則是表示，當發生它上面的錯誤時，錯誤訊息請回傳這行。</p>
-<p>接著我們可以將Controller的這塊驗證邏輯拿掉，交給<strong>UserSignUpParameterValidation</strong>專責處理就好。</p>
-<p><a href="https://2.bp.blogspot.com/-xebs-1HJ_Xo/WvAT_qTPsOI/AAAAAAAAIvc/PNSq-SW_qdczF4pHIZCzu8hhnsQdpMN1gCLcBGAs/s1600/9.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-xebs-1HJ_Xo/WvAT_qTPsOI/AAAAAAAAIvc/PNSq-SW_qdczF4pHIZCzu8hhnsQdpMN1gCLcBGAs/s400/9.png" alt></a></p>
-<h2 id="帳號必須包含-字元，Password必須大於6個字"><a href="#帳號必須包含-字元，Password必須大於6個字" class="headerlink" title="帳號必須包含@字元，Password必須大於6個字"></a>帳號必須包含@字元，Password必須大於6個字</h2><p>因為判斷字元@並不像判斷空值與Null一樣，官方有實做好的方法，必須自己透過Must來定義，這邊提供兩種寫法給讀者參考</p>
-<p><a href="https://4.bp.blogspot.com/-Qd2w4MEWlFk/WvAV24u79OI/AAAAAAAAIvo/ZUAMLs0fn6kx07JMLchQHKYOsP_fKCwvQCLcBGAs/s1600/10.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-Qd2w4MEWlFk/WvAV24u79OI/AAAAAAAAIvo/ZUAMLs0fn6kx07JMLchQHKYOsP_fKCwvQCLcBGAs/s320/10.png" alt></a></p>
-<p>上面是匿名方法的寫法，但如果你對於匿名委派還不是很熟悉，也可以用比較簡單的方式寫</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-KmJSyZdiGb0/WvAWiccBedI/AAAAAAAAIvw/17gYP6xPzgIUFII1ptocXolNHkBXfGeegCLcBGAs/s1600/11.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-KmJSyZdiGb0/WvAWiccBedI/AAAAAAAAIvw/17gYP6xPzgIUFII1ptocXolNHkBXfGeegCLcBGAs/s400/11.png" alt></a></div><br>先寫好驗證的方法，然後在Must中帶入方法。</p>
-<div class="note info"><p>延伸閱讀 :<br><a href="https://msdn.microsoft.com/zh-tw/library/bb549151(v=vs.110" target="_blank" rel="noopener">MSDN : Func&lt;T,TResult&gt; 委派</a>.aspx)<br><a href="https://docs.microsoft.com/zh-tw/dotnet/csharp/programming-guide/statements-expressions-operators/anonymous-methods" target="_blank" rel="noopener">MSDN : 匿名方法</a></p></div>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Validation UserSignUpParameter</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;seealso cref="FluentValidation.AbstractValidator&#123;HelloDotNetMVC.Parameters.UserSignUpParameter&#125;" /&gt;</span></span></span><br><span class="line">public class UserSignUpParameterValidation:AbstractValidator&lt;UserSignUpParameter&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserSignUpParameterValidation</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">//AbstractValidator為FluentValidation提供的抽象類別</span></span><br><span class="line">        <span class="comment">//目的是讓使用者可以透過繼承這個抽象類別後，實作自己的驗證邏輯</span></span><br><span class="line">        <span class="comment">//而泛型T， AbstractValidator&lt;T&gt; ，則帶入你想驗證的類別</span></span><br><span class="line">        <span class="comment">//所以這邊帶入UserSignUpParameter，這個我們剛剛製作的Class</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//Account</span></span><br><span class="line">        RuleFor(x =&gt; x.Account)</span><br><span class="line">        .NotEmpty()</span><br><span class="line">        .WithMessage(<span class="string">"帳號不能為Empty"</span>)</span><br><span class="line">        .NotNull()</span><br><span class="line">        .WithMessage(<span class="string">"帳號不能為Null"</span>)</span><br><span class="line">        .Must(IncludeAccountKeyword)</span><br><span class="line">        .WithMessage(<span class="string">"帳號不符合格式"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Password</span></span><br><span class="line">        RuleFor(x=&gt;x.Password)</span><br><span class="line">        .NotEmpty()</span><br><span class="line">        .WithMessage(<span class="string">"密碼不能為Empty"</span>)</span><br><span class="line">        .NotNull()</span><br><span class="line">        .WithMessage(<span class="string">"密碼不能為Null"</span>)</span><br><span class="line">        .MinimumLength(<span class="number">7</span>)</span><br><span class="line">        .WithMessage(<span class="string">"密碼必須大於6個字元"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Accounts 必須包含@.</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="account"&gt;</span>The account.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">bool</span> <span class="title">IncludeAccountKeyword</span>(<span class="params"><span class="keyword">string</span> account</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (!<span class="keyword">string</span>.IsNullOrWhiteSpace(account))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> account.Contains(<span class="string">"@"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>整理後的Controller</p>
-<p><a href="https://3.bp.blogspot.com/-VBKP-msTxnE/WvAYvl0-HBI/AAAAAAAAIv8/tgh1Rp_cN0cyjKsFKbOnefX9VsBI5HPWQCLcBGAs/s1600/12.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-VBKP-msTxnE/WvAYvl0-HBI/AAAAAAAAIv8/tgh1Rp_cN0cyjKsFKbOnefX9VsBI5HPWQCLcBGAs/s400/12.png" alt></a></p>
-<h2 id="透過ModelState得知驗證結果"><a href="#透過ModelState得知驗證結果" class="headerlink" title="透過ModelState得知驗證結果"></a>透過ModelState得知驗證結果</h2><div class="note info"><p>ModelState是本來MVC就有提供的參數驗證方式，而使用方法這邊提供幾篇文章給有興趣的讀者參考<br><a href="https://www.exceptionnotfound.net/asp-net-mvc-demystified-modelstate/" target="_blank" rel="noopener">What is the ModelState? - ASP.NET MVC Demystified</a><br><a href="https://blog.miniasp.com/post/2016/03/14/ASPNET-MVC-Developer-Note-Part-28-Understanding-ModelState.aspx" target="_blank" rel="noopener">保哥 : ASP.NET MVC 開發心得分享 (28)：深入了解 ModelState 內部細節</a></p></div>
-<p>而因為開發習慣的關係，我習慣用FluentValidation的方式來取代原本ModelState驗證方法與設定方式，接著我們在Global.asax中呼叫FluentValidationModelValidatorProvider.Configure()</p>
-<p><a href="https://1.bp.blogspot.com/-MtTiRt-qd-0/WvAjEv49mHI/AAAAAAAAIwM/cAcBsXbIuCEgOlfsPQVCMMB58ne84x8uQCLcBGAs/s1600/13.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-MtTiRt-qd-0/WvAjEv49mHI/AAAAAAAAIwM/cAcBsXbIuCEgOlfsPQVCMMB58ne84x8uQCLcBGAs/s400/13.png" alt></a><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpPost</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">SignUp</span>(<span class="params">UserSignUpParameter parameter</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!ModelState.IsValid)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//IsValida為False時，表示驗證參數不過</span></span><br><span class="line">        <span class="comment">//取出第一筆錯誤訊息回傳</span></span><br><span class="line">        <span class="keyword">var</span> Error = ModelState.Values.SelectMany(x =&gt; x.Errors).First();</span><br><span class="line">        TempData[<span class="string">"Message"</span>] = Error.ErrorMessage;</span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"signup"</span>, <span class="string">"user"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//這邊沒有搬到FluentValidation去驗證的原因是</span></span><br><span class="line">    <span class="comment">//使用者存在與否比較屬於服務層的事情，通常需要讀取資料庫才能判斷</span></span><br><span class="line">    <span class="comment">//開發上習慣盡量讓驗證參數越乾淨簡單越好，而不是在裡面呼叫很多外部服務(例如資料庫)後做驗證</span></span><br><span class="line">    <span class="comment">//這會讓職責過於複雜</span></span><br><span class="line">    <span class="keyword">if</span> (parameter.Account != <span class="string">"steven@mymail.com"</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        TempData[<span class="string">"Message"</span>] = <span class="string">"註冊成功!!"</span>;</span><br><span class="line">        <span class="comment">//註冊成功,導到首頁 </span></span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"index"</span>, <span class="string">"home"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        TempData[<span class="string">"Message"</span>] = <span class="string">"帳號已經存在"</span>;</span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"signup"</span>, <span class="string">"user"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>接著執行程式，驗證看看是否之前的驗證邏輯都還是正常運作。</p>
-<p><a href="https://2.bp.blogspot.com/-eQpSlQBWHTE/WvAoYn_ChaI/AAAAAAAAIwk/C-Y7_RCGGuIvOHE8u-VhS8OPriHmspgpgCLcBGAs/s1600/15.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-eQpSlQBWHTE/WvAoYn_ChaI/AAAAAAAAIwk/C-Y7_RCGGuIvOHE8u-VhS8OPriHmspgpgCLcBGAs/s400/15.png" alt></a> <a href="https://3.bp.blogspot.com/-yVOQuBNw_cM/WvAoYoDVp_I/AAAAAAAAIwg/aGZLbMDSrTgCcZS2TwFEfFzGMiYktMsXACLcBGAs/s1600/16.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-yVOQuBNw_cM/WvAoYoDVp_I/AAAAAAAAIwg/aGZLbMDSrTgCcZS2TwFEfFzGMiYktMsXACLcBGAs/s400/16.png" alt></a><br><a href="https://2.bp.blogspot.com/-Qyvaso2H-qg/WvAoYTtzkxI/AAAAAAAAIwc/wILEhIgySEExN0Wy-V33ohsrwpIKpG-JACLcBGAs/s1600/14.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-Qyvaso2H-qg/WvAoYTtzkxI/AAAAAAAAIwc/wILEhIgySEExN0Wy-V33ohsrwpIKpG-JACLcBGAs/s400/14.png" alt></a></p>
-<p>比較一下最一開始與套用FluentValidation後的程式碼，應該可以明顯感受到差異，這不僅僅只是讓程式變乾淨，更重要的是驗證參數的職責被分離到UserSignUpParameterValidation這個類別中，以後要改參數驗證的邏輯只要到這調整即可，不用再擔心Controller會被不小心改壞。</p>
-<p><a href="https://4.bp.blogspot.com/-3mLUKzjO55A/WvArsPEl3hI/AAAAAAAAIw0/8AidDEBX-jwgO7iFO3nyt7ENHCg8xd7PwCLcBGAs/s1600/17.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-3mLUKzjO55A/WvArsPEl3hI/AAAAAAAAIw0/8AidDEBX-jwgO7iFO3nyt7ENHCg8xd7PwCLcBGAs/s640/17.png" alt></a></p>
-<h1 id="延伸閱讀"><a href="#延伸閱讀" class="headerlink" title="延伸閱讀"></a>延伸閱讀</h1><p><a href="https://github.com/JeremySkinner/FluentValidation/wiki" target="_blank" rel="noopener">FluentValidation : 官方文件、各種API使用方法</a><br><a href="https://toyo0103.blogspot.tw/2016/10/fluentvalidation-webapi.html" target="_blank" rel="noopener">FluentValidation : 擴充驗證方法</a><br><a href="https://toyo0103.blogspot.tw/2016/11/fluentvalidation.html" target="_blank" rel="noopener">FluentValidation : 繼承父類別的驗證</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2360,7 +2361,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">189</span>
+                  <span class="site-state-item-count">190</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -2472,7 +2473,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

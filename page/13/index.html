@@ -293,6 +293,136 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/04/swift-NetWork-2-非同步方式取得API資訊/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/03/04/swift-NetWork-2-非同步方式取得API資訊/" itemprop="url">[swift] NetWork (2) 非同步方式取得API資訊</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-04T15:39:00+08:00">
+                2015-03-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/03/04/swift-NetWork-2-非同步方式取得API資訊/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/04/swift-NetWork-2-非同步方式取得API資訊/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>為了避免撈取API資料太久而讓整個APP卡住,所以建議撈取API資料時都另外開出一個queue來非同步執行 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url:<span class="type">NSURL</span> = <span class="type">NSURL</span>(string: <span class="string">"http://xxx.com.tw/api/getdata"</span>)!;</span><br><span class="line"><span class="keyword">let</span> request:<span class="type">NSMutableURLRequest</span> = <span class="type">NSMutableURLRequest</span>(<span class="type">URL</span>: url, cachePolicy: <span class="type">NSURLRequestCachePolicy</span>.<span class="type">ReloadIgnoringLocalCacheData</span>, timeoutInterval: <span class="number">10</span>);</span><br><span class="line">request.<span class="type">HTTPMethod</span> = <span class="string">"POST"</span>;</span><br><span class="line">request.<span class="type">HTTPBody</span> = <span class="string">"yourdata"</span>.dataUsingEncoding(<span class="type">NSUTF8StringEncoding</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//新增一個queue來執行API,避免API撈取資料太久把整個APP卡住</span></span><br><span class="line"><span class="keyword">let</span> queue :<span class="type">NSOperationQueue</span> = <span class="type">NSOperationQueue</span>();</span><br><span class="line"><span class="comment">//非同步方式取得資料</span></span><br><span class="line"><span class="type">NSURLConnection</span>.sendAsynchronousRequest(request, queue: queue, completionHandler:&#123; (response: <span class="type">NSURLResponse!</span>, data: <span class="type">NSData!</span>, error: <span class="type">NSError!</span>) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">   <span class="keyword">var</span> err:<span class="type">String?</span> = error?.description;</span><br><span class="line">   <span class="keyword">if</span>(data != <span class="literal">nil</span>  &amp;&amp; error == <span class="literal">nil</span>)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="keyword">let</span> responseString = <span class="type">NSString</span>(data: data, encoding: <span class="type">NSUTF8StringEncoding</span>);</span><br><span class="line">      <span class="built_in">println</span>(<span class="string">"responseString = \(responseString)"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/04/swift-NetWork-1-以Get-和-Post方式傳送資料/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1534,140 +1664,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/" itemprop="url">[swift]使用Storyboard的情況下,設定App的第一頁</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-02T16:45:00+08:00">
-                2015-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/02/swift-使用Storyboard的情況下-設定App的第一頁/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>方法一:打開Storyboard移動起始指標,指到的Controller預設就會用那個ViewController為起始頁面<br><a href="http://3.bp.blogspot.com/-fc1xkF4wE-w/VPQn4-h-_cI/AAAAAAAAEYY/Ez9nyZzajF8/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.04.14.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-fc1xkF4wE-w/VPQn4-h-_cI/AAAAAAAAEYY/Ez9nyZzajF8/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.04.14.png" alt></a><li>方法二:<br>先對在Storyboard的Controller設定Storyboard ID<br><a href="http://2.bp.blogspot.com/-VSNrg7jwyqs/VPQp1XB-Q4I/AAAAAAAAEYk/_1bxDXnnMHM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.11.54.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-VSNrg7jwyqs/VPQp1XB-Q4I/AAAAAAAAEYk/_1bxDXnnMHM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-02%2B%E4%B8%8B%E5%8D%885.11.54.png" alt></a></li></p>
-<p>然後找到AppDelegate.swift檔案改寫didFinishLaunchingWithOptions <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">application</span><span class="params">(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?)</span></span> -&gt; <span class="type">Bool</span> &#123;  <span class="keyword">let</span> storyboard = <span class="type">UIStoryboard</span>(name:<span class="string">"Main"</span> , bundle: <span class="literal">nil</span>);</span><br><span class="line">  <span class="keyword">self</span>.window? = <span class="type">UIWindow</span>(frame: <span class="type">UIScreen</span>.mainScreen().bounds);</span><br><span class="line">  <span class="comment">//指定Storyboard ID</span></span><br><span class="line">  <span class="keyword">self</span>.window?.rootViewController = storyboard.instantiateViewControllerWithIdentifier(<span class="string">"testa"</span>) <span class="keyword">as</span>?   <span class="type">UIViewController</span>;</span><br><span class="line">  <span class="keyword">self</span>.window?.makeKeyAndVisible();</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1720,7 +1716,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">189</span>
+                  <span class="site-state-item-count">190</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1832,7 +1828,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
