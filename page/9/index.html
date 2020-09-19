@@ -293,6 +293,721 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/11/25/【FluentValidation】繼承父類別的驗證/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/25/【FluentValidation】繼承父類別的驗證/" itemprop="url">【FluentValidation】繼承父類別的驗證</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-11-25T14:39:00+08:00">
+                2016-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/11/25/【FluentValidation】繼承父類別的驗證/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/11/25/【FluentValidation】繼承父類別的驗證/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>很多時候我們的類別會繼承同一個父類別，而父類別的欄位可能都驗證的規則都一致，一直重寫會覺得很煩 </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Parent</span> </span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> Name &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChildA</span> :<span class="title">Parent</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> ChildACustomProperty &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChildB</span> : <span class="title">Parent</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> ChildBCustomProperty &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這邊有兩個類別分別為ChildA和 ChildB，它們都繼承Parent這個類別，這時候 Parent的Name規則就是不能為空值跟Null，但真正會傳進來使用的是ChildA 與ChildB這兩個子類別，難道只能將驗證Name的欄位兩邊都寫嗎??</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">public class ChildAValidators : AbstractValidator&lt;ChildA&gt;</span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ChildAValidators</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span> &#123;</span><br><span class="line">  <span class="comment">// Name</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.Name)</span><br><span class="line">   .NotEmpty()</span><br><span class="line">   .WithErrorCode(<span class="string">"400"</span>)</span><br><span class="line">   .WithMessage(<span class="string">"Name 不能為空值"</span>)</span><br><span class="line">   .NotNull()</span><br><span class="line">   .WithErrorCode(<span class="string">"400"</span>)</span><br><span class="line">   .WithMessage(<span class="string">"Name 不能為Null"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ChildACustomProperty</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.ChildACustomProperty)</span><br><span class="line">   .Length(<span class="number">1</span>,<span class="number">6</span>)</span><br><span class="line">   .WithErrorCode(<span class="string">"400"</span>)</span><br><span class="line">   .WithMessage(<span class="string">"ChildACustomProperty 必須介於1~6個字之間"</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ChildBValidators : AbstractValidator&lt;ChildB&gt;</span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ChildBValidators</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span> &#123;</span><br><span class="line">  <span class="comment">// Name</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.Name)</span><br><span class="line">   .NotEmpty()</span><br><span class="line">   .WithErrorCode(<span class="string">"400"</span>)</span><br><span class="line">   .WithMessage(<span class="string">"Name 不能為空值"</span>)</span><br><span class="line">   .NotNull()</span><br><span class="line">   .WithErrorCode(<span class="string">"400"</span>)</span><br><span class="line">   .WithMessage(<span class="string">"Name 不能為Null"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ChildACustomProperty</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.ChildBCustomProperty)</span><br><span class="line">   .Length(<span class="number">1</span>, <span class="number">12</span>)</span><br><span class="line">   .WithErrorCode(<span class="string">"400"</span>)</span><br><span class="line">   .WithMessage(<span class="string">"ChildBCustomProperty 必須介於1~12個字之間"</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這樣對程式設計來說不是很好，如果哪天Name的限制改變，所有繼承Parent的驗證都要翻出來改，其實FluentValidation也可以寫成繼承的方式，可以改成下面的方法</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">public class ChildAValidators : ParentValidators&lt;ChildA&gt;</span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ChildAValidators</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span> &#123;</span><br><span class="line">  <span class="comment">// ChildACustomProperty</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.ChildACustomProperty)</span><br><span class="line">   .Length(<span class="number">1</span>,<span class="number">6</span>)</span><br><span class="line">   .WithErrorCode(<span class="string">"400"</span>)</span><br><span class="line">   .WithMessage(<span class="string">"ChildACustomProperty 必須介於1~6個字之間"</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ChildBValidators : ParentValidators&lt;ChildB&gt;</span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ChildBValidators</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span> &#123;</span><br><span class="line">  <span class="comment">// ChildACustomProperty</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.ChildBCustomProperty)</span><br><span class="line">   .Length(<span class="number">1</span>, <span class="number">12</span>)</span><br><span class="line">   .WithErrorCode(<span class="string">"400"</span>)</span><br><span class="line">   .WithMessage(<span class="string">"ChildBCustomProperty 必須介於1~12個字之間"</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ParentValidators&lt;T&gt; : AbstractValidator&lt;T&gt;</span><br><span class="line">  <span class="keyword">where</span> T : Parent</span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ParentValidators</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span> &#123;</span><br><span class="line">  <span class="comment">// Name</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.Name)</span><br><span class="line">   .NotEmpty()</span><br><span class="line">   .WithErrorCode(<span class="string">"400"</span>)</span><br><span class="line">   .WithMessage(<span class="string">"Name 不能為空值"</span>)</span><br><span class="line">   .NotNull()</span><br><span class="line">   .WithErrorCode(<span class="string">"400"</span>)</span><br><span class="line">   .WithMessage(<span class="string">"Name 不能為Null"</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這樣就可以讓程式乾淨許多，也讓它符合物件導向的設計!!!</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/11/10/【Linq】Multiple-Column-with-OrderBy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/11/10/【Linq】Multiple-Column-with-OrderBy/" itemprop="url">【Linq】Multiple Column with OrderBy</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-11-10T11:24:00+08:00">
+                2016-11-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/11/10/【Linq】Multiple-Column-with-OrderBy/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/11/10/【Linq】Multiple-Column-with-OrderBy/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>用Linq的好處是強型別，讓你在寫程式的時後不會因為Key錯字，但也有些衍伸的問題導致程式會寫得很醜，以前最常碰到的例子就是，當排序可能依據【多欄位】升降冪，程式就會又臭又長。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="comment">//要用來排序的欄位</span></span><br><span class="line"> OrderByColumnEnum OrderByColumn = OrderByColumnEnum.Pin;</span><br><span class="line"> <span class="comment">//排序的方法</span></span><br><span class="line"> OrderByEnum OrderBy = OrderByEnum.ASC;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//準備資料</span></span><br><span class="line"> <span class="keyword">var</span> BuildingList = <span class="keyword">new</span> List&lt;Building&gt;();</span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line"> &#123;</span><br><span class="line">  BuildingList.Add(<span class="keyword">new</span> Building </span><br><span class="line">  &#123;</span><br><span class="line">   Age = <span class="number">1</span> * (i+<span class="number">1</span>),</span><br><span class="line">   Pin = <span class="number">1</span> * (i+<span class="number">1</span>),</span><br><span class="line">   CaseDate = DateTime.Now.AddDays(i +<span class="number">1</span>)</span><br><span class="line">  &#125;);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//排序欄位</span></span><br><span class="line"> <span class="keyword">switch</span> (OrderByColumn)</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">case</span> OrderByColumnEnum.Pin:</span><br><span class="line">   <span class="keyword">switch</span> (OrderBy)</span><br><span class="line">   &#123;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.ASC:</span><br><span class="line">     <span class="comment">//因為裡面用到的欄位不同,又是強型別,只能寫死...</span></span><br><span class="line">     BuildingList = BuildingList.OrderBy(x =&gt; x.Pin).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.DESC:</span><br><span class="line">     BuildingList = BuildingList.OrderByDescending(x =&gt; x.Pin).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> OrderByColumnEnum.Age:</span><br><span class="line">   <span class="keyword">switch</span> (OrderBy)</span><br><span class="line">   &#123;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.ASC:</span><br><span class="line">     BuildingList = BuildingList.OrderBy(x =&gt; x.Age).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.DESC:</span><br><span class="line">     BuildingList = BuildingList.OrderByDescending(x =&gt;x.Age).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> OrderByColumnEnum.CaseDate:</span><br><span class="line">   <span class="keyword">switch</span> (OrderBy)</span><br><span class="line">   &#123;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.ASC:</span><br><span class="line">     BuildingList = BuildingList.OrderBy(x =&gt; x.CaseDate).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.DESC:</span><br><span class="line">     BuildingList = BuildingList.OrderByDescending(x =&gt; x.CaseDate).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> BuildingList.Dump();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Building</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">int</span> Pin &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">int</span> Age &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> DateTime CaseDate &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 排序欄位</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> OrderByColumnEnum</span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> 成交日期</span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"> CaseDate,</span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> 建坪</span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"> Pin,</span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> 屋齡</span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"> Age</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 排序方法</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> OrderByEnum</span><br><span class="line">&#123;</span><br><span class="line"> ASC = <span class="number">1</span>,</span><br><span class="line"> DESC = <span class="number">2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因為每個欄位不同名稱,又有可能升降冪，所以寫的超級長，如果欄位達到5~6個時，幾乎已經無法維護，但其實只要搭配一點點反射可以把這段改得很漂亮的</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//要用來排序的欄位</span></span><br><span class="line"> OrderByColumnEnum OrderByColumn = OrderByColumnEnum.Pin;</span><br><span class="line"> <span class="comment">//排序的方法</span></span><br><span class="line"> OrderByEnum OrderBy = OrderByEnum.ASC;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//準備資料</span></span><br><span class="line"> <span class="keyword">var</span> BuildingList = <span class="keyword">new</span> List&lt;Building&gt;();</span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line"> &#123;</span><br><span class="line">  BuildingList.Add(<span class="keyword">new</span> Building </span><br><span class="line">  &#123;</span><br><span class="line">   Age = <span class="number">1</span> * (i+<span class="number">1</span>),</span><br><span class="line">   Pin = <span class="number">1</span> * (i+<span class="number">1</span>),</span><br><span class="line">   CaseDate = DateTime.Now.AddDays(i +<span class="number">1</span>)</span><br><span class="line">  &#125;);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//排序欄位</span></span><br><span class="line"> <span class="keyword">var</span> param = OrderByColumnEnum.Pin.ToString();</span><br><span class="line"></span><br><span class="line"> <span class="comment">//透過PropertyInfo操作</span></span><br><span class="line"> <span class="keyword">var</span> propertyInfo = <span class="keyword">typeof</span>(Building).GetProperty(param);</span><br><span class="line"> <span class="keyword">switch</span> (OrderBy)</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">case</span> OrderByEnum.ASC:</span><br><span class="line">   BuildingList = BuildingList.OrderBy(x =&gt; propertyInfo.GetValue(x, <span class="literal">null</span>)).ToList();</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> OrderByEnum.DESC:</span><br><span class="line">   BuildingList = BuildingList.OrderByDescending(x =&gt; propertyInfo.GetValue(x, <span class="literal">null</span>)).ToList();</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> BuildingList.Dump();</span><br></pre></td></tr></table></figure>
+<p>這樣程式是不是變得乾淨許多,但這邊要特別注意的是，因為我的Enum跟Building的屬性剛好都可以對應起來，如果我的Enum名稱與Building的屬性不能對應，那要另外寫對應方式，例如寫到擴充的Enum Attribute，或是用最簡單的Switch Case解決。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/10/17/【Unit-Test】Fake-DLL發生does-not-exist-in-the-namespace-System-Diagnostics-Tracing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/10/17/【Unit-Test】Fake-DLL發生does-not-exist-in-the-namespace-System-Diagnostics-Tracing/" itemprop="url">【Unit Test】Fake DLL發生does not exist in the namespace 'System.Diagnostics.Tracing'</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-17T14:49:00+08:00">
+                2016-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/10/17/【Unit-Test】Fake-DLL發生does-not-exist-in-the-namespace-System-Diagnostics-Tracing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/17/【Unit-Test】Fake-DLL發生does-not-exist-in-the-namespace-System-Diagnostics-Tracing/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>上一篇<a href="http://toyo0103.blogspot.tw/2016/10/unittestfake-systemdatetime.html" target="_blank" rel="noopener">【Unit Test】Fake System.DateTime</a>&nbsp;寫到如何Fake DLL，在本機建置與進行測試都沒問題，唯獨放到CICD機器去做自動化部屬時，一直鬼擋牆的跳建置方案錯誤，錯誤內容如下</p>
+<p><span style="background-color: white; font-family: &quot;Segoe UI&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana;">The type or namespace name ‘EventSourceCreatedEventArgs’ does not exist in the namespace ‘System.Diagnostics.Tracing’ (are you missing an assembly reference?)&nbsp;</span><br><span style="background-color: white; font-family: &quot;Segoe UI&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana;"><br></span>上網查了一下找到以下解法</p>
+<ul>
+<li>打開mscorlib.fakes，改成以下內容<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;Fakes xmlns=<span class="string">"http://schemas.microsoft.com/fakes/2011/"</span>&gt;</span><br><span class="line">  &lt;Assembly Name=<span class="string">"mscorlib"</span> Version=<span class="string">"4.0.0.0"</span>/&gt;</span><br><span class="line">  &lt;StubGeneration&gt;</span><br><span class="line">    &lt;Remove FullName=<span class="string">"System.Diagnostics.Tracing"</span>/&gt;</span><br><span class="line">    &lt;Remove FullName=<span class="string">"System.Text.Encoding"</span>/&gt;</span><br><span class="line">    &lt;Remove FullName=<span class="string">"System.Security.Cryptography"</span> /&gt;</span><br><span class="line">  &lt;/StubGeneration&gt;</span><br><span class="line">&lt;/Fakes&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>自動化佈署機器這樣去建置佈署就過關了!!!!</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/10/17/【Unit-Test】Fake-System-DateTime/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/10/17/【Unit-Test】Fake-System-DateTime/" itemprop="url">【Unit Test】Fake System.DateTime</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-17T14:26:00+08:00">
+                2016-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/10/17/【Unit-Test】Fake-System-DateTime/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/17/【Unit-Test】Fake-System-DateTime/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在寫程式的時後，常常會用到DateTime.Now來判斷目前時間，依照時間邏輯去撈取不同的資料，但碰到單元測試要驗證的時候就是個大麻煩，因為DateTime.Now每次執行的時候時間都會改變，所以以前的做法都是這樣</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">SystemTime</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment">//Internal For UnitTest</span></span><br><span class="line"> <span class="keyword">internal</span> <span class="keyword">static</span> Func&lt;DateTime&gt; SetCurrentTime = () =&gt; DateTime.Now;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> DateTime Now</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">get</span></span><br><span class="line">  &#123;</span><br><span class="line">   <span class="keyword">return</span> SetCurrentTime();</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然後在在程式碼裡面使用的時候不直接使用DateTime.Now，改用SystemTime.Now<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">if</span> (SystemTime.Now == <span class="keyword">new</span> DateTime(<span class="number">2016</span>,<span class="number">10</span>,<span class="number">17</span>,<span class="number">12</span>,<span class="number">0</span>,<span class="number">0</span>))</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="string">"時間到了"</span>.Dump();</span><br><span class="line"> &#125; </span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="string">"時間不對"</span>.Dump();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>之後單元測試驗證時，動態去改寫SetCurrentTime，就能確保拿到自己要的時間<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SystemTime.SetCurrentTime = () =&gt; <span class="keyword">new</span> DateTime(<span class="number">2016</span>,<span class="number">10</span>,<span class="number">17</span>,<span class="number">12</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
+<p>雖然這樣可以解決問題沒錯，但實在太麻煩，為了單元測試要多寫一堆Code之外，System底下很多東西有用到時，都要因為可以單元測試的關係而擴充出來。</p>
+<p>還好之後有找到方法可以針對DLL做Fake，讓我們可以繼續安心使用DateTime.Now之餘，單元測試也能指定時間，接下來就來實作一下這個步驟</p>
+<ul>
+<li><p>首先在單元測試的專案對參考的組件System按下右鍵，新增Fake物件</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-2CmHnA1rUMA/WARsswfjOPI/AAAAAAAAIBI/HGzYnnuIOzM6DuGEl8psJIIA4EtBmutgQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-2CmHnA1rUMA/WARsswfjOPI/AAAAAAAAIBI/HGzYnnuIOzM6DuGEl8psJIIA4EtBmutgQCLcB/s1600/1.png" alt></a></div>
+</li>
+<li><p>接著就會跑出Fake資料夾</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-QhvjMs19Dr4/WARtB33gWvI/AAAAAAAAIBM/ptqbpm0CKTgbi5C8CWZY3DjWbmykiJa4gCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-QhvjMs19Dr4/WARtB33gWvI/AAAAAAAAIBM/ptqbpm0CKTgbi5C8CWZY3DjWbmykiJa4gCLcB/s1600/1.png" alt></a></div>
+</li>
+<li><p>接著只要在單元測試的地方寫如此寫，就能設定DateTime.Now應該回傳的時間了<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 取得現在時間()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">using</span> (ShimsContext.Create())</span><br><span class="line">            &#123;</span><br><span class="line">                System.Fakes.ShimDateTime.NowGet= () =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> DateTime(<span class="number">2016</span>, <span class="number">9</span>, <span class="number">25</span>);</span><br><span class="line">                &#125;;</span><br><span class="line"></span><br><span class="line">                 <span class="comment">//arrange</span></span><br><span class="line">                <span class="keyword">var</span> expected = <span class="keyword">new</span> DateTime(<span class="number">2016</span>, <span class="number">9</span>, <span class="number">25</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//act</span></span><br><span class="line">                <span class="keyword">var</span> actual = DateTime.Now;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//assert</span></span><br><span class="line">                Assert.AreEqual(expected, actual);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<h3 id="補充2017-01-24"><a href="#補充2017-01-24" class="headerlink" title="補充2017/01/24"></a><span style="color: red;">補充2017/01/24</span></h3><p>單元測試Fake的功能，以Visual Studio 2015來說只有Enterprise版本才有支援，所以使用的時候請特別小心，像今天公司因為授權費的關係，要求調降成Professional，之前有用到Fake的地方就都測不過了，還請特別注意</p>
+<p>各版本比較 : <a href="https://www.visualstudio.com/vs/compare/" target="_blank" rel="noopener">Compare Visual Studio 2015 Offerings</a></p>
+<h3 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h3><div><a href="http://huan-lin.blogspot.com/2012/10/microsoft-fakes.html" target="_blank" rel="noopener">Huan-Lin - Microsoft Fakes 入門</a></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/10/14/【Swagger】客製化可以輸入Header的欄位/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/10/14/【Swagger】客製化可以輸入Header的欄位/" itemprop="url">【Swagger】客製化可以輸入Header的欄位</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-10-14T14:26:00+08:00">
+                2016-10-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/10/14/【Swagger】客製化可以輸入Header的欄位/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/14/【Swagger】客製化可以輸入Header的欄位/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>上一篇<a href="http://toyo0103.blogspot.tw/2016/10/swaggerapi.html" target="_blank" rel="noopener">【Swagger】活著的API規格書</a>&nbsp;提到如何使用Swagger來產生規格與測試API，但遇到一個問題是，很多API會把驗證的Key放到Header傳遞，但Swagger產出來的頁面並沒有設定Header的地方，這時候就要來小調整一下已符合需求。</p>
+<p>首先我們先把原本的API改成要吃Header的Key值才算驗證通過</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestSwaggerController</span> : <span class="title">ApiController</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 測試Swagger的API</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="parameter"&gt;</span>The parameter.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        [<span class="meta">HttpGet</span>]</span><br><span class="line">        [<span class="meta">Route(<span class="meta-string">"api/testSwagger"</span>)</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> HttpResponseMessage <span class="title">Get</span>(<span class="params">[FromUri]testSwaggerGetParameter parameter</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//沒有帶Appkey在Header</span></span><br><span class="line">            <span class="keyword">if</span> (!Request.Headers.Contains(<span class="string">"X-Key"</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> Request.CreateResponse(HttpStatusCode.NotAcceptable, <span class="string">"必須輸入AppKey"</span>);</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> AppKey =  Request.Headers.GetValues(<span class="string">"X-Key"</span>).FirstOrDefault();</span><br><span class="line">            <span class="keyword">if</span> (AppKey != <span class="string">"MyKey"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> Request.CreateResponse(HttpStatusCode.NotAcceptable, <span class="string">"AppKey不正確!!!"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (parameter != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">                parameter.ID == <span class="string">"toyo"</span> &amp;&amp; </span><br><span class="line">                parameter.PassWord == <span class="string">"123456"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> Request.CreateResponse(HttpStatusCode.OK, <span class="string">"帳號密碼正確"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Request.CreateResponse(HttpStatusCode.OK, <span class="string">"帳號密碼錯誤摟!!!!!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>這時候測試一下原本的API，會發現因為吃不到Header裡面的X-Key，導致輸出驗證失敗的錯誤</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-hntf0ZIC-cQ/WAB1wx9JTOI/AAAAAAAAIAU/R5nql0g5UZwtIU6pdfk82zPO7EjDp4FggCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-hntf0ZIC-cQ/WAB1wx9JTOI/AAAAAAAAIAU/R5nql0g5UZwtIU6pdfk82zPO7EjDp4FggCLcB/s640/1.png" alt></a></div>
+
+<p>Header中也再次確認沒有帶X-key在其中</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-pevW7o5r1eg/WAB2BE9-ayI/AAAAAAAAIAY/ErtqWFRqK7k0WBAKQXBZB32ghXOn3196gCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-pevW7o5r1eg/WAB2BE9-ayI/AAAAAAAAIAY/ErtqWFRqK7k0WBAKQXBZB32ghXOn3196gCLcB/s640/1.png" alt></a></div>
+
+<h3 id="開始客製化吧"><a href="#開始客製化吧" class="headerlink" title="開始客製化吧"></a>開始客製化吧</h3><ul>
+<li><p>首先先建立一個JS檔，讓Swagger的View能引用這支JS，然後透過這支JS與Jquery去改View，我將這支JS就命名為AppKey.js</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-VdaLRHRtOlI/WAB3LAbaafI/AAAAAAAAIAc/tDB1aQ-EzzEutJ0RXZkrr4TRwvcWwFUnwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-VdaLRHRtOlI/WAB3LAbaafI/AAAAAAAAIAc/tDB1aQ-EzzEutJ0RXZkrr4TRwvcWwFUnwCLcB/s1600/1.png" alt></a></div>
+</li>
+<li><p>接著請在這支JS檔案寫下以下JS</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    $(<span class="string">'#input_apiKey'</span>).hide();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//加上Header區塊</span></span><br><span class="line">    <span class="keyword">var</span> HeaderBar = $(<span class="string">'&lt;div id="headerbar"&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;h2 class="heading"&gt;Header&lt;/h2&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;table style="background-color:#E8E8D0"&gt;&lt;thead&gt;&lt;tr&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;th style="width: 100px; max-width: 100px" data-sw-translate=""&gt;Parameter&lt;/th&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;th style="width: 310px; max-width: 310px" data-sw-translate=""&gt;Value&lt;/th&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;th style="width: 200px; max-width: 200px" data-sw-translate=""&gt;Description&lt;/th&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;/tr&gt;&lt;/thead&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;tbody class="operation-params"&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;tr&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;td class="code required"&gt;&lt;label for="custom_appkey"&gt;appkey&lt;/label&gt;&lt;/td&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;td&gt;&lt;input class="parameter required" minlength="1" name="custom_appkey" placeholder="(required)" id="custom_appkey" type="text" value=""&gt;&lt;/td&gt;'</span> +</span><br><span class="line">            <span class="string">'&lt;td class="markdown"&gt;&lt;p&gt;AppKey&lt;/p&gt;&lt;/td&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;/tr&gt;'</span> +</span><br><span class="line">        <span class="string">'&lt;/tbody&gt;&lt;/table&gt;'</span> +</span><br><span class="line">    <span class="string">'&lt;/div&gt;'</span>);</span><br><span class="line">    $(<span class="string">'#resources_container'</span>).before(HeaderBar);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//把值加到Header</span></span><br><span class="line">    $(<span class="string">'#custom_appkey'</span>).on(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> key = <span class="keyword">this</span>.value;</span><br><span class="line">        <span class="keyword">if</span> (key &amp;&amp; key.trim() !== <span class="string">''</span>) &#123;</span><br><span class="line">            swaggerUi.api.clientAuthorizations.add(<span class="string">"key"</span>, <span class="keyword">new</span> SwaggerClient.ApiKeyAuthorization(<span class="string">"X-Key"</span>, key, <span class="string">"header"</span>));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>主要內容就是抓到特定區塊，然後組Html用Jquery的方式放上去，然後透過Swagger開放的API塞到Header裡面送出</p>
+<ul>
+<li>接著請將這支JS修改屬性 &gt; 建置動作 &gt; <strong>內嵌資源</strong></li>
+</ul>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-BwLvO5AMcYw/WAB4kuDTvUI/AAAAAAAAIAg/QBIkgR01zCYDIxd2UjHmhHLanbuwCchqQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-BwLvO5AMcYw/WAB4kuDTvUI/AAAAAAAAIAg/QBIkgR01zCYDIxd2UjHmhHLanbuwCchqQCLcB/s320/1.png" alt></a></div>
+
+<ul>
+<li><p>打開SwaggerConfig找到188~189行的地方把註解拿掉改成如下<br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-kG8umCQL1M0/WAB5FrxW2gI/AAAAAAAAIAo/RwoPyjGGq0YB1SE6f9jTvJ3h9mcveFFlQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-kG8umCQL1M0/WAB5FrxW2gI/AAAAAAAAIAo/RwoPyjGGq0YB1SE6f9jTvJ3h9mcveFFlQCLcB/s640/1.png" alt></a></div></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c.InjectJavaScript(thisAssembly, <span class="string">"WebApplication1.CustomSwagger.AppKey.js"</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接著再次執行專案<br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-jAdPbsrj5yI/WAB5_JNiKdI/AAAAAAAAIAs/7DMJc1iTBl4kAm6_7yTv2f4pmNCfqFEQQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-jAdPbsrj5yI/WAB5_JNiKdI/AAAAAAAAIAs/7DMJc1iTBl4kAm6_7yTv2f4pmNCfqFEQQCLcB/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">Header欄位出現了</td></tr></tbody></table><br>試試看欄位是否有效，因為剛剛程式是改成要帶<strong>MyKey</strong>，所以來測試看看</p>
+</li>
+</ul>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-v7nxyvIuGfs/WAB6YhN2EEI/AAAAAAAAIAw/luDPe_40Fpc-xvazlnkwp6qEPRdUbKMvgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-v7nxyvIuGfs/WAB6YhN2EEI/AAAAAAAAIAw/luDPe_40Fpc-xvazlnkwp6qEPRdUbKMvgCLcB/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">可以抓到X-Key了</td></tr></tbody></table>
+
+<p>完成!!!! 因為是透過Jquery的方式去改變欄位，所以只要透過上述的方式去載入JS，要怎麼改View應該都不是問題了，以上。</p>
+<h4 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a><strong>參考文章</strong></h4><p><a href="http://stevemichelotti.com/customize-authentication-header-in-swaggerui-using-swashbuckle/" target="_blank" rel="noopener">Customize Authentication Header in SwaggerUI using Swashbuckle</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/10/14/【Swagger】活著的API規格書/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1101,764 +1816,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/08/16/【重構系列】-一-多型/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/16/【重構系列】-一-多型/" itemprop="url">【重構系列】(一) 多型</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-08-16T15:33:00+08:00">
-                2016-08-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/08/16/【重構系列】-一-多型/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/16/【重構系列】-一-多型/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>以下實做的SourceCode已經放到GitHub :<br><a href="https://github.com/toyo0103/Demo_EditTemplate_1" target="_blank" rel="noopener">https://github.com/toyo0103/Demo_EditTemplate_1</a></p>
-<p>最近在幫專案成員導入開發分層以及物件導向的觀念，也想把這Demo的過程記錄下來。畢竟想法可能隨著專案的經歷而不斷的在修正，也可藉此不斷回頭檢視自己的基本功是否足夠</p>
-<h4 id="一、首先來看一下專案分層的關聯圖"><a href="#一、首先來看一下專案分層的關聯圖" class="headerlink" title="        一、首先來看一下專案分層的關聯圖     "></a><span style="font-size: x-large;">        一、首先來看一下專案分層的關聯圖     </span></h4><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-2uYHHE-iq7c/V7JxJbl6gCI/AAAAAAAAH3w/I-gYOBfJq8U_fLoVSQTuySsCtNMSb9J6ACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-2uYHHE-iq7c/V7JxJbl6gCI/AAAAAAAAH3w/I-gYOBfJq8U_fLoVSQTuySsCtNMSb9J6ACLcB/s1600/1.png" alt></a></div>
-
-<p>Application : 應用層，參考了邏輯層</p>
-<p>Service : &nbsp;邏輯層，參考了資料存取層</p>
-<p>Repository : 資料存取層</p>
-<p>Lib : 共用層 ，被Application、Service、Repository參考</p>
-<h3 id="二、目前各層尚未重構的程式"><a href="#二、目前各層尚未重構的程式" class="headerlink" title="        二、目前各層尚未重構的程式     "></a><span style="font-size: x-large;">        二、目前各層尚未重構的程式     </span></h3><div><br><br>###         <strong><span style="color: #444444; font-size: large;"><u>Repository層</u></span></strong><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-tg5bIS8XXLo/V7Kv7donQqI/AAAAAAAAH4A/LMM962SvdT8znywny9YxnzQbnxKS0H-oQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-tg5bIS8XXLo/V7Kv7donQqI/AAAAAAAAH4A/LMM962SvdT8znywny9YxnzQbnxKS0H-oQCLcB/s1600/1.png" alt></a></div>
-
-<p>模擬A廠商提供的POI(地圖座標點)資料<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> POI A供應商</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ASupplierRepository</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> List&lt;POI&gt; <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line">            <span class="comment">//隨機建立十筆Supplier為A的資料回傳</span></span><br><span class="line">            <span class="keyword">var</span> fixture = <span class="keyword">new</span> Fixture();</span><br><span class="line">            <span class="keyword">var</span> Result = fixture.Build&lt;POI&gt;()</span><br><span class="line">                            .With(x =&gt; x.Name, <span class="keyword">string</span>.Concat(<span class="string">"捷運"</span>, rnd.Next(<span class="number">1</span>, <span class="number">100</span>)))</span><br><span class="line">                            .With(x =&gt; x.Supplier, SupplierEnum.A)</span><br><span class="line">                            .CreateMany().ToList();</span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong><span style="color: #444444; font-size: large;"><u><br></u></span>**</strong><span style="color: #444444; font-size: large;"><u>Service層</u></span>**</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-Bcv7-vwubuU/V7KxJwqZf9I/AAAAAAAAH4I/9vgY1F6fzbI28ZdK-OCZZmF9bzaM9_FJQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-Bcv7-vwubuU/V7KxJwqZf9I/AAAAAAAAH4I/9vgY1F6fzbI28ZdK-OCZZmF9bzaM9_FJQCLcB/s1600/1.png" alt></a></div><strong><span style="color: #666666;"><br></span>**</strong><span style="color: #666666;"><br></span>**傳入頻道代碼，依據頻道底下的類別，去各供應商取得POI資料，目前模擬頻道資料如下<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-e-CVa7nJHGo/V7KxhdAVBQI/AAAAAAAAH4M/4xbGZY9o5JE9Dg6fnyvtWQOmm0wMKcDXgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-e-CVa7nJHGo/V7KxhdAVBQI/AAAAAAAAH4M/4xbGZY9o5JE9Dg6fnyvtWQOmm0wMKcDXgCLcB/s320/1.png" alt></a></div>
-
-<p><strong>頻道1</strong>底下有一個<strong>交通</strong>的類別，該類別的POI資料來源為<span style="color: red;">A廠商</span>提供<br><strong>頻道2</strong>底下有一個<strong>交通</strong>的類別，該類別的POI資料來源為<span style="color: red;">A廠商</span>與<span style="color: red;">B廠商</span>提供的總和</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">POIService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> List&lt;POI&gt; <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> channelID</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;POI&gt;();</span><br><span class="line">            <span class="keyword">var</span> channel = GetChannel(channelID);</span><br><span class="line">            <span class="comment">//逐一搜尋頻道底下的各類別</span></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> category <span class="keyword">in</span> channel.Categorys)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//依據該類別所指定的供應商向Repository要資料</span></span><br><span class="line">                category.Supplier.ForEach(x =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">switch</span> (x)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">case</span> SupplierEnum.A:</span><br><span class="line">                            <span class="keyword">var</span> ASupplier = <span class="keyword">new</span> ASupplierRepository();</span><br><span class="line">                            <span class="keyword">var</span> APOIs = ASupplier.Get();</span><br><span class="line">                            Result.AddRange(APOIs);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> SupplierEnum.B:</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//並接總合的結果回傳</span></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 模擬頻道類別對應表</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="channelID"&gt;</span>The channel identifier.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>Channel.<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function">Channel <span class="title">GetChannel</span>(<span class="params"><span class="keyword">string</span> channelID</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (channelID == <span class="string">"1"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Channel</span><br><span class="line">                &#123;</span><br><span class="line">                    ID = <span class="string">"1"</span>,</span><br><span class="line">                    Categorys = <span class="keyword">new</span> List&lt;Channel.Category&gt;</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">new</span> Channel.Category</span><br><span class="line">                        &#123;</span><br><span class="line">                            Name = <span class="string">"交通"</span>,</span><br><span class="line">                            Supplier =<span class="keyword">new</span> List&lt;SupplierEnum&gt; &#123; SupplierEnum.A &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Channel</span><br><span class="line">            &#123;</span><br><span class="line">                ID = channelID,</span><br><span class="line">                Categorys = <span class="keyword">new</span> List&lt;Channel.Category&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">new</span> Channel.Category</span><br><span class="line">                    &#123;</span><br><span class="line">                        Name = <span class="string">"交通"</span>,</span><br><span class="line">                        Supplier = <span class="keyword">new</span> List&lt;SupplierEnum&gt; &#123; SupplierEnum.A , SupplierEnum.B &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Application層"><a href="#Application層" class="headerlink" title="Application層"></a><strong><span style="color: #444444; font-size: large;"><u>Application層</u></span></strong></h3><div>將傳入的ID透過Service去取得POI資料，並解用Json回傳     <strong><span style="color: #990000;"><br></span></strong></div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">Index</span>(<span class="params"><span class="keyword">string</span> id</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> Service = <span class="keyword">new</span> POIService();</span><br><span class="line">            <span class="keyword">var</span> POIs = Service.Get(id);</span><br><span class="line">            <span class="keyword">return</span> Json(POIs,JsonRequestBehavior.AllowGet);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure><br><br>目前執行結果<br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-COJi7ExMLgY/V7KzgT1tBuI/AAAAAAAAH4c/59FwAwpv1U4UniOKgZUJGJMy-jM4AxskgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-COJi7ExMLgY/V7KzgT1tBuI/AAAAAAAAH4c/59FwAwpv1U4UniOKgZUJGJMy-jM4AxskgCLcB/s320/1.png" alt></a></div>
-
-<h3 id="三、加入B廠商Repository"><a href="#三、加入B廠商Repository" class="headerlink" title="三、加入B廠商Repository"></a><span style="font-size: x-large;">三、加入B廠商Repository</span></h3><div><span style="font-size: x-large;"></span><br><br>###         <span style="font-size: x-large;">            <strong><span style="color: #444444; font-size: large;"><u>Repository層加入BSupplierRepositoy</u></span></strong>        </span><br><span style="font-size: x-large;">    </span></div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-qhpGz7u6oVg/V7K0fW7yuaI/AAAAAAAAH4k/nGTc-zqfiE4MS4uEtO_gG_mdHZbJkkNsACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-qhpGz7u6oVg/V7K0fW7yuaI/AAAAAAAAH4k/nGTc-zqfiE4MS4uEtO_gG_mdHZbJkkNsACLcB/s1600/1.png" alt></a></div><div><strong><span style="color: #990000;"><br></span></strong>    <strong><span style="color: #990000;"><br></span></strong></div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> POI B供應商</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BSupplierRepository</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> List&lt;POI&gt; <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line">            <span class="comment">//隨機建立十筆Supplier為B的資料回傳</span></span><br><span class="line">            <span class="keyword">var</span> fixture = <span class="keyword">new</span> Fixture();</span><br><span class="line">            <span class="keyword">var</span> Result = fixture.Build&lt;POI&gt;()</span><br><span class="line">                            .With(x =&gt; x.Name, <span class="keyword">string</span>.Concat(<span class="string">"捷運"</span>, rnd.Next(<span class="number">1</span>, <span class="number">100</span>)))</span><br><span class="line">                            .With(x =&gt; x.Supplier, SupplierEnum.B)</span><br><span class="line">                            .CreateMany().ToList();</span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>###     <span style="color: #444444; font-size: large;"></span><br><br>###     <span style="font-size: x-large;"><strong><span style="color: #444444; font-size: large;"><u>Service層</u></span></strong></span><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//逐一搜尋頻道底下的各類別</span></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> category <span class="keyword">in</span> channel.Categorys)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//依據該類別所指定的供應商向Repository要資料</span></span><br><span class="line">                category.Supplier.ForEach(x =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">switch</span> (x)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">case</span> SupplierEnum.A:</span><br><span class="line">                            <span class="keyword">var</span> ASupplier = <span class="keyword">new</span> ASupplierRepository();</span><br><span class="line">                            <span class="keyword">var</span> APOIs = ASupplier.Get();</span><br><span class="line">                            Result.AddRange(APOIs);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> SupplierEnum.B: <span class="comment">//補上B廠商</span></span><br><span class="line">                            <span class="keyword">var</span> BSupplier = <span class="keyword">new</span> BSupplierRepository();</span><br><span class="line">                            <span class="keyword">var</span> BPOIs = BSupplier.Get();</span><br><span class="line">                            Result.AddRange(BPOIs);</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure><br><br>###     <span style="font-size: x-large;"><strong><span style="color: #444444; font-size: large;"><u>執行結果</u></span></strong></span><br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-oLBfowU5dPE/V7K3te4Ug8I/AAAAAAAAH4w/HWxKp39vbfwkUb4zpQkvoB_umOlCnBk2gCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-oLBfowU5dPE/V7K3te4Ug8I/AAAAAAAAH4w/HWxKp39vbfwkUb4zpQkvoB_umOlCnBk2gCLcB/s1600/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><br></div><div><span style="font-size: x-large;"><br></span><br><br></div><span style="font-size: x-large;">四、重構開始</span><br><span style="font-size: medium;"><span style="font-size: medium;"><br></span></span><span style="font-size: medium;">    <span style="font-size: medium;">        首先需要思考一個問題，雖然這樣已經可以達成需求，但很明顯的是如果今天提供POI的廠商一直增加的話，我們要一直替<strong>Repository層</strong>新增廠商之外，<strong>Service層</strong>也會一直在Switch那邊做修改。&nbsp;</span></span><br><span style="font-size: medium;"><br></span><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-At8pfSKZU1A/V7O464uATbI/AAAAAAAAH6Y/_ZteovVvDKgiWIP4C7VOW0d_ID0T3Yn0gCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-At8pfSKZU1A/V7O464uATbI/AAAAAAAAH6Y/_ZteovVvDKgiWIP4C7VOW0d_ID0T3Yn0gCLcB/s640/1.png" alt></a></div><span style="font-size: medium;"><br></span><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-_mL7zcPN80s/V7O5MABxbiI/AAAAAAAAH6c/iwdP7xw3pVkJlb08t52ggMFcpuNRywTZQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-_mL7zcPN80s/V7O5MABxbiI/AAAAAAAAH6c/iwdP7xw3pVkJlb08t52ggMFcpuNRywTZQCLcB/s640/1.png" alt></a></div><br> <span style="font-size: medium;"><span style="font-size: medium;"></span></span><span style="font-size: medium;">那該怎麼改可以避免每次改Repository又要一直改Service層呢?</span><br><br><span style="font-size: medium;"><br></span><span style="font-size: medium;">這時就會運用到OO原則中的<strong>依賴抽象</strong>概念，當我們面對的是實體(例如:<strong>ASupplierRepository</strong> , <strong>BSupplierRepository</strong>)時也就是所謂的高耦合，如果面對的實體有所變動時，所有耦合的地方都會有高機率要一起改動的風險。</span><br><span style="font-size: medium;"><br></span><span style="font-size: medium;">因為要面對抽象，第一步我們就要來觀察這兩個實體共通處是什麼?     其實說穿了都是提供一個叫做Get()的方法，當呼叫他時，回傳對應的POI List，這就是它們共通的地方，接下來透過抽取介面的方式來實行隔離&nbsp;</span><br><span style="font-size: medium;"><strong><span style="color: #bf9000;"><br></span></strong></span><span style="font-size: medium;"><strong><span style="color: #bf9000;"><br></span></strong></span><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-8ZNSvrUREs8/V7O5d9RkdPI/AAAAAAAAH6g/l9zIPDnhW2MYl-bCWyutTDSp9UeRtpDigCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-8ZNSvrUREs8/V7O5d9RkdPI/AAAAAAAAH6g/l9zIPDnhW2MYl-bCWyutTDSp9UeRtpDigCLcB/s640/1.png" alt></a></div><br> <span style="font-size: medium;"><strong><span style="color: #bf9000;"><br></span></strong></span><span style="font-size: medium;"></span><span style="font-size: medium;"><strong><span style="color: #bf9000;">ISupplierRepository</span></strong></span><br><br><span style="font-size: medium;"><a href="https://2.bp.blogspot.com/--6JFyTbCJPw/V7K6stloRhI/AAAAAAAAH48/_u2UnWJmUL8lQhC91Ts5ieBO4iAfdYsCgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/--6JFyTbCJPw/V7K6stloRhI/AAAAAAAAH48/_u2UnWJmUL8lQhC91Ts5ieBO4iAfdYsCgCLcB/s1600/1.png" alt></a></span><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Interface ISupplierRepository</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">ISupplierRepository</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 取得POI資料</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>List&amp;lt;POI&amp;gt;.<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function">List&lt;POI&gt; <span class="title">Get</span>(<span class="params"></span>)</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>將<strong>ASupplierRepository</strong><span style="font-size: medium;">&nbsp;, <strong>B</strong></span><strong>SupplierRepository</strong><span style="font-size: medium;">都套上介面</span><br><span style="font-size: medium;"><br></span><br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-Jcpo5G8HHb0/V7K7uHZpu4I/AAAAAAAAH5I/uBTimpbb1_YxzjwVDH3ApMka-KNPy-fBwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-Jcpo5G8HHb0/V7K7uHZpu4I/AAAAAAAAH5I/uBTimpbb1_YxzjwVDH3ApMka-KNPy-fBwCLcB/s640/1.png" alt></a></div><span style="font-size: medium;"><br></span><span style="font-size: medium;"><br></span><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-e3WLuMtpxh4/V7K7kaOISdI/AAAAAAAAH5E/ZLhqJrVmBcMxApVZcO82qEAbAGXsNTcaACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-e3WLuMtpxh4/V7K7kaOISdI/AAAAAAAAH5E/ZLhqJrVmBcMxApVZcO82qEAbAGXsNTcaACLcB/s640/1.png" alt></a></div><span style="font-size: medium;"><br></span><span style="font-size: medium;"><br></span><span style="font-size: medium;">將兩個類別都實作了</span><span style="color: #bf9000;"><span style="color: #bf9000;">ISupplierRepository</span><span style="font-size: medium;">介面後，來修改<strong>Service層</strong>，讓它能面對抽象而非直接面對實體</span></span><br><span style="color: #bf9000;"><span style="font-size: medium;"><br></span></span><span style="color: #bf9000;"></span><br><br>###     <span style="font-size: x-large;"><strong><span style="color: #444444; font-size: large;"><u>Service層</u></span></strong></span><br><div><span style="color: #444444;">首先先運用簡單工廠模式，請它來幫我們建造SupplierRepository的實體</span></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-sUw1JL2z37U/V7K9OulK-EI/AAAAAAAAH5Y/VeGijYdLK7ElsbQb0Cie22U4PnGOex-BwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-sUw1JL2z37U/V7K9OulK-EI/AAAAAAAAH5Y/VeGijYdLK7ElsbQb0Cie22U4PnGOex-BwCLcB/s1600/1.png" alt></a></div><div><span style="color: #444444;"><u><br></u></span></div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SupplierFactory</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ISupplierRepository <span class="title">Generate</span>(<span class="params">SupplierEnum supplierType</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//因為A跟B的SupplierRepository都有實做ISupplierRepository</span></span><br><span class="line">            <span class="comment">//所以這邊可以直接回傳介面，也間接地規範以後新增SupplierRepository都要實作ISupplierRepository介面</span></span><br><span class="line">            <span class="keyword">switch</span> (supplierType)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">case</span> SupplierEnum.A:</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> ASupplierRepository();</span><br><span class="line">                <span class="keyword">case</span> SupplierEnum.B:</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> BSupplierRepository();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>修改原本的POIService，讓它透過工廠來取得Repository，而不是直接去New實體<br><br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-yqxvmh12FqM/V7K97eMgJOI/AAAAAAAAH5c/jeYldicOfYYSTvZJeGJRKOkPtJ7OETKXwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-yqxvmh12FqM/V7K97eMgJOI/AAAAAAAAH5c/jeYldicOfYYSTvZJeGJRKOkPtJ7OETKXwCLcB/s640/1.png" alt></a></div>
-
-<p>瞬間乾淨很多，而且<strong>POIService</strong>不再直接對<strong>ASupplierRepository</strong><span style="font-size: small;">&nbsp;,&nbsp;<strong>B</strong></span><strong>SupplierRepository</strong><span style="font-size: medium;">，而是面對</span><span style="color: #bf9000;">ISupplierRepository</span>，達成了所謂的面對抽象。</p>
-<p>這時候思考一下，以後新增供應商的Repository時POIService都不用改動了，只要Repository層新增好後，將Factory改一下即可，但是否又跳出另一個問題了。<strong>這樣Repository層更動時還不是要打開Service層去做修改。 因此在這我會將Factory搬Repository層去封裝起來</strong></p>
-<h3 id="將SupplierFactory搬到Repository層，並將實體Repository改成Internal封裝起來"><a href="#將SupplierFactory搬到Repository層，並將實體Repository改成Internal封裝起來" class="headerlink" title="將SupplierFactory搬到Repository層，並將實體Repository改成Internal封裝起來"></a><span style="font-family: &quot;times new roman&quot;; font-size: x-large;"><strong><span style="color: #444444; font-size: large;"><u>將</u></span></strong></span><span style="color: #444444; font-family: &quot;times new roman&quot;; font-size: large;"><u>SupplierFactory搬到Repository</u></span><strong><span style="color: #444444; font-size: large;"><u>層，並將實體Repository改成Internal封裝起來</u></span></strong></h3><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-WrLZP8-uAWU/V7LAj2T_ieI/AAAAAAAAH5s/uZ2PH9JQGX4X1aOwYavGDKaCHKfXC95MQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-WrLZP8-uAWU/V7LAj2T_ieI/AAAAAAAAH5s/uZ2PH9JQGX4X1aOwYavGDKaCHKfXC95MQCLcB/s1600/1.png" alt></a></div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-6shnp4lJN7Q/V7LA6VF0OmI/AAAAAAAAH5w/7eVfEwIFG38IGqtWYLxr-QDBdIAHtw1_wCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-6shnp4lJN7Q/V7LA6VF0OmI/AAAAAAAAH5w/7eVfEwIFG38IGqtWYLxr-QDBdIAHtw1_wCLcB/s400/1.png" alt></a></div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-OMNNg00W0qE/V7LBG6V83fI/AAAAAAAAH50/1stqCDyKtRMLmxt-QBvl3vXZ9khxZOFpACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-OMNNg00W0qE/V7LBG6V83fI/AAAAAAAAH50/1stqCDyKtRMLmxt-QBvl3vXZ9khxZOFpACLcB/s400/1.png" alt></a></div><br><div>換句話說，因為改成Internal的關係，現在Service層也碰不到<strong>ASupplierRepository</strong><span style="font-size: small;">&nbsp;,&nbsp;<strong>B</strong></span><strong>SupplierRepository</strong><span style="font-size: medium;">這兩個實體了，完全只能依賴Factory來取得介面的對應實體，未來不管怎麼新增Repository都不會再改<strong>Service層</strong>，到這邊就是重構並且實踐多型了</span></div><div><span style="font-size: medium;"><br></span>    <span style="font-size: medium;"><br></span>    <span style="font-size: medium;">目前UML結構圖如下</span><br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-fUMrd2aOxZs/V7LGMRcCTpI/AAAAAAAAH6I/lgwJmCO6LYse8DXoFEJKw3NqwtL7Z7f7QCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-fUMrd2aOxZs/V7LGMRcCTpI/AAAAAAAAH6I/lgwJmCO6LYse8DXoFEJKw3NqwtL7Z7f7QCLcB/s1600/1.png" alt></a>    </div><span style="font-size: medium;"><br></span></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/08/05/【FluentAssertions】如何驗證巢狀結構中，Double倍精準數/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/05/【FluentAssertions】如何驗證巢狀結構中，Double倍精準數/" itemprop="url">【FluentAssertions】如何驗證巢狀結構中，Double倍精準數</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-08-05T10:39:00+08:00">
-                2016-08-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/08/05/【FluentAssertions】如何驗證巢狀結構中，Double倍精準數/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/05/【FluentAssertions】如何驗證巢狀結構中，Double倍精準數/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>寫單元測試的時候常常會使用<a href="http://www.fluentassertions.com/" target="_blank" rel="noopener">FluentAssertions</a>這個套件來做驗證，即便兩個巢狀結構的類別透過這個套件也能輕鬆解決比對問題。</p>
-<p>但最近碰到當重狀結構裡面有Double這類的趨近值數值時，驗證會失敗，查了一下後找到解法，所以紀錄一下</p>
-<p>原本UnitTest程式長這樣</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Test_DoubleAssert</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> stops = <span class="keyword">new</span> List&lt;BusStopAPIResult&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">new</span> BusStopAPIResult</span><br><span class="line">                &#123;</span><br><span class="line">                    StopName = <span class="keyword">new</span> NameAPIResult</span><br><span class="line">                    &#123;</span><br><span class="line">                        Zh_tw = <span class="string">"吊橋頭"</span>,</span><br><span class="line">                        En = <span class="string">"deocioutao"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    StopUID = <span class="string">"StopUID1"</span>,</span><br><span class="line">                    StopPosition = <span class="keyword">new</span> BusStopAPIResult.Coordinate</span><br><span class="line">                    &#123;</span><br><span class="line">                        PositionLat = <span class="number">24.853690</span>,</span><br><span class="line">                        PositionLon = <span class="number">121.354917</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">new</span> BusStopAPIResult</span><br><span class="line">                &#123;</span><br><span class="line">                    StopName = <span class="keyword">new</span> NameAPIResult</span><br><span class="line">                    &#123;</span><br><span class="line">                        Zh_tw = <span class="string">"吊橋頭"</span>,</span><br><span class="line">                        En = <span class="string">"deocioutao"</span></span><br><span class="line">                    &#125;,</span><br><span class="line">                    StopUID = <span class="string">"StopUID2"</span>,</span><br><span class="line">                    StopPosition = <span class="keyword">new</span> BusStopAPIResult.Coordinate</span><br><span class="line">                    &#123;</span><br><span class="line">                        PositionLat = <span class="number">24.853632</span>,</span><br><span class="line">                        PositionLon = <span class="number">121.354874</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> expected = <span class="keyword">new</span> List&lt;BusStopClusterDTO&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">new</span> BusStopClusterDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Name = <span class="string">"吊橋頭"</span>,</span><br><span class="line">                    SourceID = <span class="string">"StopUID1"</span>,</span><br><span class="line">                    IDs = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt; &#123; <span class="string">"StopUID1"</span> , <span class="string">"StopUID2"</span> &#125;,</span><br><span class="line">                    Lat = <span class="number">24.853661</span>,</span><br><span class="line">                    Lng = <span class="number">121.3548955</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Program.ClusterSourceData(stops);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.ShouldBeEquivalentTo(expected);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<p>執行結果如圖</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-LvpAUuEAqzk/V6P6OrTaInI/AAAAAAAAH3U/37TPKUzXfAI0KKdMpNDAJCpcvBrZXZH2gCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-LvpAUuEAqzk/V6P6OrTaInI/AAAAAAAAH3U/37TPKUzXfAI0KKdMpNDAJCpcvBrZXZH2gCLcB/s640/1.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-xi043e38HW0/V6P6m4ED9_I/AAAAAAAAH3Y/T29FHNHT7h4Y51M1RTmwb1dnZJm-wMLMQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-xi043e38HW0/V6P6m4ED9_I/AAAAAAAAH3Y/T29FHNHT7h4Y51M1RTmwb1dnZJm-wMLMQCLcB/s320/1.png" alt></a></div>
-
-<p>因為數值是經緯度，經過計算後不需要驗證精確到小數點這麼多位數，所以可以改用以下方法去驗證</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">actual.ShouldBeEquivalentTo(</span><br><span class="line">               expected,</span><br><span class="line">               <span class="comment">//當欄位型別為Double時，相差到0.000001之內都是OK的</span></span><br><span class="line">               option =&gt; option.Using&lt;<span class="keyword">double</span>&gt;(</span><br><span class="line">                           ctx =&gt; ctx.Subject.Should().BeApproximately(ctx.Expectation, <span class="number">0.000001</span>))</span><br><span class="line">                       .WhenTypeIs&lt;<span class="keyword">double</span>&gt;());</span><br></pre></td></tr></table></figure>
-<p>這樣驗證就會過關了!!</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/08/04/快速搜尋可視範圍的座標點。-透過四元樹演算法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/04/快速搜尋可視範圍的座標點。-透過四元樹演算法/" itemprop="url">快速搜尋可視範圍的座標點。 透過四元樹演算法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-08-04T17:32:00+08:00">
-                2016-08-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/08/04/快速搜尋可視範圍的座標點。-透過四元樹演算法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/04/快速搜尋可視範圍的座標點。-透過四元樹演算法/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>接到一個任務，要把全國的公車資料座標訊息爬回來，並且做整理歸納。研究了一下<a href="http://ptx.transportdata.tw/PTX/Service" target="_blank" rel="noopener">交通部的公共運輸整合資訊平台</a>的內容，資訊相當完整，API也寫得很彈性。</p>
-<p>唯獨公車站牌的部分，是以公車路線為出發點思考，每條路線雖然會經過同一個站牌，站牌的ID都會視為不同，不同ID的站牌，經緯度可能相同。</p>
-<p>例如 :<br>富陽街口的公車站牌資料</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-rsJGRd8q0Yk/V6LuwauETRI/AAAAAAAAH2I/MXCywQPawicA3nbmx9j-D6608XWt5RxXQCLcB/s1600/13765731_1287175481295263_7952967575366659415_o.jpg" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-rsJGRd8q0Yk/V6LuwauETRI/AAAAAAAAH2I/MXCywQPawicA3nbmx9j-D6608XWt5RxXQCLcB/s640/13765731_1287175481295263_7952967575366659415_o.jpg" alt></a></div><br>富陽街口去程回程的公車，透過GoogleMap算大概有8支站牌，但透過API去撈會發現有17支ID皆為不同的資料。</p>
-<p><strong>任務目標 :</strong><br>將所有站牌資料爬回來，相同的站名距離20公尺內的站牌要能自動聚合在一起，成為一支站牌。</p>
-<p>原本思考是全部爬回來後用站名做整合，但發現一個問題是宜蘭與桃園都有相同站名的站牌”吊橋頭”，而距離相差十萬八千里，所以站名不可行。會加上20公尺的條件是因為像是台北火車站他的腹地很大，公車站牌可能很多相距很遠， 或是有些捷運站出口在兩條路口的轉角都有公車站牌，且站名相同，如果單純把這些點整合在一起放回地圖上，會發現公車站牌少了許多，失真。</p>
-<p>歸納以上的條件，我們會有一大批公車站牌的資料(<u>118728筆資料</u>)，如果把每個站牌用同名稱的逐筆下去比對各自的距離，顯然掃到天荒地老也跑不完，顯然浪費效能且不切實際。</p>
-<p>看了一篇文章後得到非常大的啟發，該方法是透過四元樹演算法將大批座標快速塞選出範圍內的點，並且做出聚合。<br>參考 &nbsp;: &nbsp;<a href="https://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps" target="_blank" rel="noopener">How To Efficiently Display Large Amounts of Data on iOS Maps</a><br>四元樹演算法 : <a href="https://zh.wikipedia.org/wiki/%E5%9B%9B%E5%8F%89%E6%A0%91" target="_blank" rel="noopener">Wiki</a></p>
-<p>節錄Wiki對四元樹的解說:「<span style="background-color: white; color: #252525; font-family: sans-serif; font-size: 14px; line-height: 22.4px;"><strong>假如四元樹區塊被用來表達一組點資料(諸如一組城市的經緯度)，區塊就進行次分割直到每個葉節點包含最多一個單點。</strong></span>」</p>
-<p>用圖片來表示就像這樣</p>
-<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-waUqxqrmcf8/V6L7oy8YO-I/AAAAAAAAH2Y/kMcCy8J_kGw45_XPYsvcsqONAuQa767qgCLcB/s1600/quadTreeInsert.gif" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-waUqxqrmcf8/V6L7oy8YO-I/AAAAAAAAH2Y/kMcCy8J_kGw45_XPYsvcsqONAuQa767qgCLcB/s320/quadTreeInsert.gif" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;"><strong><span style="background-color: white; font-family: &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif; font-size: 14px; line-height: 16px;">Source &nbsp;: &nbsp;</span><span style="font-family: &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif;"><span style="font-size: 14px; line-height: 16px;"><a href="https://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps" target="_blank" rel="noopener">https://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps</a></span></span></strong><br><br></td></tr></tbody></table>四元樹包含幾個概念<br>1.每個節點最多只能包含一個座標<br>2.當節點的座標滿了，會分裂出四個象限<br><br>根據以上概念寫出以下Class<br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 四元樹節點</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">QuadTreeNode</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//四個象限</span></span><br><span class="line">        <span class="keyword">public</span> QuadTreeNode NorthWest &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> QuadTreeNode NorthEast &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> QuadTreeNode SouthWest &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> QuadTreeNode SouthEast &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 邊界</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> BoundingBoxDTO BoundingBox &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 節點數量</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> BucketCapacity &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 座標資料</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> List&lt;Data&gt; Points &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">QuadTreeNode</span>(<span class="params">BoundingBoxDTO boundingBox , <span class="keyword">int</span> capacity</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            BoundingBox = boundingBox;</span><br><span class="line">            BucketCapacity = capacity;</span><br><span class="line">            Points = <span class="keyword">new</span> List&lt;BusStopAPIResult&gt;();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>那座標插入四元樹節點時如何運作?<br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">Insert</span>(<span class="params">QuadTreeNode node, Data point</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">// 確定這個座標符合四元樹的框框範圍</span></span><br><span class="line">            <span class="keyword">if</span> (!CheckBoundingBoxContainData(node.BoundingBox, point))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 如果這個座標符合框框範圍，檢查這個節點是否已經超過座標存放上限</span></span><br><span class="line">            <span class="comment">// 如果沒有，那就座標放入回傳True</span></span><br><span class="line">            <span class="keyword">if</span> ((node.Points.Count +<span class="number">1</span>) &lt;= node.BucketCapacity)</span><br><span class="line">            &#123;</span><br><span class="line">                node.Points.Add(data);</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 會走到這一步，表示這個座標在這個四元樹的框框範圍內</span></span><br><span class="line">            <span class="comment">// 但是能存放的座標已經滿了，判斷這個四元樹節點是否有四個象限</span></span><br><span class="line">            <span class="comment">// 如果沒有，進行分裂</span></span><br><span class="line">            <span class="keyword">if</span> (node.NorthWest == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Subdivide(node);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 將座標丟到新分裂出來的四個四元樹象限，符合座標坐落的位置，存放好回傳True</span></span><br><span class="line">            <span class="keyword">if</span> (Insert(node.NorthWest, data)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span> (Insert(node.NorthEast, data)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span> (Insert(node.SouthWest, data)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span> (Insert(node.SouthEast, data)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure><br><br>四元樹分裂的程式碼<br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 四元樹分裂</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="node"&gt;</span>四元樹節點<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Subdivide</span>(<span class="params">QuadTreeNode node</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> box = node.BoundingBox;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//找出要分裂的四元樹中心點</span></span><br><span class="line">            <span class="keyword">double</span> LatMid = (box.LeftTop.Latitude + box.RightBottom.Latitude) / <span class="number">2.0</span>;</span><br><span class="line">            <span class="keyword">double</span> LngMid = (box.LeftTop.Longitude + box.RightBottom.Longitude) / <span class="number">2.0</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//算出西北象限的左上右下座標點</span></span><br><span class="line">            <span class="keyword">var</span> NorthWest = <span class="keyword">new</span> BoundingBoxDTO</span><br><span class="line">            &#123;</span><br><span class="line">                LeftTop = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = box.LeftTop.Latitude,</span><br><span class="line">                    Longitude = box.LeftTop.Longitude</span><br><span class="line">                &#125;,</span><br><span class="line">                RightBottom = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = LatMid,</span><br><span class="line">                    Longitude = LngMid</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            node.NorthWest = <span class="keyword">new</span> QuadTreeNode(NorthWest, node.BucketCapacity);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//算出東北象限的左上右下座標點</span></span><br><span class="line">            <span class="keyword">var</span> NorthEast = <span class="keyword">new</span> BoundingBoxDTO</span><br><span class="line">            &#123;</span><br><span class="line">                LeftTop = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = box.LeftTop.Latitude,</span><br><span class="line">                    Longitude = LngMid</span><br><span class="line">                &#125;,</span><br><span class="line">                RightBottom = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = LatMid,</span><br><span class="line">                    Longitude = box.RightBottom.Longitude</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            node.NorthEast = <span class="keyword">new</span> QuadTreeNode(NorthEast, node.BucketCapacity);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//算出西南象限的左上右下座標點</span></span><br><span class="line">            <span class="keyword">var</span> SouthWest = <span class="keyword">new</span> BoundingBoxDTO</span><br><span class="line">            &#123;</span><br><span class="line">                LeftTop = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = LatMid,</span><br><span class="line">                    Longitude = box.LeftTop.Longitude</span><br><span class="line">                &#125;,</span><br><span class="line">                RightBottom = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = box.RightBottom.Latitude,</span><br><span class="line">                    Longitude = LngMid</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            node.SouthWest = <span class="keyword">new</span> QuadTreeNode(SouthWest, node.BucketCapacity);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//算出東南象限的左上右下座標點</span></span><br><span class="line">            <span class="keyword">var</span> SouthEast = <span class="keyword">new</span> BoundingBoxDTO</span><br><span class="line">            &#123;</span><br><span class="line">                LeftTop = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = LatMid,</span><br><span class="line">                    Longitude = LngMid</span><br><span class="line">                &#125;,</span><br><span class="line">                RightBottom = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = box.RightBottom.Latitude,</span><br><span class="line">                    Longitude = box.RightBottom.Longitude</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            node.SouthEast = <span class="keyword">new</span> QuadTreeNode(SouthEast, node.BucketCapacity);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure><br><br>看到這邊可能會有個疑問，那就是雖然知道四元樹就像是遞迴的概念，將地圖分裂成很多塊，每個大區塊可能又被分裂成若干的小區塊，一層一層的往下長<br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-m_rkkVB1hxw/V6MCmq-X0gI/AAAAAAAAH2o/FHOE9VcWAvkLDp8BWJvjYnWvP9-NlbGfgCLcB/s1600/500px-Point_quadtree.svg.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-m_rkkVB1hxw/V6MCmq-X0gI/AAAAAAAAH2o/FHOE9VcWAvkLDp8BWJvjYnWvP9-NlbGfgCLcB/s320/500px-Point_quadtree.svg.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;"><strong><span style="background-color: white; font-family: &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif; font-size: 14px; line-height: 16px;">Source &nbsp;: &nbsp;</span><span style="font-family: &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif; font-size: 12.8px;"><span style="font-size: 14px; line-height: 16px;"><a href="https://zh.wikipedia.org/wiki/%E5%9B%9B%E5%8F%89%E6%A0%91" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E5%9B%9B%E5%8F%89%E6%A0%91</a></span></span></strong></td></tr></tbody></table><br>但為何會讓搜尋速度加快呢? 原因是他從上層開始看是否有重疊到要搜尋的區塊，如果有就往該節點的四象限遞迴繼續往下找重疊，如果在大區塊的節點就已經沒有包含重疊區域，那他無限往下延伸的子節點也就不會被搜尋了。引用原作者的圖片就一目了然<br><br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-FXlbFONjFzI/V6MEINzRBHI/AAAAAAAAH20/gXhavItzQ_o3GgeyMPRgBGAxhJ9U6MuVwCLcB/s1600/quadTreeQuery.gif" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-FXlbFONjFzI/V6MEINzRBHI/AAAAAAAAH20/gXhavItzQ_o3GgeyMPRgBGAxhJ9U6MuVwCLcB/s400/quadTreeQuery.gif" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;"><strong><span style="background-color: white; font-family: &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif; font-size: 14px; line-height: 16px;">Source &nbsp;: &nbsp;</span><span style="font-family: &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif; font-size: 12.8px;"><span style="font-size: 14px; line-height: 16px;"><a href="https://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps" target="_blank" rel="noopener">https://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps</a></span></span></strong></td></tr></tbody></table>
-
-<p>搜尋程式碼如下<br>如何透過座標判斷地理位置有無交集，請參考上一篇文章:&nbsp;【<a href="http://toyo0103.blogspot.tw/2016/08/blog-post.html" target="_blank" rel="noopener">地理位置】透過座標框出地理位置，與判斷地理位置是否重疊</a><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SearchDataInRange</span>(<span class="params">QuadTreeNode node, BoundingBoxDTO range, <span class="keyword">ref</span> List&lt;Data&gt; datas</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">// 確認要搜尋的區塊是否與四元樹節點所涵蓋的區塊有重疊到，如果沒有就直接跳掉</span></span><br><span class="line">            <span class="keyword">if</span> (!CheckIntersectionBoundingBox(node.BoundingBox, range))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//如果有，將這個區塊的節點拿出來比對是否在要搜尋的範圍中</span></span><br><span class="line">            <span class="comment">//因為雖然範圍有重疊到，但不代表裡面的所有節點都落在重疊的範圍</span></span><br><span class="line">            <span class="comment">//如果落在重疊的範圍，儲存起來，之後回傳</span></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> node.Points)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// Gather points contained in range</span></span><br><span class="line">                <span class="keyword">if</span> (CheckBoundingBoxContainData(range, item))</span><br><span class="line">                &#123;</span><br><span class="line">                    datas.Add(item);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//確認這個節點是否有分裂過</span></span><br><span class="line">            <span class="keyword">if</span> (node.NorthWest == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//如果有分裂成四個象限，繼續遞迴往下找</span></span><br><span class="line">            SearchDataInRange(node.NorthWest, range, <span class="keyword">ref</span> datas);</span><br><span class="line">            SearchDataInRange(node.NorthEast, range, <span class="keyword">ref</span> datas);</span><br><span class="line">            SearchDataInRange(node.SouthWest, range, <span class="keyword">ref</span> datas);</span><br><span class="line">            SearchDataInRange(node.SouthEast, range, <span class="keyword">ref</span> datas);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>說了這麼多，我們如何將上述的四元樹理論運用在我們的目標上呢?</p>
-<p>首先我們把一堆的公車站牌資料抓回來後，依據名稱先進行第一次分類，把每個名稱相同的依據上面的方式做成四元樹節點，但這邊有個前面提到的問題，如果是同個站名但其實是不同的站點呢? </p>
-<p>這邊我用的方法是將同名稱的公車站牌，找出兩個離最遠的站牌算距離，如果超過1公里合理懷疑這是兩個不同的站點，只是碰巧相同名稱。台灣應該沒有差了一公里遠但是是同一個站的吧……(有的話請跟我說XD)。</p>
-<p>將這群同站名但其實不同地方的站牌，依據一公里為單位分組，這樣就能有效地將這類同名的站牌做更細部的歸類。</p>
-<p>計算兩點座標距離的程式<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">double</span> EARTH_RADIUS = <span class="number">6378.137</span>; <span class="comment">//地球半?</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 計算距離(返回公尺)</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="lat1"&gt;</span>點1經<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="lng1"&gt;</span>點1緯<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="lat2"&gt;</span>點2經<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="lng2"&gt;</span>點2緯<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">GetDistance</span>(<span class="params"><span class="keyword">double</span> lat1, <span class="keyword">double</span> lng1, <span class="keyword">double</span> lat2, <span class="keyword">double</span> lng2</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">double</span> radLat1 = rad(lat1);</span><br><span class="line">            <span class="keyword">double</span> radLat2 = rad(lat2);</span><br><span class="line">            <span class="keyword">double</span> a = radLat1 - radLat2;</span><br><span class="line">            <span class="keyword">double</span> b = rad(lng1) - rad(lng2);</span><br><span class="line">            <span class="keyword">double</span> s = <span class="number">2</span> * Math.Asin(Math.Sqrt(Math.Pow(Math.Sin(a / <span class="number">2</span>), <span class="number">2</span>) +</span><br><span class="line">             Math.Cos(radLat1) * Math.Cos(radLat2) * Math.Pow(Math.Sin(b / <span class="number">2</span>), <span class="number">2</span>)));</span><br><span class="line">            s = s * EARTH_RADIUS;</span><br><span class="line">            s = Math.Round(s * <span class="number">10000</span>) / <span class="number">10</span>;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">rad</span>(<span class="params"><span class="keyword">double</span> d</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">return</span> d * Math.PI / <span class="number">180.0</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面的問題皆排除並分類後，依據同名的站牌，算出這群站牌座標的中心點，並用離中心最遠的座標距離做為範圍，依照每小格20公尺的矩形進行四元樹搜尋，在同一格內的整合成一個站牌，記錄下來</p>
-<p>概念圖</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-C9CqLPtlx7Q/V6MKsEK1vTI/AAAAAAAAH3E/KDH_KTeXYQQnoFWCQdLL7mvIihxNMh7KgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-C9CqLPtlx7Q/V6MKsEK1vTI/AAAAAAAAH3E/KDH_KTeXYQQnoFWCQdLL7mvIihxNMh7KgCLcB/s640/1.png" alt></a></div><br>1.這些點只是亂標的，但假設真的有個同名站牌坐落在這些位置，找到中心點後，藍色線為中心點與最遠座標的直線距離，依據這個距離做為矩形二分之一寬。</p>
-<p>2.有了距離後就能求出左上跟右下角的點，透過<span style="background-color: white; color: #6aa84f; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px; line-height: 25.5px;">DbGeography</span><span style="background-color: white; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px; line-height: 25.5px;">這個來取得地理面積的物件</span><br><span style="background-color: white; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px; line-height: 25.5px;"><br></span><span style="background-color: white; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px; line-height: 25.5px;">3.從左上開始，橘色的每小格為長寬各20公尺的矩形，透過四元樹下去搜尋，被同一格橘色小框框到的座標收納成同一個點，記錄下來</span><br><span style="background-color: white; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px; line-height: 25.5px;"><br></span></p>
-<p>經過實測，如果只是雙北市的公車站點，只要4分鐘就能全部歸類掃描完畢，全國的話大概4個小時能算完，以上是這次任務的小筆記</p>
-<p>測試環境 :<br>CPU &nbsp;: &nbsp;I7 &nbsp;4核 (實際在跑的時候控制大概在3核左右)<br>RAM : 16G</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/08/04/【地理位置】透過座標框出地理位置，與判斷地理位置是否重疊/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/04/【地理位置】透過座標框出地理位置，與判斷地理位置是否重疊/" itemprop="url">【地理位置】透過座標框出地理位置，與判斷地理位置是否重疊</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-08-04T15:01:00+08:00">
-                2016-08-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/08/04/【地理位置】透過座標框出地理位置，與判斷地理位置是否重疊/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/04/【地理位置】透過座標框出地理位置，與判斷地理位置是否重疊/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>如果取得<strong>西北</strong>與<strong>東南</strong>的兩點座標透過<span style="color: #6aa84f;">DbGeography</span>這個類別能夠框出地理面積，程式碼如下</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">DbGeography.FromText(<span class="keyword">string</span>.Format(<span class="string">"POLYGON((&#123;0&#125; &#123;1&#125;, &#123;0&#125; &#123;2&#125;, &#123;3&#125; &#123;2&#125;, &#123;3&#125; &#123;1&#125;, &#123;0&#125; &#123;1&#125;))"</span>,</span><br><span class="line">                     西北座標點的經度,</span><br><span class="line">                     西北座標點的緯度,</span><br><span class="line">                     東南座標點的緯度,</span><br><span class="line">                     東南座標點的經度), <span class="number">4326</span>);</span><br></pre></td></tr></table></figure>
-<p>這樣能取回<span style="color: #6aa84f;">DbGeography</span>的地理面積的類別，透過這個類別的Intersects這個Method能判斷兩個面積，或是座標點是否有交集。<a href="https://msdn.microsoft.com/zh-tw/library/system.data.spatial.dbgeography.intersects(v=vs.110" target="_blank" rel="noopener">參考MSDN</a>.aspx)</p>
-<p>範例 : 用Google地圖來取得兩個座標點，框出地理位置<br><strong><br>**</strong>座標點1 :**&nbsp;25.029768, 121.546829</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-2gYLmcT7YnE/V6Lj8q2dPzI/AAAAAAAAH1I/paibCBIx16cafBaBrvhNCJkrFTcVrYS0gCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-2gYLmcT7YnE/V6Lj8q2dPzI/AAAAAAAAH1I/paibCBIx16cafBaBrvhNCJkrFTcVrYS0gCLcB/s400/1.png" alt></a></div>
-
-<p><strong>座標點2 :</strong>&nbsp;25.028854, 121.548417</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-U3tLa6GFY3U/V6LkMN-HODI/AAAAAAAAH1M/9FhZt1GbnlQPi29X-gO8YKwhuiZbLUBvACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-U3tLa6GFY3U/V6LkMN-HODI/AAAAAAAAH1M/9FhZt1GbnlQPi29X-gO8YKwhuiZbLUBvACLcB/s400/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div>
-
-<p>所以透過剛剛的程式我們可以框出這塊地理面積</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-vt2mdO_TXx0/V6LlFRP_RrI/AAAAAAAAH1U/iyilo98OOwsCNtTPvlcvN9Hs-LAiD0uAwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-vt2mdO_TXx0/V6LlFRP_RrI/AAAAAAAAH1U/iyilo98OOwsCNtTPvlcvN9Hs-LAiD0uAwCLcB/s320/1.png" alt></a></div>
-
-<p>依樣畫葫蘆，在選兩個點去框出下個面積<br><strong>座標點1 :</strong>&nbsp;25.029541, 121.547474<br><strong>座標點2 :&nbsp;</strong>25.028199, 121.549636</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-uv7-0y_8x2I/V6LlwFgayyI/AAAAAAAAH1k/4lmNDDpGBmMhF0xtmFJjIuAtlQKfqw_mwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-uv7-0y_8x2I/V6LlwFgayyI/AAAAAAAAH1k/4lmNDDpGBmMhF0xtmFJjIuAtlQKfqw_mwCLcB/s320/1.png" alt></a></div>
-
-<p>從兩張圖可以看到在四維路那邊有重疊的部分，用程式碼來跑跑看</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-1wdcHZ4VBEU/V6LmrE_EI7I/AAAAAAAAH1s/4_wwJ8SwkEw-neIcwpAeeaoTfrcJ544JgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-1wdcHZ4VBEU/V6LmrE_EI7I/AAAAAAAAH1s/4_wwJ8SwkEw-neIcwpAeeaoTfrcJ544JgCLcB/s640/1.png" alt></a></div>
-
-<p>為了驗證不重疊會回傳False,我們將Area2的西北座標往右下角移動，讓面積縮小不會跟Area1重疊，再次實驗看看<br><strong>Area2&nbsp;</strong><br><strong>座標點1 :</strong>&nbsp;25.029541, 121.547474 &gt;&gt;&nbsp;<span style="color: red;">25.029123, 121.548772 &nbsp;(改到敦化南路二段上)</span><br><strong>座標點2 :&nbsp;</strong>25.028199, 121.549636</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-EYzYtuHuPs0/V6Lnj8MSgYI/AAAAAAAAH14/cDU5K1uKDQUlQbYYNdFEt_h_sJySf0ZmACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-EYzYtuHuPs0/V6Lnj8MSgYI/AAAAAAAAH14/cDU5K1uKDQUlQbYYNdFEt_h_sJySf0ZmACLcB/s1600/1.png" alt></a></div>
-
-<p>補充:<br>上面介紹的是兩點框出面積，如果要判斷一個座標點有無落在一個面積裡面，用法也相同，只是建立<span style="color: #6aa84f;">DbGeography</span>座標點的方法略有不同，如下</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> point = DbGeography.PointFromText(<span class="keyword">string</span>.Format(<span class="string">"POINT(&#123;0&#125; &#123;1&#125;)"</span>, 經度, 緯度), <span class="number">4326</span>);</span><br></pre></td></tr></table></figure>
-<p>一樣帶到Intersects就可以得到答案了!! 以上</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/07/29/【Unit-Test】針對Repository做單元測試-二/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/07/29/【Unit-Test】針對Repository做單元測試-二/" itemprop="url">【Unit Test】針對Repository做單元測試 (二)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-07-29T18:28:00+08:00">
-                2016-07-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/07/29/【Unit-Test】針對Repository做單元測試-二/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/29/【Unit-Test】針對Repository做單元測試-二/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>曾上一篇，開始在我們的Production專案寫一段跟DB要資料的程式吧。(註 : 這邊不考慮分層與物件導向問題，一切專注在單元測試上)</p>
-<p>首先先在專案中加入EntityFramework，並把Northwind的Employees Table加進來</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-rgwWYtv-ueQ/V5rwi6Q1TII/AAAAAAAAHyQ/uRS4J_82bxsDX5wZNtqjqoA8hjVtRUjcQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-rgwWYtv-ueQ/V5rwi6Q1TII/AAAAAAAAHyQ/uRS4J_82bxsDX5wZNtqjqoA8hjVtRUjcQCLcB/s640/1.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-yQ-t7YWi-qI/V5rwi006AII/AAAAAAAAHyY/1ftZ1r6NWgQVEmiKy4uhK84XBGa4le3TQCLcB/s1600/2.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-yQ-t7YWi-qI/V5rwi006AII/AAAAAAAAHyY/1ftZ1r6NWgQVEmiKy4uhK84XBGa4le3TQCLcB/s1600/2.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-eUqI2lewHEY/V5rwi_fRLXI/AAAAAAAAHyU/D-s4l_BrxWE2XOmsvflt-8s-Uo2arn95gCLcB/s1600/3.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-eUqI2lewHEY/V5rwi_fRLXI/AAAAAAAAHyU/D-s4l_BrxWE2XOmsvflt-8s-Uo2arn95gCLcB/s640/3.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-dbz2xrn6Veo/V5rwjJrehdI/AAAAAAAAHyc/zTVkWvQnVoMUaEVjPiL9TwqtZhTwYxeyQCLcB/s1600/4.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-dbz2xrn6Veo/V5rwjJrehdI/AAAAAAAAHyc/zTVkWvQnVoMUaEVjPiL9TwqtZhTwYxeyQCLcB/s1600/4.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-gY9k8ego5EE/V5rwjPDRHwI/AAAAAAAAHyg/7ICoznJNU74dBS7VPVp56-He_BOoF6HxwCLcB/s1600/5.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-gY9k8ego5EE/V5rwjPDRHwI/AAAAAAAAHyg/7ICoznJNU74dBS7VPVp56-He_BOoF6HxwCLcB/s1600/5.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-4HqmVn15BgY/V5rw-Q4Ow3I/AAAAAAAAHyk/kQKue8geuyUfymRmy-mPAhsTIKt_-iPSwCLcB/s1600/6.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-4HqmVn15BgY/V5rw-Q4Ow3I/AAAAAAAAHyk/kQKue8geuyUfymRmy-mPAhsTIKt_-iPSwCLcB/s1600/6.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-xa7G6erk2fM/V5rxkJIbLSI/AAAAAAAAHys/sTsfBXgEjCAPXHa1C4YXqdZ4VZLEHeSIgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-xa7G6erk2fM/V5rxkJIbLSI/AAAAAAAAHys/sTsfBXgEjCAPXHa1C4YXqdZ4VZLEHeSIgCLcB/s1600/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;">接著寫一段程式，讓我們帶入ID能順利取回該筆員工資料</div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-iG0Vl0uUc0I/V5ryyt4eQoI/AAAAAAAAHy8/DsdR1LF6JycomPbTS1zop1NvFhb1C8olwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-iG0Vl0uUc0I/V5ryyt4eQoI/AAAAAAAAHy8/DsdR1LF6JycomPbTS1zop1NvFhb1C8olwCLcB/s1600/1.png" alt></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EmployeesRepository</span> :<span class="title">IDisposable</span></span><br><span class="line">    &#123;</span><br><span class="line">        NorthwindEntities DBContext;</span><br><span class="line">        <span class="keyword">bool</span> disposedValue;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">EmployeesRepository</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            DBContext = <span class="keyword">new</span> NorthwindEntities();</span><br><span class="line">            disposedValue = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Employees <span class="title">Get</span>(<span class="params"><span class="keyword">int</span> id</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">return</span> DBContext.Employees.FirstOrDefault(x =&gt; x.EmployeeID == id);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"><span class="keyword">bool</span> disposing</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (!disposedValue)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (DBContext != <span class="literal">null</span>)</span><br><span class="line">                    DBContext.Dispose();</span><br><span class="line"></span><br><span class="line">                disposedValue = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Dispose(disposedValue);</span><br><span class="line">             GC.SuppressFinalize(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>改寫HomeController的Index Action，依據帶入的ID取回員工，並顯示於葉面上<br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-nqGw1xVRRX0/V5r20E6fPAI/AAAAAAAAHzc/qRcvr7Lr_Os9IrcMr_1XqYnNJYTxKfVsgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-nqGw1xVRRX0/V5r20E6fPAI/AAAAAAAAHzc/qRcvr7Lr_Os9IrcMr_1XqYnNJYTxKfVsgCLcB/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><br>View的部分(一切從簡 XDD)<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-Z3oYtUvXjqo/V5r3L10zYiI/AAAAAAAAHzg/RH5ZJQSpyHk5X8NVMhOpk7JA0rJT95nkQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-Z3oYtUvXjqo/V5r3L10zYiI/AAAAAAAAHzg/RH5ZJQSpyHk5X8NVMhOpk7JA0rJT95nkQCLcB/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><br>來執行看看這段Code有沒有用!!!<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-6bOfbEOFZ_M/V5r3beLjkWI/AAAAAAAAHzo/Q1YmS32wgeMfNPkUeJqFVVQDjRRmu-iKQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-6bOfbEOFZ_M/V5r3beLjkWI/AAAAAAAAHzo/Q1YmS32wgeMfNPkUeJqFVVQDjRRmu-iKQCLcB/s640/1.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-NfsCSeUstAo/V5r3ooighWI/AAAAAAAAHzs/R94VplAsQn8XeC3QaeL9euzBNLf8NvPjACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-NfsCSeUstAo/V5r3ooighWI/AAAAAAAAHzs/R94VplAsQn8XeC3QaeL9euzBNLf8NvPjACLcB/s1600/1.png" alt></a></div>
-
-<p>所以這段Code的確可以正常運作，確定之後我們來寫單元測試驗證這件事情。</p>
-<p>首先在單元測試專案建立EmployeesRepositoryTests</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-LVviiAdNxxs/V5r4xF2a5NI/AAAAAAAAHz8/8H5uWifglgYlr2hqA9WDZ5aageApPJrYACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-LVviiAdNxxs/V5r4xF2a5NI/AAAAAAAAHz8/8H5uWifglgYlr2hqA9WDZ5aageApPJrYACLcB/s1600/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><br></div>上一篇有提到，這邊做的單元測試是每個測試前將準備好的CSV資料匯入LocalDB，做完測試後把資料全部砍掉，所以我們得先寫一段TestInitial讓每次測試之前先跑匯入資料的部分，先在單元測試專把CSVHelper安裝起來。<br><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/--r9VuX4WFbQ/V5r5fTcTc_I/AAAAAAAAH0E/to6r2WGGomsVjlG3sQhFFworO3dAasVqgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/--r9VuX4WFbQ/V5r5fTcTc_I/AAAAAAAAH0E/to6r2WGGomsVjlG3sQhFFworO3dAasVqgCLcB/s640/1.png" alt></a></div>
-
-<p>接著寫程式把資料從CSV讀出來，並寫入LocalDB，但首先先將測試專案安裝EntityFramwork套件</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-CbTTIt0AEHI/V5scdqAt-FI/AAAAAAAAH0U/ZiSP3YNeYMwuoUwkZ8dC6iTIq7EMZ8mkACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-CbTTIt0AEHI/V5scdqAt-FI/AAAAAAAAH0U/ZiSP3YNeYMwuoUwkZ8dC6iTIq7EMZ8mkACLcB/s640/1.png" alt></a></div>
-
-<p>然後記得把連線字串加到單元測試的專案之中</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">connectionStrings</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">add</span> <span class="attr">name</span>=<span class="string">"NorthwindEntities"</span> <span class="attr">connectionString</span>=<span class="string">"metadata=res://*/Models.Northwind.csdl|res://*/Models.Northwind.ssdl|res://*/Models.Northwind.msl;provider=System.Data.SqlClient;provider connection string=&amp;quot;data source=(LocalDB)\MSSQLLocalDB;attachdbfilename=|DataDirectory|\TestDB.mdf;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&amp;quot;"</span> <span class="attr">providerName</span>=<span class="string">"System.Data.EntityClient"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">connectionStrings</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>寫以下程式</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> Microsoft.VisualStudio.TestTools.UnitTesting;</span><br><span class="line"><span class="keyword">using</span> WebApplication4.Models;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> CsvHelper;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Reflection;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title">WebApplication4.Tests</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">TestClass</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EmployeesRepositoryTests</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestInitialize</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Initial</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//讀取檔案</span></span><br><span class="line">            <span class="keyword">using</span> (StreamReader reader = <span class="keyword">new</span> StreamReader(</span><br><span class="line">                <span class="keyword">string</span>.Concat(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), <span class="string">@"\CSVs\Employees.csv"</span>), </span><br><span class="line">                <span class="keyword">new</span> UTF8Encoding()))</span><br><span class="line">            <span class="keyword">using</span> (<span class="keyword">var</span> csvReader = <span class="keyword">new</span> CsvReader(reader))</span><br><span class="line">            &#123;</span><br><span class="line">                csvReader.Configuration.WillThrowOnMissingField = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">var</span> Employees = csvReader.GetRecords&lt;Employees&gt;().ToList();</span><br><span class="line"></span><br><span class="line">                <span class="comment">//將資料寫入DB</span></span><br><span class="line">                <span class="keyword">var</span> DBContext = <span class="keyword">new</span> NorthwindEntities();</span><br><span class="line">                DBContext.Employees.AddRange(Employees);</span><br><span class="line">                DBContext.SaveChanges();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> Get_帶入ID_應取回該ID的Employee()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> ID = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> EmployeesRepository();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> Expected = <span class="string">"Nancy"</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Get(ID);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(Expected, actual.FirstName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>執行看看會發現爆掉了!!!!!! 果然事情不是憨人我想的那麼簡單  </p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/--GWQvH-BzPo/V5srR-gwv8I/AAAAAAAAH0k/P2uj3DhlLwI1Q5ZTEPa0_E7CdwyQvMNngCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/--GWQvH-BzPo/V5srR-gwv8I/AAAAAAAAH0k/P2uj3DhlLwI1Q5ZTEPa0_E7CdwyQvMNngCLcB/s640/1.png" alt></a></div>
-
-<p>原因出在於Employee這個Table的ID欄位為流水自動編號，透過EF是無法寫入的，這時候只好透過Dapper下指令解決了，先安裝Dapper</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-pST5pb51uh0/V5srvCR_TVI/AAAAAAAAH0o/rH5mdCRr574aqTB8_sQIQ6S2clZ4bcU1QCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-pST5pb51uh0/V5srvCR_TVI/AAAAAAAAH0o/rH5mdCRr574aqTB8_sQIQ6S2clZ4bcU1QCLcB/s640/1.png" alt></a></div>
-
-<p>將剛剛從CSVHelper的資料用Dapper塞進去，而且要將Identity Insert打開，先補上要給Dapper用的連線字串</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">add</span> <span class="attr">name</span>=<span class="string">"NorthwindString"</span> <span class="attr">connectionString</span>=<span class="string">"Data Source=(LocalDB)\MSSQLLocalDB;attachdbfilename=|DataDirectory|\TestDB.mdf;Persist Security Info=True;"</span> <span class="attr">providerName</span>=<span class="string">"System.Data.SqlClient"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
-<p>把程式改成如下</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> Microsoft.VisualStudio.TestTools.UnitTesting;</span><br><span class="line"><span class="keyword">using</span> WebApplication4.Models;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"><span class="keyword">using</span> CsvHelper;</span><br><span class="line"><span class="keyword">using</span> System.Linq;</span><br><span class="line"><span class="keyword">using</span> System.Reflection;</span><br><span class="line"><span class="keyword">using</span> System.Data.SqlClient;</span><br><span class="line"><span class="keyword">using</span> Dapper;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title">WebApplication4.Tests</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">TestClass</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EmployeesRepositoryTests</span></span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestInitialize</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Initial</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//讀取檔案</span></span><br><span class="line">            <span class="keyword">using</span> (StreamReader reader = <span class="keyword">new</span> StreamReader(</span><br><span class="line">                <span class="keyword">string</span>.Concat(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), <span class="string">@"\CSVs\Employees.csv"</span>), </span><br><span class="line">                <span class="keyword">new</span> UTF8Encoding()))</span><br><span class="line">            <span class="keyword">using</span> (<span class="keyword">var</span> csvReader = <span class="keyword">new</span> CsvReader(reader))</span><br><span class="line">            &#123;</span><br><span class="line">                csvReader.Configuration.WillThrowOnMissingField = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">var</span> Employees = csvReader.GetRecords&lt;Employees&gt;().ToList();</span><br><span class="line"></span><br><span class="line">                <span class="comment">//將資料寫入DB</span></span><br><span class="line">                <span class="comment">//var DBContext = new NorthwindEntities();</span></span><br><span class="line">                <span class="comment">//DBContext.Employees.AddRange(Employees);</span></span><br><span class="line">                <span class="comment">//DBContext.SaveChanges();</span></span><br><span class="line">                <span class="keyword">using</span> (<span class="keyword">var</span> cn = <span class="keyword">new</span> SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings[<span class="string">"NorthwindString"</span>].ConnectionString))</span><br><span class="line">                &#123;</span><br><span class="line">                    cn.Execute(<span class="string">@"SET IDENTITY_INSERT Employees ON </span></span><br><span class="line"><span class="string">                            INSERT INTO Employees (EmployeeID,LastName,FirstName,Title,TitleOfCourtesy,BirthDate,HireDate,Address,City,Region,PostalCode,Country,HomePhone,Extension,Notes,ReportsTo,PhotoPath) </span></span><br><span class="line"><span class="string">                            VALUES (@EmployeeID,@LastName,@FirstName,@Title,@TitleOfCourtesy,@BirthDate,@HireDate,@Address,@City,@Region,@PostalCode,@Country,@HomePhone,@Extension,@Notes,@ReportsTo,@PhotoPath)</span></span><br><span class="line"><span class="string">                            SET IDENTITY_INSERT Employees OFF"</span>,</span><br><span class="line">                          Employees);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> Get_帶入ID_應取回該ID的Employee()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> ID = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> EmployeesRepository();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> Expected = <span class="string">"Nancy"</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Get(ID);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(Expected, actual.FirstName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>執行看看，就會發現終於成功了…….</p>
-<p><div style="text-align: center;"><a href="https://1.bp.blogspot.com/-XvPJF-Zf0u8/V5su65wLx5I/AAAAAAAAH04/D4u0LHDen-EHvjOweb7yfV2r9aLUehYmACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-XvPJF-Zf0u8/V5su65wLx5I/AAAAAAAAH04/D4u0LHDen-EHvjOweb7yfV2r9aLUehYmACLcB/s320/1.png" alt></a></div><div style="text-align: center;"><br></div><div style="text-align: center;"><br></div><div style="text-align: center;"><br></div><div style="text-align: center;"><br></div><div style="text-align: left;">最後別忘了前面提到的，每個單元測試應該都是獨立的，所以既然每次都會寫資料進去，當然每次測試完也都要把資料砍掉啦</div><div style="text-align: left;"><br></div><div style="text-align: left;">所以在單元測試的最後補上這個Method，讓他每個單元測試執行完畢後都會清掉資料</div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestCleanup</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">CleanUp</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">using</span> (<span class="keyword">var</span> cn = <span class="keyword">new</span> SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings[<span class="string">"NorthwindString"</span>].ConnectionString))</span><br><span class="line">            &#123;</span><br><span class="line">                cn.Execute(<span class="string">@"Delete Employees"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>這樣就大功告成了!!!!</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1906,7 +1868,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">190</span>
+                  <span class="site-state-item-count">195</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1928,7 +1890,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

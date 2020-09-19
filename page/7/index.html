@@ -293,6 +293,750 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/11/16/【MVC】Router-Constraint/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/16/【MVC】Router-Constraint/" itemprop="url">【MVC】Router Constraint</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-11-16T11:17:00+08:00">
+                2017-11-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/16/【MVC】Router-Constraint/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/16/【MVC】Router-Constraint/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>當今天有個網址的需求是 <a href="http://abcdefg.com/【使用者暱稱】，使用者暱稱帶到誰的就會到個人頁網址，EX" target="_blank" rel="noopener">http://abcdefg.com/【使用者暱稱】，使用者暱稱帶到誰的就會到個人頁網址，EX</a> : <a href="http://abcdefg.com/toyo" target="_blank" rel="noopener">http://abcdefg.com/toyo</a> 就連到Toyo個人頁面，<a href="http://abcdefg.com/steven就連到Steven個人頁，那我們Router可以寫成" target="_blank" rel="noopener">http://abcdefg.com/steven就連到Steven個人頁，那我們Router可以寫成</a><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Route(<span class="meta-string">"~/toyo"</span>)</span>]</span><br><span class="line">[<span class="meta">Route(<span class="meta-string">"~/steven"</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">Content</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>這樣寫的確兩個網址都能連到了，但卻抓不到UserName所以不知道怎麼顯示個人頁，調整一下<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Route(<span class="meta-string">"~/&#123;UserName&#125;"</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">Content</span>(<span class="params"><span class="keyword">string</span> userName</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   ViewBag.Name = userName;</span><br><span class="line">   <span class="keyword">return</span> View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下個問題來了，Tom明明不是這邊的用戶，卻也會導到這個Action，導致後端抓不到對應資料顯示錯誤，能不能只有abcdefg.com/Toyo 跟 abcdefg.com/Steven 的時候才導來這，其他什麼阿貓阿狗，甚至是常用的Index、Home、Menu之類的不會跑錯。</p>
+<p>這時候RouteConstraint就派上用場了<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UserNameConstraint</span> : <span class="title">IRouteConstraint</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">Match</span>(<span class="params">HttpContextBase httpContext, Route route, <span class="keyword">string</span> parameterName, RouteValueDictionary values, RouteDirection routeDirection</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (values.ContainsKey(parameterName))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> UserName = values[parameterName] <span class="keyword">as</span> <span class="keyword">string</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> UserName.ToLower() == <span class="string">"toyo"</span> ||</span><br><span class="line">                   UserName.ToLower() == <span class="string">"steven"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接著在RouteConfig註冊這組Constraint，讓RouteAttribute可以使用<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RouteConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RegisterRoutes</span>(<span class="params">RouteCollection routes</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        routes.IgnoreRoute(<span class="string">"&#123;resource&#125;.axd/&#123;*pathInfo&#125;"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//註冊Router ConStraint</span></span><br><span class="line">        <span class="keyword">var</span> constraintsResolver = <span class="keyword">new</span> DefaultInlineConstraintResolver();</span><br><span class="line">        constraintsResolver.ConstraintMap.Add(<span class="string">"MustUserName"</span>, <span class="keyword">typeof</span>(UserNameConstraint));</span><br><span class="line">        routes.MapMvcAttributeRoutes(constraintsResolver);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>將RouteAttribute的UserName加上這個限制<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Route(<span class="meta-string">"~/&#123;UserName:MustUserName&#125;"</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">MyContent</span>(<span class="params"><span class="keyword">string</span> userName</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ViewBag.Name = userName;</span><br><span class="line">    <span class="keyword">return</span> View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>這樣只要UserName不是帶Toyo或是Steven的就都不會導到這個Action了。</p>
+<p>其實RouteConstraint官方已經提供一下基礎的限制可以使用，例如一定要是Int，字串長度之類的方便用法，而且更重要的是在這案例之中，使用者名稱我們是寫死的，只要把那段改成抓外部來源，例如資料庫之類的，這樣就能後台使用者有新增時，Route的限制就自動更新了</p>
+<p>延伸閱讀:<br><a href="https://blogs.msdn.microsoft.com/webdev/2013/10/17/attribute-routing-in-asp-net-mvc-5/" target="_blank" rel="noopener">Attribute Routing in ASP.NET MVC 5</a><br> <a href="http://demo.tc/post/786" target="_blank" rel="noopener">DemoShop :&nbsp;ASP.NET MVC Route 自訂限制條件（constraints）的技巧</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/11/15/【Tools】修復Html缺少Close-Tag問題-HtmlAgilityPack/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/15/【Tools】修復Html缺少Close-Tag問題-HtmlAgilityPack/" itemprop="url">【Tools】修復Html缺少Close Tag問題 - HtmlAgilityPack</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-11-15T09:36:00+08:00">
+                2017-11-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/15/【Tools】修復Html缺少Close-Tag問題-HtmlAgilityPack/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/15/【Tools】修復Html缺少Close-Tag問題-HtmlAgilityPack/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>開放後台給非工程人員編輯Html，往往都要擔負一些Html Tag錯誤整導致破版的風險。這次就碰到上線前發現部分資料區塊缺少了Close Tag，導致只要讀到那些資料的頁面都破版，但上千筆資料請人一筆一筆去檢查又太不切實際。所以就研究了一下是否有套件可以處理這類的問題，結果就發現了一個強大的套件 :&nbsp;<a href="http://html-agility-pack.net/?z=codeplex" target="_blank" rel="noopener">HtmlAgilityPack</a></p>
+<div class="note info"><p>該套件主要功能是拿來解析網頁，似乎更多人是拿來製作爬蟲工具，但他同時也很貼心的提供API來分析Html Tag是否正確</p></div>
+<p>首先先從Nuget載入該套件</p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-cMfu_9lAHPY/WguV9l_rY0I/AAAAAAAAIQM/3thXpbJDKr4ZQPGb5T7Ff-waUuo7p6tWgCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-cMfu_9lAHPY/WguV9l_rY0I/AAAAAAAAIQM/3thXpbJDKr4ZQPGb5T7Ff-waUuo7p6tWgCLcBGAs/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></div><br>然後用以下程式來進行Html修復<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//商品的尺寸報表Html有錯誤</span></span><br><span class="line"><span class="keyword">var</span> ps = <span class="keyword">this</span>.Products.Where(x = &gt; x.SizeReport != <span class="literal">null</span>);</span><br><span class="line"><span class="keyword">foreach</span> (<span class="keyword">var</span> p <span class="keyword">in</span> ps)</span><br><span class="line">&#123;</span><br><span class="line"> HtmlDocument doc = <span class="keyword">new</span> HtmlDocument();</span><br><span class="line"> <span class="comment">//fix when nesting errors are detected</span></span><br><span class="line"> doc.OptionFixNestedTags = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//將Html Editor編輯的東西丟進去</span></span><br><span class="line"> doc.LoadHtml(p.SizeReport.ToString());</span><br><span class="line"></span><br><span class="line"> <span class="comment">//將修復後的Html結果存到MemoryStream</span></span><br><span class="line"> MemoryStream stream = <span class="keyword">new</span> MemoryStream();</span><br><span class="line"> doc.Save(stream);</span><br><span class="line"> <span class="keyword">try</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">using</span> (StreamReader reader = <span class="keyword">new</span> StreamReader(stream, Encoding.Default))</span><br><span class="line">  &#123;</span><br><span class="line">   stream.Position = <span class="number">0</span>;</span><br><span class="line">   p.SizeReport = reader.ReadToEnd(); <span class="comment">//儲存回DB</span></span><br><span class="line">   <span class="keyword">this</span>.SubmitChanges();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">catch</span> (Exception ex)</span><br><span class="line"> &#123;</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/11/09/【Azure】如何跨DB讀取資料/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/09/【Azure】如何跨DB讀取資料/" itemprop="url">【Azure】如何跨DB讀取資料</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-11-09T10:05:00+08:00">
+                2017-11-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/09/【Azure】如何跨DB讀取資料/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/09/【Azure】如何跨DB讀取資料/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>忙了一大段時間，突然發現好長時間沒更新部落格了，這段時間專案實在太忙了，慢慢的再把這些時間學到的東西慢慢筆記下來，今天就先從Azure開始吧!!</p>
+<p>以前如果有跨DB存取或Join Table，通常都會請DBA開Link DB的方式來處理，但在Azure SQL上面就沒有這個選項了</p>
+<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-LvGu3FglCEI/WgOxsaEfz7I/AAAAAAAAIP8/3xQmoM8lFCs4oIawixv-HHidz_NHEjRpQCEwYBhgL/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-LvGu3FglCEI/WgOxsaEfz7I/AAAAAAAAIP8/3xQmoM8lFCs4oIawixv-HHidz_NHEjRpQCEwYBhgL/s1600/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">跨DB讀取資料</td></tr></tbody></table><br>但它推出了一個語法來達成這樣子的需求 External Data Source，假設我在<strong>A資料庫</strong>，想要Join <strong>B資料庫</strong>的<strong>PromoEmail Table</strong>取得行銷案的Email資料來做交叉分析，這時候我們可以這樣寫<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">MASTER</span> <span class="keyword">KEY</span> ENCRYPTION <span class="keyword">BY</span> <span class="keyword">PASSWORD</span> = <span class="string">'This Account Password'</span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> SCOPED CREDENTIAL AzureStorageCredential </span><br><span class="line"><span class="keyword">WITH</span> <span class="keyword">IDENTITY</span> = <span class="string">'This DataBase Login Account'</span>, </span><br><span class="line">SECRET = <span class="string">'This Account Password'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">DATA</span> <span class="keyword">SOURCE</span> RefPromoTableDataBase</span><br><span class="line"><span class="keyword">WITH</span>  </span><br><span class="line">(  </span><br><span class="line">    <span class="keyword">TYPE</span>=RDBMS,  </span><br><span class="line">    LOCATION =<span class="string">'Your Azure SQL Database Location'</span>,  </span><br><span class="line">    DATABASE_NAME = <span class="string">'B'</span>,  <span class="comment">--外連B資料庫</span></span><br><span class="line">    CREDENTIAL = AzureStorageCredential</span><br><span class="line">);  </span><br><span class="line"></span><br><span class="line"><span class="comment">--建立一個External Table</span></span><br><span class="line"><span class="comment">--這邊Schema就取決於你要從B Database的PromoEmail Table取得什麼欄位</span></span><br><span class="line"><span class="comment">--欄位名稱跟資料型態要相同</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> [dbo].[PromoEmail](  </span><br><span class="line">    [Email] [<span class="built_in">varchar</span>] (<span class="number">300</span>) <span class="keyword">Not</span> <span class="literal">NULL</span>  </span><br><span class="line">)  </span><br><span class="line"><span class="keyword">WITH</span>  </span><br><span class="line">(  </span><br><span class="line">    DATA_SOURCE = RefPromoTableDataBase</span><br><span class="line">);    </span><br><span class="line"></span><br><span class="line"><span class="comment">--在A資料庫Join PromoEmail Table</span></span><br><span class="line"><span class="comment">--看看行銷案轉換成訂單的績效</span></span><br><span class="line"><span class="keyword">SELECT</span> email</span><br><span class="line"><span class="keyword">FROM</span> [<span class="keyword">Order</span>] o</span><br><span class="line"><span class="keyword">Join</span> PromoEmail pe <span class="keyword">on</span> o.UserEmail = pe.Email</span><br></pre></td></tr></table></figure></p>
+<p>當然最後做完後，要記得把這些資源都釋放掉</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> PromoEmail</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">EXTERNAL</span> <span class="keyword">DATA</span> <span class="keyword">SOURCE</span> RefPromoTableDataBase</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">DATABASE</span> SCOPED CREDENTIAL AzureStorageCredential  </span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">MASTER</span> <span class="keyword">KEY</span></span><br></pre></td></tr></table></figure>
+<p>參考資料<br><a href="http://www.c-sharpcorner.com/article/cross-database-queries-in-azure-sql/" target="_blank" rel="noopener">Cross Database Queries In Azure SQL</a><br><a href="https://sqldusty.com/2017/05/30/setting-up-cross-database-queries-in-azure-sql-database/" target="_blank" rel="noopener">SETTING UP CROSS DATABASE QUERIES IN AZURE SQL DATABASE</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/25/【Unit-Test】Day-7-Assert/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/04/25/【Unit-Test】Day-7-Assert/" itemprop="url">【Unit Test】Day 7 - Assert</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-25T11:40:00+08:00">
+                2017-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/學習單元測試/" itemprop="url" rel="index">
+                    <span itemprop="name">學習單元測試</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/25/【Unit-Test】Day-7-Assert/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/25/【Unit-Test】Day-7-Assert/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <div class="note info"><p>Demo檔案 : <a href="https://github.com/toyo0103/UnitTest_Day7" target="_blank" rel="noopener">Git傳送門</a></p></div>
+<p>今天要來談談驗證，還記得之前的PTX範例都只驗證名稱嗎？<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//assert</span></span><br><span class="line">   Assert.AreEqual(actual.Name, expected);</span><br></pre></td></tr></table></figure></p>
+<p>因為有說如果是參考型別的話，Assert.AreEqual可能會驗證失敗<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過Assert驗證參考型別()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            Guid ID = Guid.NewGuid();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="keyword">new</span> Member</span><br><span class="line">            &#123;</span><br><span class="line">                ID = ID,</span><br><span class="line">                Name = <span class="string">"Name"</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = <span class="keyword">new</span> Member</span><br><span class="line">            &#123;</span><br><span class="line">                ID = ID,</span><br><span class="line">                Name = <span class="string">"Name"</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(expected,actual);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>結果 </p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-8fAoTQY1vvc/WP6tmPHut6I/AAAAAAAAINs/ndANX4zMz30h6IlZV0MP4xjltHadHZ-7gCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%25889.59.30.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-8fAoTQY1vvc/WP6tmPHut6I/AAAAAAAAINs/ndANX4zMz30h6IlZV0MP4xjltHadHZ-7gCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%25889.59.30.png" alt></a></div>試試看改一下寫法<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過Assert驗證參考型別<span class="number">2</span>()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            Guid ID = Guid.NewGuid();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="keyword">new</span> Member</span><br><span class="line">            &#123;</span><br><span class="line">                ID = ID,</span><br><span class="line">                Name = <span class="string">"Name"</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = expected;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(expected, actual);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://3.bp.blogspot.com/-b5RzbbKJujg/WP6uXB1tHdI/AAAAAAAAIN0/_8LddyllasU-Ztc1Ims04uiExvBgeHetgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%258810.02.51.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-b5RzbbKJujg/WP6uXB1tHdI/AAAAAAAAIN0/_8LddyllasU-Ztc1Ims04uiExvBgeHetgCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%258810.02.51.png" alt></a></p>
+<p>原來Assert.AreEqual當碰到參考型別的時候是驗證記憶體位置，但其實像我是寫商業邏輯的，常常在乎的是透過方法執行完後得到的DTO（Data Transfer Object）是否符合預期，這樣其實Assert對我來說不是那麼方便。<br><div class="note info"><p>MSDN: <a href="https://msdn.microsoft.com/zh-tw/library/microsoft.visualstudio.testtools.unittesting.assert.aspx" target="_blank" rel="noopener">Assert 類別</a></p></div><br>如果我真的只想驗證執行完的DTO內容是否符合預期，該怎麼做呢？<strong>來看看<a href="http://fluentassertions.com/documentation.html" target="_blank" rel="noopener">FluentAssertions</a>吧</strong></p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-FlJIcwQ1rxg/WP67GWbFDUI/AAAAAAAAIOQ/IDGl70pgSzgDDoNcOPPmlGT0fTXU_JPawCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%258810.57.08.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-FlJIcwQ1rxg/WP67GWbFDUI/AAAAAAAAIOQ/IDGl70pgSzgDDoNcOPPmlGT0fTXU_JPawCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%258810.57.08.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><br>在單元測試專案用Nuget安裝完成後，來看看範例寫法<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證參考型別()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            Guid ID = Guid.NewGuid();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="keyword">new</span> Member</span><br><span class="line">            &#123;</span><br><span class="line">                ID = ID,</span><br><span class="line">                Name = <span class="string">"Name"</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = <span class="keyword">new</span> Member</span><br><span class="line">            &#123;</span><br><span class="line">                ID = ID,</span><br><span class="line">                Name = <span class="string">"Name"</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.ShouldBeEquivalentTo(expected);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>就這麼簡單，它就會幫你驗證內容的值而不是記憶體位置，而且可讀性也很高，再舉幾個範例</p>
+<p><strong>是否為Null</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證不為Null()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = <span class="keyword">new</span> Member</span><br><span class="line">            &#123;</span><br><span class="line">                ID = Guid.NewGuid(),</span><br><span class="line">                Name = <span class="string">"Name"</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.Should().NotBeNull();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證為Null()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            Member actual = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.Should().BeNull();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>**</p>
+<hr>
+<p><strong>
+</strong>驗證數字**<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證數字()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">int</span> actual = <span class="number">123</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.Should().Be(<span class="number">123</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>驗證趨近於</strong><br>倍精準相加時會有些微誤差<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證趨近於()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> a = <span class="number">1.3</span>;</span><br><span class="line">            <span class="keyword">var</span> b = <span class="number">0.1</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">double</span> actual = a + b ;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.Should().Be(<span class="number">1.4</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-BrAxR_LWsk8/WP7A2lLy8DI/AAAAAAAAIOg/psK_O4jn2loxOGfX-u0Gf1KNMWL-NGHIgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%258811.20.45.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-BrAxR_LWsk8/WP7A2lLy8DI/AAAAAAAAIOg/psK_O4jn2loxOGfX-u0Gf1KNMWL-NGHIgCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%258811.20.45.png" alt></a></div>驗證地方可改成<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//assert</span></span><br><span class="line"><span class="comment">//趨近於1.4 且如果誤差小於0.00001時視為一樣</span></span><br><span class="line">actual.Should().BeApproximately(<span class="number">1.4</span>,<span class="number">0.00001</span>);</span><br></pre></td></tr></table></figure></p>
+<p><strong>驗證排序</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證升冪排序()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> parameter = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt; &#123; <span class="number">4</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span> &#125;;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = parameter.OrderBy(x=&gt;x);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.Should().BeInAscendingOrder();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證降冪排序()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> parameter = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt; &#123; <span class="number">4</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span> &#125;;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = parameter.OrderByDescending(x =&gt; x);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.Should().BeInDescendingOrder();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>結論</strong><br>FluentAssertions是個閱讀性高且豐富的驗證套件，以上提供一些我常常使用到的斷言方法，還有很多可以參考官網文件，那今天就先到這了！！</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/24/【Unit-Test】Day-6-單元測試初始化與清除/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/04/24/【Unit-Test】Day-6-單元測試初始化與清除/" itemprop="url">【Unit Test】Day 6 - 單元測試初始化與清除</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-24T11:33:00+08:00">
+                2017-04-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/學習單元測試/" itemprop="url" rel="index">
+                    <span itemprop="name">學習單元測試</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/24/【Unit-Test】Day-6-單元測試初始化與清除/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/24/【Unit-Test】Day-6-單元測試初始化與清除/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <div class="note info"><p>Demo檔案 : <a href="https://github.com/toyo0103/UnitTest_Day6" target="_blank" rel="noopener">Git傳送門</a></p></div>
+<p>今天要來看看單元測試的初始化設定與清除</p>
+<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-rdIHeq-FScw/WPt7g9bnUSI/AAAAAAAAIMQ/2259b_3JrGc7ie6uQsiv0k09fX53AaNAACLcB/s1600/UnitTest03-Fig1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-rdIHeq-FScw/WPt7g9bnUSI/AAAAAAAAIMQ/2259b_3JrGc7ie6uQsiv0k09fX53AaNAACLcB/s640/UnitTest03-Fig1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">圖片出處：<a href="https://www.codeproject.com/Articles/1165536/Unit-Test-Initialization-and-Cleanup" target="_blank" rel="noopener">https://www.codeproject.com/Articles/1165536/Unit-Test-Initialization-and-Cleanup</a></td></tr></tbody></table>上圖是單元測試在執行時的生命週期，知道了這特性的時候我們就可以依據測試的需要來加入適當的初始化設定。</p>
+<p><strong><br>**</strong>以下範例來說明執行順序**<br>這邊準備了一個Static Class，裡面有個Get方法很簡單的回傳Now這個屬性值<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Demo</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> Now &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">return</span> Now;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>然後為它建立單元測試</p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-X86wEgoGgkI/WP1gOEKaSiI/AAAAAAAAIMg/V1bLniG0AOEAJmbzJuzDXQNm7CVgijKYACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258810.17.04.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-X86wEgoGgkI/WP1gOEKaSiI/AAAAAAAAIMg/V1bLniG0AOEAJmbzJuzDXQNm7CVgijKYACLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258810.17.04.png" alt></a></div><br>先加上一個TestHook的檔案</p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-6l9LIosfyy4/WP1p_8gzszI/AAAAAAAAIMw/28CyY4ytG74DIybRasVkfi7tIjsrMCJtwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258810.58.35.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-6l9LIosfyy4/WP1p_8gzszI/AAAAAAAAIMw/28CyY4ytG74DIybRasVkfi7tIjsrMCJtwCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258810.58.35.png" alt></a></div><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestHook</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">AssemblyInitialize</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">AssemblyInit</span>(<span class="params">TestContext context</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - AssemblyInitialize"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">AssemblyCleanup</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">AssemblyCleanUp</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - AssemblyCleanup"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接著撰寫DemoTests.cs<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DemoTests</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">ClassInitialize</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ClassInit</span>(<span class="params">TestContext context</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - ClassInitialize"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestInitialize</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">TestInit</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - TestInitialize"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetTest</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - Test1"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestCleanup</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">TestCleanUp</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - TestCleanup"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">ClassCleanup</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ClassCleanUp</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - ClassCleanup"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>這裡目標很間單，測試的內容不是重點，而是希望透過輸出來看到執行的順序<br><div class="note info"><p>可能有人會注意到為何有些方法例如ClassCleanup是需要Static，有些又需要帶入TestContext的參數？<br>這其實是規定，如果不按照規則撰寫的話，執行單元測試時就會得到以下錯誤訊息<br><a href="https://2.bp.blogspot.com/-D28yVaI4mMo/WP1rM1wtoKI/AAAAAAAAIM4/Wa2QHfFy3m41NHYlJm8-NtttcjKt07D6ACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258810.29.04.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-D28yVaI4mMo/WP1rM1wtoKI/AAAAAAAAIM4/Wa2QHfFy3m41NHYlJm8-NtttcjKt07D6ACLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258810.29.04.png" alt></a></p></div></p>
+<p><strong>接著執行單元測試看看輸出，點擊下面的輸出按鈕</strong></p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-PpLe69AriAs/WP1rrh8-ELI/AAAAAAAAINA/Ukg8A3hKfoknWO7IKj5zCsEZ-M306bqhwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.05.30.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-PpLe69AriAs/WP1rrh8-ELI/AAAAAAAAINA/Ukg8A3hKfoknWO7IKj5zCsEZ-M306bqhwCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.05.30.png" alt></a></div><strong>
+</strong></p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-_v6merhgenM/WP1sBwJRZ7I/AAAAAAAAINI/qS2TUZfSDE8yXnE6wI_mHkE94YrW2ekRwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.07.32.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-_v6merhgenM/WP1sBwJRZ7I/AAAAAAAAINI/qS2TUZfSDE8yXnE6wI_mHkE94YrW2ekRwCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.07.32.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><strong>這樣看就很明顯知道順序了！！</strong><br><strong>
+</strong><br>讓我們加上第二個測試<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetTest2</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - Test2"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>全部測試執行然後看看結果</p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-wm4jDNZ5sEc/WP1s6kv5NNI/AAAAAAAAINU/Df741_DV140IV1YsYfPrtKe-xPuOPNSDACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.10.38.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-wm4jDNZ5sEc/WP1s6kv5NNI/AAAAAAAAINU/Df741_DV140IV1YsYfPrtKe-xPuOPNSDACLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.10.38.png" alt></a></div></p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-lXVB0a3ukHo/WP1tG9-eswI/AAAAAAAAINY/aDrjV6DTRWIBHXlGvYJ-rmhgq7gbU-9kACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.11.51.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-lXVB0a3ukHo/WP1tG9-eswI/AAAAAAAAINY/aDrjV6DTRWIBHXlGvYJ-rmhgq7gbU-9kACLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.11.51.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-rNUhwY9nnwE/WP1tKQDwjHI/AAAAAAAAINc/DFmtGmn_dMIhsGYfCWOqtfAdCNV4fircgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.12.06.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-rNUhwY9nnwE/WP1tKQDwjHI/AAAAAAAAINc/DFmtGmn_dMIhsGYfCWOqtfAdCNV4fircgCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.12.06.png" alt></a></div><br>可以發現<strong>TestInitialize</strong>與<strong>TestCleanUp</strong>是每個測試在執行前/後都會執行一次的，而且要特別強調一下，<span style="color: red; font-weight: bold;">每個單元測試執行的順序是不固定的</span>，所以如果在單元測試中有些初始化的動作，切記不要依賴每個測試之間的順序關係，否則可能會不定時的產生錯誤，請把每個測試都當成是獨立且無相依關係！！</p>
+<p>從這個範例也可以看得到一個結論，如果在測試中有用到Production Code中Static的參數或屬性，請記得養成良好習慣，要在CleanUp的方法中恢復它的預設值，否則Static是共用的，如果其他測試有用到同一個Static屬性，而互相改來改去不初始化，就很可能發生單元測試時好時壞的問題，這是切身之痛請勿以身試法ＸＤＤ</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/21/【Unit-Test】Day-5-透過InternalsVisibleTo來達成單元測試的外部注入/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1136,696 +1880,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/03/29/【FluentValidation】與MVC-5綁定Model-Validation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/29/【FluentValidation】與MVC-5綁定Model-Validation/" itemprop="url">【FluentValidation】與MVC 5綁定Model Validation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-03-29T11:12:00+08:00">
-                2017-03-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/03/29/【FluentValidation】與MVC-5綁定Model-Validation/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/29/【FluentValidation】與MVC-5綁定Model-Validation/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>MVC很早就提供Model Validation的驗證方式，只要在Parameter Class的Property加上限制<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Movie</span> &#123;</span><br><span class="line">    [<span class="meta">Required</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> ID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">DataType(DataType.Date)</span>]</span><br><span class="line">    <span class="keyword">public</span> DateTime ReleaseDate &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">Range(1, 100)</span>]</span><br><span class="line">    [<span class="meta">DataType(DataType.Currency)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">decimal</span> Price &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">StringLength(5)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Rating &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>接著在Action之中使用ModelState.IsValid即可驗證參數是否符合規定<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpPost</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">Create</span>(<span class="params">Movie movie</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ModelState.IsValid)</span><br><span class="line">    &#123;</span><br><span class="line">        db.Movies.Add(movie);</span><br><span class="line">        db.SaveChanges();</span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">"Index"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> View(movie);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>最近比較習慣使用FluentValidation，剛好它也在MVC5上設定一下，就可以用ModelState.IsValid來得知參數驗證是否成功，以下紀錄實作方法</p>
-<p>1.首先在MVC專案中安裝FluentValidation.MVC5</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-OYlSu6hpFFQ/WNsigw1fSyI/AAAAAAAAIF4/pO02UtoeK5g1ipJT0T6Z6JLb_8a5PkjCwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-OYlSu6hpFFQ/WNsigw1fSyI/AAAAAAAAIF4/pO02UtoeK5g1ipJT0T6Z6JLb_8a5PkjCwCLcB/s1600/1.png" alt></a></div><br>2.接著在Global &nbsp;Application_Start加上<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FluentValidationModelValidatorProvider.Configure();</span><br></pre></td></tr></table></figure></p>
-<p>3.準備一個要驗證的參數類別<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">WantValidateParameter</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">string</span> ID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>4.跟前幾天提到的文章一樣，寫對應的驗證方法<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class ParameterValidator :AbstractValidator&lt;WantValidateParameter&gt;</span><br><span class="line">&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">ParameterValidator</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>   &#123;</span><br><span class="line">      <span class="keyword">this</span>.RuleFor(x =&gt; x.ID)</span><br><span class="line">      .NotNull()</span><br><span class="line">      .WithErrorCode(<span class="string">"400"</span>)</span><br><span class="line">      .WithMessage(<span class="string">"ID不能為Null"</span>)</span><br><span class="line">      .NotEmpty()</span><br><span class="line">      .WithErrorCode(<span class="string">"400"</span>)</span><br><span class="line">      .WithMessage(<span class="string">"ID不能為空字串"</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">this</span>.RuleFor(x =&gt; x.Name)</span><br><span class="line">      .NotNull()</span><br><span class="line">      .WithErrorCode(<span class="string">"401"</span>)</span><br><span class="line">      .WithMessage(<span class="string">"Name不能為Null"</span>)</span><br><span class="line">      .NotEmpty()</span><br><span class="line">      .WithErrorCode(<span class="string">"401"</span>)</span><br><span class="line">      .WithMessage(<span class="string">"Name不能為空字串"</span>)</span><br><span class="line">      .Length(<span class="number">4</span>, <span class="number">6</span>)</span><br><span class="line">      .WithErrorCode(<span class="string">"401"</span>)</span><br><span class="line">      .WithMessage(<span class="string">"Name必須在4~6字之間"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>5.接著在剛剛要驗證的參數類別上加上Attribute<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Validator(typeof(ParameterValidator))</span>]</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">WantValidateParameter</span></span><br><span class="line"> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> ID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>6.在Action裡面就可以用ModelState.IsValid來得知參數是否驗證成功啦!!<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">Test</span>(<span class="params">WantValidateParameter parameter</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">string</span> Result = <span class="keyword">string</span>.Empty;</span><br><span class="line">            <span class="keyword">if</span> (!ModelState.IsValid)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//取得錯誤的訊息</span></span><br><span class="line">                <span class="keyword">var</span> Error = ModelState.Values.SelectMany(x =&gt; x.Errors).FirstOrDefault();</span><br><span class="line">                Result = Error.ErrorMessage;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                Result = <span class="string">"驗證成功"</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> View(model: Result);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>參考文章 :<br><span style="background-color: white; color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px;">1.</span><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif;"><span style="font-size: 15px;"><a href="https://github.com/JeremySkinner/FluentValidation/wiki/h.-MVC" target="_blank" rel="noopener">https://github.com/JeremySkinner/FluentValidation/wiki/h.-MVC</a></span></span><br><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif;">2.<a href="https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions/getting-started-with-aspnet-mvc4/adding-validation-to-the-model" target="_blank" rel="noopener">MSDN :&nbsp;Adding Validation to the Model</a></span></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/03/22/如何設定檔案、資料夾匿名驗證存取權限/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/22/如何設定檔案、資料夾匿名驗證存取權限/" itemprop="url">如何設定檔案、資料夾匿名驗證存取權限</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-03-22T11:43:00+08:00">
-                2017-03-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/03/22/如何設定檔案、資料夾匿名驗證存取權限/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/22/如何設定檔案、資料夾匿名驗證存取權限/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>每次討論到windows或是IIS權限都是我的弱項，碰到這類問題總是要搞個老半天，所以處理完趕緊來記錄一下!!</p>
-<h4 id="情境"><a href="#情境" class="headerlink" title="情境 :"></a>情境 :</h4><p>同事希望某個資料夾下的Json檔案都不能被外部存取，但唯獨某一支有資訊安全問題，想要排除</p>
-<h4 id="解決方案"><a href="#解決方案" class="headerlink" title="解決方案:"></a>解決方案:</h4><div>一開始單純的想說透過IIS的驗證設定將該資料夾的匿名驗證停用，但這樣就變成所有在該資料夾底下的檔案都讀取不到了。</div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-RnKuPAsgeo4/WNHuiKDxc5I/AAAAAAAAIFo/iW3Vy1dIanMIQnrg8fN8Bey6ieywbJX8ACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-RnKuPAsgeo4/WNHuiKDxc5I/AAAAAAAAIFo/iW3Vy1dIanMIQnrg8fN8Bey6ieywbJX8ACLcB/s640/1.png" alt></a></div><div><br></div><div><br></div><div>最後查了一下後，採取透過Web.config設定的方式來達成!!</div><div><br></div><div><br><br>1.  首先在Web.config的system.webServer區段接入以下區段 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">handlers</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">add</span> <span class="attr">name</span>=<span class="string">"JsonHandler"</span> <span class="attr">verb</span>=<span class="string">"*"</span> <span class="attr">path</span>=<span class="string">"*.json"</span> <span class="attr">type</span>=<span class="string">"System.Web.StaticFileHandler"</span> <span class="attr">resourceType</span>=<span class="string">"Unspecified"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">handlers</span>&gt;</span></span><br></pre></td></tr></table></figure><br><br>2.  接著在想要權限控管的那個資料夾底下加入一個新的web.config，並且寫入以下區段 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">system.web</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">authorization</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">deny</span> <span class="attr">users</span>=<span class="string">"?"</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">authorization</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">system.web</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">location</span> <span class="attr">path</span>=<span class="string">"xxx.json"</span>&gt;</span>    <span class="tag">&lt;<span class="name">system.web</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">authorization</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">allow</span> <span class="attr">users</span>=<span class="string">"?"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">authorization</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">system.web</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">location</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure><br><br>這邊稍微解釋一下意思，首先authorization區段底下寫著deny user=”?”，表示匿名驗證的使用者都無法存取。<br><br>    接著location path這段是表示，xxx.json，他的權限是可以允許(allow)匿名驗證者個存取。&nbsp;</div><div><br></div><div>這樣設定完後進行測試，的確該資料夾底下的所以檔案都會無法直接讀取，並且跳出401權限驗證錯誤，而xxx.json雖然在同資料夾下，但卻是可以直接讀取檔案的<br><br>因為關於權限設定真的是肉腳一枚，如果有寫錯或觀念偏誤的地方，也歡迎留言指正教導，感激不盡!!!<br><br></div><div><br></div><div><br></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/03/13/【生產力】SmartPaster/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/03/13/【生產力】SmartPaster/" itemprop="url">【生產力】SmartPaster</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-03-13T10:20:00+08:00">
-                2017-03-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/03/13/【生產力】SmartPaster/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/13/【生產力】SmartPaster/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>常常我會在SSMS上面撰寫SQL語法，等到確定之後才會把他挪到專案內，這時候就會碰到要補上前後雙引號或是跳脫字元等問題，以前都會笨笨的一行一行慢慢改，直到朋友介紹我一款<strike>好藥</strike>好套件<strong>SmartPaster</strong></p>
-<div><strong>
-</strong></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-z9hPIDANTMo/WMX_dl7i0HI/AAAAAAAAIFE/PS6PSdkYy4w1lh-BSUYlR608rsaAfU89wCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-z9hPIDANTMo/WMX_dl7i0HI/AAAAAAAAIFE/PS6PSdkYy4w1lh-BSUYlR608rsaAfU89wCLcB/s1600/1.png" alt></a></div><div><strong>
-</strong></div><div><br><div class="note info"><p>下載位置 : <a href="https://marketplace.visualstudio.com/items?itemName=martinw.SmartPaster2013" target="_blank" rel="noopener">https://marketplace.visualstudio.com/items?itemName=martinw.SmartPaster2013</a></p></div><br><br><br>它的功用是做什麼呢? 我想直接看圖就一目了然了<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-QzoRYhI2WNg/WMYAOrkP_DI/AAAAAAAAIFI/7dsnic6h8wohlRxmfLkli7y7krZfv5URACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-QzoRYhI2WNg/WMYAOrkP_DI/AAAAAAAAIFI/7dsnic6h8wohlRxmfLkli7y7krZfv5URACLcB/s1600/1.png" alt></a></div>
-
-<p>只要你複製好任何字串，這邊以這串為例<br><div class="note info"><p>select *<br>from Employee</p></div><br>到VS裡面的時候點擊右鍵 &gt;&gt; Paste As… &gt;&gt; 選擇你要貼上的格式，登登~~~</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-Z0tq9CXFV1M/WMYBiGjJ7DI/AAAAAAAAIFU/8sWywyAkPfQRAE3w9FS-AJn7KJAyjH7cACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-Z0tq9CXFV1M/WMYBiGjJ7DI/AAAAAAAAIFU/8sWywyAkPfQRAE3w9FS-AJn7KJAyjH7cACLcB/s1600/1.png" alt></a></div>
-
-<p>自動就會幫你補上可以執行的程式了，不用再自己前後雙引號、跳脫字元等等，搞到格式大亂啦!!!! YES</p></div><p></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/02/14/【UnitTest】Mock-Controller-Request/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/02/14/【UnitTest】Mock-Controller-Request/" itemprop="url">【UnitTest】Mock Controller Request</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-02-14T09:37:00+08:00">
-                2017-02-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/02/14/【UnitTest】Mock-Controller-Request/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/02/14/【UnitTest】Mock-Controller-Request/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>寫單元測試測試Controller的時候，有時候程式中會用到<a href="https://msdn.microsoft.com/en-us/library/system.web.mvc.controller.request(v=vs.118" target="_blank" rel="noopener">Controller.Request Property</a>.aspx)，但單元測試並不是真的Web連線行為，所以呼叫到Request的時候會是Null , 想要做一個假的塞給他，這個屬性卻是只能讀取不能寫入的</p>
-<div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-4_O_yEIRJeA/WKJdDhYR0MI/AAAAAAAAIEk/pa8aYvPcJw4jt62eTTSYrp6h-hK98eP1ACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-4_O_yEIRJeA/WKJdDhYR0MI/AAAAAAAAIEk/pa8aYvPcJw4jt62eTTSYrp6h-hK98eP1ACLcB/s1600/1.png" alt></a></div>
-
-<p>每次寫完沒多久碰到就又會忘記，所以筆記下來方便以後查找，這邊一樣用NSubstitute套件做處理</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-dMNVp94tO1Y/WKJeLHnEa8I/AAAAAAAAIEs/7yAUVlh29F0wsXsmTjh_UcSZUdoC8MfpgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-dMNVp94tO1Y/WKJeLHnEa8I/AAAAAAAAIEs/7yAUVlh29F0wsXsmTjh_UcSZUdoC8MfpgCLcB/s1600/1.png" alt></a></div>
-
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">YourController Sut = <span class="keyword">new</span> YourController();</span><br><span class="line"> <span class="keyword">var</span> request = Substitute.For&lt;HttpRequestBase&gt;();</span><br><span class="line"> <span class="keyword">var</span> context = Substitute.For&lt;HttpContextBase&gt;();</span><br><span class="line"> request.HttpMethod.Returns(<span class="string">"Get"</span>);</span><br><span class="line"> context.Request.Returns(request);</span><br><span class="line"></span><br><span class="line"> Sut.ControllerContext = <span class="keyword">new</span> ControllerContext(context, <span class="keyword">new</span> RouteData(), Sut);</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/01/23/【C-】程式建立LocalDB-mdf-與刪除/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/01/23/【C-】程式建立LocalDB-mdf-與刪除/" itemprop="url">【C#】程式建立LocalDB(.mdf)與刪除</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-01-23T15:21:00+08:00">
-                2017-01-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/01/23/【C-】程式建立LocalDB-mdf-與刪除/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/23/【C-】程式建立LocalDB-mdf-與刪除/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>之前有寫如何對Repository層做單元測試<span style="background-color: white; font-family: inherit; font-style: inherit; font-weight: inherit;"><span style="border-color: initial; border-image: initial; border-style: initial; font-style: inherit; font-weight: inherit; outline-color: initial; outline-style: initial;"><a href="http://toyo0103.blogspot.tw/2016/07/unit-testrepository.html" target="_blank" rel="noopener">【Unit Test】針對Repository做單元測試 (一)</a>，當時是直接建立LocalDB放在專案之中，測試的時候對它執行，但因為公司導入CICD流程，這些MDF會殘留在佈署的機器上，造成資源的浪費，所以同事教了新的方法，用程式直接建立LocalDB，等到測試完畢後直接砍掉的方法。</span></span></p>
-<p>這邊記錄一下實作方法，以利之後查找<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">string</span> LocalDbMasterConnectionString =</span><br><span class="line">   <span class="string">@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">string</span> TestConnectionString =</span><br><span class="line">   <span class="string">@"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=&#123;0&#125;;Integrated Security=True;</span></span><br><span class="line"><span class="string">                 MultipleActiveResultSets=True;AttachDBFilename=&#123;1&#125;.mdf"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">string</span> DatabaseName &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.DatabaseName = <span class="string">"TestCreateDB"</span>;</span><br><span class="line"> CreateDB();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 建立DB</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CreateDB</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="comment">//先看看有沒有相同的DB存在，如果有的話卸離並移除</span></span><br><span class="line"> <span class="keyword">this</span>.DetachDatabase();</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> fileName = <span class="keyword">this</span>.CleanupDatabase();</span><br><span class="line"></span><br><span class="line"> <span class="keyword">using</span> (<span class="keyword">var</span> connection = <span class="keyword">new</span> SqlConnection(LocalDbMasterConnectionString))</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">var</span> commandText = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">  <span class="comment">//Create DB的語法</span></span><br><span class="line">  commandText.AppendFormat(</span><br><span class="line">   <span class="string">"CREATE DATABASE &#123;0&#125; ON (NAME = N'&#123;0&#125;', FILENAME = '&#123;1&#125;.mdf');"</span>,</span><br><span class="line">   <span class="keyword">this</span>.DatabaseName,</span><br><span class="line">   fileName);</span><br><span class="line"></span><br><span class="line">  connection.Open();</span><br><span class="line">  <span class="keyword">var</span> cmd = connection.CreateCommand();</span><br><span class="line">  cmd.CommandText = commandText.ToString();</span><br><span class="line">  cmd.ExecuteNonQuery();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Detaches the database.</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DetachDatabase</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">using</span> (<span class="keyword">var</span> connection = <span class="keyword">new</span> SqlConnection(LocalDbMasterConnectionString))</span><br><span class="line"> &#123;</span><br><span class="line">  connection.Open();</span><br><span class="line">  <span class="keyword">var</span> cmd = connection.CreateCommand();</span><br><span class="line">  cmd.CommandText = <span class="keyword">string</span>.Format(<span class="string">"exec sp_detach_db '&#123;0&#125;'"</span>, <span class="keyword">this</span>.DatabaseName);</span><br><span class="line">  <span class="keyword">try</span></span><br><span class="line">  &#123;</span><br><span class="line">   cmd.ExecuteNonQuery();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">catch</span></span><br><span class="line">  &#123;</span><br><span class="line">   Console.WriteLine(<span class="string">"Could not detach"</span>);</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Cleanups the database.</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>System.String.<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">string</span> <span class="title">CleanupDatabase</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">var</span> fileName = <span class="keyword">string</span>.Concat(<span class="string">@"G:\"</span>,<span class="keyword">this</span>.DatabaseName);</span><br><span class="line"> <span class="keyword">try</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">var</span> mdfPath = <span class="keyword">string</span>.Concat(fileName, <span class="string">".mdf"</span>);</span><br><span class="line">  <span class="keyword">var</span> ldfPath = <span class="keyword">string</span>.Concat(fileName, <span class="string">"_log.ldf"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> mdfExists = File.Exists(mdfPath);</span><br><span class="line">  <span class="keyword">var</span> ldfExists = File.Exists(ldfPath);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (mdfExists) File.Delete(mdfPath);</span><br><span class="line">  <span class="keyword">if</span> (ldfExists) File.Delete(ldfPath);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">catch</span></span><br><span class="line"> &#123;</span><br><span class="line">  Console.WriteLine(<span class="string">"Could not delete the files (open in Visual Studio?)"</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">return</span> fileName;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>最後就會在你寫的位置看到產生的DB了</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-zochbU5phtw/WIWuOeDVZ4I/AAAAAAAAID0/MwBAkQ4YEyQCLFLHbWnBaUiXVbtGrIseACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-zochbU5phtw/WIWuOeDVZ4I/AAAAAAAAID0/MwBAkQ4YEyQCLFLHbWnBaUiXVbtGrIseACLcB/s1600/1.png" alt></a></div>
-
-<h3 id="刪除"><a href="#刪除" class="headerlink" title="刪除"></a>刪除</h3><p>首先要先在專案安裝Entity Framerok，並且補上以下的程式<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 使用 EntityFramework 的 Database 類別 Delete 方法，確認 LocalDB 存在後再移除.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DeleteLocalDb</span>(<span class="params"><span class="keyword">string</span> dbName</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">using</span> (<span class="keyword">var</span> connection = <span class="keyword">new</span> SqlConnection(</span><br><span class="line">                                        <span class="keyword">string</span>.Format(TestConnectionString,dbName, dbName)))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (Database.Exists(connection))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">try</span></span><br><span class="line">                    &#123;</span><br><span class="line">                        SqlConnection.ClearAllPools();</span><br><span class="line">                        Database.Delete(connection);</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">catch</span> (Exception)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">using</span> (SqlConnection masterConnection = <span class="keyword">new</span> SqlConnection(LocalDbMasterConnectionString))</span><br><span class="line">                        &#123;</span><br><span class="line">                            SqlCommand cmd = masterConnection.CreateCommand();</span><br><span class="line">                            cmd.CommandText = <span class="keyword">string</span>.Format(</span><br><span class="line">                                <span class="string">@"ALTER DATABASE [&#123;0&#125;] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;</span></span><br><span class="line"><span class="string">                                 DROP DATABASE [&#123;0&#125;];"</span>, connection.Database);</span><br><span class="line"></span><br><span class="line">                            masterConnection.Open();</span><br><span class="line">                            cmd.ExecuteNonQuery();</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>接著呼叫，就可以砍掉剛剛建立出來的MDF了<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> DatabaseName = <span class="string">"TestCreateDB"</span>;</span><br><span class="line">DeleteLocalDb(DatabaseName);</span><br></pre></td></tr></table></figure></p>
-<p>但有一點必須特別注意，如果你今天的專案結構跟我一樣</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-x8WxDPWuFrM/WIW661-YM_I/AAAAAAAAIEQ/kV7NxAeClFw5DllZUb6QK2QuKw25ksTKwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-x8WxDPWuFrM/WIW661-YM_I/AAAAAAAAIEQ/kV7NxAeClFw5DllZUb6QK2QuKw25ksTKwCLcB/s1600/1.png" alt></a></div>
-
-<p>刪除DB的程式碼寫在ControlLocalDB的專案中，並且在這個專案有安裝Entity Framework，而ConsoleApplication1只是引用ControlLocalDB專案來執行，而沒有安裝Entity Framework，那這時候<br><div class="note info"><p>Database.Exists(connection)</p></div><br>會永遠回傳<strong>False</strong>，所以不會去砍掉DB，而且也不會引發Exception的錯誤，不知道算不算是EF的Bug，當時找超久的(崩潰)，所以還請特別注意這個地方，有用到這個方法的專案都要記得專EF</p>
-<p>參考文章:<br>1.<a href="https://support.microsoft.com/zh-tw/help/307283/how-to-create-a-sql-server-database-programmatically-by-using-ado.net-and-visual-c-.net" target="_blank" rel="noopener">HOW TO：使用 ADO.NET 與 Visual C# .NET 程式建立 SQL Server 資料庫</a><br>2.<a href="http://kevintsengtw.blogspot.tw/2016/10/repository-localdb-part2.html" target="_blank" rel="noopener">Repository 測試使用 LocalDB - Part.2</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1873,7 +1932,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">190</span>
+                  <span class="site-state-item-count">195</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1895,7 +1954,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

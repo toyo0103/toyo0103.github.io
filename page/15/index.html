@@ -293,6 +293,673 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2014/11/13/Xamarin-Xamarin的奇幻旅程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/11/13/Xamarin-Xamarin的奇幻旅程/" itemprop="url">[Xamarin] Xamarin的奇幻旅程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-11-13T15:21:00+08:00">
+                2014-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2014/11/13/Xamarin-Xamarin的奇幻旅程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/11/13/Xamarin-Xamarin的奇幻旅程/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近因為公司需要,開始學習如何用Xamarin開發 IOS,雖然主打用C#開發APP,但無論生命週期跟呼叫的function跟傳統的windows forms或ASP MVC都有相當大的差異性,有很大的一段GAP要跨過就是.</p>
+<div><br></div><div>這邊紀錄一下我開發<strong><u>IOS</u></strong>時遇到的問題跟心得</div><div><br><br><em>   AppDelegate,程式的進入點<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">bool</span> <span class="title">FinishedLaunching</span>(<span class="params">UIApplication app, NSDictionary options</span>)</span>&#123;    <span class="comment">// 指定APP符合螢幕大小</span></span><br><span class="line">    UIWindow window = <span class="keyword">new</span> UIWindow(UIScreen.MainScreen.Bounds);</span><br><span class="line">    <span class="comment">// 指定APP Root的View,這邊Config.MainStoryboard是我為了避免每次重複一直寫一樣的code</span></span><br><span class="line">    <span class="comment">// 所以把抓取Storyboard的程式碼整合到config,原本應該是UIStoryboard.FromName ("MainStoryboard", null)</span></span><br><span class="line">    window.RootViewController = Config.MainStoryboard.InstantiateInitialViewController () <span class="keyword">as</span> UIViewController;    <span class="comment">// make  the window visible    window.MakeKeyAndVisible();    return true;&#125;</span></span><br></pre></td></tr></table></figure>
+
+</em>   Storyboard,編輯流程的地方,只要把對應的Controller抓進來並且命名,Xamarin Studio會將Class檔案自動建好<br><a href="https://3.bp.blogspot.com/-9PJn6c-W3Ts/VGRjog6fhGI/AAAAAAAAETU/InI72_5d1ic/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2014-11-13%2B%E4%B8%8B%E5%8D%883.49.30.png" target="_blank" rel="noopener"><img src="//3.bp.blogspot.com/-9PJn6c-W3Ts/VGRjog6fhGI/AAAAAAAAETU/InI72_5d1ic/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2014-11-13%2B%E4%B8%8B%E5%8D%883.49.30.png" alt></a><br><em>   取得Storyboard裡面的ViewController方法<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UIStoryboard.FromName (<span class="string">"MainStoryboard"</span>, <span class="literal">null</span>).InstantiateViewController (viewcontroller_name) <span class="keyword">as</span> UIViewController;</span><br></pre></td></tr></table></figure>
+
+</em>   IOS頁面間的流程靠的是對NavigationController的操作,以下是針對NavigationController的一些設定<br><a href="https://1.bp.blogspot.com/-TxRs6fClcdY/VGRmyvmVu2I/AAAAAAAAETo/Tfxc_A_wIbI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2014-11-13%2B%E4%B8%8B%E5%8D%884.07.08.png" target="_blank" rel="noopener"><img src="//1.bp.blogspot.com/-TxRs6fClcdY/VGRmyvmVu2I/AAAAAAAAETo/Tfxc_A_wIbI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2014-11-13%2B%E4%B8%8B%E5%8D%884.07.08.png" alt></a><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">ViewDidLoad</span> (<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="comment">//edit control in viewdidload   //NavigationBar的背景色</span></span><br><span class="line">   NavigationController.NavigationBar.BarTintColor = <span class="keyword">new</span> UIColor(<span class="number">0.58f</span>,<span class="number">0.761f</span>,<span class="number">0.231f</span>,<span class="number">1f</span>);</span><br><span class="line"></span><br><span class="line">       <span class="comment">//字的顏色</span></span><br><span class="line">   NavigationController.NavigationBar.TitleTextAttributes = <span class="keyword">new</span> UIStringAttributes ()&#123; ForegroundColor = UIColor.White &#125;;   <span class="comment">//NavigationBar Button的顏色</span></span><br><span class="line">   NavigationController.NavigationBar.TintColor = UIColor.White;   <span class="comment">//設定NavigationBar的右邊按鈕為何</span></span><br><span class="line">   UIBarButtonItem barOptionIcon = <span class="keyword">new</span> UIBarButtonItem (UIImage.FromBundle (<span class="string">"icon-options"</span>),   UIBarButtonItemStyle.Plain,</span><br><span class="line">   (sender, args) =&gt;   &#123;      <span class="comment">// button clicked      NavigationController.PushViewController(Config.GetStoryboardViewController("OptionViewController"),true);   &#125;);</span></span><br><span class="line">   NavigationController.NavigationBar.TopItem.SetRightBarButtonItem (barOptionIcon,<span class="literal">true</span>); <span class="comment">//OptionIcon</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><br><em>   IOS抓取對應圖片的方式<br><a href="https://3.bp.blogspot.com/-yKVU6385RPk/VGRo5f3lZII/AAAAAAAAET0/Kz-_aQWVyLA/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2014-11-13%2B%E4%B8%8B%E5%8D%884.15.59.png" target="_blank" rel="noopener"><img src="//3.bp.blogspot.com/-yKVU6385RPk/VGRo5f3lZII/AAAAAAAAET0/Kz-_aQWVyLA/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2014-11-13%2B%E4%B8%8B%E5%8D%884.15.59.png" alt></a><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//FromBundle的方式IOS會自動對應不同的裝置抓取預備好給他的圖</span></span><br><span class="line"><span class="comment">//圖片檔名命名方式//[imageName]~iphone.png</span></span><br><span class="line"><span class="comment">//[imageName]~ipad.png</span></span><br><span class="line"><span class="comment">//[imageName]@2~ipad.png for retina顯示器</span></span><br><span class="line">UIImage.FromBundle (<span class="string">"icon-options"</span>);</span><br><span class="line"><span class="comment">//FromFile不管任何解析度都是用這張來顯示,所以用前者的方式較佳</span></span><br><span class="line">UIImage.FromFile (<span class="string">"icon-options.png"</span>);</span><br></pre></td></tr></table></figure>
+
+</em>   TableViewController的製作方式<br><a href="https://3.bp.blogspot.com/-nNrQN2hVNpo/VGRpYjLlK6I/AAAAAAAAET8/y5EArWC4Fc8/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2014-11-13%2B%E4%B8%8B%E5%8D%884.17.57.png" target="_blank" rel="noopener"><img src="//3.bp.blogspot.com/-nNrQN2hVNpo/VGRpYjLlK6I/AAAAAAAAET8/y5EArWC4Fc8/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2014-11-13%2B%E4%B8%8B%E5%8D%884.17.57.png" alt></a><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//製作TableSource的Class</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TableSource</span> : <span class="title">UITableViewSource</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">string</span> cellIdentifier = <span class="string">"OptionsTableCell"</span>;</span><br><span class="line">   <span class="keyword">public</span> List&lt;tablecell&gt; TABLE_ITEMS&#123; <span class="keyword">get</span>; <span class="keyword">set</span>;&#125; <span class="comment">//每列資料   public event EventHandler&lt;tablerowselectedeventargs&gt; Cell_RowSelected;//給外層cell click事件</span></span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">TableSource</span> (<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>   &#123;</span><br><span class="line">      TABLE_ITEMS = <span class="keyword">new</span> List&lt;tablecell&gt; ();</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> nint <span class="title">RowsInSection</span> (<span class="params">UITableView tableview, nint section</span>)</span></span><br><span class="line"><span class="function"></span>   &#123;</span><br><span class="line">      <span class="keyword">return</span> TABLE_ITEMS.Count;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> UITableViewCell <span class="title">GetCell</span> (<span class="params">UITableView tableView, Foundation.NSIndexPath indexPath</span>)</span></span><br><span class="line"><span class="function"></span>   &#123;</span><br><span class="line">      UITableViewCell cell = tableView.DequeueReusableCell (cellIdentifier);</span><br><span class="line"></span><br><span class="line">          <span class="comment">//if there are no cells to reuse , cerate a new one</span></span><br><span class="line">      <span class="keyword">if</span> (cell == <span class="literal">null</span>) cell = <span class="keyword">new</span> UITableViewCell (UITableViewCellStyle.Default, cellIdentifier);</span><br><span class="line"></span><br><span class="line">          cell.TextLabel.Text = TABLE_ITEMS [indexPath.Row].TITLE;</span><br><span class="line">      cell.TextLabel.Font = UIFont.SystemFontOfSize(<span class="number">15f</span>);</span><br><span class="line">      cell.TextLabel.TextColor = <span class="keyword">new</span> UIColor (<span class="number">0.453f</span>, <span class="number">0.453f</span>, <span class="number">0.453f</span>, <span class="number">1</span>);</span><br><span class="line">      cell.ImageView.Image = UIImage.FromBundle (TABLE_ITEMS[indexPath.Row].IMAGE); <span class="comment">//cell front Image</span></span><br><span class="line">      cell.Accessory = UITableViewCellAccessory.DisclosureIndicator;</span><br><span class="line">      <span class="keyword">return</span> cell;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">RowSelected</span> (<span class="params">UITableView tableView, Foundation.NSIndexPath indexPath</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line"> <span class="comment">//把值拋到OptionViewController的Cell_RowSelected的事件</span></span><br><span class="line"> <span class="keyword">if</span> (Cell_RowSelected != <span class="literal">null</span>)         Cell_RowSelected(<span class="keyword">this</span>,<span class="keyword">new</span> TableRowSelectedEventArgs()&#123; indexPath = indexPath&#125;);</span><br><span class="line"> tableView.DeselectRow (indexPath, <span class="literal">true</span>); <span class="comment">//cancel select row style</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/tablecell&gt;&lt;/tablerowselectedeventargs&gt;&lt;/tablecell&gt;</span><br></pre></td></tr></table></figure><br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//製作TableSource的Class</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TableSource</span> : <span class="title">UITableViewSource</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">string</span> cellIdentifier = <span class="string">"OptionsTableCell"</span>;</span><br><span class="line">   <span class="keyword">public</span> List&lt;tablecell&gt; TABLE_ITEMS&#123; <span class="keyword">get</span>; <span class="keyword">set</span>;&#125; <span class="comment">//每列資料   public event EventHandler&lt;tablerowselectedeventargs&gt; Cell_RowSelected;//給外層cell click事件</span></span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">TableSource</span> (<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>   &#123;</span><br><span class="line">      TABLE_ITEMS = <span class="keyword">new</span> List&lt;tablecell&gt; ();</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> nint <span class="title">RowsInSection</span> (<span class="params">UITableView tableview, nint section</span>)</span></span><br><span class="line"><span class="function"></span>   &#123;</span><br><span class="line">      <span class="keyword">return</span> TABLE_ITEMS.Count;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> UITableViewCell <span class="title">GetCell</span> (<span class="params">UITableView tableView, Foundation.NSIndexPath indexPath</span>)</span></span><br><span class="line"><span class="function"></span>   &#123;</span><br><span class="line">      UITableViewCell cell = tableView.DequeueReusableCell (cellIdentifier);</span><br><span class="line"></span><br><span class="line">          <span class="comment">//if there are no cells to reuse , cerate a new one</span></span><br><span class="line">      <span class="keyword">if</span> (cell == <span class="literal">null</span>) cell = <span class="keyword">new</span> UITableViewCell (UITableViewCellStyle.Default, cellIdentifier);</span><br><span class="line"></span><br><span class="line">          cell.TextLabel.Text = TABLE_ITEMS [indexPath.Row].TITLE;</span><br><span class="line">      cell.TextLabel.Font = UIFont.SystemFontOfSize(<span class="number">15f</span>);</span><br><span class="line">      cell.TextLabel.TextColor = <span class="keyword">new</span> UIColor (<span class="number">0.453f</span>, <span class="number">0.453f</span>, <span class="number">0.453f</span>, <span class="number">1</span>);</span><br><span class="line">      cell.ImageView.Image = UIImage.FromBundle (TABLE_ITEMS[indexPath.Row].IMAGE); <span class="comment">//cell front Image</span></span><br><span class="line">      cell.Accessory = UITableViewCellAccessory.DisclosureIndicator;</span><br><span class="line">      <span class="keyword">return</span> cell;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">RowSelected</span> (<span class="params">UITableView tableView, Foundation.NSIndexPath indexPath</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line"> <span class="comment">//把值拋到OptionViewController的Cell_RowSelected的事件</span></span><br><span class="line"> <span class="keyword">if</span> (Cell_RowSelected != <span class="literal">null</span>)         Cell_RowSelected(<span class="keyword">this</span>,<span class="keyword">new</span> TableRowSelectedEventArgs()&#123; indexPath = indexPath&#125;);</span><br><span class="line"> tableView.DeselectRow (indexPath, <span class="literal">true</span>); <span class="comment">//cancel select row style</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Table Cell Classpublic class TableCell&#123;   public string TITLE &#123; get; set; &#125; //標題   public string IMAGE &#123; get; set;&#125; //圖片   public TableCell () &#123; &#125;</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">TableCell</span> (<span class="params"><span class="keyword">string</span> title , <span class="keyword">string</span> image</span>)</span>   &#123;      TITLE = title; IMAGE = image;   &#125;&#125;</span><br></pre></td></tr></table></figure><br><br>然後在ViewController這麼做  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">OptionViewController</span> (<span class="params">IntPtr handle</span>) : <span class="title">base</span> (<span class="params">handle</span>)</span>&#123;   _tableview = SetTable ();   <span class="keyword">this</span>.Add (_tableview); <span class="comment">//把Table加進去View裡面&#125;/// &lt;summary&gt;/// Set Table Data/// &lt;/summary&gt;/// &lt;returns&gt;The table.&lt;/returns&gt;private UITableView SetTable()&#123;   UITableView tv = new UITableView (View.Bounds);   TableSource _source = new TableSource ();   List&lt;tablecell&gt; celllist = new List&lt;tablecell&gt; ();   //將options的menu選項加進table cell裡面   foreach (Options item in Enum.GetValues(typeof(Options)))   &#123;      string[] descript = Tools.GetEnumDescription (item).Split(new String[]&#123;";"&#125;,      StringSplitOptions.RemoveEmptyEntries);</span></span><br><span class="line">          celllist.Add(<span class="keyword">new</span> TableCell (descript[<span class="number">0</span>], descript[<span class="number">1</span>]));<span class="comment">//標題;圖片    &#125;    _source.TABLE_ITEMS = celllist; tv.Source = _source;    //cell click觸發的事件    _source.Cell_RowSelected += (object sender, TableRowSelectedEventArgs e) =&amp;gt;    &#123;       switch ((Options)e.indexPath.Row)       &#123;          case Options.BuildAge:NavigationController.PushViewController(Config.GetStoryboardViewController("Options_BuildAgeViewController"),true);       break;       &#125;</span></span><br><span class="line">     &#125;;     <span class="keyword">return</span> tv;&#125;</span><br></pre></td></tr></table></figure><br><br></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2014/08/11/【XML】將資料匯出到EXCEL-透過ClosedXML套件/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/08/11/【XML】將資料匯出到EXCEL-透過ClosedXML套件/" itemprop="url">【XML】將資料匯出到EXCEL - 透過ClosedXML套件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-08-11T10:03:00+08:00">
+                2014-08-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2014/08/11/【XML】將資料匯出到EXCEL-透過ClosedXML套件/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/08/11/【XML】將資料匯出到EXCEL-透過ClosedXML套件/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近有寫Excel報表的需求，ClosedXML真的是個不錯的套件<br><a href="http://4.bp.blogspot.com/-U77EUQ5N4bI/U-gfNomELwI/AAAAAAAAEOg/pmy-h-xJt78/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-U77EUQ5N4bI/U-gfNomELwI/AAAAAAAAEOg/pmy-h-xJt78/s1600/1.png" alt></a><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> workbook = <span class="keyword">new</span> XLWorkbook(); <span class="comment">//new Excel</span></span><br><span class="line"> <span class="keyword">var</span> sheet_A = workbook.Worksheets.Add(<span class="string">"Sheet_A"</span>); <span class="comment">//新增Sheet到 Excel</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">//塞資料到Sheet中</span></span><br><span class="line"> worksheet.Cell(_index, <span class="number">1</span>).Value = <span class="string">"欄位一"</span>;</span><br><span class="line"> worksheet.Cell(_index, <span class="number">2</span>).Value = <span class="string">"欄位二"</span>;</span><br><span class="line"> worksheet.Cell(_index, <span class="number">3</span>).Value = <span class="string">"欄位三"</span>;</span><br><span class="line"> worksheet.Cell(_index, <span class="number">4</span>).Value = <span class="string">"欄位四"</span>;</span><br><span class="line"> worksheet.Cell(_index, <span class="number">5</span>).Value = <span class="string">"欄位五"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>用法還滿簡單的，如果有更深入的用法想瞭解也可以到<a href="https://closedxml.codeplex.com/documentation" target="_blank" rel="noopener">ClosedXml網站</a>看文件<br>在使用的過程有遇到一個情況就是從DB裡面撈出大量的資料倒入Excel時，匯出打開檔案會顯示Excel已經損毀，可是直接把DB撈出來的資料用複製貼上卻可以完整地貼到Excel中，存檔再打開也不會壞掉。這個問題搞了好久…最後查到大陸網站得到以下的解答<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 提示??，??信息如下： 十六?制值 0x0B 是?效的字符??</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>?生原因是xml文件中包含低位非打印字符造成的</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>?理方法：在?生xml文件的?候，??低位非打印字符</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="tmp" /&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">string</span> <span class="title">ReplaceLowOrderASCIICharacters</span>(<span class="params"><span class="keyword">string</span> tmp</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   StringBuilder info = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">   <span class="keyword">foreach</span> (<span class="keyword">char</span> cc <span class="keyword">in</span> tmp)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="keyword">int</span> ss = (<span class="keyword">int</span>)cc;</span><br><span class="line">      <span class="keyword">if</span> (((ss &gt;= <span class="number">0</span>) &amp;&amp; (ss &lt;= <span class="number">8</span>)) || ((ss &gt;= <span class="number">11</span>) &amp;&amp; (ss &lt;= <span class="number">12</span>)) || ((ss &gt;= <span class="number">14</span>) &amp;&amp; (ss &lt;= <span class="number">32</span>)))</span><br><span class="line">         info.AppendFormat(<span class="string">" "</span>, ss);<span class="comment">//&amp;#x&#123;0:X&#125;;</span></span><br><span class="line">      <span class="keyword">else</span> info.Append(cc);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> info.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>把字元丟到這個function去過濾後就可以避免錯誤了!!</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2014/06/03/【-NET】防止XSS攻擊/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/06/03/【-NET】防止XSS攻擊/" itemprop="url">【.NET】防止XSS攻擊</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-06-03T16:39:00+08:00">
+                2014-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2014/06/03/【-NET】防止XSS攻擊/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/06/03/【-NET】防止XSS攻擊/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>一直都有聽過XSS攻擊的原理跟方式，但都沒有好好認真研究過，剛好最近看到一個小遊戲在這邊推薦給大家:<br><a href="https://xss-game.appspot.com/level1" target="_blank" rel="noopener">瞭解XSS攻擊的小遊戲</a></p>
+<p>查了一下.NET防止XSS攻擊的有效方法，剛好保哥有寫過相關的文章<br><a href="http://blog.miniasp.com/post/2009/09/26/Recommand-Microsoft-Anti-XSS-Library-V31.aspx" target="_blank" rel="noopener">保哥-推薦使用 Microsoft Anti-Cross Site Scripting Library v3.1</a><br>裡面介紹的非常詳細，這邊就不再多做贅述了。</p>
+<p>唯一需要特別注意的地方是Anti-XSS Library在4.2版的時候將GetSafeHtml 、GetSafeHtmlFragment移到了新的DLL了。所以如果依照文章去下載這個DLL會發現沒有這兩個方法可用，請改用Nuget搜尋HtmlSanitizationLibrary</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-El2JuoTjn70/U42JPHwLqqI/AAAAAAAAEOM/z99tk-Wb_AI/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-El2JuoTjn70/U42JPHwLqqI/AAAAAAAAEOM/z99tk-Wb_AI/s1600/1.png" alt></a></div>
+
+<p>使用方法也變成<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Sanitizer.GetSafeHtmlFragment(inputext);</span><br></pre></td></tr></table></figure></p>
+<p>真是很好很強大阿!!!!</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2014/05/28/【SQL】WAITFOR-DELAY/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/05/28/【SQL】WAITFOR-DELAY/" itemprop="url">【SQL】WAITFOR DELAY</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-05-28T11:57:00+08:00">
+                2014-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2014/05/28/【SQL】WAITFOR-DELAY/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/05/28/【SQL】WAITFOR-DELAY/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>有時候大量資料批次匯入時，我們會用寫SQL語法的方式增加效率(LinqToSql會讓你慢到server timeout)，但常常發生SQL處理速度太快，造成datein的時間完全一樣，讓人分不清楚哪筆先哪筆後 這種先後順序在權限的處理上又異常的重要，畢竟權限通常都是拿最後一筆的時間再繼續往下疊加下去，如果分不出哪一筆應該是最後一筆可就慘了阿!!!</p>
+<p>SQL表示:今天的我沒有極限</p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="http://3.bp.blogspot.com/-yo13exV70Lw/U4VbOW1w9OI/AAAAAAAAEN8/hulc_I52GBk/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-yo13exV70Lw/U4VbOW1w9OI/AAAAAAAAEN8/hulc_I52GBk/s1600/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;">所以要在每一筆寫入的時候告訴SQL Server說，”來，您辛苦了。休息個0.1秒再繼續吧!!”</div><div class="separator" style="clear: both; text-align: left;">這時候你就會需要WAITFOR DELAY語法了(<a href="http://msdn.microsoft.com/zh-tw/library/ms187331.aspx" target="_blank" rel="noopener">MSDN解說</a>)</div><div class="separator" style="clear: both; text-align: left;"><br></div><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--每insert一筆都呼叫一次</span></span><br><span class="line">WAITFOR DELAY '00:00:00.010'</span><br></pre></td></tr></table></figure></p>
+<p>打完收工</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2014/03/13/【SQL】SQL的foreach，逐筆執行/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2014/03/13/【SQL】SQL的foreach，逐筆執行/" itemprop="url">【SQL】SQL的foreach，逐筆執行</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2014-03-13T17:17:00+08:00">
+                2014-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2014/03/13/【SQL】SQL的foreach，逐筆執行/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/03/13/【SQL】SQL的foreach，逐筆執行/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>需求:將Table_A的資料塞到Table_B，並把Table_B產生的ID編號回寫回Table_A的對應欄位 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 宣告變數</span></span><br><span class="line"><span class="keyword">DECLARE</span> @para1 <span class="built_in">VARCHAR</span>(<span class="number">50</span>) </span><br><span class="line"><span class="keyword">DECLARE</span> @para2 uniqueidentifier</span><br><span class="line"><span class="keyword">DECLARE</span> @para3 <span class="built_in">VARCHAR</span>(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 宣告指標變數</span></span><br><span class="line"><span class="keyword">DECLARE</span> _cursor <span class="keyword">CURSOR</span> <span class="keyword">FOR</span></span><br><span class="line"><span class="keyword">SELECT</span> s1,s2,s3 <span class="keyword">FROM</span> Table_A <span class="keyword">where</span> eiplstatus = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 啟用指標變數</span></span><br><span class="line"><span class="keyword">OPEN</span> _cursor</span><br><span class="line"><span class="comment">-- 以指標變數為基準點, 將取出的欄位值,依序塞給我們自訂的變數，亦即將每筆s1 =&gt; @para1、 s2 =&gt; @para2 、s3 =&gt; @para3</span></span><br><span class="line"><span class="keyword">FETCH</span> <span class="keyword">NEXT</span> <span class="keyword">FROM</span> _cursor <span class="keyword">INTO</span> @para1,@para2,@para3</span><br><span class="line"></span><br><span class="line"><span class="keyword">WHILE</span> @@FETCH_STATUS = <span class="number">0</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">insert</span> <span class="keyword">into</span> Table_B(c1,c2,c3) <span class="keyword">values</span>(@para1,@para2,@para3)</span><br><span class="line">    <span class="keyword">SET</span> @<span class="keyword">id</span> = SCOPE_IDENTITY();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">update</span> Table_A <span class="keyword">set</span> <span class="keyword">id</span> = @<span class="keyword">id</span> <span class="keyword">where</span> <span class="keyword">CURRENT</span> <span class="keyword">of</span> _cursor</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 指標變數往下移動, 並將取出的欄位值, 設定給我們自訂的變數</span></span><br><span class="line">    <span class="keyword">FETCH</span> <span class="keyword">NEXT</span> <span class="keyword">FROM</span> _cursor <span class="keyword">INTO</span> @para1,@para2,@para3</span><br><span class="line"><span class="keyword">END</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 關閉指標變數</span></span><br><span class="line"><span class="keyword">CLOSE</span> _cursor</span><br><span class="line"><span class="comment">-- 釋放指標變數</span></span><br><span class="line"><span class="keyword">DEALLOCATE</span> _cursor</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/12/09/【心情】世殊事異/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -955,691 +1622,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/09/10/【MVC】呼叫ELMAH-艾爾瑪/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/09/10/【MVC】呼叫ELMAH-艾爾瑪/" itemprop="url">【MVC】呼叫ELMAH(艾爾瑪)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-09-10T13:54:00+08:00">
-                2013-09-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/09/10/【MVC】呼叫ELMAH-艾爾瑪/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/09/10/【MVC】呼叫ELMAH-艾爾瑪/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>首先透過NuGet安裝以下四個套件<br><a href="http://4.bp.blogspot.com/-g5uyW8Gr3q4/Ui6x2FhNC5I/AAAAAAAAEGI/V3oY_1L3fRM/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-g5uyW8Gr3q4/Ui6x2FhNC5I/AAAAAAAAEGI/V3oY_1L3fRM/s1600/111.png" alt></a></li>
-<li><p>打開WebConfig可以找到以下設定 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"elmah.mvc.disableHandler"</span> <span class="attr">value</span>=<span class="string">"false"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"elmah.mvc.disableHandleErrorFilter"</span> <span class="attr">value</span>=<span class="string">"false"</span> /&gt;</span></span><br><span class="line">    //是否需要權限才能閱讀這個Log，當然是True啦!!</span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"elmah.mvc.requiresAuthentication"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">    //是否停用原本預設調用Log的"網址/elmah"路徑</span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"elmah.mvc.IgnoreDefaultRoute"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">    //如果權限設定為true的話，何種role可以調用Log</span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"elmah.mvc.allowedRoles"</span> <span class="attr">value</span>=<span class="string">"*"</span> /&gt;</span></span><br><span class="line">    //那些登入者可以調用Log 多人時用逗號分開</span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"elmah.mvc.allowedUsers"</span> <span class="attr">value</span>=<span class="string">"admin"</span> /&gt;</span></span><br><span class="line">    //設定調用Elmah Log的MVC Route</span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"elmah.mvc.route"</span> <span class="attr">value</span>=<span class="string">"showme/elmah"</span> /&gt;</span></span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>刪除掉WebConfig的以下區段，所有人都不法透過”網址/elmah.axd”來讀取Log檔案(包含本機) <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">location</span> <span class="attr">path</span>=<span class="string">"elmah.axd"</span> <span class="attr">inheritInChildApplications</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">...略...</span><br><span class="line"><span class="tag">&lt;/<span class="name">location</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>ELMAH還有很多不錯的功能，例如將錯誤Log寫到DB裡面去，或是主動寄信通知設定。但目前還用不上就先不研究了!!5.  實際上看到Log的紀錄 <a href="http://2.bp.blogspot.com/-iq0eilWQM3I/Ui62QPdQjdI/AAAAAAAAEGU/Z-En3V0VNcs/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-iq0eilWQM3I/Ui62QPdQjdI/AAAAAAAAEGU/Z-En3V0VNcs/s1600/111.png" alt></a><br>按下Detail後的詳細資訊，說實在還滿棒的~ <a href="http://1.bp.blogspot.com/-GlAKlQ4QR-0/Ui62tKwlhbI/AAAAAAAAEGc/ha1udHCOTPQ/s1600/111.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-GlAKlQ4QR-0/Ui62tKwlhbI/AAAAAAAAEGc/ha1udHCOTPQ/s1600/111.png" alt></a></p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/09/09/【MVC】MVC上傳圖片/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/09/09/【MVC】MVC上傳圖片/" itemprop="url">【MVC】MVC上傳圖片</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-09-09T17:39:00+08:00">
-                2013-09-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/09/09/【MVC】MVC上傳圖片/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/09/09/【MVC】MVC上傳圖片/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><p>View <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">using</span> (Html.BeginForm(<span class="string">"edit"</span>, <span class="string">"group"</span>, FormMethod.Post, <span class="keyword">new</span> &#123; enctype = <span class="string">"multipart/form-data"</span> &#125;))</span><br><span class="line">&#123;</span><br><span class="line">  &lt;div <span class="keyword">class</span>=<span class="string">"form-group"</span>&gt;</span><br><span class="line">   &lt;label <span class="keyword">for</span>=<span class="string">"picturl"</span>&gt;圖片&lt;/label&gt;</span><br><span class="line">   &lt;input type=<span class="string">"file"</span> id=<span class="string">"picture"</span> name=<span class="string">"picture"</span> /&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>Controller，這邊特別注意<span style="color: blue;">HttpPostedFileBase</span> picture的參數名稱要與View file的name相同 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">AddExhibitionItem</span>(<span class="params"><span class="keyword">string</span> name, <span class="keyword">string</span> sort,<span class="keyword">string</span> stop ,HttpPostedFileBase picture</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">string</span> err= <span class="keyword">string</span>.Empty;</span><br><span class="line">   <span class="keyword">if</span> (ExhibitionUtilFactory.AddItem(name, sort, stop, picture, <span class="keyword">ref</span> err))</span><br><span class="line">   &#123;</span><br><span class="line">     <span class="keyword">return</span> Content(<span class="string">"&lt;script&gt;alert('新增成功');window.parent.closeDialog();&lt;/script&gt;"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">else</span>   &#123;</span><br><span class="line">      TempData[<span class="string">"alert"</span>] = err;</span><br><span class="line">      <span class="keyword">return</span> View();</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>如果是多檔上傳的話，View <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;div <span class="keyword">class</span>=<span class="string">"form-group"</span>&gt;</span><br><span class="line">   &lt;label <span class="keyword">for</span>=<span class="string">"picturl"</span>&gt;圖片&lt;/label&gt;</span><br><span class="line">   &lt;input type=<span class="string">"file"</span> id=<span class="string">"picture1"</span> name=<span class="string">"picture"</span> /&gt;</span><br><span class="line">   &lt;input type=<span class="string">"file"</span> id=<span class="string">"picture2"</span> name=<span class="string">"picture"</span> /&gt;</span><br><span class="line">   &lt;input type=<span class="string">"file"</span> id=<span class="string">"picture3"</span> name=<span class="string">"picture"</span> /&gt;</span><br><span class="line">&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>Controller <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">AddExhibitionItem</span>(<span class="params"><span class="keyword">string</span> name, <span class="keyword">string</span> sort,<span class="keyword">string</span> stop ,IEnumerable&lt;HttpPostedFileBase&gt; picture</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">foreach</span> (<span class="keyword">var</span> file <span class="keyword">in</span> picture)   &#123;</span><br><span class="line">     ............   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/" itemprop="url">【LINQ TO SQL】解決SubmitChanges時與資料庫衝突的問題</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-09-06T10:39:00+08:00">
-                2013-09-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>一樣參考保哥的<a href="http://blog.miniasp.com/post/2008/05/24/Resolve-LINQ-to-SQL-Change-Conflict-Exception.aspx" target="_blank" rel="noopener">解決 LINQ to SQL 資料庫更新衝突的情形</a>與公司前輩的Source Code</li>
-<li><strong>發生原因：</strong>有可能我們在跟DB取得某個欄位時得到A這個值，但當我們改動這個值並嘗試更新回DB時，可能DB早就被其他使用者改成B了。DBContext SubmitChanges會去比對這個欄位最初值是否與DB目前的值一致避免Dirty Data的問題，但當上述情況發生時則會擲出Exception。各種處理方式如下:<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">   _dbContext.SubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (System.Data.Linq.ChangeConflictException ex)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">foreach</span> (System.Data.Linq.ObjectChangeConflict occ <span class="keyword">in</span> _dbContext.ChangeConflicts)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="comment">// 採用資料庫的查詢出來的值，目前物件的值將會被資料庫最新查到的複寫</span></span><br><span class="line">      <span class="comment">//occ.Resolve(System.Data.Linq.RefreshMode.OverwriteCurrentValues);</span></span><br><span class="line"></span><br><span class="line">          <span class="comment">// 採用目前物件中的值，並更新資料庫中的版本</span></span><br><span class="line">      <span class="comment">//occ.Resolve(System.Data.Linq.RefreshMode.KeepCurrentValues);</span></span><br><span class="line"></span><br><span class="line">          <span class="comment">// 僅更新此物件中變更的欄位，僅將變更的欄位寫入資料庫（或稱為合併更新）</span></span><br><span class="line">      occ.Resolve(System.Data.Linq.RefreshMode.KeepChanges);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 注意：解決完衝突之後要記得重新再 SubmitChanges() 一次，否則一樣不會更新資料庫</span></span><br><span class="line">    _dbContext.SubmitChanges();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/09/03/【SQL】SQL-2008R2-開啟SA帳號/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/09/03/【SQL】SQL-2008R2-開啟SA帳號/" itemprop="url">【SQL】SQL 2008R2 開啟SA帳號</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-09-03T09:57:00+08:00">
-                2013-09-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/09/03/【SQL】SQL-2008R2-開啟SA帳號/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/09/03/【SQL】SQL-2008R2-開啟SA帳號/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li>這個東西做了八百萬遍了還是常常忘記在哪設定，所以決定寫起來方必查詢(汗)*   首先，SQL Server上右鍵 &gt; 屬性 &gt; 安全性 &gt; 選擇SQL Server及Windows驗證模式<br><a href="http://3.bp.blogspot.com/-mE-e_m1GG5A/UiU_U4zbxFI/AAAAAAAAEFU/iKr_d0k9Bcs/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-mE-e_m1GG5A/UiU_U4zbxFI/AAAAAAAAEFU/iKr_d0k9Bcs/s1600/1.png" alt></a><br><a href="http://1.bp.blogspot.com/-AP3hYPuC948/UiVAJIB5byI/AAAAAAAAEFc/bb-y_80CC30/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-AP3hYPuC948/UiVAJIB5byI/AAAAAAAAEFc/bb-y_80CC30/s1600/1.png" alt></a></li>
-<li>安全性 &gt; 登入 &gt; SA帳戶 &gt; 屬性<br><a href="http://3.bp.blogspot.com/-Jcp7Ew-tGO0/UiVAzjFHpuI/AAAAAAAAEFo/RkC9pLBz-lg/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-Jcp7Ew-tGO0/UiVAzjFHpuI/AAAAAAAAEFo/RkC9pLBz-lg/s1600/1.png" alt></a><br>狀態 &gt; 登入 &gt; 啟用<br><a href="http://1.bp.blogspot.com/-9DV1cn7WvxU/UiVBdtlhuBI/AAAAAAAAEFw/vIwxIh0Fhqw/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-9DV1cn7WvxU/UiVBdtlhuBI/AAAAAAAAEFw/vIwxIh0Fhqw/s1600/1.png" alt></a></li>
-<li>重新啟動SQL服務<br><a href="http://3.bp.blogspot.com/-o4plDe-GmWM/UiVByaHsp_I/AAAAAAAAEF4/MYqwyrFuSvI/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-o4plDe-GmWM/UiVByaHsp_I/AAAAAAAAEF4/MYqwyrFuSvI/s1600/1.png" alt></a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/09/01/【C-】FormsAuthentication驗證模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/09/01/【C-】FormsAuthentication驗證模式/" itemprop="url">【C#】FormsAuthentication驗證模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-09-01T17:04:04+08:00">
-                2013-09-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/09/01/【C-】FormsAuthentication驗證模式/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/09/01/【C-】FormsAuthentication驗證模式/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>研究了老半天終於搞懂了，來做一下簡單的筆記<br>從.NET 2.0開始就已經開始實行的Form驗證模式，今天拜讀了保哥的<a href="https://blog.miniasp.com/post/2008/02/20/Explain-Forms-Authentication-in-ASPNET-20.aspx" target="_blank" rel="noopener">「概略解釋 Forms Authentication 的運作」</a>後測試的簡單心得</p>
-<p>使用這個方法即表示驗證成功，這個驗證會記錄在電腦的cookie當中<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FormsAuthentication.RedirectFromLoginPage(strUsername, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure></p>
-<p>但如果你想要關閉瀏覽器時就登出，你就得改用以下方式將cookie記錄在web browser當中<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//改發Ticket的方式</span></span><br><span class="line">FormsAuthenticationTicket ticket = <span class="keyword">new</span> FormsAuthenticationTicket(<span class="number">1</span>, username, DateTime.Now, DateTime.Now.AddMinutes(<span class="number">30</span>),<span class="literal">false</span>, userdata, FormsAuthentication.FormsCookiePath);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Encrypt the ticket.</span></span><br><span class="line"><span class="keyword">string</span> encTicket = FormsAuthentication.Encrypt(ticket);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create the cookie.</span></span><br><span class="line">Response.Cookies.Add(<span class="keyword">new</span> HttpCookie(FormsAuthentication.FormsCookieName, encTicket));</span><br></pre></td></tr></table></figure></p>
-<p>那如果又要實作，記住我xx天不用重新登入的功能呢?<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//除了剛剛發Ticket之外</span></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">bool</span>.Parse(remember))</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//如果打勾記住我的話</span></span><br><span class="line">  HttpCookie cookie = <span class="keyword">new</span> HttpCookie(<span class="string">"rememberme"</span>);</span><br><span class="line">  cookie.Value = SysHelper.enCrypt(account);</span><br><span class="line">  cookie.Expires = DateTime.Now.AddDays(<span class="number">3</span>);</span><br><span class="line">  Response.Cookies.Add(cookie);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>這樣下次登入的時候只要判斷這個cookie存不存在就可以放行了!!<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//登入Login頁面時，先判斷Form驗證已經通過了嗎?</span></span><br><span class="line"><span class="keyword">if</span> (!User.Identity.IsAuthenticated)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//沒通過的話，判斷cookie存不存在。有的話表示此人上次登入時有勾記住我!!</span></span><br><span class="line">   <span class="keyword">if</span> ( Request.Cookies[<span class="string">"backend"</span>] != <span class="literal">null</span>)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="comment">//cookie如果過期的話會判斷為null，所以進得來表示cookie還沒過期，可以發Ticket給他</span></span><br><span class="line">      passTicket(SysHelper.deCrypt(Request.Cookies[<span class="string">"rememberme"</span>].Value), <span class="string">""</span>);</span><br><span class="line"> </span><br><span class="line">      <span class="keyword">return</span> Redirect(<span class="string">"/backend"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">      <span class="keyword">return</span> View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>登出<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//呼叫這個方法就已經登出摟~</span></span><br><span class="line">FormsAuthentication.SignOut();</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> (Request.Cookies[<span class="string">"backend"</span>] != <span class="literal">null</span>)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//如果cookie還沒過期，既然已經登出當然要把它重新設定為過期啦!!</span></span><br><span class="line">   HttpCookie myCookie = <span class="keyword">new</span> HttpCookie(<span class="string">"backend"</span>);</span><br><span class="line">   myCookie.Expires = DateTime.Now.AddDays(<span class="number">-1</span>d);</span><br><span class="line">   Response.Cookies.Add(myCookie);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> Redirect(<span class="string">"/backend"</span>);</span><br></pre></td></tr></table></figure></p>
-<p>最後不要搞混Response與Request了。我寫的時候沒注意到害我Debug超久的….(汗)</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1687,7 +1674,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">190</span>
+                  <span class="site-state-item-count">195</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1709,7 +1696,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

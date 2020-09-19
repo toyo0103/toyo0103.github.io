@@ -293,6 +293,714 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/05/01/【C-】透過C-加密/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/05/01/【C-】透過C-加密/" itemprop="url">【C#】透過C#加密</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-01T15:55:00+08:00">
+                2013-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/05/01/【C-】透過C-加密/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/05/01/【C-】透過C-加密/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>strKey與strIV是用來加密的參數，可以替換任何字元<span style="color: red;">但一定要8個字</span></p>
+<pre class="brush: csharp"> //加密動作
+private static string strKey = "toyo1234";  
+private static string strIV = "lovecode";
+
+/// &lt;summary&gt;字串編碼&lt;/summary&gt;
+/// &lt;param name="strSource"&gt;原始字串&lt;/param&gt;
+/// &lt;returns&gt;編碼後的結果字串&lt;/returns&gt;
+public static string enCrypt(string strSource)
+{
+   MemoryStream ms = new MemoryStream();
+   DESCryptoServiceProvider key = new DESCryptoServiceProvider();  
+   CryptoStream encStream = new CryptoStream(ms, key.CreateEncryptor(Encoding.Default.GetBytes(strKey),     Encoding.Default.GetBytes(strIV)), CryptoStreamMode.Write);
+   StreamWriter sw = new StreamWriter(encStream);
+   sw.WriteLine(strSource);
+   sw.Close();
+   encStream.Close();
+   byte[] buffer = ms.ToArray();         
+   ms.Close();
+   return Convert.ToBase64String(buffer);   
+}
+
+/// &lt;summary&gt;字串解碼&lt;/summary&gt;
+/// &lt;param name="strSource"&gt;加密過的字串&lt;/param&gt;
+/// &lt;returns&gt;解碼後的結果字串&lt;/returns&gt;
+public static string deCrypt(string strSource)
+{
+    MemoryStream ms = new MemoryStream(Convert.FromBase64String(strSource));
+    DESCryptoServiceProvider key = new DESCryptoServiceProvider();
+    CryptoStream encStream = new CryptoStream(ms, key.CreateDecryptor(Encoding.Default.GetBytes(strKey), Encoding.Default.GetBytes(strIV)), CryptoStreamMode.Read);
+    StreamReader sr = new StreamReader(encStream);
+    string val = sr.ReadLine();
+    sr.Close();
+    encStream.Close();
+    ms.Close();
+
+    return val;
+}
+
+</pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/05/01/Entity-Framework問題筆記/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/05/01/Entity-Framework問題筆記/" itemprop="url">Entity Framework問題筆記</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-05-01T15:44:00+08:00">
+                2013-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/05/01/Entity-Framework問題筆記/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/05/01/Entity-Framework問題筆記/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>目前使用的是MVC4 + Entity Framework </p>
+<p><strong><span style="color: red;">Q:</span></strong>無法更新 EntitySet ‘xxxx’，因為它有 DefiningQuery，但是在 <modificationfunctionmapping> 項目中沒有 <insertfunction> 項目來支援目前的作業。<br><strong><span style="color: red;">A：</span></strong>這是因為 Table 沒有 PK 的關係，所以 EF 就認定這是唯讀的 Table ，在 EDMX 的 Model 中的 Table 的欄位，加上 pk 後就正常了 </insertfunction></modificationfunctionmapping></p>
+<p><strong><span style="color: red;">Q:</span></strong>在設計資料庫時明明有指定欄位的預設值，可是每次透過 EF 新增資料時，該欄位的值卻是 null？<br><strong><span style="color: red;">A:</span></strong>這是因為 DB 該欄位有 Default Value 而且又不允許 null，在 Visual Studio 中開啟 .edmx 檔案，在模型編輯器中點選 entity 的屬性，然後到屬性視窗中設定其 Default Value 屬性。參考下圖： </p>
+<p><a href="http://1.bp.blogspot.com/-TJvtcnfcdUU/UYDGF1mXiGI/AAAAAAAAC6M/TAGlBEJAgm8/s1600/11.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-TJvtcnfcdUU/UYDGF1mXiGI/AAAAAAAAC6M/TAGlBEJAgm8/s1600/11.png" alt></a><br>參考自:<br><a href="http://www.dotblogs.com.tw/franma/archive/2010/12/20/20263.aspx" target="_blank" rel="noopener">Entity Framework 4 的錯誤訊息排除</a><br><a href="http://huan-lin.blogspot.tw/2012/12/entity-framework-column-default-value.html" target="_blank" rel="noopener">Entity Framework 欄位預設值相關問題</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/" itemprop="url">【MVC】Client Side Validate in Partial View  with unobtrusive</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-04-29T16:23:00+08:00">
+                2013-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>MVC中很好用的一種驗證方式就是在model寫attribute<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Required(ErrorMessage=<span class="meta-string">"展覽名稱為必填"</span>)</span>]</span><br><span class="line">[<span class="meta">MaxLength(50)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">string</span> ExhibitionName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure></p>
+<p>接著在View中用HtmlHelp方式建立Textbox<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Html.TextBoxFor(m =&gt; m.ExhibitionName)</span><br><span class="line">@Html.ValidationMessageFor(m =&gt; m.ExhibitionName)</span><br></pre></td></tr></table></figure></p>
+<p>MVC就會很貼心的把你的Client端驗證做好了。 </p>
+<p>但今天遇到的問題是，用同樣的方法寫在Partial View裡面卻沒有用<br>狀況如下：<br>在_layout Page中一樣載入了必備的MVC4提供的Jquery驗證檔案</p>
+<p><pre class="brush: html">&lt;script src=”/Scripts/jquery.unobtrusive-ajax.js”&gt;&lt;/script&gt;<br>&lt;script src=”/Scripts/jquery.validate.js”&gt;&lt;/script&gt;<br>&lt;script src=”/Scripts/jquery.validate.unobtrusive.js”&gt;&lt;/script&gt;<br></pre>網站頁面長成這樣</p>
+<p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-WiQ8PRLsFG0/UX4vwwOgvvI/AAAAAAAACq8/ifNZBq9JUEs/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-WiQ8PRLsFG0/UX4vwwOgvvI/AAAAAAAACq8/ifNZBq9JUEs/s640/1.png" alt></a></div>當按下紅色框框內的功能列表，用Ajax的方式return Partial View放到藍色框框中。<br><a href="http://1.bp.blogspot.com/-h-0y5VY6FgE/UX4wNNMxGiI/AAAAAAAACrE/IzSGeMXQhQo/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-h-0y5VY6FgE/UX4wNNMxGiI/AAAAAAAACrE/IzSGeMXQhQo/s640/1.png" alt></a><br>但用Ajax載入的Partial View用上述的方式就不會自動驗證了，研判應該是動態產生的DOM元件沒有跟JQuery繫結到，這跟以前Asp.Net的UpdatePanel有異曲同工之妙。</p>
+<p>所以在Partial View中的Script block中加入這行 <span style="color: red;">註:#ajaxForm為Partial View中Form ID </span><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'body'</span>).on(<span class="string">"click"</span>, <span class="string">'.addNewExihition'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        $.validator.unobtrusive.parse(<span class="string">'.ajaxForm'</span>);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>這樣JQuery的驗證就又重新繫結上了，讚!!</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/04/29/【JQuery】為動態新增的Elements綁定事件-jQuery-on/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/04/29/【JQuery】為動態新增的Elements綁定事件-jQuery-on/" itemprop="url">【JQuery】為動態新增的Elements綁定事件 -- jQuery .on()</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-04-29T12:20:00+08:00">
+                2013-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/04/29/【JQuery】為動態新增的Elements綁定事件-jQuery-on/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/04/29/【JQuery】為動態新增的Elements綁定事件-jQuery-on/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>按下新增按鈕後，利用JQuery動態新增一個填寫欄位跟兩個按鈕</p>
+<p><a href="http://2.bp.blogspot.com/-MkKh6MsfaM4/UX31TyroisI/AAAAAAAACqs/IFEjiWTny0s/s1600/1.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-MkKh6MsfaM4/UX31TyroisI/AAAAAAAACqs/IFEjiWTny0s/s1600/1.png" alt></a><br>其中取消的按鈕ID為addCancel，我想替它增加click事件按下後彈跳一則簡短的訊息<br>原本的寫法如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'#addCancel'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   alert(<span class="string">'Click事件沒有問題'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>但Click事件始終沒有效果，原來動態新增的elements要綁定事件需要用<strong>.on</strong>的方式<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'body'</span>).on(<span class="string">"click"</span>, <span class="string">'#addCancel'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    alert(<span class="string">'用on綁定就沒有問題!!'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://3.bp.blogspot.com/-ig6RzcQGtj4/UX30ttpbCII/AAAAAAAACqg/nWulStFehMg/s1600/1.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-ig6RzcQGtj4/UX30ttpbCII/AAAAAAAACqg/nWulStFehMg/s1600/1.png" alt></a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/04/29/【MVC】One-View-Two-Models-tuple-or-ViewModel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/04/29/【MVC】One-View-Two-Models-tuple-or-ViewModel/" itemprop="url">【MVC】One View Two Models --  tuple or ViewModel</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-04-29T10:48:00+08:00">
+                2013-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/04/29/【MVC】One-View-Two-Models-tuple-or-ViewModel/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/04/29/【MVC】One-View-Two-Models-tuple-or-ViewModel/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>如果有個View同時需要載入兩個model時可以使用tuple <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@model Tuple&lt;IEnumerable&lt;NTI.Models.ExhibitionList&gt;,NTI.Models.ExhibitionList&gt;</span><br></pre></td></tr></table></figure></p>
+<p><strong>Model</strong><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ExhibitionList</span> </span><br><span class="line">&#123;</span><br><span class="line">   [<span class="meta">Required</span>]</span><br><span class="line">   [<span class="meta">MaxLength(50)</span>]</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">string</span> ExhibitionName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> DateTime CreateDate &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> DateTime EditDate &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>Controller</strong><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">ExhibitionList</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">var</span> tuple = <span class="keyword">new</span> Tuple&lt;IEnumerable&lt;ExhibitionList&gt;, ExhibitionList&gt;(Repository.GetExhibitionList(), <span class="keyword">new</span> ExhibitionList());</span><br><span class="line">   <span class="keyword">return</span> PartialView(tuple);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>View</strong><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">if (Model.Item1.Count() == 0)</span><br><span class="line">&#123;</span><br><span class="line">   <span class="tag">&lt;<span class="name">tr</span> <span class="attr">id</span>=<span class="string">"noExhibition"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">td</span> <span class="attr">colspan</span>=<span class="string">"4"</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"text-left"</span>&gt;</span>沒有建立任何展覽喔....<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">tr</span>&gt;</span>     </span><br><span class="line">&#125;</span><br><span class="line">else</span><br><span class="line">&#123;</span><br><span class="line">   foreach (var exhibitionItem in Model.Item1)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="tag">&lt;<span class="name">tr</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>1<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>@exhibitionItem.ExhibitionName<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>@exhibitionItem.CreateDate<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">td</span>&gt;</span>@exhibitionItem.EditDate<span class="tag">&lt;/<span class="name">td</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">tr</span>&gt;</span></span><br><span class="line">   &#125;</span><br><span class="line">   @Html.TextBoxFor(m =&gt; Model.Item2.ExhibitionName)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在View中使用Model的方法為：<br><strong>Model.Item1</strong>代表載入的第一個Model<br><strong>Model.Item2</strong>代表載入的第二個Model</p>
+<p>第二種方式就是建立一個ViewModel的方式<br><strong>Model</strong><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> 展覽列表的ViewModel</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ExhibitionListViewModel</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> IEnumerable&lt;ExhibitionList&gt; IEmumerable_ExhibitionList &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">  <span class="keyword">public</span> ExhibitionList ExhibitionListModel &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>View</strong><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">ExhibitionList</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   ExhibitionListViewModel model = <span class="keyword">new</span> ExhibitionListViewModel();</span><br><span class="line">   model.IEmumerable_ExhibitionList = Repository.GetExhibitionList();</span><br><span class="line">   model.ExhibitionListModel = <span class="keyword">new</span> ExhibitionList();</span><br><span class="line">   <span class="keyword">return</span> PartialView(model);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>Controller</strong><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Html.TextBoxFor(model =&gt; model.ExhibitionListModel.ExhibitionName)</span><br><span class="line">@Html.ValidationMessageFor(model =&gt; model.ExhibitionListModel.ExhibitionName)</span><br><span class="line"></span><br><span class="line"><span class="comment">//and ....</span></span><br><span class="line"><span class="keyword">if</span> (Model.IEmumerable_ExhibitionList.Count() == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//do something</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/04/28/Git-語法筆記/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -970,677 +1678,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/01/31/【C-】GridView動態加入textbox/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/01/31/【C-】GridView動態加入textbox/" itemprop="url">【C#】GridView動態加入textbox</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-01-31T11:14:00+08:00">
-                2013-01-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/01/31/【C-】GridView動態加入textbox/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/01/31/【C-】GridView動態加入textbox/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>GridView原本產出的資料如下圖</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-Spka-CC-RXA/UQne4vnVBtI/AAAAAAAAA1c/vq-CaRzXOyI/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-Spka-CC-RXA/UQne4vnVBtI/AAAAAAAAA1c/vq-CaRzXOyI/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt></a></div><br>需求是將<em>號的部分變成TextBox且可輸入的字數要跟</em>號的個數相同，程式碼如下：<br><br><span style="color: blue;">在GridView RowDataBound事件中</span><br><span style="color: blue;"><br></span><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">GridView_RowDataBound</span>(<span class="params"><span class="keyword">object</span> sender, GridViewRowEventArgs e</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">         <span class="keyword">if</span>(e.Row.RowType == DataControlRowType.DataRow)</span><br><span class="line">         &#123;</span><br><span class="line">              <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i = &lt; e.Row.Cells.Count; i++)</span><br><span class="line">              &#123;</span><br><span class="line">                   <span class="keyword">if</span>(e.Row.Cells[i].Text.Contains(<span class="string">"*"</span>))</span><br><span class="line">                   &#123;</span><br><span class="line">                        <span class="keyword">int</span> count = e.Row.Cells[i].Text.Count(f =&gt; f== <span class="string">'*'</span>);</span><br><span class="line">                        <span class="keyword">int</span> firstIndex = e.Row.Cells[i].Text.IndexOf(<span class="string">'*'</span>);</span><br><span class="line"></span><br><span class="line">                        e.Row.Cells[i].Text = e.Row.Cells[i].Text.Replace(<span class="string">"*"</span>,<span class="string">""</span>).Insert(firstIndex, <span class="string">"&lt;input maxlength="</span>+ count +<span class="string">" runat='server' size='5' type='text' value='' /&gt;"</span>);</span><br><span class="line">                   &#125;</span><br><span class="line">              &#125;</span><br><span class="line">         &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>1.  先算出<em>號的個數<br>2.  找到</em>號第一次出現的位置<br>3.  將*號全部Replace並在第一次出現的位置插入&lt;input type=’text’ /&gt;<div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><br></div><div><span style="color: blue;">結果如下</span></div><div><a href="http://2.bp.blogspot.com/-e8AUIv9UIiU/UQnhfaf2eUI/AAAAAAAAA1w/cKFgnpj4UIE/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-e8AUIv9UIiU/UQnhfaf2eUI/AAAAAAAAA1w/cKFgnpj4UIE/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt></a></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/01/08/【C-】GridView更改Pager的樣式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/01/08/【C-】GridView更改Pager的樣式/" itemprop="url">【C#】GridView更改Pager的樣式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-01-08T17:04:00+08:00">
-                2013-01-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/01/08/【C-】GridView更改Pager的樣式/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/01/08/【C-】GridView更改Pager的樣式/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><div class="separator" style="clear: both; text-align: left;">在GridView的Pager是用Table組成的，這裡是做個簡單的將 “…” 改成前五頁後五頁。</div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: center;"></div><pre class="brush : csharp"><br>else if(e.Row.RowType == DataControlRowType.Pager)<br>        {<br>            //修改page …的樣式<br>            TableRow pageTR = (TableRow)e.Row.Controls[0].Controls[0].Controls[0];<br>            for(int x = 0; x&lt; pageTR.Controls.Count; x++)<br>            {<br>                TableCell pageTD = (TableCell)pageTR.Controls[x];<br>                for(int y = 0 ; y&lt;pageTD.Controls.Count; y++)<br>                {<br>                    if(pageTD.Controls[y] is LinkButton)<br>                    {<br>                        LinkButton lb = (LinkButton)pageTD.Controls[y];<br>                        if(lb.Text == &quot;…&quot; &amp;&amp;  x == 1)<br>                        {<br>                            lb.Text = &quot;前5頁&quot;;<br>                        }<br>                        else if(lb.Text ==&quot;…&quot;)<br>                        {<br>                            lb.Text = &quot;後5頁&quot;;<br>                        }<br>                    }<br>                }<br>            }<br>        }<br></pre></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/12/27/【SharePoint】判斷清單屬性/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/12/27/【SharePoint】判斷清單屬性/" itemprop="url">【SharePoint】判斷清單屬性</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-12-27T11:31:00+08:00">
-                2012-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/12/27/【SharePoint】判斷清單屬性/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/12/27/【SharePoint】判斷清單屬性/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近做一個SharePoint的功能，需要將SiteCollection裡面所有子網站的清單全數撈出來，並判斷是否為Survey或Announcement </p>
-<ul>
-<li><p>判斷是否為Survey    <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List.BaseType.ToString() ==<span class="string">"Survey"</span></span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>判斷是否為Announcement <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List.BaseTemplate.ToString() == <span class="string">"Announcements"</span></span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-<table style="width:300px;margin:0px auto;"><tr> <td>問卷</td> <td>Survey</td></tr><tr> <td>公告</td> <td>Announcements</td></tr><tr> <td>文件庫</td> <td>DocumentLibrary</td></tr></table>
-
-<p>另外網路上查到各種清單的對照表，可以參考 :  <a href="http://blog.bugrapostaci.com/2010/09/22/sharepoint-list-type-numbers/" target="_blank" rel="noopener">清單對照表</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/12/27/【SharePoint】VisualWebPart/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/12/27/【SharePoint】VisualWebPart/" itemprop="url">【SharePoint】VisualWebPart</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-12-27T11:17:00+08:00">
-                2012-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/12/27/【SharePoint】VisualWebPart/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/12/27/【SharePoint】VisualWebPart/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/-BbJDYNJ9yJQ/UNu49lR8hFI/AAAAAAAAAeA/ETeG2o2Gs4M/s1600/111.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-BbJDYNJ9yJQ/UNu49lR8hFI/AAAAAAAAAeA/ETeG2o2Gs4M/s640/111.png" alt></a></div>
-
-<p><span style="background-color: white;"><strong>建立VisualWebPart(後面簡稱vwp)後會產生以下檔案結構</strong></span></p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-sj79ZvE6lH4/UNu5jeqCYrI/AAAAAAAAAeI/stuhIeBL11k/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-sj79ZvE6lH4/UNu5jeqCYrI/AAAAAAAAAeI/stuhIeBL11k/s1600/111.png" alt></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><strong>.XML檔中可以設定vwp佈署後歸類在哪個群組裡面</strong></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-Vv3Q5WgnzGo/UNu68vKX92I/AAAAAAAAAeg/l0j6pcw1oLY/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-Vv3Q5WgnzGo/UNu68vKX92I/AAAAAAAAAeg/l0j6pcw1oLY/s640/111.png" alt></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-8K_6ifqFwTw/UNu7eFJb4gI/AAAAAAAAAeo/uMqpnmtiMNc/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-8K_6ifqFwTw/UNu7eFJb4gI/AAAAAAAAAeo/uMqpnmtiMNc/s320/111.png" alt></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><strong>VWP的CS檔中可以增加可設定的參數</strong></div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">ScinoPharm.EIP.vwpSurveys</span></span><br><span class="line">   &#123;</span><br><span class="line">        [<span class="meta">ToolboxItemAttribute(false)</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">vwpSurveys</span> : <span class="title">WebPart</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//增加可設定的參數</span></span><br><span class="line">            [<span class="meta">Category(<span class="meta-string">"MySetting"</span>),</span></span><br><span class="line"><span class="meta">             Personalizable(PersonalizationScope.Shared), //共用設定</span></span><br><span class="line"><span class="meta">             WebBrowsable(true), //是否顯示在面板上</span></span><br><span class="line"><span class="meta">             WebDisplayName(<span class="meta-string">"來源清單名稱"</span>),</span></span><br><span class="line"><span class="meta">             WebDescription(<span class="meta-string">"請填寫Survey資料來源的清單名稱"</span>) //描述</span></span><br><span class="line"><span class="meta">            </span>]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">string</span> ListName&#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//當您變更視覺 Web 組件專案項目時，Visual Studio 可能會自動更新此路徑</span></span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">string</span> _ascxPath = <span class="string">@"~/_CONTROLTEMPLATES/ScinoPharm.EIP/vwpSurveys/vwpSurveysUserControl.ascx"</span>;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">CreateChildControls</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                Control control = Page.LoadControl(_ascxPath);</span><br><span class="line">                ControlSkin.Add(control);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p><div class="separator" style="clear: both; text-align: left;"><strong>
-</strong></div><div class="separator" style="clear: both; text-align: center;"><a href="http://4.bp.blogspot.com/-vNWquvR2rzs/UNu9Aq_nY_I/AAAAAAAAAe4/lNd-Ro9x2Z4/s1600/111.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-vNWquvR2rzs/UNu9Aq_nY_I/AAAAAAAAAe4/lNd-Ro9x2Z4/s1600/111.png" alt></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><strong>在UserControl中要抓到VWP的參數設定，需要透過以下的方法</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> vwpSurveys SurveyParameter;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Page_Load</span>(<span class="params"><span class="keyword">object</span> sender, EventArgs e</span>) </span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (!Page.IsPostBack) </span><br><span class="line">        &#123;</span><br><span class="line">            SurveyParameter = <span class="keyword">this</span>.Parent <span class="keyword">as</span> vwpSurveys;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>
-</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/" itemprop="url">【C#】TreeView 的 CheckBox打勾後自動POST BACK</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-12-27T10:36:00+08:00">
-                2012-12-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/12/27/【C-】TreeView-的-CheckBox打勾後自動POST-BACK/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>ASP.NET中的TreeView有<span style="color: red; font-weight: bold;">ontreenodecheckchanged</span>的事件，但當你在TreeView上打勾時，卻不會觸發Post Back的效果</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-hIBTtd4zrrQ/UNu4XQV-SvI/AAAAAAAAAd4/wxCJqnyVB8Q/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-hIBTtd4zrrQ/UNu4XQV-SvI/AAAAAAAAAd4/wxCJqnyVB8Q/s1600/111.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"></div><br>查了一下，原來.Net會記住你目前TreeView的狀態，當有任何東西造成Post Back的時候(例如按按鈕)，就會觸發<span style="color: red; font-weight: bold;">ontreenodecheckchanged</span>的事件<br><br>所以如果想要CheckBox點擊時能即時的Post Back就要做一些小加工<br><br>1.  先加一個按鈕，並請隱藏起來<br><a href="http://2.bp.blogspot.com/-3_qRRYC2YCw/UNuxhaRYEEI/AAAAAAAAAc0/wpMixmHLhJY/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-3_qRRYC2YCw/UNuxhaRYEEI/AAAAAAAAAc0/wpMixmHLhJY/s1600/111.png" alt></a><br><span style="font-size: x-small;">這裡需要特別注意不能直接用<span style="background-color: white; color: red;">Visible</span>=”<span style="color: blue;">false</span>“將按鈕隱藏，否則ASP不會將這個按鈕真的Render出來。所以請用CSS的方式隱藏吧!!</span><br>2.  透過JavaScript的方式(這邊利用JQuery撰寫)，偵測當CheckBox被點擊時去觸發我們隱藏起來的Button，透過這個Button達到Post Back的效果<a href="http://2.bp.blogspot.com/-PFXYV2-ACZE/UNuy2PgIT2I/AAAAAAAAAdQ/egXUmtK-uDA/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-PFXYV2-ACZE/UNuy2PgIT2I/AAAAAAAAAdQ/egXUmtK-uDA/s1600/111.png" alt></a><br><br>這樣就會進到<span style="color: red; font-weight: bold;">ontreenodecheckchanged</span>的事件<br><div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/-qkdq-K0tGW0/UNu0IfXO4qI/AAAAAAAAAdk/Gt2D8z_Ijyw/s1600/111.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-qkdq-K0tGW0/UNu0IfXO4qI/AAAAAAAAAdk/Gt2D8z_Ijyw/s1600/111.png" alt></a></div><div><br></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1688,7 +1730,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">190</span>
+                  <span class="site-state-item-count">195</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1710,7 +1752,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

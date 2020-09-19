@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-tw">
+<head><meta name="generator" content="Hexo 3.8.0">
+  ﻿<meta charset="UTF-8">
+<meta name="google-site-verification" content="a-sIQSCKPw8MyRi4iUo9hmDiL3P1Txg2Ri8zx8Wk0G0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Async,C#,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="說來真的好久沒有寫文章了，除了工作很忙之外，目前碰到的問題也通常不是一兩篇文章可以交代的清，所以也就更新部落格的時間也就間隔越來越長了。 這次主要是想把最近針對 Async 的一些測試研究記錄下來，那我們就開始吧 ！ # Async 是什麼？Async 在 C# 語言中用來支援非同步處理的一種語法，而它的使用往往搭配 Await 一起使用，先來看看一段簡單的程式碼 1234567891011121">
+<meta name="keywords" content="Async,C#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【C#】 關於 Async 的三兩事">
+<meta property="og:url" content="https://toyo0103.github.io/2020/09/19/about_async/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="說來真的好久沒有寫文章了，除了工作很忙之外，目前碰到的問題也通常不是一兩篇文章可以交代的清，所以也就更新部落格的時間也就間隔越來越長了。 這次主要是想把最近針對 Async 的一些測試研究記錄下來，那我們就開始吧 ！ # Async 是什麼？Async 在 C# 語言中用來支援非同步處理的一種語法，而它的使用往往搭配 Await 一起使用，先來看看一段簡單的程式碼 1234567891011121">
+<meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://toyo0103.github.io/images/20200919/1.png">
+<meta property="og:updated_time" content="2020-09-19T14:33:45.094Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【C#】 關於 Async 的三兩事">
+<meta name="twitter:description" content="說來真的好久沒有寫文章了，除了工作很忙之外，目前碰到的問題也通常不是一兩篇文章可以交代的清，所以也就更新部落格的時間也就間隔越來越長了。 這次主要是想把最近針對 Async 的一些測試研究記錄下來，那我們就開始吧 ！ # Async 是什麼？Async 在 C# 語言中用來支援非同步處理的一種語法，而它的使用往往搭配 Await 一起使用，先來看看一段簡單的程式碼 1234567891011121">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20200919/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://toyo0103.github.io/2020/09/19/about_async/">
+
+
+
+
+
+  <title>【C#】 關於 Async 的三兩事 | 程式隨筆</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA\-119162267\-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">程式隨筆</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            關於
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            標籤
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            歸檔
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜尋
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2020/09/19/about_async/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【C#】 關於 Async 的三兩事</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-09-19T17:07:00+08:00">
+                2020-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/09/19/about_async/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/19/about_async/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>說來真的好久沒有寫文章了，除了工作很忙之外，目前碰到的問題也通常不是一兩篇文章可以交代的清，所以也就更新部落格的時間也就間隔越來越長了。</p>
+<p>這次主要是想把最近針對 Async 的一些測試研究記錄下來，那我們就開始吧 ！</p>
+<h1 id="Async-是什麼？"><a href="#Async-是什麼？" class="headerlink" title="# Async 是什麼？"></a># Async 是什麼？</h1><p>Async 在 C# 語言中用來支援非同步處理的一種語法，而它的使用往往搭配 Await 一起使用，先來看看一段簡單的程式碼</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">class Program</span><br><span class="line">&#123;</span><br><span class="line">  static async Task Main(string[] args)</span><br><span class="line">  &#123;</span><br><span class="line">    Console.WriteLine($&quot;1. Hi I&apos;m Async Demo&quot;);</span><br><span class="line"></span><br><span class="line">    //拿到非同步的任務</span><br><span class="line">    var task = DoAsync();</span><br><span class="line"></span><br><span class="line">    //繼續執行</span><br><span class="line">    Console.WriteLine($&quot;2. Hello World!&quot;);</span><br><span class="line"></span><br><span class="line">    //等待非同步任務執行完成</span><br><span class="line">    await task;</span><br><span class="line">    Console.WriteLine($&quot;4. End!&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static async Task DoAsync()</span><br><span class="line">  &#123;</span><br><span class="line">    //碰到 await 時，會將控制項回傳給呼叫端，並且等待非同步的方法執行完成</span><br><span class="line">    await Task.Run(()=&gt; </span><br><span class="line">                   &#123;</span><br><span class="line">                     Thread.Sleep(TimeSpan.FromSeconds(5));</span><br><span class="line">                     Console.WriteLine($&quot;3. Async method Done&quot;);</span><br><span class="line">                   &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這段程式碼執行後可以看到以下結果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. Hi I&apos;m Async Demo</span><br><span class="line">2. Hello World!</span><br><span class="line">3. Async method Done</span><br><span class="line">4. End!</span><br></pre></td></tr></table></figure>
+<h2 id="觀察執行緒的切換"><a href="#觀察執行緒的切換" class="headerlink" title="觀察執行緒的切換"></a>觀察執行緒的切換</h2><p>接著加上執行緒 Id 看看，讓我們更清楚執行緒之間是如何切換的</p>
+<p><img src="/images/20200919/1.png" alt="/images/20200919/1.png"></p>
+<p>執行結果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[1] 1. Hi I&apos;m Async Demo</span><br><span class="line">[1] 2. Hello World!</span><br><span class="line">[4] 3. Async method Done</span><br><span class="line">[4] 4. End!</span><br></pre></td></tr></table></figure>
+<p><strong>執行流程</strong></p>
+<ul>
+<li><p><strong>執行緒_1</strong> 在 11 行印出了 <code>[1] 1. Hi I&#39;m Async Demo</code></p>
+</li>
+<li><p><strong>執行緒_1</strong> 在 14 行進入了 DoAsync 的方法中</p>
+</li>
+<li><p><strong>執行緒_1</strong> 在 27 行碰到 Task.Run 開啟了非同步執行的方法，並因為 await 跳出了這個 DoAsync() </p>
+</li>
+<li><p><strong>執行緒_1</strong> 在 16 行碰到印出了 <code>[1] 2. Hello World!</code></p>
+</li>
+<li><p><strong>執行緒_1</strong> 在 19 行碰到 await task ，開始等待 task 執行完成，<strong>執行緒_1</strong> 釋放回到 Thread Pool</p>
+</li>
+<li><p><strong>執行緒_4</strong> 在非同步方法的第 30 行 印出了 <code>[4] 3. Async method Done</code> ，並通知 await task 執行完成</p>
+</li>
+<li><p>TaskScheduler（通常，這會是以執行緒集區為目標的預設工作排程器）依據最有效率的判斷，讓 <strong>執行緒_4</strong> 往下執行未完的部分</p>
+</li>
+<li><strong>執行緒_4</strong> 接手繼續將 await 之後還沒做完的工作執行完成，意即 21 行，印出 <code>[4] 4. End!</code></li>
+</ul>
+<h2 id="稍微修改一下程式…"><a href="#稍微修改一下程式…" class="headerlink" title="稍微修改一下程式…"></a>稍微修改一下程式…</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class Program</span><br><span class="line">&#123;</span><br><span class="line">  static async Task Main(string[] args)</span><br><span class="line">  &#123;</span><br><span class="line">    Console.WriteLine($&quot;[&#123;Thread.CurrentThread.ManagedThreadId&#125;] 1. Hi I&apos;m Async Demo&quot;);</span><br><span class="line"></span><br><span class="line">    //強制將非同步方法改成同步</span><br><span class="line">    DoAsync().Wait();</span><br><span class="line"></span><br><span class="line">    Console.WriteLine($&quot;[&#123;Thread.CurrentThread.ManagedThreadId&#125;] 2. Hello World!&quot;);</span><br><span class="line"></span><br><span class="line">    Console.WriteLine($&quot;[&#123;Thread.CurrentThread.ManagedThreadId&#125;] 4. End!&quot;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  public static async Task DoAsync()</span><br><span class="line">  &#123;</span><br><span class="line">    //碰到 await 時，會將控制項回傳給呼叫端，並且等待非同步的方法執行完成</span><br><span class="line">    await Task.Run(()=&gt; </span><br><span class="line">                   &#123;</span><br><span class="line">                     Thread.Sleep(TimeSpan.FromSeconds(5));</span><br><span class="line">                     Console.WriteLine($&quot;[&#123;Thread.CurrentThread.ManagedThreadId&#125;] 3. Async method Done&quot;);</span><br><span class="line">                   &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>執行結果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[1] 1. Hi I&apos;m Async Demo</span><br><span class="line">[4] 3. Async method Done</span><br><span class="line">[1] 2. Hello World!</span><br><span class="line">[1] 4. End!</span><br></pre></td></tr></table></figure>
+<p>這邊可以看到 <strong>執行緒_1</strong> 在執行到 await Task.Run(()=&gt; …) 時跳出，但因為我們下了 Wait()，所以強迫 <strong>執行緒_1</strong> 進行同步的等待。</p>
+<p><strong>執行緒_4</strong> 印完 <code>[4] 3. Async method Done</code> 後，通知 <strong>執行緒_1</strong> 繼續往下進行，所以看到 <strong>執行緒_1</strong>  接著將剩下的程式跑完</p>
+<h2 id="差別在哪？"><a href="#差別在哪？" class="headerlink" title="差別在哪？"></a>差別在哪？</h2><p>當呼叫非同步執行方法時，如果一路都是用 await 並不會造成任何執行緒被封鎖，換言之該執行緒還可以在別的地方繼續服務，一旦呼叫了 <strong>Result</strong> 或 <strong>Wait()</strong> 這類的強制同步方法，則該執行緒會被封鎖，並等待到非同步方法執行完成後才繼續完成尚未完成的後續工作，這會嚴重消耗執行緒的使用效率。</p>
+<p>我曾經對一個 Web API 專案進行壓測，在資源給得非常有限的情境下 (約 0.5 core cpu)，<code>await 搭配 Task.Run()</code> 跟 <code>Result 搭配 Task.Run</code> ，兩個 RPS 測起來差了快一倍之多，在資源極度有限下，執行緒的使用效率將大大影響整體服務的效率。</p>
+<h1 id="SynchronizationContext"><a href="#SynchronizationContext" class="headerlink" title="# SynchronizationContext"></a># SynchronizationContext</h1><p>SynchronizationContext 是用來記錄當前執行緒環境的類別，在 ASP.NET、WPF、WinForm 都有類似的類別只是名字可能有些差異，其最主要的目的都是在非同步方法中要能調用 UI 執行緒來更新介面之類的操作，而 SynchronizationContext 就紀錄著 UI 執行緒。</p>
+<h2 id="Deadlock"><a href="#Deadlock" class="headerlink" title="Deadlock"></a>Deadlock</h2><p>過去寫 ASP.NET 的時候曾經踩過一次  SynchronizationContext 的雷，在 ASP.NET 中如果如果呼叫 <code>SynchronizationContext.Currnt</code> 會發現並不為 Null，且型別是 <code>AspNetSynchronizationContext</code> ，當我們用上述的 <code>Result / Wait() 搭配 await</code> 將會導致 Deadlock。</p>
+<p>原因是程式碰到 await 時會先判斷 SynchronizationContext.Currnt 是否為 Null，如果是則會在 Task 結束時呼叫 TaskScheduler （通常為 Thread Pool）來安排後續工作。反之，如果 SynchronizationContext.Currnt 不為 Null 時，就會透過 SynchronizationContext.Currnt 來繼續後續的動作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//碰到 await 時，記住了 SynchronizationContext.Currnt</span><br><span class="line">await Task.Run(()=&gt; </span><br><span class="line">               &#123;</span><br><span class="line">                 Thread.Sleep(TimeSpan.FromSeconds(5));</span><br><span class="line">                 Console.WriteLine($&quot;[&#123;Thread.CurrentThread.ManagedThreadId&#125;] 3. Async method Done&quot;);</span><br><span class="line">               &#125;);</span><br></pre></td></tr></table></figure>
+<p>而 .Result / Wait() 的方法會封鎖住 SynchronizationContext.Currnt，造成兩邊互等的情況發生，產生了 Deadlock</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoAsync().Wait(); //封鎖 SynchronizationContext.Currnt 的物件等待 Task 完成</span><br></pre></td></tr></table></figure>
+<p>而這只會發生在 SynchronizationContext.Currnt 不為 Null 的系統中，像是前述提到的 ASP.NET、WPF、WinForm，在 Console Application 並不會發生。</p>
+<h2 id="解決方法-ConfigureAwait-false"><a href="#解決方法-ConfigureAwait-false" class="headerlink" title="解決方法 ConfigureAwait(false)"></a>解決方法 ConfigureAwait(false)</h2><p>如果要避免上述所提到的 Deadlock ，可以在呼叫非同步方法時加上 ConfigureAwait(false)，這樣非同工作完成時就會透過另一條執行緒繼續完成後續工作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">await Task.Run(()=&gt; </span><br><span class="line">          &#123;</span><br><span class="line">              ....</span><br><span class="line">          &#125;).ConfigureAwait(false);</span><br></pre></td></tr></table></figure>
+<h2 id="在-ASP-Net-Core-的時代…"><a href="#在-ASP-Net-Core-的時代…" class="headerlink" title="在 ASP.Net Core 的時代…"></a>在 ASP.Net Core 的時代…</h2><p>在 ASP.Net core 呼叫 SynchronizationContext.Current 現在只會得到 Null ，換言之剛剛發生 deadlock 的情境已經不會發生，所以過往在非同步的地方常常要用 ConfigureAwait(false) 可以不用寫了，不過如果你是寫元件或 SDK 類的，並無法預測會被使用在怎樣的環境的話，建議還是都加上會比較保險。</p>
+<h1 id="Best-Practice"><a href="#Best-Practice" class="headerlink" title="# Best Practice"></a># Best Practice</h1><p>在使用 Async / await 等非同步技巧時，最好的方式還是都盡量使用非阻斷式的寫法 await ，避免使用 Result / Wait() ，即使你已經是寫 ASP.Net core 不會發生 Deadlock 的情況，阻斷式的寫法對於執行緒的使用效率來說還是會有影響的。</p>
+<div class="note info"><p>參考文章</p>
+<p><a href="https://docs.microsoft.com/zh-tw/dotnet/standard/asynchronous-programming-patterns/consuming-the-task-based-asynchronous-pattern" target="_blank" rel="noopener">使用以工作為基礎的非同步模式</a></p>
+<p><a href="https://blog.stephencleary.com/2017/03/aspnetcore-synchronization-context.html" target="_blank" rel="noopener">ASP.NET Core SynchronizationContext</a></p>
+<p><a href="https://devblogs.microsoft.com/dotnet/configureawait-faq/" target="_blank" rel="noopener">ConfigureAwait FAQ</a></p>
+<p><a href="https://www.huanlintalk.com/2016/01/asyc-deadlock-in-aspbet.html" target="_blank" rel="noopener">.NET 程式鎖死與 SynchronizationContext</a></p>
+<p><a href="https://www.cnblogs.com/lzxianren/p/SynchronizationContext.html" target="_blank" rel="noopener">搞懂 SynchronizationContext（第一部分)</a></p></div>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Async/" rel="tag"># Async</a>
+          
+            <a href="/tags/C/" rel="tag"># C#</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/06/06/rabbitmq_container_initial_queue/" rel="next" title="initialize RabbitMQ container's Queue and Exchange">
+                <i class="fa fa-chevron-left"></i> initialize RabbitMQ container's Queue and Exchange
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Toyo">
+            
+              <p class="site-author-name" itemprop="name">Toyo</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分類</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">67</span>
+                  <span class="site-state-item-name">標籤</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/toyo0103" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i></a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://tw.linkedin.com/in/steven-tsai-096580110" target="_blank" title="Linkedin">
+                      
+                        <i class="fa fa-fw fa-linkedin"></i></a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-folder-open"></i>
+                系列文章
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/categories/學習MVC" title="MVC" target="_blank">MVC</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/categories/學習單元測試" title="單元測試" target="_blank">單元測試</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/categories/VSTS建置CI-CD" title="VSTS建置CI/CD" target="_blank">VSTS建置CI/CD</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/categories/LeetCode" title="LeetCode" target="_blank">LeetCode</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="/2019/03/21/microservice_battlefield/" title="微服務" target="_blank">微服務</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Async-是什麼？"><span class="nav-number">1.</span> <span class="nav-text"># Async 是什麼？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#觀察執行緒的切換"><span class="nav-number">1.1.</span> <span class="nav-text">觀察執行緒的切換</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#稍微修改一下程式…"><span class="nav-number">1.2.</span> <span class="nav-text">稍微修改一下程式…</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#差別在哪？"><span class="nav-number">1.3.</span> <span class="nav-text">差別在哪？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SynchronizationContext"><span class="nav-number">2.</span> <span class="nav-text"># SynchronizationContext</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Deadlock"><span class="nav-number">2.1.</span> <span class="nav-text">Deadlock</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解決方法-ConfigureAwait-false"><span class="nav-number">2.2.</span> <span class="nav-text">解決方法 ConfigureAwait(false)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在-ASP-Net-Core-的時代…"><span class="nav-number">2.3.</span> <span class="nav-text">在 ASP.Net Core 的時代…</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Best-Practice"><span class="nav-number">3.</span> <span class="nav-text"># Best Practice</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://toyo0103.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://toyo0103.github.io/2020/09/19/about_async/';
+          this.page.identifier = '2020/09/19/about_async/';
+          this.page.title = '【C#】 關於 Async 的三兩事';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://toyo0103.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

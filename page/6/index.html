@@ -293,6 +293,882 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/02/22/【MVC教學】2-什麼是MVC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/22/【MVC教學】2-什麼是MVC/" itemprop="url">【MVC教學】2. 什麼是MVC</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-02-22T22:31:00+08:00">
+                2018-02-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/學習MVC/" itemprop="url" rel="index">
+                    <span itemprop="name">學習MVC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/22/【MVC教學】2-什麼是MVC/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/22/【MVC教學】2-什麼是MVC/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>如果你本來跟我一樣是寫Dot Net Web的工程師,那你應該是從Web Form開始的,第一次接觸MVC時,應該心中都會浮現「什麼是MVC ?」 </p>
+<p>其實<a href="https://zh.wikipedia.org/wiki/MVC" target="_blank" rel="noopener">Wiki</a>已經解釋得很清楚了,就不重複贅述這些定義,有興趣可以自己看看,而我比較想提的是這跟原本開發Web Form,或是說你是寫別語言但沒使用MVC這個架構時的差別。 </p>
+<p>還記得以前在接手前輩專案時,因為每個人開發習慣不盡相同,對於各種用途的類別可能都有一套自己的歸類方式,所以剛開始總是需要花大把時間在熟悉前輩定義的架構, 如果專案一多,常常切換專案時都會有一種混亂感。  </p>
+<p>如果遇到是初心工程師,可能會有那種一個Function幾百行的,基本上要改個東西都要找很久之外,還很怕改錯,而這些不僅僅造成維護的成本增加之外,還讓接手別人專案時總是滿滿恨意！！ </p>
+<p>而MVC這個架構就是在解決這個問題,他將系統分成三大部分 Model 、View、 Controller, 而這三大部分分別管理著 </p>
+<p>Model : 資料的管理(例如與資料庫的溝通) , 演算法邏輯(商業邏輯) , 物件結構定義 </p>
+<p>View : 呈現給使用者看、操作的介面 </p>
+<div>Controller :  依據傳入的資料該怎麼運作、程式流程的控制、該回傳給使用者什麼資料等<br><br></div><div><br></div><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-ByxeEs_OPjo/Wo7SEU86Q2I/AAAAAAAAIkM/ILz4hUYI59gdspAfW_MxUekeTfa2ZaWCQCEwYBhgL/s1600/2.jpg" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-ByxeEs_OPjo/Wo7SEU86Q2I/AAAAAAAAIkM/ILz4hUYI59gdspAfW_MxUekeTfa2ZaWCQCEwYBhgL/s640/2.jpg" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;"><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-size: 12px; font-stretch: normal; line-height: normal;">出處 <a href="https://helloacm.com/model-view-controller-explained-in-c/" target="_blank" rel="noopener">https://helloacm.com/model-view-controller-explained-in-c/</a></div></td></tr></tbody></table><div><br></div>
+
+<h3 id="優點ㄧ-：-讓習慣代替配置"><a href="#優點ㄧ-：-讓習慣代替配置" class="headerlink" title="優點ㄧ ： 讓習慣代替配置"></a>優點ㄧ ： 讓習慣代替配置</h3><p><span style="font-weight: normal;">因為大家對於MVC有相同的認識,且Dot Net MVC更把這些定義落實到專案上,在不改動底層運作的情況下,屬於Controller的Class就該放到Controllers的資料夾、屬於頁面呈現的就放到Views資料夾,且預設也有一個Models的資料夾給你放Model,有了這些規範後,讓習慣來代替配置,你接手別人的MVC專案後, 所有人的開發方式基本上都會依照這個規範去落實,降低維護的成本。</span><br><span style="font-weight: normal;"><br></span></p>
+<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-4aTMTqC7vZE/Wo7SSOsXq7I/AAAAAAAAIkY/aQAQWR1nxkATcDPTD2xx4nwxLUOqQYI-gCEwYBhgL/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-4aTMTqC7vZE/Wo7SSOsXq7I/AAAAAAAAIkY/aQAQWR1nxkATcDPTD2xx4nwxLUOqQYI-gCEwYBhgL/s400/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;"><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-size: 12px; font-stretch: normal; line-height: normal;">Dot Net MVC預設新建專案就會有這些資料夾</div></td></tr></tbody></table><div><br></div></p>
+<h3 id="優點二-：-關注點分離"><a href="#優點二-：-關注點分離" class="headerlink" title="優點二 ： 關注點分離"></a>優點二 ： 關注點分離</h3><p>如果今天是在處理使用者操作介面,那就專心的套版,將Controller傳回來的資料看要怎麼擺放,又如果在處理資料流傳入的參數驗證,那就在Controller處理完,不用去管會不會影響到View的呈現, 如果是跟資料庫的溝通,就在Model裡將它實作好,不需擔心是否參數有空值或Null, 因為那些該是在Controller處理掉的。 </p>
+<p>相較於以前的Web Form開發方式,因為UserControl介於頁面跟Code Behind的事件之間,常常耦合度太強,一改兩邊都會動到，需要較嚴謹的開發規範才能避免耦合問題,而且我記憶最深的就是UserControl間的生命週期,那個互相攪在一起要改還真要命… </p>
+<div class="note info"><p>Web Form有其快速且便利性,以上並非說Dot Net MVC能完全取代Web Form,<br>更想表達的是,這是當我從開發Web Form兩年然後跳到MVC目前5年多，<br>它所帶給我的感受與改變,希望透過這些講述能更清楚MVC是否是你該投入資源學習的架構</p></div>
+<h3 id="優點三-：-前端更自由"><a href="#優點三-：-前端更自由" class="headerlink" title="優點三 ： 前端更自由"></a>優點三 ： 前端更自由</h3><p>在Dot Net MVC中,不再有User Control這類的元件存在,所以前端會更加的自由,無論是在JS或是CSS的運用上，再也不會有元件Render時幫你加上一堆多餘的Tag或是Class。</p>
+<div class="note info"><p>目前經手過的一些專案,有些都已經徹底前後端分離,<br>後端只有負責處理好API或是ViewModel(傳給View的資料通常定義出來的Class都會叫ViewModel,這之後會再提到)，<br>吐一個空的頁面載入指定JS,剩下就讓前端去處理介面,彼此分工更精細,互相耦合的程度也降低許多。</p></div>
+<p>這篇花比較多篇幅在解說ＭVC是什麼,又Dot Net MVC在開發上能帶來什麼改變跟好處, 下一篇預計就要開始講Router 與 Controller之間的關係。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/02/21/【MVC教學】1-工欲善其事、必先利其器-Visual-Studio/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/21/【MVC教學】1-工欲善其事、必先利其器-Visual-Studio/" itemprop="url">【MVC教學】1. 工欲善其事、必先利其器 Visual Studio</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-02-21T16:06:00+08:00">
+                2018-02-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/學習MVC/" itemprop="url" rel="index">
+                    <span itemprop="name">學習MVC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/21/【MVC教學】1-工欲善其事、必先利其器-Visual-Studio/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/21/【MVC教學】1-工欲善其事、必先利其器-Visual-Studio/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>年前朋友討論是否寫Dot Net Mvc的簡單教學文章,害我過年都在思考該怎麼寫這東西…可惡(果然是個心裡容不下待辦事項的人啊)。</p>
+<p>認真的想了後覺得這真是個非常難的主題,一來是網路上已經有很多資源,我也不是什麼大神,很怕誤人子弟。二來雖然以前曾經幫忙教育訓練過新進同事,但面對面的溝通且依照每個人程度不同給予討論,跟用文章教會一個不知道對象是誰,且博大精深的框架與語言,這個差距實在太大,所以最後只好一直將目標縮小再縮小,希望這系列文如果看完時能達到以下目標我就滿足了</p>
+<p><strong>目標對象 </strong><br><div class="note info"><p>1.你有一點程式語言的底子,但沒接觸過Dot Net MVC<br>2.寫過Dot Net MVC,但還不是很熟悉它怎麼應用</p></div></p>
+<p><strong>希望達成目標</strong><br><div class="note info"><p>1.能夠比較清楚的理解Dot Net MVC怎麼運作<br>2.知道了一些小東西,或許能改善目前你開發上困擾</p></div></p>
+<p>那就先從工具開始吧<br><div class="note info"><p>Visual Studio Community : <a href="https://www.visualstudio.com/zh-hant/vs/community/" target="_blank" rel="noopener">微軟官網載點</a></p></div><br>開發Dot Net的工程師,應該9成9的人都是使用Visual Studio,它不僅號稱地表最強編輯器,微軟更佛心的提供了免費版本給大家使用,否則最基礎的一套Visual Studio的價格應該也會讓初學者非常卻步。</p>
+<p>當然既然是免費版本,功能上一定會有些陽春,但對於只是入門學習Dot Net而言已經是相當強大的工具了。</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-AThY6IIeOMU/Wozqfrbkj8I/AAAAAAAAIhM/unPhEYOMwi4GocjIIbH3sQLsG6zFLwLXgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258A%25E5%258D%258811.41.26.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-AThY6IIeOMU/Wozqfrbkj8I/AAAAAAAAIhM/unPhEYOMwi4GocjIIbH3sQLsG6zFLwLXgCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258A%25E5%258D%258811.41.26.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">功能比較(來源: <a href="https://www.visualstudio.com/zh-hant/vs/compare/" target="_blank" rel="noopener">https://www.visualstudio.com/zh-hant/vs/compare/</a>)</td></tr></tbody></table><br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-IAZ842DU7bE/WozrAMFvS5I/AAAAAAAAIhU/hXxvWOr48VIim3dJ2gxOVdllEfdLsvspgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258A%25E5%258D%258811.43.35.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-IAZ842DU7bE/WozrAMFvS5I/AAAAAAAAIhU/hXxvWOr48VIim3dJ2gxOVdllEfdLsvspgCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258A%25E5%258D%258811.43.35.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">價格表(來源:<a href="https://www.visualstudio.com/zh-hant/vs/pricing/" target="_blank" rel="noopener">https://www.visualstudio.com/zh-hant/vs/pricing/</a>)</td></tr></tbody></table>
+
+<p>下載完之後將它安裝起來</p>
+<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-l_GogekWtuo/Wo0NeymgUGI/AAAAAAAAIhk/a9KRtEucnA8ZAofXpTfM1WKc0Cn1-VSeACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.10.47.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-l_GogekWtuo/Wo0NeymgUGI/AAAAAAAAIhk/a9KRtEucnA8ZAofXpTfM1WKc0Cn1-VSeACLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.10.47.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">選擇Community安裝</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-VxH0BFcP1N4/Wo0OAeM_n8I/AAAAAAAAIhs/XbpBzTLtFQsEQwdPNDVF0V1-yghRDhHMgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.13.01.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-VxH0BFcP1N4/Wo0OAeM_n8I/AAAAAAAAIhs/XbpBzTLtFQsEQwdPNDVF0V1-yghRDhHMgCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.13.01.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">勾選ASP.NET與網頁程式開發</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://1.bp.blogspot.com/-YT3wMLUPuxQ/Wo0OS6i817I/AAAAAAAAIhw/cJGnL6jonT0Kf9XxbKzB9k_5qT6vdB16wCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.14.13.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-YT3wMLUPuxQ/Wo0OS6i817I/AAAAAAAAIhw/cJGnL6jonT0Kf9XxbKzB9k_5qT6vdB16wCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.14.13.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">等它安裝完</td></tr></tbody></table></p>
+<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-mb-CXRobkYs/Wo0ZC8U4VJI/AAAAAAAAIiE/hVP-yUd9UtMsSVpt3iVTjyRgksp825iLwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.00.10.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-mb-CXRobkYs/Wo0ZC8U4VJI/AAAAAAAAIiE/hVP-yUd9UtMsSVpt3iVTjyRgksp825iLwCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.00.10.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">安裝完之後打開應該會看到這個畫面</td></tr></tbody></table><br><div class="note info"><p>因為寫程式大部分時間都需要一直長盯著螢幕,所以螢幕底色如果是淺色系通常到下午我眼睛都會很酸,所以Visual Studio也很貼心了提供修改視窗色系的功能,例如我截圖就是深色系。<br>調整方式如下<br>工具 &gt; 選項 &gt; 色彩佈景主題<br><a href="https://1.bp.blogspot.com/-ExYk1nrzalI/Wo0aNHm1jLI/AAAAAAAAIiM/xA5vmqHWUkgo1DYB_4zz9nbfb1oKw3vyQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.03.31.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-ExYk1nrzalI/Wo0aNHm1jLI/AAAAAAAAIiM/xA5vmqHWUkgo1DYB_4zz9nbfb1oKw3vyQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.03.31.png" alt></a></p></div><br>**</p>
+<hr>
+<p><strong>**建立第一個Web專案</strong></p>
+<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-8NkEiv-Pdy0/Wo0atMIeTBI/AAAAAAAAIiY/Xqtt1Nt4vdYMutyRHnF6SK0ywGJw6IBVwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.07.17.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-8NkEiv-Pdy0/Wo0atMIeTBI/AAAAAAAAIiY/Xqtt1Nt4vdYMutyRHnF6SK0ywGJw6IBVwCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.07.17.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">檔案 &gt; 新增 &gt; 專案</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-52w4Z2LQrMo/Wo0bFfQ42ZI/AAAAAAAAIic/W7IdEeXSIqIh3rG2CmSN4slAT6Qu1qkzgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.08.51.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-52w4Z2LQrMo/Wo0bFfQ42ZI/AAAAAAAAIic/W7IdEeXSIqIh3rG2CmSN4slAT6Qu1qkzgCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.08.51.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">選擇Web &gt; Web應用程式(.NET Framework) 。<br>專案名稱與放的位置依照自己喜好即可</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-sG9_1osHZzM/Wo0bo1ny1kI/AAAAAAAAIio/mRKCMTpCjp461LAbSFCK6EzS02y1Z02KQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.11.14.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-sG9_1osHZzM/Wo0bo1ny1kI/AAAAAAAAIio/mRKCMTpCjp461LAbSFCK6EzS02y1Z02KQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.11.14.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">選擇MVC</td></tr></tbody></table><br>建立完成之後應該可以看到這個畫面</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-bgNV43jpPbY/Wo0cBzZrZPI/AAAAAAAAIis/U152KITJzwkkk3aMigyzBB7fAyCPS0pIACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.12.56.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-bgNV43jpPbY/Wo0cBzZrZPI/AAAAAAAAIis/U152KITJzwkkk3aMigyzBB7fAyCPS0pIACLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.12.56.png" alt></a></div><div class="note info"><p>如果看不到方案總管,可以透過<strong>檢視</strong>&gt; <strong>方案總管</strong>來打開</p></div><br><br><br>右邊就是我們寫程式要放的地方,之後介紹Dot Net MVC時會慢慢帶到,但今天還不需要寫到程式,先直接將程式執行起來,看看預設建立好的網站是長什麼樣<br><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-rsiatvazfV0/Wo0dW96VDgI/AAAAAAAAIi0/62hUceI6RWI5zmuuQrkAE9MP5q0ZXAjaQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.17.44.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-rsiatvazfV0/Wo0dW96VDgI/AAAAAAAAIi0/62hUceI6RWI5zmuuQrkAE9MP5q0ZXAjaQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.17.44.png" alt></a></div><br>因為這是網站程式, 點選執行旁邊的向下箭頭後,可以依照個人喜好選擇習慣用的瀏覽器來瀏覽,我個人是習慣用Google Chrome,所以以下用Chrome做示範,選好後按下綠色的箭頭執行。<br><br>執行起來之後應該可以看到一個很專業的診斷工具面板,分別顯示目前佔了CPU幾%,用了多少記憶體…等等<br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-02yTU2prJZY/Wo0ekE8DgvI/AAAAAAAAIi8/8BiY3LezXhUhV7QMK8XeKO9oy3RG4jKOQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.22.30.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-02yTU2prJZY/Wo0ekE8DgvI/AAAAAAAAIi8/8BiY3LezXhUhV7QMK8XeKO9oy3RG4jKOQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.22.30.png" alt></a></div>
+
+<p>而這時候你選擇的瀏覽器應該也會開啟，然後看到目前網站的成果</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-Xw28Lnnj1vI/Wo0euDl5nmI/AAAAAAAAIjA/hj1eQKYS0jcS8goj3FDv0yngDCHDYPmVACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.24.20.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-Xw28Lnnj1vI/Wo0euDl5nmI/AAAAAAAAIjA/hj1eQKYS0jcS8goj3FDv0yngDCHDYPmVACLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.24.20.png" alt></a></div>
+
+<p>可以隨意的點擊網站按鈕逛逛玩玩後,現在來簡單講一下該如何追蹤偵錯<br><div class="note info"><p>偵錯是門大學問,常常我們寫的程式編譯時都沒有錯誤,但執行結果卻不如我們預期那般時,一步一步偵錯就會是我們發現問題的好朋友</p></div></p>
+<p>我們以<strong>關於這個按鈕</strong>為例,究竟點擊<strong>關於</strong>這個按鈕時,程式是如何執行,讓我們可以看到畫面的</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/--aluBIC6nMg/Wo0gH9fbBYI/AAAAAAAAIjQ/BaKOSBTJacIOl9_W7YAz8lqi-9Fx5C0FQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.29.58.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/--aluBIC6nMg/Wo0gH9fbBYI/AAAAAAAAIjQ/BaKOSBTJacIOl9_W7YAz8lqi-9Fx5C0FQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.29.58.png" alt></a></div>
+
+<p>因為我們還不知道目前整個程式的運作原理,所以依照下面的指示這樣做</p>
+<ol>
+<li>找到HomeController,並且打開它<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-kCJKeJELsx0/Wo0gxIiQthI/AAAAAAAAIjY/FPc1xN8m0oQzv5tfWhG8hf649M2gp4jUACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.31.50.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-kCJKeJELsx0/Wo0gxIiQthI/AAAAAAAAIjY/FPc1xN8m0oQzv5tfWhG8hf649M2gp4jUACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.31.50.png" alt></a></div></li>
+<li><p>找到第18行的地方,點擊那行的最左邊邊框,會產生一個紅色的原點,我們稱之為中斷點<br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-LIvuofL8J2g/Wo0ha-LzXzI/AAAAAAAAIjg/GrPyIZE-hss6nVqf2b6CgYKIhaXTjpfNgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.34.22.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-LIvuofL8J2g/Wo0ha-LzXzI/AAAAAAAAIjg/GrPyIZE-hss6nVqf2b6CgYKIhaXTjpfNgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.34.22.png" alt></a></div><div class="note info"><p>中斷點的意思就是,當程式執行到這行時會停下來讓你知道,並且等待你的指示</p></div></p>
+</li>
+<li><p>接著再回去剛剛的網頁點擊<strong>關於,</strong>你會發現<strong>,視窗會跳到你剛剛下得中斷點位置,而網頁會卡住,並沒有顯示關於的頁面</strong><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-_VDwlMMcZM0/Wo0iMV7i_mI/AAAAAAAAIjo/8yZiG4s8Kb0bXtwGlMl4UaLUxau9yZ5rACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.39.13.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-_VDwlMMcZM0/Wo0iMV7i_mI/AAAAAAAAIjo/8yZiG4s8Kb0bXtwGlMl4UaLUxau9yZ5rACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.39.13.png" alt></a></div><br>那是因為程式還沒執行完,所以還沒辦法顯示頁面資訊4.  按下<strong>F11</strong>,每按一次<strong>F11</strong>,你會看到程式往下走一行,藉此來觀察程式如何運行,並且是否符合我們預期的結果</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-2hTcGcR7bAg/Wo0mas9EleI/AAAAAAAAIj0/H7T3H2WKSO0yF_lGqHIcrR-CxhuraR1egCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.56.54.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-2hTcGcR7bAg/Wo0mas9EleI/AAAAAAAAIj0/H7T3H2WKSO0yF_lGqHIcrR-CxhuraR1egCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.56.54.png" alt></a></div></li>
+<li>當然,我們不必每次進入中斷點後都一步一步將它執行完,如果已經找到哪邊有問題,只要再按下繼續,程式就會自動往下跑,直到碰到下一個中斷點為止 <div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-R2SEzOTjLeU/Wo0nRTaBCsI/AAAAAAAAIj8/Sx_eFGxFUgo0TNDMGsWEcVYutD1U9pYSgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25884.00.22.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-R2SEzOTjLeU/Wo0nRTaBCsI/AAAAAAAAIj8/Sx_eFGxFUgo0TNDMGsWEcVYutD1U9pYSgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25884.00.22.png" alt></a></div><br>當然以上所提的,都是非常非常基礎的Visual Studio（之後文章都簡稱為VS）操作,跟日常比較會運用到的情境,VS之所以被人稱為地表最強編輯器,想當然耳不可能只有這樣而已,但這都是要慢慢開發中去體會跟累積的。相信如果真的用久了,開始使用擴充輔助套件之類的,就會知道它的強大之處。</li>
+</ol>
+<p>下一篇來提何謂MVC，知道後應就能理解為何會知道<strong>關於</strong>這個按鈕點擊後,會停在我們今天下的中斷點了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/26/【CI-CD】4-在佈署階段置換參數值，以Web-Config為例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/26/【CI-CD】4-在佈署階段置換參數值，以Web-Config為例/" itemprop="url">【CI/CD】4. 在佈署階段置換參數值，以Web.Config為例</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-26T17:25:00+08:00">
+                2018-01-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/VSTS建置CI-CD/" itemprop="url" rel="index">
+                    <span itemprop="name">VSTS建置CI-CD</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/26/【CI-CD】4-在佈署階段置換參數值，以Web-Config為例/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/26/【CI-CD】4-在佈署階段置換參數值，以Web-Config為例/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <div class="note info"><p>接續前篇 : <a href="https://toyo0103.blogspot.tw/2018/01/cicd3-vsts-azure-appservice-slot.html" target="_blank" rel="noopener">【CI/CD】3. 透過VSTS 切換Azure AppService Slot</a></p></div>
+<p>如果你的佈署狀況如下</p>
+<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-uiFFGMOOPlQ/WmraN8BbjEI/AAAAAAAAIdo/xzVVbXd5NLkz4xpa1wI-gTNN048M5R7ngCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-uiFFGMOOPlQ/WmraN8BbjEI/AAAAAAAAIdo/xzVVbXd5NLkz4xpa1wI-gTNN048M5R7ngCLcBGAs/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">原諒我只繪畫醜圖….</td></tr></tbody></table><br>有一次更版進到到Master Branch，而CI設定Trigger是Master更動時自動建置，CD接收到CI建置完成後執行佈署機器，而每台機器的Web.Config值都有差異，這時候該怎麼做?</p>
+<h1 id="XML-variable-substitution"><a href="#XML-variable-substitution" class="headerlink" title="#XML variable substitution"></a>#XML variable substitution</h1><p>Azure App Service Deploy有提供XML variable substitutuin可以選擇</p>
+<div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-LN_4j9iX9As/WmrfdZWF3oI/AAAAAAAAId4/Tc9U1W24Lq45Ms0p9qhtBLNX2EJ8sKJ_QCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-LN_4j9iX9As/WmrfdZWF3oI/AAAAAAAAId4/Tc9U1W24Lq45Ms0p9qhtBLNX2EJ8sKJ_QCLcBGAs/s640/1.png" alt></a></div><br><div class="note info"><p>依據註解中說明就是，當這個選項勾選時，他會自動去找專案中的所有.Config檔案，檔案中的appSettings，application Settings , connectionString區塊，如果有Key或Name與設定的變數相同時自動置換，且是發生在Config transforms之後</p></div><br><br><br>什麼意思呢? 直接看範例，如果我們的Web.Config裡面長這樣<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-iEfgD967KZc/WmriR-qREbI/AAAAAAAAIeE/P_zG3I8Ah3EPMA4uADVKwh8LqCImdKpjACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-iEfgD967KZc/WmriR-qREbI/AAAAAAAAIeE/P_zG3I8Ah3EPMA4uADVKwh8LqCImdKpjACLcBGAs/s400/1.png" alt></a></div><br>那他就會在去比對appSettings、connectionString區塊，裡面的Name或是Key有對應到變數設定的話，Value值會自動被替換，而變數設定又在哪邊呢?<br><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-bJ9GV3qzx1A/WmrjTH_HnSI/AAAAAAAAIeM/XMf0yAL-XBsfedMAXLy7jbkiS5RcfRViwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-bJ9GV3qzx1A/WmrjTH_HnSI/AAAAAAAAIeM/XMf0yAL-XBsfedMAXLy7jbkiS5RcfRViwCLcBGAs/s400/1.png" alt></a></div>
+
+<p>以上面兩張圖來說，那他在WebDeploy到Azure App Service之前就會將我的<strong>StaticDomains、Domain</strong>的<strong>Value</strong>換掉，因為我們在變數檔案裡面有設定。</p>
+<p>這樣我們就能透過建置多個環境的方式，在每個環境中設定好對應的變數值，只要執行一次CI流程，觸發多個CD流程，達到多台同時佈署的目的</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-Vn7jrg9S6zM/WmrkbLQL9JI/AAAAAAAAIeY/DSoCnAGpUUA_-3oKJhbPD6sj9bdNQ0DPQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-Vn7jrg9S6zM/WmrkbLQL9JI/AAAAAAAAIeY/DSoCnAGpUUA_-3oKJhbPD6sj9bdNQ0DPQCLcBGAs/s400/1.png" alt></a></div>
+
+<h1 id="參數不在appSettings，application-Settings-connectionString區塊之中"><a href="#參數不在appSettings，application-Settings-connectionString區塊之中" class="headerlink" title="#參數不在appSettings，application Settings , connectionString區塊之中"></a>#參數不在appSettings，application Settings , connectionString區塊之中</h1><p>這邊特別注意，剛剛那種置換的值方法僅適用於上述區塊之中，換句話說，如果我們有環境設定變數，但他又不在這幾個區塊之中，該如何做?</p>
+<h2 id="Parameter-xml"><a href="#Parameter-xml" class="headerlink" title="Parameter.xml"></a>Parameter.xml</h2><p>還好微軟有提供另一種方式能處理這個問題，就是透過Parameters.xml</p>
+<h2 id="建立parameters-xml"><a href="#建立parameters-xml" class="headerlink" title="建立parameters.xml"></a>建立parameters.xml</h2><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-DIAJpQ2tUYk/WmrlsIo55sI/AAAAAAAAIeg/PCaPpM04JucMUYC8QFByvv4X3pPcRwjJgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-DIAJpQ2tUYk/WmrlsIo55sI/AAAAAAAAIeg/PCaPpM04JucMUYC8QFByvv4X3pPcRwjJgCLcBGAs/s320/1.png" alt></a></div><div><br></div>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parameters</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">parameter</span> <span class="attr">name</span>=<span class="string">"ExceptionlessAPIKey"</span> <span class="attr">defaultValue</span>=<span class="string">"#&#123;ExceptionlessAPIKey&#125;#"</span> &gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">parameterEntry</span></span></span><br><span class="line"><span class="tag">      <span class="attr">kind</span>=<span class="string">"XmlFile"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">scope</span>=<span class="string">"Web\.config"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">match</span>=<span class="string">"//exceptionless/@apiKey"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">parameter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">parameter</span> <span class="attr">name</span>=<span class="string">"SessionConnectionString"</span> <span class="attr">defaultValue</span>=<span class="string">"#&#123;SessionConnectionString&#125;#"</span> &gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parameterEntry</span></span></span><br><span class="line"><span class="tag">      <span class="attr">kind</span>=<span class="string">"XmlFile"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">scope</span>=<span class="string">"Web\.config"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">match</span>=<span class="string">"//configuration/system.web/sessionState/@sqlConnectionString"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">parameter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parameters</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>Name</strong> : 變數名稱<br><strong>Scope</strong> : 受影響的檔案為和，你可以設定整個專案底下全部的.Config也行<br><strong>Match</strong> : 在這些檔案底下如何尋找要被替換的值</p>
+<div class="note info"><p>Example 1 :  Web.Config底下從根結點開始找起，找到一個叫做exceptionLess的Tag，然後把apiKey這個屬性換成我設定的值</p>
+<p>Example 2 :  Web.Config底下從根結點開始找起，找到configuration底下的system.web底下的sessionState Tag，然後把sqlConnectionString這個屬性換成我設定的值</p></div>
+<p><strong>DefaultValue</strong> : 如果在佈署時沒有設定參數值時，預設給的Value</p>
+<p>接著在VisualStudio按發行後應該會看到檔案長出<strong>SetParameters.xml</strong></p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-s_s3aU7dr74/WmrsRb8ETdI/AAAAAAAAIew/WYlqsjbIk0oj7ow-GOqheH4FJY6QZAUHgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-s_s3aU7dr74/WmrsRb8ETdI/AAAAAAAAIew/WYlqsjbIk0oj7ow-GOqheH4FJY6QZAUHgCLcBGAs/s640/1.png" alt></a></div>
+
+<p>打開來會看到</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-viIUyylwlDg/Wmr6qYwZv-I/AAAAAAAAIgE/C0ISadjZIigW7FQ6sMezcjZwYudaEaLrwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-viIUyylwlDg/Wmr6qYwZv-I/AAAAAAAAIgE/C0ISadjZIigW7FQ6sMezcjZwYudaEaLrwCLcBGAs/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div>
+
+<p>到這邊我們已經成功將Web.Config的指定位置挖成變數值，等等在CD階段，我們就是要想辦法把<strong>SetParameters.xml</strong>的Value值換掉</p>
+<h2 id="回到CD設定介面"><a href="#回到CD設定介面" class="headerlink" title="回到CD設定介面"></a>回到CD設定介面</h2><p>告訴<strong>Azure App Service Deploy Task</strong>，你有<strong>SetParameters.xml</strong></p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-NUpiKPxhPRY/Wmrtx-vh_HI/AAAAAAAAIfE/RRml5NRckGQ6S4uDWJJsfSHhX2H7CWEBgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-NUpiKPxhPRY/Wmrtx-vh_HI/AAAAAAAAIfE/RRml5NRckGQ6S4uDWJJsfSHhX2H7CWEBgCLcBGAs/s640/1.png" alt></a></div>
+
+<h2 id="安裝Replace-Token-Task"><a href="#安裝Replace-Token-Task" class="headerlink" title="安裝Replace Token Task"></a>安裝Replace Token Task</h2><div>為了置換掉SetParameters.xml裡面的值，必須幫我們VSTS安裝套件</div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-Kq1PpE97VYE/WmruR4NMthI/AAAAAAAAIfM/Vu2lwFOUsx4Npju7imY-kYBuW3Frt1exACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-Kq1PpE97VYE/WmruR4NMthI/AAAAAAAAIfM/Vu2lwFOUsx4Npju7imY-kYBuW3Frt1exACLcBGAs/s400/1.png" alt></a></div><div><br></div><div>安裝連結 :&nbsp; <a href="https://marketplace.visualstudio.com/items?itemName=qetza.replacetokens" target="_blank" rel="noopener">Replace Token MarketPlace&nbsp;</a></div>
+
+<p>在<strong>Azure App Service Deploy</strong>之前加上<strong>Replace Token Task</strong></p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-jDdk2Q7Mj7I/Wmru-f9N1fI/AAAAAAAAIfU/y2x-uJAWD8wQSwaij7_B6TyOS7T2RmMzQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-jDdk2Q7Mj7I/Wmru-f9N1fI/AAAAAAAAIfU/y2x-uJAWD8wQSwaij7_B6TyOS7T2RmMzQCLcBGAs/s640/1.png" alt></a></div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-mTQYjeZIYho/WmrvSLWq_lI/AAAAAAAAIfY/hWpXjtyZkzMf40oTRqx4cfaWoSxvNQ5XgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-mTQYjeZIYho/WmrvSLWq_lI/AAAAAAAAIfY/hWpXjtyZkzMf40oTRqx4cfaWoSxvNQ5XgCLcBGAs/s640/1.png" alt></a></div><div><br></div>
+
+<h2 id="設定"><a href="#設定" class="headerlink" title="設定"></a>設定</h2><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-j-77BDvLK7A/WmrxsFTAD8I/AAAAAAAAIfo/4PIBYR3ck7Uc0DSDfUcTbjs4bAA2CzM-ACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-j-77BDvLK7A/WmrxsFTAD8I/AAAAAAAAIfo/4PIBYR3ck7Uc0DSDfUcTbjs4bAA2CzM-ACLcBGAs/s640/1.png" alt></a></div><br><strong>Root Directory : </strong>要替換的目標檔案Root資料夾位置<br><strong>Target files : </strong>告訴它我們要找的檔案是誰，以這邊來說就是SetParameters.xml<br><strong>Token prefix、Token suffix : </strong>比對什麼是它要幫我們置換的，而這邊就是#{xxxx}#包起來的就是參數<br><br>這樣設定完之後，它就會在WebDeploy之前執行<strong>Replace Token Task</strong>，而這個Task會去找到SetParameters.xml，然後找到#{xxx}#符號的，然後用我們之前設定在<strong>Variables</strong>的參數置換掉<br><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-rvxpn3Nkvrw/WmrzQb7-SUI/AAAAAAAAIf0/fMBjj3gSnYwGvbR50p7UZcQQwvGUf5MNgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-rvxpn3Nkvrw/WmrzQb7-SUI/AAAAAAAAIf0/fMBjj3gSnYwGvbR50p7UZcQQwvGUf5MNgCLcBGAs/s640/1.png" alt></a></div><div><br></div>
+
+<div class="note info"><p><strong>參考文章 </strong></p>
+<p><a href="http://andrew.lansdowne.me/2016/12/15/using-environment-variables-for-configuration-with-vsts-build-and-release/" target="_blank" rel="noopener">Using environment variables for configuration with VSTS build and release</a></p>
+<p><a href="http://cobus.io/devops/2016/02/06/Parameterizing_Webconfig.html" target="_blank" rel="noopener">Parameterizing Web.config</a></p>
+<p><a href="https://blogs.iis.net/elliotth/web-deploy-xml-file-parameterization" target="_blank" rel="noopener">Web Deploy XML File Parameterization</a></p>
+<p><a href="http://jakeydocs.readthedocs.io/en/latest/publishing/vsts-continuous-deployment.html" target="_blank" rel="noopener">Use VSTS to Build and Publish to an Azure Web App with Continuous Deployment</a></p>
+<p><a href="http://blog.ehn.nu/2016/03/using-web-deploy-in-visual-studio-team-services-release-management/" target="_blank" rel="noopener">Using Web Deploy in Visual Studio Team Services Release Management</a></p>
+<p><a href="https://docs.microsoft.com/en-us/vsts/build-release/tasks/transforms-variable-substitution" target="_blank" rel="noopener">File transforms and variable substitution reference</a></p></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/26/【CI-CD】3-透過VSTS-切換Azure-AppService-Slot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/26/【CI-CD】3-透過VSTS-切換Azure-AppService-Slot/" itemprop="url">【CI/CD】3. 透過VSTS 切換Azure AppService Slot</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-26T13:51:00+08:00">
+                2018-01-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/VSTS建置CI-CD/" itemprop="url" rel="index">
+                    <span itemprop="name">VSTS建置CI-CD</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/26/【CI-CD】3-透過VSTS-切換Azure-AppService-Slot/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/26/【CI-CD】3-透過VSTS-切換Azure-AppService-Slot/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <div class="note info"><p>接續前篇 : <a href="https://toyo0103.blogspot.tw/2018/01/cicd2-vstsazure-appservice.html" target="_blank" rel="noopener">【CI/CD】2. 透過VSTS自動佈署程式到Azure AppService</a></p></div>
+<p>一般為了服務的順暢，一般都會在正式機的Azure App Service開啟Slot服務<br><div class="note info"><p>參考 : <a href="https://docs.microsoft.com/zh-tw/azure/app-service/web-sites-staged-publishing" target="_blank" rel="noopener">在 Azure App Service 中設定預備環境</a></p></div></p>
+<p>好讓服務更新時，能無痛更新且不會中斷Session。</p>
+<p>而上一篇有提到如何更新Azure App Service，但如果在有開啟Slot的情形下，設定要做一些變更。</p>
+<h4 id="首先先將設定從佈署正式機改成佈署到Slot"><a href="#首先先將設定從佈署正式機改成佈署到Slot" class="headerlink" title="首先先將設定從佈署正式機改成佈署到Slot"></a><span style="font-weight: normal;">首先先將設定從佈署</span>正式機<span style="font-weight: normal;">改成佈署到</span>Slot</h4><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-8u_M2pW8r6I/Wmq7HICh6mI/AAAAAAAAIcE/XVVdqTZH-houw6m7iXuRw1R1B-QYMuPHgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-8u_M2pW8r6I/Wmq7HICh6mI/AAAAAAAAIcE/XVVdqTZH-houw6m7iXuRw1R1B-QYMuPHgCLcBGAs/s640/1.png" alt></a></div><div><br></div><div>勾選Deploy to Slot後，會需要選擇<strong>Resource group</strong>與<strong>Slot</strong>，分別選擇好後存檔。</div><div><br></div><div><br></div>
+
+<h3 id="新增一組切換Slot-的Enviroment"><a href="#新增一組切換Slot-的Enviroment" class="headerlink" title="新增一組切換Slot 的Enviroment"></a><span style="font-weight: normal;">新增一組切換</span>Slot <span style="font-weight: normal;">的</span>Enviroment</h3><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-sDn38p_Mnbw/Wmq8ETA_jDI/AAAAAAAAIcM/H_eI0hPhGIwW-a6rxAwMdWy7O7s5vlCAACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-sDn38p_Mnbw/Wmq8ETA_jDI/AAAAAAAAIcM/H_eI0hPhGIwW-a6rxAwMdWy7O7s5vlCAACLcBGAs/s1600/1.png" alt></a></div><div><br></div><div>因為我們是希望佈署到Slot後，再決定要不要跟正式機進行交換，所以是按第一組環境的Add而不是Enviroments Add，兩個差異如下</div><div><br></div><div><strong>Enviroments Add : </strong>同時觸發</div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-MeAkdLz3Cr0/Wmq8tNg9y9I/AAAAAAAAIcY/OscSApLOq4U9Fg19E1Ck7ai5RQO6Yi5agCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-MeAkdLz3Cr0/Wmq8tNg9y9I/AAAAAAAAIcY/OscSApLOq4U9Fg19E1Ck7ai5RQO6Yi5agCLcBGAs/s400/1.png" alt></a></div><div><strong>
+</strong></div><div><strong>DeployToStage Add : </strong>依序</div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-rgl9IIrg7PM/Wmq9FwxUOPI/AAAAAAAAIcc/X4QXZY09ZqwBjKuO14TeLbQdhBY5ZkfCQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-rgl9IIrg7PM/Wmq9FwxUOPI/AAAAAAAAIcc/X4QXZY09ZqwBjKuO14TeLbQdhBY5ZkfCQCLcBGAs/s400/1.png" alt></a></div><div><br></div><div><br><br>### <span style="font-weight: 400;"><br></span><br><br>### <span style="font-weight: 400;">設定</span>Swap Slot<br></div>
+
+<h4 id="新增Azure-App-Service-Manage"><a href="#新增Azure-App-Service-Manage" class="headerlink" title="新增Azure App Service Manage"></a>新增Azure App Service Manage</h4><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-cu8E1X0iFtc/Wmq9gXARCNI/AAAAAAAAIck/BhcwVvceOyUPJ_1rBx_57fn5zLIbbynDQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-cu8E1X0iFtc/Wmq9gXARCNI/AAAAAAAAIck/BhcwVvceOyUPJ_1rBx_57fn5zLIbbynDQCLcBGAs/s400/1.png" alt></a></div><div><br></div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-rERunRQExFg/Wmq-YRBwp7I/AAAAAAAAIc0/MxgvqqNAZrIPKSGwPgHfBIEB3DHe7-qswCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-rERunRQExFg/Wmq-YRBwp7I/AAAAAAAAIc0/MxgvqqNAZrIPKSGwPgHfBIEB3DHe7-qswCLcBGAs/s400/1.png" alt></a></div><div><br></div><div>跟前面的設定基本上都一樣，只要是Action的地方要選擇<strong>Swap Slots</strong></div><div><strong>
+</strong></div><div><strong>
+</strong></div>
+
+<h4 id="加上啟動切換Slot的條件"><a href="#加上啟動切換Slot的條件" class="headerlink" title="加上啟動切換Slot的條件"></a>加上啟動切換Slot的條件</h4><div>正式機加上上述設定後帶來了一些好處</div><div><br></div><div>1.上線時推程式會先進到Slot，先連到Slot測試確定沒問題</div><div>2.讓正式機跟Slot交換，線上服務感受不到中斷，但程式已經更新了</div><div><br></div><div>而我們為了安全起見，在切換Slot前會再加一到人工審核，當核准時才會進行切換</div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-NPW1J_euv1g/Wmq_d5ZIgbI/AAAAAAAAIc8/fel0tpckNpY3G9U-Ce-l_7cux4hh69UrgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-NPW1J_euv1g/Wmq_d5ZIgbI/AAAAAAAAIc8/fel0tpckNpY3G9U-Ce-l_7cux4hh69UrgCLcBGAs/s400/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-MUxdoYfNdvI/WmrAesUzntI/AAAAAAAAIdI/rprzi_YpU2I3gU8Nf6WvND6lnqbP5f-TwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-MUxdoYfNdvI/WmrAesUzntI/AAAAAAAAIdI/rprzi_YpU2I3gU8Nf6WvND6lnqbP5f-TwCLcBGAs/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div><br></div><div><br></div><div>這樣設定後，切換Slot就會需要審核</div><div><br></div><div><br></div><div>第一關審核是佈署到Slot</div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-xPtLxwhLiEM/WmrA85Q54II/AAAAAAAAIdM/w5moJRIMBecavQfl60mVPKB6fhLedXgRgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-xPtLxwhLiEM/WmrA85Q54II/AAAAAAAAIdM/w5moJRIMBecavQfl60mVPKB6fhLedXgRgCLcBGAs/s400/1.png" alt></a></div><div><br></div><div>第二關審核是將正式機跟Slot切換</div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-rZTHXtthOOk/WmrBvam9k3I/AAAAAAAAIdY/yuP69VL0ZlkFPnQ5CWUd8nTImmr4mWBdACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-rZTHXtthOOk/WmrBvam9k3I/AAAAAAAAIdY/yuP69VL0ZlkFPnQ5CWUd8nTImmr4mWBdACLcBGAs/s400/1.png" alt></a></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div>下一篇來寫如何在CD階段置換參數值</div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/26/【CI-CD】2-透過VSTS自動佈署程式到Azure-AppService/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/26/【CI-CD】2-透過VSTS自動佈署程式到Azure-AppService/" itemprop="url">【CI/CD】2. 透過VSTS自動佈署程式到Azure AppService</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-26T11:12:00+08:00">
+                2018-01-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/VSTS建置CI-CD/" itemprop="url" rel="index">
+                    <span itemprop="name">VSTS建置CI-CD</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/26/【CI-CD】2-透過VSTS自動佈署程式到Azure-AppService/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/26/【CI-CD】2-透過VSTS自動佈署程式到Azure-AppService/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <div class="note info"><p>接續前篇 : <a href="http://toyo0103.blogspot.tw/2018/01/cicd1-vstsci.html" target="_blank" rel="noopener">【CI/CD】1. 如何透過VSTS來達成CI的目標</a></p></div>
+<p>這邊的目標是當CI完成時，自動將程式佈署到Azure AppService，也就是所謂的CD部分</p>
+<div class="note info"><p>持續部署(Continuous Deployment)<br>大部分的持續整合系統允許在建置完成後自動執行程式碼。因此能夠寫一段程式碼來布署應用程式至任何人都可以觀察的測試伺服器。在持續性整合未來的思考發展成像持續性布署邁進。<br>持續性布署將要求直接將軟體布署至測試環境中，這通常需要額外的自動化機制來防止程式缺陷。</p></div>
+<p><span style="background-color: white; color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px;">希望</span><br><span style="background-color: white; color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px;">1.</span><strong>CI部分執行完畢後，將程式自動佈署到機器</strong><br><span style="background-color: white; color: #777777; font-family: &quot;roboto slab&quot; , sans-serif;"><span style="font-size: 15px;">2.</span><strong>依據不同的CI Task，決定佈署到哪些機器</strong><span style="font-size: x-small;"> (測試機 or 多台正式機…等)</span></span><br><span style="background-color: white; color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px;">3.</span><strong>人員核准 </strong><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif;"><span style="font-size: x-small;">(正式機通常需要一定權限核准才能執行佈署)</span></span><br><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><br></span><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><br></span><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><br></span></p>
+<h4 id="1-先進到VSTS的Release-gt-Create-release-Definitions"><a href="#1-先進到VSTS的Release-gt-Create-release-Definitions" class="headerlink" title="1.先進到VSTS的Release &gt; Create release Definitions"></a><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;">1.<span style="font-weight: normal;">先進到VSTS的</span>Release &gt; Create release Definitions</span></h4><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-j4SKGxGUXWc/WmqJEJctL1I/AAAAAAAAIZY/-CHGLoBOXJY8d9VtIaz-35vVkgPS9FuCgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-j4SKGxGUXWc/WmqJEJctL1I/AAAAAAAAIZY/-CHGLoBOXJY8d9VtIaz-35vVkgPS9FuCgCLcBGAs/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><br></span></div><div><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><br></span></div>
+
+<h4 id="2-選擇Empty-Process"><a href="#2-選擇Empty-Process" class="headerlink" title="2.選擇Empty Process"></a><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;">2.<span style="font-weight: normal;">選擇</span>Empty Process</span></h4><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-yx2eYYmHSqg/WmqJXg1LlmI/AAAAAAAAIZc/8SxeXNTgDkEk7xDragehBih3J8u9hOfkwCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-yx2eYYmHSqg/WmqJXg1LlmI/AAAAAAAAIZc/8SxeXNTgDkEk7xDragehBih3J8u9hOfkwCLcBGAs/s400/1.png" alt></a></div><div><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><br></span></div><div><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><br></span></div><div><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><br></span></div>
+
+<h4 id="3-在Artifacts選擇佈署要用哪一組CI建置的成品"><a href="#3-在Artifacts選擇佈署要用哪一組CI建置的成品" class="headerlink" title="3.在Artifacts選擇佈署要用哪一組CI建置的成品"></a><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;">3.<span style="font-weight: normal;">在</span></span><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;">Artifacts<span style="font-weight: normal;">選擇佈署要用哪一組CI建置的成品</span></span></h4><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-lpW6Y2RApv4/WmqJ2ScPvCI/AAAAAAAAIZo/Hdz-H64BtY0GiD8xdEHt7ZezAOQQUKDCgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-lpW6Y2RApv4/WmqJ2ScPvCI/AAAAAAAAIZo/Hdz-H64BtY0GiD8xdEHt7ZezAOQQUKDCgCLcBGAs/s400/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-1yfWjZ26ZWk/WmqKTGiIrFI/AAAAAAAAIZw/Oq49HUpyphwVZ7FcV-xFVEpUfNB2UpT9gCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-1yfWjZ26ZWk/WmqKTGiIrFI/AAAAAAAAIZw/Oq49HUpyphwVZ7FcV-xFVEpUfNB2UpT9gCLcBGAs/s400/1.png" alt></a></div><div><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><span style="font-weight: normal;"><br></span></span></div><div><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><span style="font-weight: normal;"><br></span></span></div><div><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><span style="font-weight: normal;"><br></span></span></div>
+
+<h4 id="4-設定Trigger條件"><a href="#4-設定Trigger條件" class="headerlink" title="4.設定Trigger條件"></a><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;">4.<span style="font-weight: normal;">設定</span>Trigger<span style="font-weight: normal;">條件</span></span></h4><div><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;">我們希望上一步驟選擇的CI Task建置完成後，自動觸發這個的CD流程，所以要加上Trigger條件</span><br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-LFkrO0ACJ5w/WmqMbAIfg5I/AAAAAAAAIaM/jGU4bXy_CZo17kKHN4h_1IdZAeNkN37KgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-LFkrO0ACJ5w/WmqMbAIfg5I/AAAAAAAAIaM/jGU4bXy_CZo17kKHN4h_1IdZAeNkN37KgCLcBGAs/s400/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-xUgj-OM9P4Y/WmqMr611LmI/AAAAAAAAIaQ/nfdvmcsj_88OOwqq6OK32BNanBRvghZ6gCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-xUgj-OM9P4Y/WmqMr611LmI/AAAAAAAAIaQ/nfdvmcsj_88OOwqq6OK32BNanBRvghZ6gCLcBGAs/s400/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div></div><div class="separator" style="clear: both; text-align: center;"><br></div><div><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><br></span></div><div><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><br></span></div><div><span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;"><br></span></div><div><br><br>#### <span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;">5.<span style="font-weight: normal;">新增</span>Enviroment Task &gt; Azure App Service Deploy</span><br></div><div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-iBKwQJIYa6Q/WmqM79F_lYI/AAAAAAAAIaY/gsTQ7EtWRywGnpyXXO42WAjG--EmzdfNACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-iBKwQJIYa6Q/WmqM79F_lYI/AAAAAAAAIaY/gsTQ7EtWRywGnpyXXO42WAjG--EmzdfNACLcBGAs/s400/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-DwVyGiM89Us/WmqNTD0Dv3I/AAAAAAAAIag/QcKJhKXT1RQPC1rYn-E50OCxSaDBwFYegCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-DwVyGiM89Us/WmqNTD0Dv3I/AAAAAAAAIag/QcKJhKXT1RQPC1rYn-E50OCxSaDBwFYegCLcBGAs/s400/1.png" alt></a></div>
+
+<h4 id="6-設定相關參數"><a href="#6-設定相關參數" class="headerlink" title="6.設定相關參數"></a>6.<span style="color: #777777; font-family: &quot;roboto slab&quot; , sans-serif; font-size: x-small;">設定相關參數</span></h4><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-SdtrEkvtTsU/WmqW3HlYaJI/AAAAAAAAIa0/LewJi_YI2qsNJH7MMi5KQNJiVdOwSvF-gCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-SdtrEkvtTsU/WmqW3HlYaJI/AAAAAAAAIa0/LewJi_YI2qsNJH7MMi5KQNJiVdOwSvF-gCLcBGAs/s1600/1.png" alt></a></div><strong>Azure subscription </strong>: 選擇你訂閱的Azure服務，基本如果是同一個帳號，下拉選單就可以看到<br><br><strong>Package or folder&nbsp;</strong>: 因為我們是採用WebDeploy的方式佈署，所以要輸入Pakage的路徑，紅色區塊請填你CI Task所設定的名稱，CI建置會放置在同名的資料夾底下，之後就是Drop底下建置出來的.zip檔<br><br>### 人員核准<br></div><div>依照上述步驟做完，基本上佈署流程大致上已經完成，但通常會有一些狀況是希望做佈署動作前能夠先透過人來審核，例如正式機佈署。 我們一定不希望隨便人簽入程式後，正式機的CD流程就自動觸發佈署去了。</div><div><br></div>
+
+<h4 id="設定審核人員"><a href="#設定審核人員" class="headerlink" title="設定審核人員"></a>設定審核人員</h4><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-9Fe6kin7wkU/WmqYnG25onI/AAAAAAAAIbA/54Z9iUfEdmM2_U9JBtD2SoevurGaoIsbACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-9Fe6kin7wkU/WmqYnG25onI/AAAAAAAAIbA/54Z9iUfEdmM2_U9JBtD2SoevurGaoIsbACLcBGAs/s400/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-ztGHArbq6VQ/WmqZCBvHSJI/AAAAAAAAIbE/sHDYhhNkmMI8LIkdzRjrGt__lGLvjb-ggCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-ztGHArbq6VQ/WmqZCBvHSJI/AAAAAAAAIbE/sHDYhhNkmMI8LIkdzRjrGt__lGLvjb-ggCLcBGAs/s400/1.png" alt></a></div><div><strong>Any Order : </strong>上面所選的人員每一個都要核准才會觸發</div><div><br></div><div><strong>In sequence :&nbsp;</strong>上面所選的人員每一個都要<strong>依序</strong>核准才會觸發</div><div><br></div><div><strong>Any One Order&nbsp;**</strong>&nbsp;:&nbsp;<strong>上面所選的人員</strong>任何一人核准即可**</div><div><br></div><div><br></div><div>如果有卡核准的話，Release不會自動執行，而是看到這個畫面</div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-tp3q8i0NZaM/WmqbBeT2hOI/AAAAAAAAIbc/B20xUeyN9YwlKHd7EYOqskqYywkF6SbCACLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-tp3q8i0NZaM/WmqbBeT2hOI/AAAAAAAAIbc/B20xUeyN9YwlKHd7EYOqskqYywkF6SbCACLcBGAs/s400/1.png" alt></a></div><div>點兩下進去後可以核准</div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-KP6jYJbXaB4/WmqbqoYwdjI/AAAAAAAAIbo/ASJM3yKXy_8twOKj380r6aoKhzZI3em_QCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-KP6jYJbXaB4/WmqbqoYwdjI/AAAAAAAAIbo/ASJM3yKXy_8twOKj380r6aoKhzZI3em_QCLcBGAs/s400/1.png" alt></a></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br><br>### 選擇特定版本佈署<br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-Yj3LrhbV4OI/WmqcDGeKk8I/AAAAAAAAIbs/5zJArJ9S2JoeganmsxpN0oOLlnHb9mlpgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-Yj3LrhbV4OI/WmqcDGeKk8I/AAAAAAAAIbs/5zJArJ9S2JoeganmsxpN0oOLlnHb9mlpgCLcBGAs/s400/1.png" alt></a></div><div><br></div><div><br></div><div><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-SCDaX0YHudE/WmqcPmnMTZI/AAAAAAAAIb0/squNlawHwwgeW54wH2D4ku-wSVQLFrhdgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-SCDaX0YHudE/WmqcPmnMTZI/AAAAAAAAIb0/squNlawHwwgeW54wH2D4ku-wSVQLFrhdgCLcBGAs/s400/1.png" alt></a></div><div><br></div><div><br></div><div><br></div>
+
+<h3 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h3><div>以上這邊，之後只要有人簽入程式，CI流程有設定Trigger的話就會自動觸發，CI流程沒問題，CD流程就會接著做，再依據有無卡審核做後續行為。</div><div><br></div><div>每次的執行狀況也都可以清楚看到狀況</div><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-2UvlMPIFHiA/WmqaGN8VLpI/AAAAAAAAIbQ/C1GftxgAeBIqRCPMuJCNQU39Bu32ILIvQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-2UvlMPIFHiA/WmqaGN8VLpI/AAAAAAAAIbQ/C1GftxgAeBIqRCPMuJCNQU39Bu32ILIvQCLcBGAs/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-QXjIEo2-s1M/WmqaX4umkhI/AAAAAAAAIbU/Sg2soTofoawjOVzoZtEC98DLqtFGATFnQCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-QXjIEo2-s1M/WmqaX4umkhI/AAAAAAAAIbU/Sg2soTofoawjOVzoZtEC98DLqtFGATFnQCLcBGAs/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><br></div><div>下一篇來說如何透過VSTS來執行切換Slot，感覺還有好幾篇可以寫…</div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/25/【CI-CD】1-如何透過VSTS來達成CI的目標/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1078,755 +1954,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/11/16/【MVC】Router-Constraint/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/16/【MVC】Router-Constraint/" itemprop="url">【MVC】Router Constraint</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-11-16T11:17:00+08:00">
-                2017-11-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/16/【MVC】Router-Constraint/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/16/【MVC】Router-Constraint/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>當今天有個網址的需求是 <a href="http://abcdefg.com/【使用者暱稱】，使用者暱稱帶到誰的就會到個人頁網址，EX" target="_blank" rel="noopener">http://abcdefg.com/【使用者暱稱】，使用者暱稱帶到誰的就會到個人頁網址，EX</a> : <a href="http://abcdefg.com/toyo" target="_blank" rel="noopener">http://abcdefg.com/toyo</a> 就連到Toyo個人頁面，<a href="http://abcdefg.com/steven就連到Steven個人頁，那我們Router可以寫成" target="_blank" rel="noopener">http://abcdefg.com/steven就連到Steven個人頁，那我們Router可以寫成</a><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Route(<span class="meta-string">"~/toyo"</span>)</span>]</span><br><span class="line">[<span class="meta">Route(<span class="meta-string">"~/steven"</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">Content</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>這樣寫的確兩個網址都能連到了，但卻抓不到UserName所以不知道怎麼顯示個人頁，調整一下<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Route(<span class="meta-string">"~/&#123;UserName&#125;"</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">Content</span>(<span class="params"><span class="keyword">string</span> userName</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   ViewBag.Name = userName;</span><br><span class="line">   <span class="keyword">return</span> View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>下個問題來了，Tom明明不是這邊的用戶，卻也會導到這個Action，導致後端抓不到對應資料顯示錯誤，能不能只有abcdefg.com/Toyo 跟 abcdefg.com/Steven 的時候才導來這，其他什麼阿貓阿狗，甚至是常用的Index、Home、Menu之類的不會跑錯。</p>
-<p>這時候RouteConstraint就派上用場了<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UserNameConstraint</span> : <span class="title">IRouteConstraint</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">Match</span>(<span class="params">HttpContextBase httpContext, Route route, <span class="keyword">string</span> parameterName, RouteValueDictionary values, RouteDirection routeDirection</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (values.ContainsKey(parameterName))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> UserName = values[parameterName] <span class="keyword">as</span> <span class="keyword">string</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> UserName.ToLower() == <span class="string">"toyo"</span> ||</span><br><span class="line">                   UserName.ToLower() == <span class="string">"steven"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>接著在RouteConfig註冊這組Constraint，讓RouteAttribute可以使用<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RouteConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RegisterRoutes</span>(<span class="params">RouteCollection routes</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        routes.IgnoreRoute(<span class="string">"&#123;resource&#125;.axd/&#123;*pathInfo&#125;"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//註冊Router ConStraint</span></span><br><span class="line">        <span class="keyword">var</span> constraintsResolver = <span class="keyword">new</span> DefaultInlineConstraintResolver();</span><br><span class="line">        constraintsResolver.ConstraintMap.Add(<span class="string">"MustUserName"</span>, <span class="keyword">typeof</span>(UserNameConstraint));</span><br><span class="line">        routes.MapMvcAttributeRoutes(constraintsResolver);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>將RouteAttribute的UserName加上這個限制<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Route(<span class="meta-string">"~/&#123;UserName:MustUserName&#125;"</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">MyContent</span>(<span class="params"><span class="keyword">string</span> userName</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ViewBag.Name = userName;</span><br><span class="line">    <span class="keyword">return</span> View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>這樣只要UserName不是帶Toyo或是Steven的就都不會導到這個Action了。</p>
-<p>其實RouteConstraint官方已經提供一下基礎的限制可以使用，例如一定要是Int，字串長度之類的方便用法，而且更重要的是在這案例之中，使用者名稱我們是寫死的，只要把那段改成抓外部來源，例如資料庫之類的，這樣就能後台使用者有新增時，Route的限制就自動更新了</p>
-<p>延伸閱讀:<br><a href="https://blogs.msdn.microsoft.com/webdev/2013/10/17/attribute-routing-in-asp-net-mvc-5/" target="_blank" rel="noopener">Attribute Routing in ASP.NET MVC 5</a><br> <a href="http://demo.tc/post/786" target="_blank" rel="noopener">DemoShop :&nbsp;ASP.NET MVC Route 自訂限制條件（constraints）的技巧</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/11/15/【Tools】修復Html缺少Close-Tag問題-HtmlAgilityPack/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/15/【Tools】修復Html缺少Close-Tag問題-HtmlAgilityPack/" itemprop="url">【Tools】修復Html缺少Close Tag問題 - HtmlAgilityPack</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-11-15T09:36:00+08:00">
-                2017-11-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/15/【Tools】修復Html缺少Close-Tag問題-HtmlAgilityPack/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/15/【Tools】修復Html缺少Close-Tag問題-HtmlAgilityPack/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>開放後台給非工程人員編輯Html，往往都要擔負一些Html Tag錯誤整導致破版的風險。這次就碰到上線前發現部分資料區塊缺少了Close Tag，導致只要讀到那些資料的頁面都破版，但上千筆資料請人一筆一筆去檢查又太不切實際。所以就研究了一下是否有套件可以處理這類的問題，結果就發現了一個強大的套件 :&nbsp;<a href="http://html-agility-pack.net/?z=codeplex" target="_blank" rel="noopener">HtmlAgilityPack</a></p>
-<div class="note info"><p>該套件主要功能是拿來解析網頁，似乎更多人是拿來製作爬蟲工具，但他同時也很貼心的提供API來分析Html Tag是否正確</p></div>
-<p>首先先從Nuget載入該套件</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-cMfu_9lAHPY/WguV9l_rY0I/AAAAAAAAIQM/3thXpbJDKr4ZQPGb5T7Ff-waUuo7p6tWgCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-cMfu_9lAHPY/WguV9l_rY0I/AAAAAAAAIQM/3thXpbJDKr4ZQPGb5T7Ff-waUuo7p6tWgCLcBGAs/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png" alt></a></div><br>然後用以下程式來進行Html修復<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//商品的尺寸報表Html有錯誤</span></span><br><span class="line"><span class="keyword">var</span> ps = <span class="keyword">this</span>.Products.Where(x = &gt; x.SizeReport != <span class="literal">null</span>);</span><br><span class="line"><span class="keyword">foreach</span> (<span class="keyword">var</span> p <span class="keyword">in</span> ps)</span><br><span class="line">&#123;</span><br><span class="line"> HtmlDocument doc = <span class="keyword">new</span> HtmlDocument();</span><br><span class="line"> <span class="comment">//fix when nesting errors are detected</span></span><br><span class="line"> doc.OptionFixNestedTags = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//將Html Editor編輯的東西丟進去</span></span><br><span class="line"> doc.LoadHtml(p.SizeReport.ToString());</span><br><span class="line"></span><br><span class="line"> <span class="comment">//將修復後的Html結果存到MemoryStream</span></span><br><span class="line"> MemoryStream stream = <span class="keyword">new</span> MemoryStream();</span><br><span class="line"> doc.Save(stream);</span><br><span class="line"> <span class="keyword">try</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">using</span> (StreamReader reader = <span class="keyword">new</span> StreamReader(stream, Encoding.Default))</span><br><span class="line">  &#123;</span><br><span class="line">   stream.Position = <span class="number">0</span>;</span><br><span class="line">   p.SizeReport = reader.ReadToEnd(); <span class="comment">//儲存回DB</span></span><br><span class="line">   <span class="keyword">this</span>.SubmitChanges();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">catch</span> (Exception ex)</span><br><span class="line"> &#123;</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/11/09/【Azure】如何跨DB讀取資料/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/11/09/【Azure】如何跨DB讀取資料/" itemprop="url">【Azure】如何跨DB讀取資料</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-11-09T10:05:00+08:00">
-                2017-11-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/09/【Azure】如何跨DB讀取資料/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/09/【Azure】如何跨DB讀取資料/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>忙了一大段時間，突然發現好長時間沒更新部落格了，這段時間專案實在太忙了，慢慢的再把這些時間學到的東西慢慢筆記下來，今天就先從Azure開始吧!!</p>
-<p>以前如果有跨DB存取或Join Table，通常都會請DBA開Link DB的方式來處理，但在Azure SQL上面就沒有這個選項了</p>
-<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-LvGu3FglCEI/WgOxsaEfz7I/AAAAAAAAIP8/3xQmoM8lFCs4oIawixv-HHidz_NHEjRpQCEwYBhgL/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-LvGu3FglCEI/WgOxsaEfz7I/AAAAAAAAIP8/3xQmoM8lFCs4oIawixv-HHidz_NHEjRpQCEwYBhgL/s1600/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">跨DB讀取資料</td></tr></tbody></table><br>但它推出了一個語法來達成這樣子的需求 External Data Source，假設我在<strong>A資料庫</strong>，想要Join <strong>B資料庫</strong>的<strong>PromoEmail Table</strong>取得行銷案的Email資料來做交叉分析，這時候我們可以這樣寫<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">MASTER</span> <span class="keyword">KEY</span> ENCRYPTION <span class="keyword">BY</span> <span class="keyword">PASSWORD</span> = <span class="string">'This Account Password'</span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> SCOPED CREDENTIAL AzureStorageCredential </span><br><span class="line"><span class="keyword">WITH</span> <span class="keyword">IDENTITY</span> = <span class="string">'This DataBase Login Account'</span>, </span><br><span class="line">SECRET = <span class="string">'This Account Password'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">DATA</span> <span class="keyword">SOURCE</span> RefPromoTableDataBase</span><br><span class="line"><span class="keyword">WITH</span>  </span><br><span class="line">(  </span><br><span class="line">    <span class="keyword">TYPE</span>=RDBMS,  </span><br><span class="line">    LOCATION =<span class="string">'Your Azure SQL Database Location'</span>,  </span><br><span class="line">    DATABASE_NAME = <span class="string">'B'</span>,  <span class="comment">--外連B資料庫</span></span><br><span class="line">    CREDENTIAL = AzureStorageCredential</span><br><span class="line">);  </span><br><span class="line"></span><br><span class="line"><span class="comment">--建立一個External Table</span></span><br><span class="line"><span class="comment">--這邊Schema就取決於你要從B Database的PromoEmail Table取得什麼欄位</span></span><br><span class="line"><span class="comment">--欄位名稱跟資料型態要相同</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> [dbo].[PromoEmail](  </span><br><span class="line">    [Email] [<span class="built_in">varchar</span>] (<span class="number">300</span>) <span class="keyword">Not</span> <span class="literal">NULL</span>  </span><br><span class="line">)  </span><br><span class="line"><span class="keyword">WITH</span>  </span><br><span class="line">(  </span><br><span class="line">    DATA_SOURCE = RefPromoTableDataBase</span><br><span class="line">);    </span><br><span class="line"></span><br><span class="line"><span class="comment">--在A資料庫Join PromoEmail Table</span></span><br><span class="line"><span class="comment">--看看行銷案轉換成訂單的績效</span></span><br><span class="line"><span class="keyword">SELECT</span> email</span><br><span class="line"><span class="keyword">FROM</span> [<span class="keyword">Order</span>] o</span><br><span class="line"><span class="keyword">Join</span> PromoEmail pe <span class="keyword">on</span> o.UserEmail = pe.Email</span><br></pre></td></tr></table></figure></p>
-<p>當然最後做完後，要記得把這些資源都釋放掉</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> PromoEmail</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">EXTERNAL</span> <span class="keyword">DATA</span> <span class="keyword">SOURCE</span> RefPromoTableDataBase</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">DATABASE</span> SCOPED CREDENTIAL AzureStorageCredential  </span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">MASTER</span> <span class="keyword">KEY</span></span><br></pre></td></tr></table></figure>
-<p>參考資料<br><a href="http://www.c-sharpcorner.com/article/cross-database-queries-in-azure-sql/" target="_blank" rel="noopener">Cross Database Queries In Azure SQL</a><br><a href="https://sqldusty.com/2017/05/30/setting-up-cross-database-queries-in-azure-sql-database/" target="_blank" rel="noopener">SETTING UP CROSS DATABASE QUERIES IN AZURE SQL DATABASE</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/25/【Unit-Test】Day-7-Assert/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/25/【Unit-Test】Day-7-Assert/" itemprop="url">【Unit Test】Day 7 - Assert</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-25T11:40:00+08:00">
-                2017-04-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/學習單元測試/" itemprop="url" rel="index">
-                    <span itemprop="name">學習單元測試</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/04/25/【Unit-Test】Day-7-Assert/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/25/【Unit-Test】Day-7-Assert/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="note info"><p>Demo檔案 : <a href="https://github.com/toyo0103/UnitTest_Day7" target="_blank" rel="noopener">Git傳送門</a></p></div>
-<p>今天要來談談驗證，還記得之前的PTX範例都只驗證名稱嗎？<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//assert</span></span><br><span class="line">   Assert.AreEqual(actual.Name, expected);</span><br></pre></td></tr></table></figure></p>
-<p>因為有說如果是參考型別的話，Assert.AreEqual可能會驗證失敗<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過Assert驗證參考型別()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            Guid ID = Guid.NewGuid();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="keyword">new</span> Member</span><br><span class="line">            &#123;</span><br><span class="line">                ID = ID,</span><br><span class="line">                Name = <span class="string">"Name"</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = <span class="keyword">new</span> Member</span><br><span class="line">            &#123;</span><br><span class="line">                ID = ID,</span><br><span class="line">                Name = <span class="string">"Name"</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(expected,actual);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>結果 </p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-8fAoTQY1vvc/WP6tmPHut6I/AAAAAAAAINs/ndANX4zMz30h6IlZV0MP4xjltHadHZ-7gCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%25889.59.30.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-8fAoTQY1vvc/WP6tmPHut6I/AAAAAAAAINs/ndANX4zMz30h6IlZV0MP4xjltHadHZ-7gCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%25889.59.30.png" alt></a></div>試試看改一下寫法<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過Assert驗證參考型別<span class="number">2</span>()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            Guid ID = Guid.NewGuid();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="keyword">new</span> Member</span><br><span class="line">            &#123;</span><br><span class="line">                ID = ID,</span><br><span class="line">                Name = <span class="string">"Name"</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = expected;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(expected, actual);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p><a href="https://3.bp.blogspot.com/-b5RzbbKJujg/WP6uXB1tHdI/AAAAAAAAIN0/_8LddyllasU-Ztc1Ims04uiExvBgeHetgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%258810.02.51.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-b5RzbbKJujg/WP6uXB1tHdI/AAAAAAAAIN0/_8LddyllasU-Ztc1Ims04uiExvBgeHetgCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%258810.02.51.png" alt></a></p>
-<p>原來Assert.AreEqual當碰到參考型別的時候是驗證記憶體位置，但其實像我是寫商業邏輯的，常常在乎的是透過方法執行完後得到的DTO（Data Transfer Object）是否符合預期，這樣其實Assert對我來說不是那麼方便。<br><div class="note info"><p>MSDN: <a href="https://msdn.microsoft.com/zh-tw/library/microsoft.visualstudio.testtools.unittesting.assert.aspx" target="_blank" rel="noopener">Assert 類別</a></p></div><br>如果我真的只想驗證執行完的DTO內容是否符合預期，該怎麼做呢？<strong>來看看<a href="http://fluentassertions.com/documentation.html" target="_blank" rel="noopener">FluentAssertions</a>吧</strong></p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-FlJIcwQ1rxg/WP67GWbFDUI/AAAAAAAAIOQ/IDGl70pgSzgDDoNcOPPmlGT0fTXU_JPawCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%258810.57.08.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-FlJIcwQ1rxg/WP67GWbFDUI/AAAAAAAAIOQ/IDGl70pgSzgDDoNcOPPmlGT0fTXU_JPawCLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%258810.57.08.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><br>在單元測試專案用Nuget安裝完成後，來看看範例寫法<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證參考型別()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            Guid ID = Guid.NewGuid();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="keyword">new</span> Member</span><br><span class="line">            &#123;</span><br><span class="line">                ID = ID,</span><br><span class="line">                Name = <span class="string">"Name"</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = <span class="keyword">new</span> Member</span><br><span class="line">            &#123;</span><br><span class="line">                ID = ID,</span><br><span class="line">                Name = <span class="string">"Name"</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.ShouldBeEquivalentTo(expected);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>就這麼簡單，它就會幫你驗證內容的值而不是記憶體位置，而且可讀性也很高，再舉幾個範例</p>
-<p><strong>是否為Null</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證不為Null()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = <span class="keyword">new</span> Member</span><br><span class="line">            &#123;</span><br><span class="line">                ID = Guid.NewGuid(),</span><br><span class="line">                Name = <span class="string">"Name"</span></span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.Should().NotBeNull();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證為Null()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            Member actual = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.Should().BeNull();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>**</p>
-<hr>
-<p><strong>
-</strong>驗證數字**<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證數字()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">int</span> actual = <span class="number">123</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.Should().Be(<span class="number">123</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>驗證趨近於</strong><br>倍精準相加時會有些微誤差<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證趨近於()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> a = <span class="number">1.3</span>;</span><br><span class="line">            <span class="keyword">var</span> b = <span class="number">0.1</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">double</span> actual = a + b ;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.Should().Be(<span class="number">1.4</span>);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-BrAxR_LWsk8/WP7A2lLy8DI/AAAAAAAAIOg/psK_O4jn2loxOGfX-u0Gf1KNMWL-NGHIgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%258811.20.45.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-BrAxR_LWsk8/WP7A2lLy8DI/AAAAAAAAIOg/psK_O4jn2loxOGfX-u0Gf1KNMWL-NGHIgCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-25%2B%25E4%25B8%258A%25E5%258D%258811.20.45.png" alt></a></div>驗證地方可改成<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//assert</span></span><br><span class="line"><span class="comment">//趨近於1.4 且如果誤差小於0.00001時視為一樣</span></span><br><span class="line">actual.Should().BeApproximately(<span class="number">1.4</span>,<span class="number">0.00001</span>);</span><br></pre></td></tr></table></figure></p>
-<p><strong>驗證排序</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證升冪排序()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> parameter = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt; &#123; <span class="number">4</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span> &#125;;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = parameter.OrderBy(x=&gt;x);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.Should().BeInAscendingOrder();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> 透過FluentAssertions驗證降冪排序()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> parameter = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt; &#123; <span class="number">4</span>, <span class="number">7</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">8</span> &#125;;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = parameter.OrderByDescending(x =&gt; x);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            actual.Should().BeInDescendingOrder();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>結論</strong><br>FluentAssertions是個閱讀性高且豐富的驗證套件，以上提供一些我常常使用到的斷言方法，還有很多可以參考官網文件，那今天就先到這了！！</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/24/【Unit-Test】Day-6-單元測試初始化與清除/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/24/【Unit-Test】Day-6-單元測試初始化與清除/" itemprop="url">【Unit Test】Day 6 - 單元測試初始化與清除</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-24T11:33:00+08:00">
-                2017-04-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/學習單元測試/" itemprop="url" rel="index">
-                    <span itemprop="name">學習單元測試</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/04/24/【Unit-Test】Day-6-單元測試初始化與清除/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/24/【Unit-Test】Day-6-單元測試初始化與清除/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="note info"><p>Demo檔案 : <a href="https://github.com/toyo0103/UnitTest_Day6" target="_blank" rel="noopener">Git傳送門</a></p></div>
-<p>今天要來看看單元測試的初始化設定與清除</p>
-<p><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-rdIHeq-FScw/WPt7g9bnUSI/AAAAAAAAIMQ/2259b_3JrGc7ie6uQsiv0k09fX53AaNAACLcB/s1600/UnitTest03-Fig1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-rdIHeq-FScw/WPt7g9bnUSI/AAAAAAAAIMQ/2259b_3JrGc7ie6uQsiv0k09fX53AaNAACLcB/s640/UnitTest03-Fig1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">圖片出處：<a href="https://www.codeproject.com/Articles/1165536/Unit-Test-Initialization-and-Cleanup" target="_blank" rel="noopener">https://www.codeproject.com/Articles/1165536/Unit-Test-Initialization-and-Cleanup</a></td></tr></tbody></table>上圖是單元測試在執行時的生命週期，知道了這特性的時候我們就可以依據測試的需要來加入適當的初始化設定。</p>
-<p><strong><br>**</strong>以下範例來說明執行順序**<br>這邊準備了一個Static Class，裡面有個Get方法很簡單的回傳Now這個屬性值<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">Demo</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> Now &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">return</span> Now;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>然後為它建立單元測試</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-X86wEgoGgkI/WP1gOEKaSiI/AAAAAAAAIMg/V1bLniG0AOEAJmbzJuzDXQNm7CVgijKYACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258810.17.04.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-X86wEgoGgkI/WP1gOEKaSiI/AAAAAAAAIMg/V1bLniG0AOEAJmbzJuzDXQNm7CVgijKYACLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258810.17.04.png" alt></a></div><br>先加上一個TestHook的檔案</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-6l9LIosfyy4/WP1p_8gzszI/AAAAAAAAIMw/28CyY4ytG74DIybRasVkfi7tIjsrMCJtwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258810.58.35.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-6l9LIosfyy4/WP1p_8gzszI/AAAAAAAAIMw/28CyY4ytG74DIybRasVkfi7tIjsrMCJtwCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258810.58.35.png" alt></a></div><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestHook</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">AssemblyInitialize</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">AssemblyInit</span>(<span class="params">TestContext context</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - AssemblyInitialize"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">AssemblyCleanup</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">AssemblyCleanUp</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - AssemblyCleanup"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>接著撰寫DemoTests.cs<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DemoTests</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">ClassInitialize</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ClassInit</span>(<span class="params">TestContext context</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - ClassInitialize"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestInitialize</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">TestInit</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - TestInitialize"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetTest</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - Test1"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestCleanup</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">TestCleanUp</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - TestCleanup"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">ClassCleanup</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ClassCleanUp</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - ClassCleanup"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>這裡目標很間單，測試的內容不是重點，而是希望透過輸出來看到執行的順序<br><div class="note info"><p>可能有人會注意到為何有些方法例如ClassCleanup是需要Static，有些又需要帶入TestContext的參數？<br>這其實是規定，如果不按照規則撰寫的話，執行單元測試時就會得到以下錯誤訊息<br><a href="https://2.bp.blogspot.com/-D28yVaI4mMo/WP1rM1wtoKI/AAAAAAAAIM4/Wa2QHfFy3m41NHYlJm8-NtttcjKt07D6ACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258810.29.04.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-D28yVaI4mMo/WP1rM1wtoKI/AAAAAAAAIM4/Wa2QHfFy3m41NHYlJm8-NtttcjKt07D6ACLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258810.29.04.png" alt></a></p></div></p>
-<p><strong>接著執行單元測試看看輸出，點擊下面的輸出按鈕</strong></p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-PpLe69AriAs/WP1rrh8-ELI/AAAAAAAAINA/Ukg8A3hKfoknWO7IKj5zCsEZ-M306bqhwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.05.30.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-PpLe69AriAs/WP1rrh8-ELI/AAAAAAAAINA/Ukg8A3hKfoknWO7IKj5zCsEZ-M306bqhwCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.05.30.png" alt></a></div><strong>
-</strong></p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-_v6merhgenM/WP1sBwJRZ7I/AAAAAAAAINI/qS2TUZfSDE8yXnE6wI_mHkE94YrW2ekRwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.07.32.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-_v6merhgenM/WP1sBwJRZ7I/AAAAAAAAINI/qS2TUZfSDE8yXnE6wI_mHkE94YrW2ekRwCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.07.32.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><strong>這樣看就很明顯知道順序了！！</strong><br><strong>
-</strong><br>讓我們加上第二個測試<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetTest2</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Console.WriteLine(<span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125; - Test2"</span>, Demo.Get()));</span><br><span class="line">            Demo.Now += <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
-<p>全部測試執行然後看看結果</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-wm4jDNZ5sEc/WP1s6kv5NNI/AAAAAAAAINU/Df741_DV140IV1YsYfPrtKe-xPuOPNSDACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.10.38.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-wm4jDNZ5sEc/WP1s6kv5NNI/AAAAAAAAINU/Df741_DV140IV1YsYfPrtKe-xPuOPNSDACLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.10.38.png" alt></a></div></p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-lXVB0a3ukHo/WP1tG9-eswI/AAAAAAAAINY/aDrjV6DTRWIBHXlGvYJ-rmhgq7gbU-9kACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.11.51.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-lXVB0a3ukHo/WP1tG9-eswI/AAAAAAAAINY/aDrjV6DTRWIBHXlGvYJ-rmhgq7gbU-9kACLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.11.51.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-rNUhwY9nnwE/WP1tKQDwjHI/AAAAAAAAINc/DFmtGmn_dMIhsGYfCWOqtfAdCNV4fircgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.12.06.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-rNUhwY9nnwE/WP1tKQDwjHI/AAAAAAAAINc/DFmtGmn_dMIhsGYfCWOqtfAdCNV4fircgCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-24%2B%25E4%25B8%258A%25E5%258D%258811.12.06.png" alt></a></div><br>可以發現<strong>TestInitialize</strong>與<strong>TestCleanUp</strong>是每個測試在執行前/後都會執行一次的，而且要特別強調一下，<span style="color: red; font-weight: bold;">每個單元測試執行的順序是不固定的</span>，所以如果在單元測試中有些初始化的動作，切記不要依賴每個測試之間的順序關係，否則可能會不定時的產生錯誤，請把每個測試都當成是獨立且無相依關係！！</p>
-<p>從這個範例也可以看得到一個結論，如果在測試中有用到Production Code中Static的參數或屬性，請記得養成良好習慣，要在CleanUp的方法中恢復它的預設值，否則Static是共用的，如果其他測試有用到同一個Static屬性，而互相改來改去不初始化，就很可能發生單元測試時好時壞的問題，這是切身之痛請勿以身試法ＸＤＤ</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1874,7 +2006,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">190</span>
+                  <span class="site-state-item-count">195</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1896,7 +2028,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>

@@ -293,6 +293,780 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/05/07/sql_output/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/07/sql_output/" itemprop="url">【SQL】Output</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-05-07T10:36:00+08:00">
+                2019-05-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/05/07/sql_output/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/05/07/sql_output/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/images/20190507/0.jpg" alt="/images/20190507/0.jpg"></p>
+<h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>DBA 反應偵測到有個 Update Query 很頻繁，且通常緊接著 Update 後都會再進 Select 把剛剛 Update 的資料拉走，資料量太大時頻率太高導致 SQL 效能瓶頸，建議調整成 Update 後直接把剛剛異動的資料拉走，而不是拆兩段查詢。</p>
+<h1 id="解決方案"><a href="#解決方案" class="headerlink" title="解決方案"></a>解決方案</h1><p>當 SQL Server 執行 Update 時會 Lock 相關要異動的資料，並把異動前後的資料放入 Log 中，如果希望能在一次 Query 中就把資料 Update 並把影響到的資料回傳，可以透過 <code>Ouput</code> 這個子句來達成</p>
+<div class="note info"><p>Ouput 可用於以下情境</p>
+<p>Delete</p>
+<p>Insert</p>
+<p>Update</p>
+<p>Merge</p></div>
+<p>我們有一張表，紀載著每個人的名稱與學期分數</p>
+<p><img src="/images/20190507/1.png" alt="/images/20190507/1.png"></p>
+<p>老師大發慈悲想把低於 60 分的人都改成 60 分及格，這時候語法可以這樣下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DECLARE</span> @UpdateLog <span class="keyword">table</span>(</span><br><span class="line">	<span class="keyword">Id</span> <span class="built_in">int</span> <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	<span class="keyword">Name</span> <span class="keyword">nvarchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	OriScore <span class="built_in">int</span> <span class="keyword">not</span> <span class="literal">null</span>,</span><br><span class="line">	NewScore <span class="built_in">int</span> <span class="keyword">not</span> <span class="literal">null</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">UPDATE</span> dbo.[<span class="keyword">User</span>]</span><br><span class="line"><span class="keyword">SET</span> Score = <span class="number">60</span></span><br><span class="line"><span class="keyword">OUTPUT</span> INSERTED.Id,</span><br><span class="line">	   INSERTED.Name,</span><br><span class="line">	   DELETED.Score,</span><br><span class="line">	   INSERTED.Score</span><br><span class="line"><span class="keyword">INTO</span> @UpdateLog</span><br><span class="line"><span class="keyword">WHERE</span> Score &lt; <span class="number">60</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> @UpdateLog</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20190507/2.png" alt="/images/20190507/2.png"></p>
+<div class="note info"><p>參考資料</p>
+<p><a href="https://docs.microsoft.com/zh-tw/sql/t-sql/queries/output-clause-transact-sql?view=sql-server-2017" target="_blank" rel="noopener">Microsoft - OUTPUT 子句 (Transact-SQL)</a></p>
+<p><a href="https://www.essentialsql.com/sql-update-statement/" target="_blank" rel="noopener">Use SQL UPDATE to Query and Modify Data</a></p></div>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/04/30/aws_windows_ec2_cant_access_metadata/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/30/aws_windows_ec2_cant_access_metadata/" itemprop="url">【AWS】EC2 can't access metadata service</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-04-30T15:52:00+08:00">
+                2019-04-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/30/aws_windows_ec2_cant_access_metadata/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/30/aws_windows_ec2_cant_access_metadata/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>EC2 上的 windows VM 突然無法存取相對應的 AWS 服務，而這些權限原本都是透過 IAM Role 賦予的，之前文章有提過 AWS 機器是如何透過 IAM Role 得知自己有哪些權限</p>
+<div class="note info"><p><a href="/2019/02/19/windows_contianer_iamrole_/">Windows IAM Role 問題</a></p></div>
+<p>在該機器呼叫 metadata service 會回應錯誤</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl 169.254.169.254</span></span><br></pre></td></tr></table></figure>
+<p>詢問對 AWS 比較熟的一些同事，聽說在 windows server 2012 版本之後，更換 Instance Type 重新開機時會發生</p>
+<p><br></p>
+<h1 id="解決方法"><a href="#解決方法" class="headerlink" title="解決方法"></a>解決方法</h1><p>執行 C:\ProgramData\Amazon\EC2-Windows\Launch\Scripts\InitializeInstance.ps1 ，它會重新 Binding 一些相關設定，執行完後就好了</p>
+<div class="note info"><p>參考文章</p>
+<p><a href="https://stackoverflow.com/questions/45095261/aws-ec2-windows-10-cant-access-metadata" target="_blank" rel="noopener">[Stackoverflow] AWS EC2 Windows 10 can’t access metadata</a></p></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/04/30/jenkins_update_remote_docker_container/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/30/jenkins_update_remote_docker_container/" itemprop="url">【Docker】透過 Jenkins 重新部屬遠端機器 Container</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-04-30T10:00:00+08:00">
+                2019-04-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/30/jenkins_update_remote_docker_container/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/30/jenkins_update_remote_docker_container/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/images/20190430/0.jpg" alt="/images/20190430/0.jpg"></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>公司慢慢在導入 Docker 等相關 Container 技術，但因為剛起步所以很多 CI/CD 流程都還在優化建構中，前幾天為了能讓 Jenkins 順利重新部屬新版 Container 搞得焦頭爛額，乾脆把這些過程記錄下來</p>
+<p><br></p>
+<h2 id="部屬流程"><a href="#部屬流程" class="headerlink" title="部屬流程"></a>部屬流程</h2><p><img src="/images/20190430/1.png" alt="/images/20190430/1.png"></p>
+<p>這個服務是由三個 Component 來組成，分開維護開發，換句話說如果有任何一個組件更新，整個服務都需要更新並重新部屬，目前的流程是各個 Component 更新後都會觸發 CD 流程將完成品打包放到 S3。</p>
+<p>而我這次做得線就是 Docker Image 那條，當有任何 Component 更新了都會觸發，我會將 S3 的各個 Component 最新版抓下來後整理，接著再打包一版 Build Docker Image 會需要的原料放到 S3。</p>
+<p>接著 Jenkins 接手將 Docker Image Artifact 抓下來開始 build =&gt; push =&gt; 換掉遠端機器正在跑的 Container。</p>
+<p><br></p>
+<h1 id="設定權限"><a href="#設定權限" class="headerlink" title="設定權限"></a>設定權限</h1><p> 所以第一步是釐清 Jenkins 所使用的 user 是否有執行 docker 相關指令的權限，後面都簡稱這位使用者為 <code>ciuser</code>。</p>
+<p>因為 docker 為 service 等級的服務，預設是 admin 才能使用相關指令，所以理所當然地馬上卡關</p>
+<p><img src="/images/20190430/2.png" alt="/images/20190430/2.png"></p>
+<p>要讓使用者有執行 docker 相關指令的權限有兩種方法</p>
+<ol>
+<li>賦予該 User Admin 的權限</li>
+<li>開一個群組，並設定 docker daemon ，賦予該群組權限</li>
+</ol>
+<p>顯然 (1) 不太可能(雖然最簡單)，所以這邊採取 (2) 的方法</p>
+<p><strong>* Windows 上右鍵 &gt; Computer Management</strong></p>
+<p><img src="/images/20190430/3.png" alt="/images/20190430/3.png"></p>
+<p><strong>* Local Users and Groups &gt;&gt; Groups </strong></p>
+<p><img src="/images/20190430/4.png" alt="/images/20190430/4.png"></p>
+<p><strong>* New Group &gt;&gt; 建立一個群組 &gt;&gt; 將 ciuser 加進去</strong></p>
+<p><img src="/images/20190430/5.png" alt="/images/20190430/5.png"></p>
+<p><strong>* 到 C:\ProgramData\docker\config 修改 daemon.json 檔案</strong>(如果沒有這個檔案，請自己建一個)</p>
+<p>將剛剛的群組加進去</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> <span class="attr">"group"</span>: <span class="string">"docker-users"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>* 重新啟動 docker service </strong> (這邊需要 admin 權限)</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Powershell</span></span><br><span class="line">$ <span class="built_in">Restart-Service</span> docker</span><br></pre></td></tr></table></figure>
+<p>做到這邊你在用 <code>ciuser</code> 下 docker command 應該就可以動了</p>
+<p><img src="/images/20190430/6.png" alt="/images/20190430/6.png"></p>
+<p>PS. 如果還不行，請先登出 <code>ciuser</code> 再登入，因為將使用者加入一個群組或賦予權限，重登才會生效</p>
+<div class="note info"><p>參考文章</p>
+<p><a href="https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-docker/configure-docker-daemon" target="_blank" rel="noopener">Docker Engine on Windows</a></p></div>
+<p>到這邊應該已經打通 <code>ciuser</code> 可以執行 docker command 的權限了，接著在 Jenkins 設定 build 、 push Image的流程測試會發現依然錯誤</p>
+<div class="note info"><p>error during connect: Get http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.40/containers/json: open //./pipe/docker_engine: The system cannot find the file specified. In the default daemon configuration on Windows, the docker client must be run elevated to connect. This error may also indicate that the docker daemon is not running.</p></div>
+<p>但同樣的指令不透過 Jenkins 執行，而是用遠端登入直接執行會過，這個問題想了很久還是搞不懂為什麼，明明使用的 User 相同 …</p>
+<p>但找到了一篇文章也提到相同的事情並提供了解決方案，主要是需要調整 docker_engine ACL 設定，但因為過程太麻煩，作者很貼心的還提供了小套件可以使用</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Powershell</span></span><br><span class="line">$ Install-Module -Name dockeraccesshelper</span><br><span class="line">$ <span class="built_in">Import-Module</span> dockeraccesshelper</span><br><span class="line">$ Add-AccountToDockerAccess <span class="string">"ciuser"</span></span><br></pre></td></tr></table></figure>
+<p>再次執行 Jenkins 就真的成功了</p>
+<div class="note info"><p>參考文章</p>
+<p><a href="https://www.axians-infoma.com/techblog/allow-access-to-the-docker-engine-without-admin-rights-on-windows/" target="_blank" rel="noopener">Allow access to the Docker Engine without admin rights on Windows</a></p></div>
+<p><br></p>
+<h1 id="設定-Jenkins"><a href="#設定-Jenkins" class="headerlink" title="設定 Jenkins"></a>設定 Jenkins</h1><p>Build Image 、 Push Image 這些流程就直接省略了，重點是最後一步怎麼觸發遠端機器更新 Container 。</p>
+<p>Docker Compose 提供 <code>--host</code> ，讓你可以操作遠端機器的 Container</p>
+<p><img src="/images/20190430/7.png" alt="/images/20190430/7.png"></p>
+<p>但前提是你必須先去該機器開啟 2376 port 的防火牆，還有設定 docker daemon config，跟上面那段一樣檔案，只是上次設定的是 jenkins 機器，這次是跑 Container 的機器</p>
+<p>路徑 :  C:\ProgramData\docker\config\daemon.json</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> <span class="attr">"hosts"</span>: [<span class="string">"tcp://0.0.0.0:2376"</span>, <span class="string">"npipe://"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>都開好後回頭在 Jenkins 的流程中埋下最後一段</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker-compose -H machineIp:2376 pull</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker-compose -H machineIp:2376 up -d</span></span><br></pre></td></tr></table></figure>
+<p><br></p>
+<h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>雖然只是短短的一篇，但是整個設定的過程其實卡很久，尤其是 windows 的權限不是很熟常常會把自己搞得很亂，但為了團隊能接手維運，這些過程又勢必有人需要去踩過一次，以前都覺得 DevOps 的 Dev 才是主力(自己大部分經歷也都是待在開發團隊)，對於維運一直都沒有很深入去了解並感受他們的痛。</p>
+<p>但當角色從 Developer 漸漸轉成 Infra ，不同的角度去看這些事情有了完全不同的感受，<code>維運</code>真的才是整個軟體生命週期佔最大的部分，一套系統你可能開發個 1 ~ 3 年，但產品的維運可能是數十年，怎麼讓一套機制落地，讓人為介入越少越好，要考慮的面向真的比過去單純開發差非常多，果然還有得學阿。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/04/22/Docker_build/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/22/Docker_build/" itemprop="url">【Docker】Build Image</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-04-22T10:19:00+08:00">
+                2019-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/22/Docker_build/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/22/Docker_build/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/images/20190422/0.png" alt="/images/20190422/0.png"></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>剛開始使用 Docker 的時候，我常常都是使用別人已經包好的 Image，但難免會有不符使用需要客製的時候，又或是將公司的某些服務做成 Docker Image ，再從多台機器上 Pull Docker Image  直接執行，所以 Docker Build 幾乎是玩 Docker 必學的技巧了  </p>
+<p>從 Docker Hub 尋找適合的 Image 來使用</p>
+<p><img src="/images/20190422/1.png" alt="/images/20190422/1.png"></p>
+<p>前陣子將公司一些服務包成 Docker Image 並部署執行</p>
+<p><img src="/images/20190422/2.png" alt="/images/20190422/2.png"></p>
+<p><br></p>
+<h1 id="製作第一個-Docker-Image"><a href="#製作第一個-Docker-Image" class="headerlink" title="製作第一個 Docker Image"></a>製作第一個 Docker Image</h1><p>下面的範例會透過一個簡單的範例來解說包 Docker Image 的過程，希望最後的成果是，我們透過執行自製的 Docker Image 就跑起來一個 ASP.Net 的網站</p>
+<p><br></p>
+<h2 id="開新專案"><a href="#開新專案" class="headerlink" title="開新專案"></a>開新專案</h2><p><img src="/images/20190422/3.png" alt="/images/20190422/1.png"></p>
+<p><img src="/images/20190422/4.png" alt="/images/20190422/1.png"></p>
+<p>直接用 VS 執行起來就是一個最原始的 MVC 網站</p>
+<p><img src="/images/20190422/5.png" alt="/images/20190422/1.png"></p>
+<p><br></p>
+<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p>Dockerfile 是 Build Docker Image 的根本，這個檔案會告訴 Docker 該把什麼東西放進 Image ? 步驟是什麼 ? 怎麼啟動 ?</p>
+<p><br></p>
+<p>先新增一個 Docker File 到剛剛的專案中</p>
+<p><img src="/images/20190422/6.png" alt="/images/20190422/6.png"></p>
+<p>調整屬性</p>
+<p><img src="/images/20190422/7.png" alt="/images/20190422/7.png"></p>
+<p>這樣如果發行這個專案，dockerfile 就會一起過去</p>
+<p><img src="/images/20190422/8.png" alt="/images/20190422/8.png"></p>
+<p><img src="/images/20190422/9.png" alt="/images/20190422/9.png"></p>
+<p><br></p>
+<p><strong>Dockerfile 內容</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">FROM</span> <span class="string">mcr.microsoft.com/dotnet/framework/aspnet:latest</span></span><br><span class="line"></span><br><span class="line"><span class="string">COPY</span> <span class="string">.</span> <span class="string">/inetpub/wwwroot</span></span><br></pre></td></tr></table></figure>
+<p><code>From</code> : 表示你這個 Image 是以哪一個當作 Base，以這次的案例為例，我們選擇微軟官方提供的 mcr.microsoft.com/dotnet/framework/aspnet Image 作為 base，因為它已經幫我們安裝好 IIS 、.net Framework，這樣我們只要專注在我們開發的程式即可。</p>
+<p><code>COPY</code> : dockerfile 所屬資料夾所有的內容複製到 container 裡面的 <code>c:/inetpub/wwwroot</code>，也就是 IIS 的預設目錄</p>
+<p><br></p>
+<h2 id="Docker-build"><a href="#Docker-build" class="headerlink" title="Docker build"></a>Docker build</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker build -t &lt;ImageName&gt;:&lt;Tag&gt; &lt;Dockerfile Path&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker build -t my_first_docker_image:latest -t my_first_docker_image:1.0.0 .</span><br></pre></td></tr></table></figure>
+<p>docker build 時我為這個 Image 下了兩個 tag，分別為 latest、1.0.0</p>
+<p><img src="/images/20190422/10.png" alt="/images/20190422/10.png"></p>
+<p><br></p>
+<h2 id="Docker-Run"><a href="#Docker-Run" class="headerlink" title="Docker Run"></a>Docker Run</h2><p>執行剛剛我們自建的 Image，並且將本機的 9999 port mapping 到 container 內的 80 port</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> docker run -d -p 9999:80 my_first_docker_image:latest</span><br></pre></td></tr></table></figure>
+<p>這樣就可以看到網站啦</p>
+<p><img src="/images/20190422/11.png" alt="/images/20190422/11.png"></p>
+<p><br></p>
+<h1 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h1><p>這邊只是小小演示如何 Build 一個最簡單的 docker image，其實 Dockerfile 還有很多可以發揮的地方，如果有需要，可以參考以下官方文件</p>
+<div class="note info"><p>參考文章</p>
+<p><a href="https://docs.docker.com/engine/reference/commandline/build/" target="_blank" rel="noopener">Docker build</a></p>
+<p><a href="https://docs.microsoft.com/zh-tw/aspnet/mvc/overview/deployment/docker-aspnetmvc" target="_blank" rel="noopener">將 ASP.NET MVC 應用程式遷移到 Windows 容器</a></p></div>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/03/23/windows_container_smb_/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/23/windows_container_smb_/" itemprop="url">【Docker】Widows Container SMB</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-03-23T17:53:00+08:00">
+                2019-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/03/23/windows_container_smb_/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/23/windows_container_smb_/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="/images/20190323/0.png" alt="/images/20190323/0.png"></p>
+<p>之前在將公司某支程式移植到 Windows Container 時碰到一個問題，該程式會透過<a href="https://zh.wikipedia.org/wiki/%E4%BC%BA%E6%9C%8D%E5%99%A8%E8%A8%8A%E6%81%AF%E5%8D%80%E5%A1%8A" target="_blank" rel="noopener">網路磁碟 (SMB)</a> Eamil Template 來套版並寄出，但將網路磁碟透過 Volume 的方式 Mount 到 Container 卻抓不到檔案，查了一下才知道原來需要用 SmbGlobalMapping 掛載的網路磁碟才行</p>
+<div class="note info"><p><a href="https://docs.microsoft.com/zh-tw/virtualization/windowscontainers/manage-containers/container-storage" target="_blank" rel="noopener">Windows Server 容器儲存體</a></p></div>
+<p>以下這段是先將要用到的網路磁碟透過 New-SmbGlobalMapping 指令掛成 T: </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="variable">$User</span>=<span class="string">"yourUSerAccount"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="variable">$PWD</span> = ConvertTo-SecureString -String <span class="string">"yourPassword"</span> -AsPlainText -Force</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="variable">$Credential</span> = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList <span class="variable">$User</span>, <span class="variable">$PWD</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> New-SmbGlobalMapping -LocalPath T: -RemotePath \\my-company-Filer\Files -Credential <span class="variable">$Credential</span></span></span><br></pre></td></tr></table></figure>
+<p>然後在透過 Volume 即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker run -it -v T:\:C:\Files myContainer</span></span><br></pre></td></tr></table></figure>
+<p><br></p>
+<div class="note danger"><p>不過還要特別注意的是，在 Windows Server (版本 1709)，SMB 全域對應不支援 DFS、DFSN、DFSR 共用。</p></div>
+<p>所以如果是 <a href="https://zh.wikipedia.org/wiki/%E5%88%86%E6%95%A3%E5%BC%8F%E6%AA%94%E6%A1%88%E7%B3%BB%E7%B5%B1_(Microsoft" target="_blank" rel="noopener">DFS</a>) 那就只好先強制指到某一台，期待哪一天 Windows Container 可以支援了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/03/21/microservice_battlefield/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1211,790 +1985,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/02/20/windows_container_dnsserver/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/20/windows_container_dnsserver/" itemprop="url">【Docker】Widows Container DNS Server 問題</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-02-20T15:10:00+08:00">
-                2019-02-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/02/20/windows_container_dnsserver/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/20/windows_container_dnsserver/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="/images/20190220/0.png" alt="/images/20190220/0.png"></p>
-<h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>Windows Container 執行起來的時候，DNS Server 預設會吃 Host 的設定，但第一組會擺 Default Gateway 的 IP</p>
-<p><img src="/images/20190220/1.png" alt="/images/20190220/1.png"></p>
-<p>但會碰到當在解析  IP 時，只會走第一組 Name Server 去問，如果問不到並不會問第二組，導致解析失敗</p>
-<p><img src="/images/20190220/2.png" alt="/images/20190220/2.png"></p>
-<p>(需明確指定 Name Server 才能查的到)</p>
-<p>聽說這也是 Windows Container 才會碰到的問題，用 Linux 的同事們表示黑人問號 ???</p>
-<p><br></p>
-<h1 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h1><p>DotNet 人有 DotNet 人的玩法，果然找到有人有相同的問題</p>
-<div class="note info"><p>參考文章</p>
-<p><a href="https://github.com/docker/for-win/issues/397" target="_blank" rel="noopener">the –dns option is not working with windows container</a></p></div>
-<p>解法就是當 Container 執行起來的時候，用 Powershell 去改 DNS Server 設定 ….</p>
-<p>恩 …. 就改吧</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ powershell  Set-DnsClientServerAddress -InterfaceAlias vEthernet* -ServerAddresses 10.2.x.x,10.2.x.x</span><br></pre></td></tr></table></figure>
-<p>執行完後重新查詢網路設定會看到 DNS Server 第一組已經不是 Default Gateway</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ipconfig /all</span><br></pre></td></tr></table></figure>
-<p><img src="/images/20190220/4.png" alt="/images/20190220/4.png"></p>
-<p>這時候在重新查一次 IP ，不用特別指定 Name Server 就正確了</p>
-<p><img src="/images/20190220/3.png" alt="/images/20190220/3.png"></p>
-<h1 id="同場加映"><a href="#同場加映" class="headerlink" title="同場加映"></a>同場加映</h1><p>這邊特別介紹 <a href="https://docs.docker.com/v17.09/engine/userguide/networking/default_network/configure-dns/" target="_blank" rel="noopener">dns_search</a> 這個 docker 參數</p>
-<p><img src="/images/20190220/5.png" alt="/images/20190220/5.png"></p>
-<p>因為公司測試機都有加入 AD 群組，所以伺服器別名即便不寫全名還是可以查的到，但在 Container 內就不是這麼回事了，必須寫完整的全名不可，原本以為要改 Config ，請大家都寫完整，還好同事提醒有這個參數可以使用。</p>
-<p>只要在 Docker Run 時或是 Docker Compose 設定加上 Domain Name，這樣 Container 找不到時就會加上 Domain Name 在完整搜尋一次</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dns_search:</span> <span class="string">your.domain</span></span><br></pre></td></tr></table></figure>
-<p>這參數又拯救了 IT 狗的一天…</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/02/19/windows_contianer_iamrole_/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/19/windows_contianer_iamrole_/" itemprop="url">【Docker】Widows Container IAM Role 問題</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-02-19T16:25:00+08:00">
-                2019-02-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/02/19/windows_contianer_iamrole_/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/19/windows_contianer_iamrole_/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="/images/20190219/0.png" alt="/images/20190219/0.png"></p>
-<h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>通常在使用 EC2 的建議上都是希望將機器掛上 IAM Role 的權限，在機器上面執行相關 AWS 資源時就可以透過該角色的權限來執行，避免將 Access Toke 、Secret Key 寫到程式中去跑。</p>
-<p>但如果將程式包到 Container 裡面去執行時卻發現，Linux Container 可以吃到 Host 的 IAM Role 權限，而 Windows Container 卻不行，為何 ?</p>
-<p><br></p>
-<h1 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h1><p>原來 AWS 之所以能夠讓機器能知道執行權限為何是否過一個叫 Metadata Service 的服務來達成 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl 169.254.169.254</span><br></pre></td></tr></table></figure>
-<p>當在 EC2 上執行該指令應該能看到基本的回應</p>
-<p><img src="/images/20190219/1.png" alt="/images/20190219/1.png"></p>
-<p>連線到 <code>http://169.254.169.254/latest/meta-data/</code> 也可以看到一些對應的 Metadata 設定，而這個 Metadata Service IP 很巧的在 Azure 上也一模一樣 XD</p>
-<div class="note info"><p>參考文章</p>
-<p><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html" target="_blank" rel="noopener">Instance Metadata and User Data</a></p>
-<p><a href="https://docs.microsoft.com/zh-tw/azure/virtual-machines/windows/instance-metadata-service" target="_blank" rel="noopener">Azure 執行個體中繼資料服務</a></p></div>
-<p><br></p>
-<p>所以要能夠透過 IAM Role 的權限來執行 AWS 相關資源，169.254.169.254 就勢必要能通，接著將 Windows Container Run起來並執行相同指令會發現得到 Timeout 的回應</p>
-<p><img src="/images/20190219/2.png" alt="/images/20190219/2.png"></p>
-<p><br></p>
-<p>Windows Container 預設是走 <a href="https://zh.wikipedia.org/wiki/%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2" target="_blank" rel="noopener">NAT</a> 的網路模式，如果你在 Host 與 Windows Container 內列出 Routing Table IPv4 的資料會發現，169.254.169.254 Gateway 是走同一條</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ route <span class="built_in">print</span> -4</span><br></pre></td></tr></table></figure>
-<p><img src="/images/20190219/3.png" alt="/images/20190219/3.png"></p>
-<p>這也是導致 Container 內得不到回應的原因</p>
-<p><img src="/images/20190219/11.png" alt="/images/20190219/11.png"></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ipconfig /all</span><br></pre></td></tr></table></figure>
-<p><img src="/images/20190219/4.png" alt="/images/20190219/4.png"></p>
-<p>應該透過 NAT Router default gateway 才出的去</p>
-<p><img src="/images/20190219/12.png" alt="/images/20190219/12.png"></p>
-<p><br></p>
-<h1 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h1><p>先看看預設 Container 用的網路是如何設定的</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network ls</span><br></pre></td></tr></table></figure>
-<p><img src="/images/20190219/5.png" alt="/images/20190219/5.png"></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network inspect nat</span><br></pre></td></tr></table></figure>
-<p><img src="/images/20190219/6.png" alt="/images/20190219/6.png"></p>
-<p>可以看到紅框處並沒有指定 Default Gateway，所以每次執行 Container 時都是動態分配 Subnet 與 Default Gateway，這樣讓我們設定上會有困難</p>
-<p><br></p>
-<h2 id="自建一組網路給-Container-使用"><a href="#自建一組網路給-Container-使用" class="headerlink" title="自建一組網路給 Container 使用"></a>自建一組網路給 Container 使用</h2><p>可以透過 <a href="https://docs.docker.com/engine/reference/commandline/network_create/" target="_blank" rel="noopener">Docker network create</a> 來預先建立一組規範好的網路，並讓 Container 起起來的時候指定吃這組設定</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network create --driver nat --gateway 172.17.0.1 --subnet 172.17.0.0/20 mynetwork</span><br></pre></td></tr></table></figure>
-<p><img src="/images/20190219/7.png" alt="/images/20190219/7.png"></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it --rm --network mynetwork mycontainer:latest</span><br></pre></td></tr></table></figure>
-<p>檢視 Container 起來後網路設定狀況，可以看到 Default Gateway 已經被定下來了</p>
-<p><img src="/images/20190219/8.png" alt="/images/20190219/8.png"></p>
-<p>接著執行 </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ route -p add 169.254.169.254 172.17.0.1</span><br></pre></td></tr></table></figure>
-<p><img src="/images/20190219/9.png" alt="/images/20190219/9.png"></p>
-<p><img src="/images/20190219/10.png" alt="/images/20190219/10.png"></p>
-<p>至於 route add 怎麼在 Container 起起來時自動執行那就是另一個課題了，這邊不討論</p>
-<h2 id="Docker-compose-動態建網路給-Container-使用"><a href="#Docker-compose-動態建網路給-Container-使用" class="headerlink" title="Docker compose 動態建網路給 Container 使用"></a>Docker compose 動態建網路給 Container 使用</h2><p>第二種方法是透過 Docker compose 執行時動態建立一組網路來使用，方法大同小異，只是透過 Docker Compose 來設定而已</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2.1'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  mycontainer:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">mycontainer:latest</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">mynetwork</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">  mynetwork:</span></span><br><span class="line"><span class="attr">    driver:</span> <span class="string">nat</span></span><br><span class="line"><span class="attr">    ipam:</span></span><br><span class="line"><span class="attr">      config:</span></span><br><span class="line"><span class="attr">        - subnet:</span> <span class="number">172.17</span><span class="number">.0</span><span class="number">.0</span><span class="string">/20</span></span><br><span class="line"><span class="attr">          gateway:</span> <span class="number">172.17</span><span class="number">.0</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
-<h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>最近跟著架構師還有一群很厲害的同事做新的專案，發現自己對於 Infra 與網路的知識真的相當不足，所以在Docker 一些設定與建置上常常卡的亂七八糟，也趁著這個機會把以前一堆已經還老師的知識又惡補了一翻，希望能越來越順利 </p>
-<div class="note info"><p>參考文章</p>
-<p><a href="https://www.speedoflightmedia.com/blog/aws-iam-roles-windows-containers/" target="_blank" rel="noopener">AWSS IAM Roles in Windows Containers</a></p>
-<p><a href="https://zh.wikipedia.org/wiki/%E4%BF%9D%E7%95%99IP%E5%9C%B0%E5%9D%80" target="_blank" rel="noopener">wiki - 保留IP位址</a></p></div>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/02/12/anycpu_x86_x64/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/12/anycpu_x86_x64/" itemprop="url">將程式編譯成 x86、x64、Any CPU差別在哪</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-02-12T11:09:00+08:00">
-                2019-02-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2019/02/12/anycpu_x86_x64/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/12/anycpu_x86_x64/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>相信用過 Visual Studio 的應該都注意過編譯時可以選擇 Any CPU、x86、x64 (x86、x64 需要編輯組態檔才會看的到)</p>
-<p><img src="/images/20190212/1.png" alt="/images/20190212/1.png"></p>
-<p>這次踩到問題是，明明程式用 Any CPU 來編譯，但在 64 bit OS 上卻會用 32 bit  Process 來執行</p>
-<p><img src="/images/20190212/2.png" alt="/images/20190212/2.png"></p>
-<p>原來是因為專案建置的屬性勾到了 <code>建議使用32位元</code>的選項導致</p>
-<p><img src="/images/20190212/3.png" alt="/images/20190212/3.png"></p>
-<p>解決的同時也引起了對於編譯成 x86、x64、Any CPU 有什麼差別的好奇心，找了文章後整理如下</p>
-<p><br></p>
-<h1 id="差異"><a href="#差異" class="headerlink" title="差異"></a>差異</h1><p><br></p>
-<h2 id="在-32-bit-OS-上執行"><a href="#在-32-bit-OS-上執行" class="headerlink" title="在 32 bit OS 上執行"></a>在 32 bit OS 上執行</h2><p><strong>Any CPU</strong> : 會用 32 bit Process 來執行，可以載入 Any CPU 和 x86 方式編譯的組件，但如果載入 x64 編譯的組件將會引發 BadImageFormatException </p>
-<p><strong>Any CPU (勾選建議使用32位元)</strong> : 運作方式同上</p>
-<p><strong>x86</strong> : 運作方式同上</p>
-<p><strong>x64</strong> : 引發 BadImageFormatException</p>
-<p><br></p>
-<h2 id="在-64-bit-OS-上執行"><a href="#在-64-bit-OS-上執行" class="headerlink" title="在 64 bit OS 上執行"></a>在 64 bit OS 上執行</h2><p><strong>Any CPU</strong> : 會用 64 bit Process 來執行，可以載入 Any CPU 和 x64 方式編譯的組件，但如果載入 x86 編譯的組件將會引發 BadImageFormatException</p>
-<p><strong>Any CPU (勾選建議使用32位元)</strong> : 會用 32 bit Process 來執行，可以載入 Any CPU 和 <code>x86</code> 方式編譯的組件，但如果載入 x64 編譯的組件將會引發 BadImageFormatException</p>
-<p><strong>x86</strong> : 運作方式同 <strong>Any CPU (勾選建議使用32位元)</strong></p>
-<p><strong>x64</strong> : 運作方式同 <strong>Any CPU</strong>  </p>
-<p><br></p>
-<h2 id="Machine-Config"><a href="#Machine-Config" class="headerlink" title="Machine Config"></a>Machine Config</h2><p>依據執行的 Process 位元決定</p>
-<p>32 bit Process 吃的 Machine Config 位置 : C:\Windows\Microsoft.NET\ <code>Framework</code> \v4.0.30319\Config</p>
-<p>64 bit Process 吃的 Machine Config 位置 : C:\Windows\Microsoft.NET\ <code>Framework64</code> \v4.0.30319\Config</p>
-<p><br></p>
-<h1 id="怎麼查是用哪種方式編譯的"><a href="#怎麼查是用哪種方式編譯的" class="headerlink" title="怎麼查是用哪種方式編譯的?"></a>怎麼查是用哪種方式編譯的?</h1><p>可以透過 <code>CorFlags.exe</code> 的工具來查詢，該程式放在 <code>C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools</code> 路徑底下，設定為環境變數後就可以用 command 來檢視 PE </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ corflags yourPE.exe</span><br></pre></td></tr></table></figure>
-<div class="note info"><p>PE : Process Executables (EXEs and DLLs)</p></div>
-<p><img src="/images/20190212/4.png" alt="/images/20190212/4.png"></p>
-<p>意義如下</p>
-<p><img src="/images/20190212/5.png" alt="/images/20190212/5.png"></p>
-<p>(圖片節錄至 : <a href="https://stackoverflow.com/questions/18608785/how-to-interpret-the-corflags-flags/23614024#23614024" target="_blank" rel="noopener">https://stackoverflow.com/questions/18608785/how-to-interpret-the-corflags-flags/23614024#23614024</a>)</p>
-<div class="note info"><p>參考文章</p>
-<p><a href="https://blog.darkthread.net/blog/corflags/" target="_blank" rel="noopener">【茶包射手日記】檢查.NET程式平台目標(Platform Target)</a></p>
-<p><a href="https://www.codeproject.com/Articles/1160645/Dealing-with-bit-bit-and-Any-CPU-Compilation-Optio" target="_blank" rel="noopener">Dealing with 32-bit, 64-bit and Any CPU Compilation Options in .NET</a></p>
-<p><a href="https://stackoverflow.com/questions/18608785/how-to-interpret-the-corflags-flags" target="_blank" rel="noopener">How to interpret the CorFlags flags?</a></p></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/12/21/【C-】yield_retuen/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/21/【C-】yield_retuen/" itemprop="url">【C#】Yield Return與迭代器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-12-21T13:54:00+08:00">
-                2018-12-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/12/21/【C-】yield_retuen/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/21/【C-】yield_retuen/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="什麼是-Yield"><a href="#什麼是-Yield" class="headerlink" title="什麼是 Yield"></a>什麼是 Yield</h1><p>Yield 就是 .Net 中用來實作 iterator(迭代器) 設計模式的語法糖，雖然很早就知道這東西，但一直都不太知道怎麼用，剛好最近同事在翻寫寄送大量信件的程式有用到就跟他請教了一下。</p>
-<p><strong>以前的做法</strong></p>
-<p>將收件人從 DB 撈出來後 ，依據每封信的 Template 去置換內容，再批次送去給寄信服務執行</p>
-<p><strong>問題</strong></p>
-<p>如果這批收件人很多，把整批的信件都置換完 Template 再送出，會導致系統吃掉大量的記憶。當然最簡單的解決方法就是用迴圈組完一筆就送出一次，但其實用 Yield Return 可以更優雅的解決這個問題</p>
-<h1 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h1><p>同事提供了簡單的範例來理解這件事情</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">foreach</span> (<span class="function"><span class="keyword">var</span> mail <span class="keyword">in</span> <span class="title">GetData</span>(<span class="params"></span>))</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">		Console.WriteLine(<span class="string">$"- Received: <span class="subst">&#123;mail.Title&#125;</span>"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> List&lt;Mail&gt; <span class="title">GetData</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">var</span> mailList = <span class="keyword">new</span> List&lt;Mail&gt;();</span><br><span class="line">	<span class="keyword">int</span> buffer_size = <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">4</span>;  <span class="comment">// 4MB</span></span><br><span class="line">	Random _rnd = <span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; <span class="number">1024</span>; index++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">var</span> _buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[buffer_size];</span><br><span class="line">		_rnd.NextBytes(_buffer);</span><br><span class="line"></span><br><span class="line">		mailList.Add(<span class="keyword">new</span> Mail()</span><br><span class="line">		&#123;</span><br><span class="line">			Title = <span class="string">$"buffer[<span class="subst">&#123;index&#125;</span>], <span class="subst">&#123;buffer_size / <span class="number">1024</span> / <span class="number">1024</span>&#125;</span> MB"</span>,</span><br><span class="line">			Buffer = _buffer,</span><br><span class="line">		&#125;);</span><br><span class="line">		Task.Delay(<span class="number">50</span>).Wait();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> mailList;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Mail</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">string</span> Title &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">byte</span>[] Buffer &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>GetData()</code> 這是模擬處理信件的地方，每封信件假設 4MB (到底是寄啥…)，整批處理完後回傳 mailList </p>
-<p>如果把這段 Code 放到 LINQPad 執行，會發現記憶體一直往上飆，因為會全部都做完放到 List 再回傳並寄信</p>
-<p><img src="/images/20181221/1.gif" alt="/images/20181221/1.gif"></p>
-<h2 id="Yield-Return-版本"><a href="#Yield-Return-版本" class="headerlink" title="Yield Return 版本"></a>Yield Return 版本</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">foreach</span> (<span class="function"><span class="keyword">var</span> mail <span class="keyword">in</span> <span class="title">GetData</span>(<span class="params"></span>))</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">		Console.WriteLine(<span class="string">$"- Received: <span class="subst">&#123;mail.Title&#125;</span>"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> IEnumerable&lt;Mail&gt; <span class="title">GetData</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> buffer_size = <span class="number">1024</span> * <span class="number">1024</span> * <span class="number">4</span>;  <span class="comment">// 4MB</span></span><br><span class="line">	Random _rnd = <span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; <span class="number">1024</span>; index++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">var</span> _buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[buffer_size];</span><br><span class="line">		_rnd.NextBytes(_buffer);</span><br><span class="line"></span><br><span class="line">	    <span class="function"><span class="keyword">yield</span> return new <span class="title">Mail</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>		&#123;</span><br><span class="line">			Title = <span class="string">$"buffer[<span class="subst">&#123;index&#125;</span>], <span class="subst">&#123;buffer_size / <span class="number">1024</span> / <span class="number">1024</span>&#125;</span> MB"</span>,</span><br><span class="line">			Buffer = _buffer,</span><br><span class="line">		&#125;;</span><br><span class="line">		Task.Delay(<span class="number">50</span>).Wait();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">yield</span> <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Mail</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">string</span> Title &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">byte</span>[] Buffer &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>觀察記憶體會發現非常的平穩，因為逐筆處理完就被消滅掉了</p>
-<p><img src="/images/20181221/2.gif" alt="/images/20181221/2.gif"></p>
-<h1 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h1><p>至於如果不用語法糖 Yield 該如何實作迭代器，可參考安德魯的部落格裡面介紹非常詳細，希望這個方法以後可以更融會貫通的套在專案中使用</p>
-<div class="note info"><p>參考文章</p>
-<p><a href="https://columns.chicken-house.net/2008/09/18/c-yield-return-1-how-it-work/" target="_blank" rel="noopener">安德魯的部落格 - [C#: yield return] #1. How It Work ?</a></p>
-<p><a href="https://zh.wikipedia.org/wiki/%E8%BF%AD%E4%BB%A3%E5%99%A8" target="_blank" rel="noopener">Wiki - 迭代器</a></p></div>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/12/03/Task_WaitAll/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/03/Task_WaitAll/" itemprop="url">【C#】Task WaitAll</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-12-03T15:53:00+08:00">
-                2018-12-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/12/03/Task_WaitAll/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/03/Task_WaitAll/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>假設有一項任務，執行時會做三件事情，而這三件事情彼此並沒有相依關係，傳統程式寫法通常都是 1  &gt;  2  &gt; 3 依序呼叫下去做，但這樣有一個問題就是，假設 1 這個任務要執行特別久，那 2、3 都得等 1 做完才能執行到，整體來說效率並沒有最佳化。</p>
-<p><img src="/images/20181203/1.png" alt="/images/20181203/1.png"></p>
-<p>跑一次需要 2.012 秒完成，如果需要重複 10 次 、100 次，那所需時間會相當可觀。 </p>
-<h1 id="非同步版本"><a href="#非同步版本" class="headerlink" title="非同步版本"></a>非同步版本</h1><p>改成非同步版本後，它執行順序就不會被第一步給拖累，三個工作是併行處理</p>
-<p><img src="/images/20181203/2.png" alt="/images/20181203/2.png"></p>
-<p>但這會有一個問題，如果程式是 Run 在 Console Application 中，因為沒有等待非同步的程式都執行完，就已經跑到 Done ，而導致 Console Application 被關掉，其相應的 Process 也會被停掉，導致有些工作沒有執行完，所以必須要確保所有程式都執行完才關閉的機制在。</p>
-<p><img src="/images/20181203/3.png" alt="/images/20181203/3.png"></p>
-<h1 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h1><ol>
-<li><a href="https://docs.microsoft.com/zh-tw/dotnet/standard/parallel-programming/task-based-asynchronous-programming" target="_blank" rel="noopener">MSDN : 以工作為基礎的非同步程式設計</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2042,7 +2037,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">190</span>
+                  <span class="site-state-item-count">195</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -2064,7 +2059,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">66</span>
+                  <span class="site-state-item-count">67</span>
                   <span class="site-state-item-name">標籤</span>
                 </a>
               </div>
