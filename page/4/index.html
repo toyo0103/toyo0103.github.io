@@ -293,6 +293,228 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/10/11/AWS_Lambda_Chrome_HeadLess/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/11/AWS_Lambda_Chrome_HeadLess/" itemprop="url">【.Net Core】AWS Lambda + Chrome Headless + Snapshot</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-10-11T17:58:00+08:00">
+                2018-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/11/AWS_Lambda_Chrome_HeadLess/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/11/AWS_Lambda_Chrome_HeadLess/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <div class="note danger"><p><strong>2018-10-25 更新</strong> :DotNet Core 版本已經找出解決方案了，更新在最下面</p>
+<p><strong>注意 !!</strong> </p>
+<p><del>這篇的結論是 <code>DotNet Core + Selenium + Chrome headless  + AWS Lambda</code>  執行是失敗的，所以如果不想看失敗案例的可以直接跳過了，寫下來是因為過程踩了太多雷想記錄一下</del> ，如果想要簡單一點的作法，建議採用  <code>NodeJs + Chrome Headless + AWS Lambda</code>  的解決方案，幾乎不用什麼調整即可使用。</p>
+<p><a href="https://github.com/adieuadieu/serverless-chrome" target="_blank" rel="noopener">NodeJs 版本參考: adieuadieu/serverless-chrome</a></p></div>
+<h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>近期公司希望將訂單快照從 <a href="http://phantomjs.org/" target="_blank" rel="noopener">PhantomJS</a> 改成 Chrome Headless 來實作，然後放到 <a href="https://aws.amazon.com/cn/lambda/?sc_channel=PS&amp;sc_campaign=acquisition_TW&amp;sc_publisher=google&amp;sc_medium=lambda_b&amp;sc_content=lambda_e&amp;sc_detail=aws%20lambda&amp;sc_category=lambda&amp;sc_segment=165241565701&amp;sc_matchtype=e&amp;sc_country=TW&amp;s_kwcid=AL!4422!3!165241565701!e!!g!!aws%20lambda&amp;ef_id=W5skSAAAAUVNZtNI:20181011080758:s" target="_blank" rel="noopener">AWS Lambda</a> 上透過 <a href="https://aws.amazon.com/tw/sqs/" target="_blank" rel="noopener">AWS SQS</a> 來觸發，達成 Serverless 的架構。</p>
+<p>隨著 Chrome Headless 的推出，PhantomJS 也宣布停止更新了，想當年也跟它奮戰許久，又一滴時代的眼淚阿，而要能在 Lambda 上執行，則必須是能在 Linux 上執行的程式，所以 .Net Core 成為這次的選擇，為了不要每次改程式都要佈署到 Lambda 上才能測試(跑一次大概5分鐘)，所以透過 Docker 模擬 AWS Lambda 的環境直接在本機測試。</p>
+<h1 id="環境"><a href="#環境" class="headerlink" title="環境"></a>環境</h1><h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p>DotNet Core 2.1 : <a href="https://www.microsoft.com/net/download" target="_blank" rel="noopener">下載</a><br>Docker for Windows : <a href="https://docs.docker.com/docker-for-windows/install/" target="_blank" rel="noopener">下載</a></p>
+<h1 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h1><p>因為大量使用到 AWS SDK，查找官方 API 文件會更清楚些，所以本篇不著重在程式內容本身，只會帶到自己覺得關鍵的地方。</p>
+<h2 id="建立-Net-Core-類別庫專案"><a href="#建立-Net-Core-類別庫專案" class="headerlink" title="建立 .Net Core 類別庫專案"></a>建立 .Net Core 類別庫專案</h2><p>請選擇 .Net Core &gt; 類別庫 (.Net Core)</p>
+<p><img src="/images/20181011/1.png" alt="/images/20181011/1.png"></p>
+<h2 id="安裝-AWS-相關套件"><a href="#安裝-AWS-相關套件" class="headerlink" title="安裝 AWS 相關套件"></a>安裝 AWS 相關套件</h2><p><img src="/images/20181011/2.png" alt="/images/20181011/2.png"></p>
+<h2 id="實作-SQSHandler"><a href="#實作-SQSHandler" class="headerlink" title="實作 SQSHandler"></a>實作 SQSHandler</h2><p>因為是接收 SQS 來的命令，所以我建立了一支類別 <strong>SQSHandler</strong> ，並且寫了一個名為 <strong>Snapshot</strong> 的方法</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 執行快照</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="sqsEvent"&gt;</span>The SQS event.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>執行結果<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task&lt;ResponseEntity&gt; <span class="title">Snapshot</span>(<span class="params">SQSEvent sqsEvent</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">                    </span><br><span class="line">    <span class="keyword">var</span> record = sqsEvent.Records.First();</span><br><span class="line">    <span class="keyword">var</span> parameter = JsonConvert.DeserializeObject&lt;SqsEventBodyEntity&gt;(record.Body);</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span>/ 拍照</span></span><br><span class="line">    snapshotService.Do(parameter.TSCode, parameter.SalePageId);</span><br><span class="line">			</span><br><span class="line">    ...   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要接收 SQS 來的命令， AWS SDK 有提供 <strong>SQSEvent</strong> 類別，傳入自訂的參數會放在 <strong>Records</strong> 中，我們是將要拍照的參數用 Json 組起來後透過 SQS 拋進來，所以讀出 Records 後返解 Json String 為 Object ，然後拋給實作的SnapshotServiece。</p>
+<p>Snapshot 這個方法回傳值為<code>自定義</code>的，可以依照自己需求調整，避免誤會所以特別說明一下</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 執行快照</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="sqsEvent"&gt;</span>The SQS event.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>執行結果<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">Snapshot</span>(<span class="params">SQSEvent sqsEvent</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Chrome-Headless"><a href="#Chrome-Headless" class="headerlink" title="Chrome Headless"></a>Chrome Headless</h2><p>什麼是 <a href="https://developers.google.com/web/updates/2017/04/headless-chrome" target="_blank" rel="noopener">Chrome Headless</a> ,簡單說就是透過無介面的方式要求Chrome執行一些快照、讀取頁面的服務。</p>
+<p>為了能夠執行驅動 Chrome，所以這邊安裝 Selenium 來輔助</p>
+<p><img src="/images/20181011/3.png" alt="/images/20181011/3.png"></p>
+<p>Selenium 還需要搭配 Chorme Driver 來操作 Chrome，所以需要先去<a href="http://chromedriver.chromium.org/" target="_blank" rel="noopener">http://chromedriver.chromium.org/</a>下載，但需要特別注意的是要下載 <strong>Linux64</strong> 的版本，因為 AWS Lambda 是 Linux 環境</p>
+<p><img src="/images/20181011/4.png" alt="/images/20181011/4.png"></p>
+<h3 id="實作-1"><a href="#實作-1" class="headerlink" title="實作"></a>實作</h3><p>這邊將下載回來的 Chrome Driver 放在 Root 的資料夾，所以在建立 ChromeDriver Instance 需要告訴它 Driver的位置</p>
+<p><img src="/images/20181011/5.png" alt="/images/20181011/5.png"></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//chrome headless的參數</span></span><br><span class="line">ChromeOptions options = <span class="keyword">new</span> ChromeOptions();</span><br><span class="line">options.AddArgument(<span class="string">"no-sandbox"</span>);</span><br><span class="line">options.AddArgument(<span class="string">"headless"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//取得Driver的位置</span></span><br><span class="line"><span class="keyword">var</span> root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> driver = <span class="keyword">new</span> ChromeDriver(root, options);</span><br></pre></td></tr></table></figure>
+<p>拍照</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">    </span><br><span class="line"><span class="comment">//等待Timeout的設定</span></span><br><span class="line">WebDriverWait _wait = <span class="keyword">new</span> WebDriverWait(driver, <span class="keyword">new</span> TimeSpan(<span class="number">0</span>, <span class="number">0</span>, <span class="number">10</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">//要連的網址</span></span><br><span class="line">driver.Navigate().GoToUrl(targetUrl);</span><br><span class="line"></span><br><span class="line"><span class="comment">//尋找要拍的Element Class</span></span><br><span class="line"><span class="keyword">var</span> targetElement = _wait.Until&lt;IWebElement&gt;(d =&gt; driver.FindElement(By.ClassName(targetElementClass)));</span><br><span class="line"></span><br><span class="line"><span class="comment">//因為要拍的區塊可能超過預設螢幕大小，所以這邊抓到Element後將它的寬高設定給Chrome Windows Size</span></span><br><span class="line">driver.Manage().Window.Size = <span class="keyword">new</span> Size(targetElement.Size.Width, targetElement.Size.Height);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 拍照</span></span><br><span class="line">Screenshot screenShot = ((ITakesScreenshot)driver).GetScreenshot();</span><br><span class="line"></span><br><span class="line"><span class="comment">//處理圖片存到哪邊，我是存到S3，但因為不是本篇重點所以省略後面的程式碼</span></span><br><span class="line"><span class="keyword">var</span> imgStream = <span class="keyword">new</span> MemoryStream(screenShot.AsByteArray, <span class="number">0</span>, screenShot.AsByteArray.Length);</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="Docker-測試"><a href="#Docker-測試" class="headerlink" title="Docker 測試"></a>Docker 測試</h1><p>打開 Power Shell，先確定已正確安裝 Docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker --version</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20181011/6.png" alt="/images/20181011/6.png"></p>
+<p>將目錄移到 .csproj 那層，然後執行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dotnet publish -c release -r linux-x64</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>dotnet publish command : <a href="https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-publish?tabs=netcore21" target="_blank" rel="noopener">文件</a></p></div>
+<p>如果發行成功應該可以在 <code>\bin\release\netcoreapp2.1\linux-x64\publish</code> 找到發行好的檔案</p>
+<p>透過 Docker Image 測試執行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat test.json | docker run -v <span class="variable">$&#123;PWD&#125;</span>/bin/QA/netcoreapp2.1/publish:/var/task/ -i -e DOCKER_LAMBDA_USE_STDIN=1 lambci/lambda:dotnetcore2.1 xxx.Slsa.Snapshot.Console::xxx.Slsa.Snapshot.Console.SqsHandler::Snapshot</span><br></pre></td></tr></table></figure>
+<p>解釋一下 Command</p>
+<p><code>cat test.json</code>  : 這是拿來模擬 SQS 的呼叫時傳遞的參數檔案，檔案內容如下，我會一直替換Body 的值來測試程式是否正確去拍我要求拍的頁面，所以可以理解成是把檔案讀取後丟到後面的指令執行。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="attr">"Records"</span>:[</span><br><span class="line">&#123;</span><br><span class="line"><span class="attr">"messageId"</span>:<span class="string">"xxxxxxxx"</span>,</span><br><span class="line"><span class="attr">"receiptHandle"</span>:<span class="string">"xxxxx"</span>,</span><br><span class="line"><span class="attr">"body"</span>:<span class="string">"&#123;\"SalePageId\": 12345,\"TSCode\": \"abcde\"&#125;"</span>,</span><br><span class="line"><span class="attr">"attributes"</span>:&#123;</span><br><span class="line"><span class="attr">"ApproximateReceiveCount"</span>:<span class="string">"x"</span>,</span><br><span class="line"><span class="attr">"SentTimestamp"</span>:<span class="string">"xxxx"</span>,</span><br><span class="line"><span class="attr">"SenderId"</span>:<span class="string">"xxxx"</span>,</span><br><span class="line"><span class="attr">"ApproximateFirstReceiveTimestamp"</span>:<span class="string">"xxxxxx"</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="attr">"messageAttributes"</span>:&#123;</span><br><span class="line">&#125;,</span><br><span class="line"><span class="attr">"md5OfBody"</span>:<span class="string">"xxxxx"</span>,</span><br><span class="line"><span class="attr">"eventSource"</span>:<span class="string">"aws:sqs"</span>,</span><br><span class="line"><span class="attr">"eventSourceARN"</span>:<span class="string">"xxxxxx"</span>,</span><br><span class="line"><span class="attr">"awsRegion"</span>:<span class="string">"xxxxxx"</span></span><br><span class="line">&#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>docker run -v ${PWD}/bin/QA/netcoreapp2.1/publish:/var/task/</code> : ${PWD} 為預設變數，表示目前的目路位置，加上 /bin/QA/netcoreapp2.1/publish 後就是剛剛發行的檔案位置，mount 到 Docker container 裡面的 <code>/var/task</code> 位置，而這也是 lambda 預設執行的位置</p>
+<p><code>lambci/lambda:dotnetcore2.1</code> : Docker Image 的名稱，這是別人已經做好跟 AWS lambda 一模一樣環境的 Image ，透過它來建置我們要的環境做測試</p>
+<p><code>xxx.Slsa.Snapshot.Console::xxx.Slsa.Snapshot.Console.SqsHandler::Snapshot</code> : 格式為 Assembly Name :: Class Name ::  FunctionName，表示請它執行剛剛我們開發的 SQSHandler 的 Snapshot 方法</p>
+<h2 id="找不到-Chrome-binary-錯誤"><a href="#找不到-Chrome-binary-錯誤" class="headerlink" title="找不到 Chrome binary 錯誤"></a>找不到 Chrome binary 錯誤</h2><p>這時候應該會發生找不到 Chrome binary 的錯誤，原因是在 Lambda 的環境並不能安裝 Chrome，所以 Chrome Driver 想去預設環境找 Chrome 核心來執行時會找不到。</p>
+<p><img src="/images/20181011/7.png" alt="/images/20181011/7.png"></p>
+<div class="note info"><p>整個驅動 Chrome 的流程</p>
+<p>Selenum → Chrome Driver → Chrome binary</p></div>
+<p>還好已經有網路上的大神解決了這問題，<a href="https://github.com/adieuadieu/serverless-chrome/blob/master/docs/chrome.md" target="_blank" rel="noopener">serverless-chrome</a>這個 Project 就是將 Chrome 封裝成 Binary 檔後可以打包進專案中，在 Power Shell 執行以下指令來取得 Chrome Binary</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -dt --rm --name headless-chromium adieuadieu/headless-chromium-for-aws-lambda:stable</span><br><span class="line">$ docker cp headless-chromium:/bin/headless-chromium ./</span><br><span class="line">$ docker stop headless-chromium</span><br></pre></td></tr></table></figure>
+<p>在目前 Power Shell 指的資料底下可以找到 <strong>headless-chromium</strong> 檔案，將這個檔案加到專案中</p>
+<p><img src="/images/20181011/8.png" alt="/images/20181011/8.png"></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//chrome headless的參數</span></span><br><span class="line">ChromeOptions options = <span class="keyword">new</span> ChromeOptions();</span><br><span class="line">options.AddArgument(<span class="string">"no-sandbox"</span>);</span><br><span class="line">options.AddArgument(<span class="string">"headless"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//取得Driver的位置</span></span><br><span class="line"><span class="keyword">var</span> root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);</span><br><span class="line"></span><br><span class="line"><span class="comment">//指定Chrome Binary位置</span></span><br><span class="line">options.BinaryLocation = Path.Combine(root, <span class="string">"headless-chromium"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> driver = <span class="keyword">new</span> ChromeDriver(root, options);</span><br></pre></td></tr></table></figure>
+<p>做到這邊再執行剛剛的指令應該可以正常拍照了。</p>
+<h1 id="掃雷"><a href="#掃雷" class="headerlink" title="掃雷"></a>掃雷</h1><h2 id="亂碼問題"><a href="#亂碼問題" class="headerlink" title="亂碼問題"></a>亂碼問題</h2><p>因為 Chrome Binary 輕量化，所以作者並沒有把中文/日文/韓文包進來，所以拍一下遇到上述文字都會出現亂碼</p>
+<div class="note info"><p>詳細討論串</p>
+<p><a href="https://github.com/adieuadieu/serverless-chrome/issues/49" target="_blank" rel="noopener">Include Chinese/Japanese/Korean/more fonts in headless Chrome binary #49</a></p></div>
+<p>依據該討論串下方的回應，已經有對應的解決方案</p>
+<p><img src="/images/20181011/9.png" alt="/images/20181011/9.png"></p>
+<p>1.將需要的字典檔下載回來放在 Root 的 <code>.fonts</code> 資料夾中</p>
+<p><img src="/images/20181011/10.png" alt="/images/20181011/10.png"></p>
+<p>2.將 <code>$HOME</code> 環境變數指到 <code>/var/task</code></p>
+<p>建立一個檔案 <code>env.variable</code> 裡面寫</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HOME=/var/task</span><br></pre></td></tr></table></figure>
+<p>接著透過 Docker Container 執行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat test.json | docker run --env-file ./env.variable -v <span class="variable">$&#123;PWD&#125;</span>/bin/QA/netcoreapp2.1/publish:/var/task/ -i -e DOCKER_LAMBDA_USE_STDIN=1 lambci/lambda:dotnetcore2.1 xxx.Slsa.Snapshot.Console::xxx.Slsa.Snapshot.Console.SqsHandler::Snapshot</span><br></pre></td></tr></table></figure>
+<p>這樣拍出來的中文、韓文、日文的畫面就不會亂碼了</p>
+<h2 id="權限"><a href="#權限" class="headerlink" title="權限"></a>權限</h2><p>將程式打包好放到 AWS Lambda 上面跑，隨即碰到以下錯誤</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Permission denied: Win32Exception</span><br><span class="line">at Interop.Sys.ForkAndExecProcess(String filename, String[] argv, String[] envp, String cwd, Boolean redirectStdin, Boolean redirectStdout, Boolean redirectStderr, Boolean setUser, UInt32 userId, UInt32 groupId, Int32&amp; lpChildPid, Int32&amp; stdinFd, Int32&amp; stdoutFd, Int32&amp; stderrFd, Boolean shouldThrow)</span><br><span class="line">at System.Diagnostics.Process.StartCore(ProcessStartInfo startInfo)</span><br><span class="line">at System.Diagnostics.Process.Start()</span><br><span class="line">at OpenQA.Selenium.DriverService.Start()</span><br><span class="line">at OpenQA.Selenium.Remote.DriverServiceCommandExecutor.Execute(Command commandToExecute)</span><br><span class="line">at OpenQA.Selenium.Remote.RemoteWebDriver.Execute(String driverCommandToExecute, Dictionary`2 parameters)</span><br><span class="line">at OpenQA.Selenium.Remote.RemoteWebDriver.StartSession(ICapabilities desiredCapabilities)</span><br><span class="line">at OpenQA.Selenium.Remote.RemoteWebDriver..ctor(ICommandExecutor commandExecutor, ICapabilities desiredCapabilities)</span><br><span class="line">at OpenQA.Selenium.Chrome.ChromeDriver..ctor(ChromeDriverService service, ChromeOptions options, TimeSpan commandTimeout)</span><br><span class="line">at .........</span><br></pre></td></tr></table></figure>
+<p>原因是 Lambda 的 <code>/var/task</code> 是 read-only，所以要執行 Chrome Driver 與 Chrome Binary 時會沒有權限，只好用很 tricky 的方式，先把 Chrome Driver 與 Chrome Binary 搬到 <code>/tmp</code> 底下再授予權限</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Isinitialeds this instance.</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Initial</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!File.Exists(<span class="string">"/tmp/chromedriver"</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        File.Copy(<span class="string">"/var/task/chromedriver"</span>, <span class="string">"/tmp/chromedriver"</span>, <span class="literal">true</span>);</span><br><span class="line">        Exec(<span class="string">"chmod +x /tmp/chromedriver"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!File.Exists(<span class="string">"/tmp/headless-chromium"</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        File.Copy(<span class="string">"/var/task/headless-chromium"</span>, <span class="string">"/tmp/headless-chromium"</span>, <span class="literal">true</span>);</span><br><span class="line">        Exec(<span class="string">"chmod +x /tmp/headless-chromium"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Executes the specified command.</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="cmd"&gt;</span>The command.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Exec</span>(<span class="params"><span class="keyword">string</span> cmd</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> escapedArgs = cmd.Replace(<span class="string">"\""</span>, <span class="string">"\\\""</span>);</span><br><span class="line">    <span class="keyword">var</span> process = <span class="keyword">new</span> Process</span><br><span class="line">    &#123;</span><br><span class="line">        StartInfo = <span class="keyword">new</span> ProcessStartInfo</span><br><span class="line">        &#123;</span><br><span class="line">            RedirectStandardOutput = <span class="literal">true</span>,</span><br><span class="line">            UseShellExecute = <span class="literal">false</span>,</span><br><span class="line">            CreateNoWindow = <span class="literal">true</span>,</span><br><span class="line">            WindowStyle = ProcessWindowStyle.Hidden,</span><br><span class="line">            FileName = <span class="string">"/bin/bash"</span>,</span><br><span class="line">            Arguments = <span class="string">$"-c \"<span class="subst">&#123;escapedArgs&#125;</span>\""</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    process.Start();</span><br><span class="line">    process.WaitForExit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//chrome headless的參數</span></span><br><span class="line">ChromeOptions options = <span class="keyword">new</span> ChromeOptions();</span><br><span class="line">options.AddArgument(<span class="string">"no-sandbox"</span>);</span><br><span class="line">options.AddArgument(<span class="string">"headless"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//指定Chrome Binary位置</span></span><br><span class="line">options.BinaryLocation = <span class="string">"/tmp/headless-chromium"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> driver = <span class="keyword">new</span> ChromeDriver(<span class="string">"/tmp"</span>, options);</span><br></pre></td></tr></table></figure>
+<h2 id="CreatePlatformSocket-Operation-not-permitted-1"><a href="#CreatePlatformSocket-Operation-not-permitted-1" class="headerlink" title="CreatePlatformSocket() Operation not permitted (1)"></a>CreatePlatformSocket() Operation not permitted (1)</h2><p>接著遇到下個問題是， ChromeDriver Init 起來時會去呼叫 <a href="http://localhost:xxxx/Session" target="_blank" rel="noopener">http://localhost:xxxx/Session</a> ，而這時後就會因為沒有權限而失敗，但這個在 NodeJs 的版本不會發生，查了 Selenium 的 Source Code 也看不出原因，找了相當多的討論串，<del>目前似乎依然無解，也是在這一題後不得不先放棄</del>，改採用相容較高的 NodeJs 版本</p>
+<p><img src="/images/20181011/11.png" alt="/images/20181011/11.png"></p>
+<div class="note info"><p><strong>相關討論串</strong></p>
+<p><a href="https://github.com/SeleniumHQ/selenium/issues/5457" target="_blank" rel="noopener">The HTTP request to the remote WebDriver server for URL http://localhost:42607/session timed out after 60 seconds.</a></p>
+<p><a href="https://github.com/SeleniumHQ/selenium/issues/6234" target="_blank" rel="noopener">Message: OpenQA.Selenium.WebDriverException : The HTTP request to the remote WebDriver server for URL when using Chrome Headles #6234</a></p></div>
+<p><strong>2018-10-25 更新</strong></p>
+<p>在產生 ChromeDriver 的時候加上 <code>disable-dev-shm-usage</code> 、 <code>single-process</code> 兩個參數可以解決這個問題，</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">options.AddArguments(<span class="string">"no-sandbox"</span>, <span class="string">"headless"</span>, <span class="string">"disable-dev-shm-usage"</span>, <span class="string">"disable-gpu"</span>, <span class="string">"single-process"</span>, <span class="string">"no-zygote"</span>, <span class="string">"hide-scrollbars"</span>, <span class="string">"lang=zh-TW,zh"</span>);</span><br><span class="line"></span><br><span class="line">options.BinaryLocation = <span class="string">"/tmp/headless-chromium"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> driver = <span class="keyword">new</span> ChromeDriver(<span class="string">"/tmp"</span>, options);</span><br></pre></td></tr></table></figure>
+<p>其中 <code>single-process</code> 為 Chromium 的模式之一，詳細可以參考文件</p>
+<div class="note info"><p><a href="https://www.chromium.org/developers/design-documents/process-models" target="_blank" rel="noopener">[The Chromium Projects] - Process Models</a></p>
+<p><a href="https://peter.sh/experiments/chromium-command-line-switches/" target="_blank" rel="noopener">List of Chromium Command Line Switches</a></p></div>
+<p><code>disable-dev-shm-usage</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">To fix, run the container with docker run --shm-size=1gb to increase the size of /dev/shm . Since Chrome 65, this is no longer necessary. Instead, launch the browser with the --disable-dev-shm-usage flag</span><br></pre></td></tr></table></figure>
+<p>會找到這個解法是因為去看了 <a href="https://github.com/adieuadieu/serverless-chrome" target="_blank" rel="noopener">serverless-chrome</a> 的 source code 發現他是這樣寫的，但這樣搭配為什麼會正常，說實在的目前我還看不出為什麼 ， 只能等之後讀更多文件再看看有沒有辦法解答。</p>
+<p>加上這兩個參數後 Lambda 上面雖然還是會報 <code>CreatePlatformSocket() Operation not permitted (1)</code> 錯誤，但減少到只剩下兩次，就正常執行了</p>
+<p><img src="/images/20181011/12.png" alt="/images/20181011/12.png"></p>
+<h2 id="補充-環境問題"><a href="#補充-環境問題" class="headerlink" title="補充 : 環境問題"></a>補充 : 環境問題</h2><p>最後雖然我們採用了 NodeJs 的版本，但還是踩了一個小小的雷，那就是要把檔案壓縮成 zip 檔放到 AWS Lambda 時，相同的程式用我的電腦壓出來是不能執行，但同事壓出來的 zip 檔案卻可以，經過測試後發現，因為我的 Mac 語系環境是中文，壓縮出來時預設會是<code>封裝.zip</code>，不管是中文的的放上去，或是改了檔名後放上去都會錯誤。</p>
+<p>只能下 command 指定壓縮出來的檔名才可解決這個問題</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ zip -r -j ./destination/pacakge ./<span class="built_in">source</span></span><br></pre></td></tr></table></figure>
+<p>相同的，在 Windows 壓出來放上去一樣會壞掉，推測是相同原因….真的是雷到你不要不要的</p>
+<p><strong>2018-10-25 更新</strong></p>
+<p>網路上找到有人討論 Windows 壓縮後放上去會壞掉的問題，解法是請安裝 7zip，並且直接到 root 層執行壓縮，壓完後解壓就要是Root，不要再包一層資料夾，另外…只能用 GUI 執行壓縮，我用 PowerShell 壓縮一樣不行，不知道為什麼(暈)，難怪論壇開宗明義第一句話就是，<strong>不要用 Windows</strong> ，Linux base 的東西跟 windows 真的是很不合…</p>
+<p><img src="/images/20181011/13.png" alt="/images/20181011/13.png"></p>
+ <div class="note info"><p><a href="https://forums.aws.amazon.com/thread.jspa?threadID=179638" target="_blank" rel="noopener">Lambda disdains ZIP files compressed with PowerShell</a></p></div>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/09/14/自訂Google_SearchEngine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1988,186 +2210,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/06/09/【LeetCode】Serialize and Deserialize BST/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/09/【LeetCode】Serialize and Deserialize BST/" itemprop="url">【LeetCode】Serialize and Deserialize BST</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-06-09T20:00:00+08:00">
-                2018-06-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index">
-                    <span itemprop="name">LeetCode</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/06/09/【LeetCode】Serialize and Deserialize BST/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/09/【LeetCode】Serialize and Deserialize BST/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="題目"><a href="#題目" class="headerlink" title="#題目"></a>#題目</h1><p>Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment.</p>
-<p>Design an algorithm to serialize and deserialize a <strong>binary search tree</strong>. There is no restriction on how your serialization/deserialization algorithm should work. You just need to ensure that a binary search tree can be serialized to a string and this string can be deserialized to the original tree structure.</p>
-<p><strong>The encoded string should be as compact as possible.</strong></p>
-<p><strong>Note:</strong> Do not use class member/global/static variables to store states. Your serialize and deserialize algorithms should be stateless.</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     public int val;</span></span><br><span class="line"><span class="comment"> *     public TreeNode left;</span></span><br><span class="line"><span class="comment"> *     public TreeNode right;</span></span><br><span class="line"><span class="comment"> *     public TreeNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Codec</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Encodes a tree to a single string.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">serialize</span>(<span class="params">TreeNode root</span>)</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Decodes your encoded data to tree.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">deserialize</span>(<span class="params"><span class="keyword">string</span> data</span>)</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Your Codec object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment">// Codec codec = new Codec();</span></span><br><span class="line"><span class="comment">// codec.deserialize(codec.serialize(root));</span></span><br></pre></td></tr></table></figure>
-<h1 id="解題"><a href="#解題" class="headerlink" title="#解題"></a>#解題</h1><h2 id="serialize"><a href="#serialize" class="headerlink" title="serialize"></a><strong>serialize</strong></h2><h3 id="案例一"><a href="#案例一" class="headerlink" title="案例一"></a>案例一</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serializeTest</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> node = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Codec();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"1!#!#!"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.serialize(node);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Codec</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">serialize</span>(<span class="params">TreeNode root</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">string</span> res = root.val + <span class="string">"!"</span>;</span><br><span class="line">        res += serialize(root.left);</span><br><span class="line">        res += serialize(root.right);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Decodes your encoded data to tree.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">deserialize</span>(<span class="params"><span class="keyword">string</span> data</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="案例二"><a href="#案例二" class="headerlink" title="案例二"></a>案例二</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> serializeTest_傳入Null應回傳空字串()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Codec();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"#!"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.serialize(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().Be(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Codec</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">serialize</span>(<span class="params">TreeNode root</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"#!"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">string</span> res = root.val + <span class="string">"!"</span>;</span><br><span class="line">        res += serialize(root.left);</span><br><span class="line">        res += serialize(root.right);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Decodes your encoded data to tree.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">deserialize</span>(<span class="params"><span class="keyword">string</span> data</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="案例三"><a href="#案例三" class="headerlink" title="案例三"></a>案例三</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> serializeTest_有左邊子節點()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> node = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">    node.left = <span class="keyword">new</span> TreeNode(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Codec();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"1!2!#!#!#!"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.serialize(node);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>測試直接通過</strong></p>
-<h3 id="案例四"><a href="#案例四" class="headerlink" title="案例四"></a>案例四</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> serializeTest_有右邊子節點()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> node = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">    node.right = <span class="keyword">new</span> TreeNode(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Codec();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">@"1!#!2!#!#!"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.serialize(node);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>測試直接通過</strong></p>
-<h3 id="案例五"><a href="#案例五" class="headerlink" title="案例五"></a>案例五</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> serializeTest_三層節點()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> node = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">    node.left = <span class="keyword">new</span> TreeNode(<span class="number">2</span>);</span><br><span class="line">    node.right = <span class="keyword">new</span> TreeNode(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">    node.left.left = <span class="keyword">new</span> TreeNode(<span class="number">4</span>);</span><br><span class="line">    node.right.right = <span class="keyword">new</span> TreeNode(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Codec();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="string">"1!2!4!#!#!#!3!#!5!#!#!"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.serialize(node);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="圖解"><a href="#圖解" class="headerlink" title="圖解"></a>圖解</h3><p><img src="/images/20180609/1.gif" alt="/images/20180609/1.gif"></p>
-<h2 id="deserialize"><a href="#deserialize" class="headerlink" title="deserialize"></a>deserialize</h2><h3 id="案例一-1"><a href="#案例一-1" class="headerlink" title="案例一"></a>案例一</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deserializeTest</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> nodeSerializeString = <span class="string">@"1!#!#!"</span>;</span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Codec();</span><br><span class="line">           </span><br><span class="line">    <span class="keyword">var</span> expected = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.deserialize(nodeSerializeString);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Codec</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">string</span> <span class="title">serialize</span>(<span class="params">TreeNode root</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"#!"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">string</span> res = root.val + <span class="string">"!"</span>;</span><br><span class="line">        res += serialize(root.left);</span><br><span class="line">        res += serialize(root.right);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Decodes your encoded data to tree.</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">deserialize</span>(<span class="params"><span class="keyword">string</span> data</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">var</span> nodeData = data.Split(<span class="keyword">new</span> <span class="keyword">string</span>[] &#123; <span class="string">"!"</span> &#125;, StringSplitOptions.RemoveEmptyEntries);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> queue = <span class="keyword">new</span> Queue&lt;<span class="keyword">string</span>&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">var</span> node <span class="keyword">in</span> nodeData)</span><br><span class="line">        &#123;</span><br><span class="line">            queue.Enqueue(node);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> RebuildNode(queue);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> TreeNode <span class="title">RebuildNode</span>(<span class="params">Queue&lt;<span class="keyword">string</span>&gt; queue</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">var</span> Value = queue.Dequeue();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (Value == <span class="string">"#"</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        TreeNode node = <span class="keyword">new</span> TreeNode(<span class="keyword">int</span>.Parse(Value));</span><br><span class="line"></span><br><span class="line">        node.left = RebuildNode(queue);</span><br><span class="line">        node.right = RebuildNode(queue);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> node;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>Queue</strong>類別為先進先出<strong>(FIFO)</strong>，與<strong>Stack</strong>後進先出(<strong>LIFO</strong>)使用方法相反</p>
-<div class="note info"><p><a href="https://msdn.microsoft.com/zh-tw/library/system.collections.queue(v=vs.110).aspx" target="_blank" rel="noopener">MSDN - Queue 類別</a></p></div>
-<h3 id="案例二-1"><a href="#案例二-1" class="headerlink" title="案例二"></a>案例二</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deserializeTest_Null_Node</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> nodeSerializeString = <span class="string">"#!"</span>;</span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Codec();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.deserialize(nodeSerializeString);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeNull();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>直接通過測試</strong></p>
-<h3 id="案例三-1"><a href="#案例三-1" class="headerlink" title="案例三"></a>案例三</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> deserializeTest_有左邊子節點()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> nodeSerializeString = <span class="string">@"1!4!#!#!#!"</span>;</span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Codec();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">    expected.left = <span class="keyword">new</span> TreeNode(<span class="number">4</span>);</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.deserialize(nodeSerializeString);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>直接通過測試</strong></p>
-<h3 id="案例四-1"><a href="#案例四-1" class="headerlink" title="案例四"></a>案例四</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> deserializeTest_有右邊子節點()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> nodeSerializeString = <span class="string">@"1!#!2!#!#!"</span>;</span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Codec();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">    expected.right = <span class="keyword">new</span> TreeNode(<span class="number">2</span>);</span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.deserialize(nodeSerializeString);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>直接通過測試</strong></p>
-<h3 id="案例五-1"><a href="#案例五-1" class="headerlink" title="案例五"></a>案例五</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> deserializeTest_三層節點()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//arrange</span></span><br><span class="line">    <span class="keyword">var</span> nodeSerializeString = <span class="string">@"1!2!4!#!#!#!3!#!5!#!#!"</span>;</span><br><span class="line">    <span class="keyword">var</span> sut = <span class="keyword">new</span> Codec();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> expected = <span class="keyword">new</span> TreeNode(<span class="number">1</span>);</span><br><span class="line">    expected.left = <span class="keyword">new</span> TreeNode(<span class="number">2</span>);</span><br><span class="line">    expected.right = <span class="keyword">new</span> TreeNode(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">    expected.left.left = <span class="keyword">new</span> TreeNode(<span class="number">4</span>);</span><br><span class="line">    expected.right.right = <span class="keyword">new</span> TreeNode(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//act</span></span><br><span class="line">    <span class="keyword">var</span> actual = sut.deserialize(nodeSerializeString);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//assert</span></span><br><span class="line">    actual.Should().BeEquivalentTo(expected);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>直接通過測試</strong></p>
-<h1 id="解析"><a href="#解析" class="headerlink" title="#解析"></a>#解析</h1><p><img src="/images/20180609/2.jpg" alt="/images/20180609/2.jpg"></p>
-<p>這題一樣是參考了別人的答案然後去理解，一開始搞得很複雜，想說回傳Json然後再去解析，忽略了二元樹遍歷規則，果然還要多練練才行。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2220,7 +2262,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>

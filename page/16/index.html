@@ -293,6 +293,150 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/10/01/【WebConfig】擴充WebConfig/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/10/01/【WebConfig】擴充WebConfig/" itemprop="url">【WebConfig】擴充WebConfig</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-10-01T14:34:00+08:00">
+                2013-10-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/10/01/【WebConfig】擴充WebConfig/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/10/01/【WebConfig】擴充WebConfig/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>做專案時常常會有測試機與正式機的區別，又兩者要呼叫的API常常也有正式與測試的區別。如果將網址寫死在Code裡，將造成佈署測試機時compile一次，佈署到正式機又要打開code改好網址後再compile一次，不僅耗時又容易出錯。</p>
+<p>所以大部分有這種情況時會將網址參數寫在WebConfig裡，這樣只要到兩台機器去修改參數網址即可，避免了一再compile的問題。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">appSettings</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"APIUrlTest"</span> <span class="attr">value</span>=<span class="string">"TestAPI.com.tw"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">add</span> <span class="attr">key</span>=<span class="string">"APIUrl"</span> <span class="attr">value</span>=<span class="string">"xxx.com.tw"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">appSettings</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>但可能會有很多類似這種參數會寫在Config裡，網址、時間、變數…琳瑯滿目，寫到最後連RD自己也搞得亂七八糟，所以就會寫要將同類型的參數歸類整理一翻。接下來Demo如何將WebConfig隔離與整理。</p>
+<ul>
+<li>首先先在專案中新增一個新的Config檔，就暫且命名為i.config<br><a href="http://1.bp.blogspot.com/-veBTX-iUwNo/UkpqoxSTeHI/AAAAAAAAELI/rtGjX7tlMBE/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-veBTX-iUwNo/UkpqoxSTeHI/AAAAAAAAELI/rtGjX7tlMBE/s1600/1.png" alt></a></li>
+<li>在這個i.config中寫下新的區段(這邊我創了一個新的區塊叫iconfig)<a href="http://1.bp.blogspot.com/-E0LwShdrRYY/UkprFgFcGYI/AAAAAAAAELQ/7hiXZ5kz3Kg/s1600/1.png" target="_blank" rel="noopener"><img src="http://1.bp.blogspot.com/-E0LwShdrRYY/UkprFgFcGYI/AAAAAAAAELQ/7hiXZ5kz3Kg/s1600/1.png" alt></a></li>
+<li>接著到Web.Config註冊這個區段<pre><code>*   在configSections中註冊[![](http://4.bp.blogspot.com/-Fgx71lYcBws/UkprtA0ViaI/AAAAAAAAELY/07Mhjt5ygQ4/s1600/1.png)](http://4.bp.blogspot.com/-Fgx71lYcBws/UkprtA0ViaI/AAAAAAAAELY/07Mhjt5ygQ4/s1600/1.png)
+</code></pre><ul>
+<li>在appSettings區段下面註冊<a href="http://4.bp.blogspot.com/-t3Q4eGgcdNM/UkpsCLpeqBI/AAAAAAAAELg/ZMZ5sWLIkyY/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-t3Q4eGgcdNM/UkpsCLpeqBI/AAAAAAAAELg/ZMZ5sWLIkyY/s1600/1.png" alt></a></li>
+</ul>
+</li>
+<li>在code裡面抓取i.config參數值得方法 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">iconfig</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> System.Collections.Hashtable iConfig = (System.Collections.Hashtable)System.Configuration.ConfigurationManager.GetSection(<span class="string">"iconfig"</span>);</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">string</span> ReservationApi &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> (<span class="keyword">string</span>)iConfig[<span class="string">"ReservationApi"</span>]; &#125; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>依照上述方法就可以將很多不同類型的參數分門別類的整理起來了!!!</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/09/10/【MVC】呼叫ELMAH-艾爾瑪/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1495,146 +1639,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/06/12/【JQuery】製作Sortable下拉時ScrollBar也會跟著捲動/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2013/06/12/【JQuery】製作Sortable下拉時ScrollBar也會跟著捲動/" itemprop="url">【JQuery】製作Sortable下拉時ScrollBar也會跟著捲動</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-06-12T18:44:00+08:00">
-                2013-06-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2013/06/12/【JQuery】製作Sortable下拉時ScrollBar也會跟著捲動/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/06/12/【JQuery】製作Sortable下拉時ScrollBar也會跟著捲動/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="http://jqueryui.com/sortable/#default" target="_blank" rel="noopener">JQuery Sortable套件</a></p>
-<p>這個常常被我用來設定排序的套件，但有個缺點就是它在拉動時父容器不會跟著滾動ScrollBar，所以自己稍做修改了一下(包含上下按鈕的功能)</p>
-<ul>
-<li>先看一下成果 <a href="http://3.bp.blogspot.com/-ylhcGHApU6M/UbhPgADcDOI/AAAAAAAADrc/yPhSeZDoLJg/s1600/z7QsfA1371033050.gif" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-ylhcGHApU6M/UbhPgADcDOI/AAAAAAAADrc/yPhSeZDoLJg/s1600/z7QsfA1371033050.gif" alt></a></li>
-<li><p>HTML <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ul</span> <span class="attr">id</span>=<span class="string">"sortable"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span> <span class="attr">data-sort</span>=<span class="string">"a"</span>&gt;</span>1<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span> <span class="attr">data-sort</span>=<span class="string">"b"</span>&gt;</span>2<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>3<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>4<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>5<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>6<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>7<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>8<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>9<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>10<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>11<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>12<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>13<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>14<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>15<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>16<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>17<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>18<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>19<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>20<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"ui-state-default"</span>&gt;</span>21<span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"sortbtn"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"▲"</span> <span class="attr">id</span>=<span class="string">"btnUp"</span> <span class="attr">class</span>=<span class="string">"btn btn-info"</span> /&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"▼"</span> <span class="attr">id</span>=<span class="string">"btnDown"</span> <span class="attr">class</span>=<span class="string">"btn btn-info"</span>/&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>CSS <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#sortable</span> &#123; <span class="attribute">list-style-type</span>: none; <span class="attribute">margin</span>: <span class="number">0</span>; <span class="attribute">padding</span>: <span class="number">0</span>; <span class="attribute">width</span>: <span class="number">150px</span>; &#125;</span><br><span class="line"><span class="selector-id">#sortable</span> <span class="selector-tag">li</span> &#123; <span class="attribute">margin</span>: <span class="number">0</span> <span class="number">5px</span> <span class="number">5px</span> <span class="number">5px</span>; <span class="attribute">padding</span>: <span class="number">5px</span>; <span class="attribute">font-size</span>: <span class="number">1.2em</span>; <span class="attribute">height</span>: <span class="number">1.5em</span>; &#125;</span><br><span class="line"><span class="selector-tag">html</span>&gt;<span class="selector-tag">body</span> <span class="selector-id">#sortable</span> <span class="selector-tag">li</span> &#123; <span class="attribute">height</span>: <span class="number">1.5em</span>; <span class="attribute">line-height</span>: <span class="number">1.2em</span>; &#125;</span><br><span class="line"><span class="selector-class">.ui-state-highlight</span> &#123; <span class="attribute">height</span>: <span class="number">1.5em</span>; <span class="attribute">line-height</span>: <span class="number">1.2em</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="selector-id">#sortable</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> dotted gray;</span><br><span class="line">    <span class="attribute">overflow</span>:auto;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">500px</span>;</span><br><span class="line">    <span class="attribute">display</span>:inline-block;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">130px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#sortbtn</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="attribute">display</span>:inline-block;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">30px</span>;</span><br><span class="line">    <span class="attribute">vertical-align</span>:top;</span><br><span class="line">    <span class="attribute">position</span>:relative;</span><br><span class="line">    <span class="attribute">top</span>:<span class="number">180px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>JavaScript <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> is_dragging = <span class="literal">false</span>;</span><br><span class="line">    $(<span class="string">'#sortable'</span>).disableSelection().sortable(&#123;</span><br><span class="line">        placeholder: <span class="string">"ui-state-highlight"</span>,</span><br><span class="line">        axis: <span class="string">'y'</span>,</span><br><span class="line">        start: <span class="function"><span class="keyword">function</span> (<span class="params">event, ui</span>) </span>&#123; is_dragging = <span class="literal">true</span>; itemSelect(ui.item); &#125;,</span><br><span class="line">        stop: <span class="function"><span class="keyword">function</span> (<span class="params">event, ui</span>) </span>&#123; is_dragging = <span class="literal">false</span>;&#125;</span><br><span class="line">    &#125;).mousemove(<span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (is_dragging) &#123;</span><br><span class="line">            $(<span class="string">'#sortable'</span>).scrollTop(<span class="function"><span class="keyword">function</span> (<span class="params">i, v</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">var</span> h = $(<span class="string">'#sortable'</span>).height();</span><br><span class="line">                <span class="keyword">var</span> y = e.clientY - h / <span class="number">2</span>;</span><br><span class="line">                <span class="keyword">return</span> v + y * <span class="number">0.05</span>;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//=== 點擊Item時</span></span><br><span class="line">    $(<span class="string">'#sortable &gt; li'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">        itemSelect(<span class="keyword">this</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">////=== 上下按鈕</span></span><br><span class="line">    $(<span class="string">'#btnUp,#btnDown'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> Container_height = $(<span class="string">'#sortable'</span>).height();</span><br><span class="line">        <span class="keyword">var</span> position_top = $(<span class="string">'#sortable'</span>).position().top;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (lastSelect != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> ($(<span class="keyword">this</span>).prop(<span class="string">'id'</span>) == <span class="string">"btnUp"</span>) &#123;</span><br><span class="line">                lastSelect.prev().before(lastSelect);</span><br><span class="line">                <span class="comment">//卷軸向上滾動</span></span><br><span class="line">                $(<span class="string">'#sortable'</span>).scrollTop(<span class="function"><span class="keyword">function</span> (<span class="params">i, v</span>) </span>&#123;</span><br><span class="line">                    <span class="keyword">if</span> (lastSelect.position().top &lt;= position_top + Container_height / <span class="number">2</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> v - lastSelect.height();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                lastSelect.next().after(lastSelect);</span><br><span class="line">                <span class="comment">//卷軸向下滾動</span></span><br><span class="line">                $(<span class="string">'#sortable'</span>).scrollTop(<span class="function"><span class="keyword">function</span> (<span class="params">i, v</span>) </span>&#123;</span><br><span class="line">                    <span class="keyword">if</span> (lastSelect.position().top &gt;= position_top + Container_height / <span class="number">2</span>) &#123;</span><br><span class="line">                        <span class="keyword">return</span> v + lastSelect.height();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1687,7 +1691,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>

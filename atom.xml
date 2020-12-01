@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://toyo0103.github.io/"/>
-  <updated>2020-09-19T14:33:45.094Z</updated>
+  <updated>2020-12-01T15:05:07.479Z</updated>
   <id>https://toyo0103.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>dotnet core 3 container 無法連線 MSSQL 2016</title>
+    <link href="https://toyo0103.github.io/2020/12/01/dotnet_core_3_container_ms_sql_2016/"/>
+    <id>https://toyo0103.github.io/2020/12/01/dotnet_core_3_container_ms_sql_2016/</id>
+    <published>2020-12-01T14:22:00.000Z</published>
+    <updated>2020-12-01T15:05:07.479Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>最近踩到 dotnet core 3 contaienr  + ms sql 2016 的問題，問題的現象是，程式只要跑到建 sql connection 那行就會 hang 在那邊，沒有 timeout 也沒有 Exception … 追查之下後發現，原來 MS SQL 2016 如果沒有調整更新，預設 TLS 好像只支援 1.0、1.1 (待確認)，而我用的 base image : <code>mcr.microsoft.com/dotnet/core/runtime:3.1</code> 的 TLS 設定要求最低版本是 1.2，這也就引發了上述的狀況</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> cat /etc/ssl/openssl.cnf </span></span><br><span class="line">[system_default_sect]</span><br><span class="line">MinProtocol = TLSv1.2</span><br><span class="line">CipherString = DEFAULT@SECLEVEL=2</span><br></pre></td></tr></table></figure><h1 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h1><p>一般來說，基於安全性會建議至少停用 TLS 1.0 並支援 1.2 才是比較好的做法，但如果你跟我一樣只是在測試，那可以採用以下比較 workaround 的做法，在 dockerfile 加上以下幾行來調整 container tls 最低支援版本</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">RUN</span> <span class="string">sed</span> <span class="bullet">-i</span> <span class="string">'s/DEFAULT@SECLEVEL=2/DEFAULT@SECLEVEL=1/g'</span> <span class="string">/etc/ssl/openssl.cnf</span></span><br><span class="line"><span class="string">RUN</span> <span class="string">sed</span> <span class="bullet">-i</span> <span class="string">'s/MinProtocol = TLSv1.2/MinProtocol = TLSv1/g'</span> <span class="string">/etc/ssl/openssl.cnf</span></span><br><span class="line"><span class="string">RUN</span> <span class="string">sed</span> <span class="bullet">-i</span> <span class="string">'s/DEFAULT@SECLEVEL=2/DEFAULT@SECLEVEL=1/g'</span> <span class="string">/usr/lib/ssl/openssl.cnf</span></span><br><span class="line"><span class="string">RUN</span> <span class="string">sed</span> <span class="bullet">-i</span> <span class="string">'s/MinProtocol = TLSv1.2/MinProtocol = TLSv1/g'</span> <span class="string">/usr/lib/ssl/openssl.cnf</span></span><br></pre></td></tr></table></figure><p>這樣重新啟動也就會正常了</p> <div class="note info"><p>參考文章</p><p><a href="https://github.com/dotnet/SqlClient/issues/222" target="_blank" rel="noopener">.NET Core 3.0 Docker Container Won’t Connect to SQL Server</a></p></div>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;情境&quot;&gt;&lt;a href=&quot;#情境&quot; class=&quot;headerlink&quot; title=&quot;情境&quot;&gt;&lt;/a&gt;情境&lt;/h1&gt;&lt;p&gt;最近踩到 dotnet core 3 contaienr  + ms sql 2016 的問題，問題的現象是，程式只要跑到建 sql con
+      
+    
+    </summary>
+    
+    
+      <category term="dotnet core" scheme="https://toyo0103.github.io/tags/dotnet-core/"/>
+    
+      <category term="Docker" scheme="https://toyo0103.github.io/tags/Docker/"/>
+    
+  </entry>
   
   <entry>
     <title>【C#】 關於 Async 的三兩事</title>
@@ -249,7 +274,7 @@
     <link href="https://toyo0103.github.io/2019/05/30/dotnet_tool/"/>
     <id>https://toyo0103.github.io/2019/05/30/dotnet_tool/</id>
     <published>2019-05-30T08:37:00.000Z</published>
-    <updated>2019-08-19T14:51:08.963Z</updated>
+    <updated>2020-12-01T14:25:34.673Z</updated>
     
     <content type="html"><![CDATA[<h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p><img src="/images/20190530/0.png" alt="/images/20190530/0.png"></p><p>最近在公司開發一支稱為 Linter 的小程式，負責檢查 Bitbucket  PR 的異動內容，看看是否有符合公司規範 ，例如 : 加了 Config 後是否有確實在對應環境補上相關設定，盡量避免這種編譯檢查不出來但上線才壞掉的情況。</p><p>原本預想的架構圖如上圖，使用者發了 PR ，透過 Webhook 觸發 Jenkins Master ，由 Master 安排一台機器去執行檢查。</p><p>但面臨一個問題是，當 Linter 這支程式要更版時變得很麻煩，因為每台 Jenkins 都必須要更新這支程式，原本也有想說不如把 Linter 獨立一台機器寫成類似像 API 的服務好了，但未來勢必面臨太多 PR 導致瓶頸，之後在導入 ELB 加多台機器 …. 想著想著就覺得太麻煩了。</p><p>之後同事建議可以包成 dotnet tool 的工具，Linter 要更新時只是發佈新版 Nuget ，而不是去佈署每台 Jenkins Slave，而  Jenkins Slave 每次要執行檢查 PR 時，先檢查自己套件是否為最新版的再往下執行。</p><p><img src="/images/20190530/1.png" alt="/images/20190530/1.png"></p><p>整個流程瞬間變得簡單乾淨許多，所以就動手開始將這套程式包成 dotnet tool</p><p><br></p><h1 id="製作-dotnet-tool"><a href="#製作-dotnet-tool" class="headerlink" title="製作 dotnet tool"></a>製作 dotnet tool</h1><p>首先將要包成 dotnet tool 的專案檔 csproj 加上 PackAsTool 設定  </p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Project</span> <span class="attr">Sdk</span>=<span class="string">"Microsoft.NET.Sdk"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">PropertyGroup</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">OutputType</span>&gt;</span>Exe<span class="tag">&lt;/<span class="name">OutputType</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">TargetFramework</span>&gt;</span>netcoreapp2.1<span class="tag">&lt;/<span class="name">TargetFramework</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">AssemblyName</span>&gt;</span>Linter<span class="tag">&lt;/<span class="name">AssemblyName</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">RootNamespace</span>&gt;</span>Linter<span class="tag">&lt;/<span class="name">RootNamespace</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">PackAsTool</span>&gt;</span>true<span class="tag">&lt;/<span class="name">PackAsTool</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Version</span>&gt;</span>1.0.1<span class="tag">&lt;/<span class="name">Version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">PropertyGroup</span>&gt;</span></span><br></pre></td></tr></table></figure><p>將執行檔打包成 nupkg</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> dotnet pack -c release -o nupkg -p:PackageVersion=1.0.0 src\Linter.csproj</span></span><br></pre></td></tr></table></figure><p>推上 Nuget Server</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> nuget.exe push src\nupkg\Linter.1.0.0.nupkg &lt;Nuget Key&gt; -<span class="built_in">source</span> &lt;Nuget Server&gt;</span></span><br></pre></td></tr></table></figure><p><br></p><h1 id="執行-dotnet-tool"><a href="#執行-dotnet-tool" class="headerlink" title="執行 dotnet tool"></a>執行 dotnet tool</h1><p>Install</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> dotnet tool install --add-source &lt;Nuget Server&gt; -g Linter</span></span><br></pre></td></tr></table></figure><p>Update</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> dotnet tool update -g --no-cache Linter</span></span><br></pre></td></tr></table></figure><p>接著就看你原本怎麼封裝 Cli ，直接執行即可</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> Linter check -n .......</span></span><br></pre></td></tr></table></figure><h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>第一次使用 dotnet tool 有驚豔到，以前都只會傻傻的用 console application ，每次都覺得部屬超麻煩，以後透過 dotnet tool 真的是方便多了 </p><div class="note info"><p><a href="https://blog.miniasp.com/post/2018/04/19/DotNet-Core-2-1-Global-Tools" target="_blank" rel="noopener">保哥 - 體驗 .NET Core 2.1 全新的全域工具安裝與使用 (.NET Core Global Tools)</a></p><p><a href="https://docs.microsoft.com/zh-tw/dotnet/core/tools/global-tools-how-to-create" target="_blank" rel="noopener">使用 .NET Core CLI 建立 .NET Core 通用工具</a></p></div>]]></content>
     
@@ -264,7 +289,7 @@
     </summary>
     
     
-      <category term=".Net Core" scheme="https://toyo0103.github.io/tags/Net-Core/"/>
+      <category term="dotnet core" scheme="https://toyo0103.github.io/tags/dotnet-core/"/>
     
   </entry>
   
@@ -491,32 +516,6 @@
       
         &lt;p&gt;&lt;img src=&quot;/images/20190221/02/1.jpg&quot; alt=&quot;/images/20190221/02/1.jpg&quot;&gt;&lt;/p&gt;
 &lt;p&gt;學習 Docker 最先碰到的困擾應該都是&lt;code&gt;究竟該如何偵錯&lt;/code&gt; ，畢竟 Docker Run Con
-      
-    
-    </summary>
-    
-    
-      <category term="Docker" scheme="https://toyo0103.github.io/tags/Docker/"/>
-    
-      <category term="windows container" scheme="https://toyo0103.github.io/tags/windows-container/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【Docker】Docker for Windows 和 Docker on Windows Server 一樣嗎?</title>
-    <link href="https://toyo0103.github.io/2019/02/21/dockerforwindows_vs_dockeronwindowserver/"/>
-    <id>https://toyo0103.github.io/2019/02/21/dockerforwindows_vs_dockeronwindowserver/</id>
-    <published>2019-02-21T02:36:00.000Z</published>
-    <updated>2020-09-19T08:59:11.006Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="/images/20190221/0.png" alt="/images/20190221/0.png"></p><p>一開始以為 Docker For Windows 跟 Windows Containers on Windows Server 是一樣的東西，結果在建置 CI 機器時碰到一些問題才發現原來是不同東西啊</p><p><br></p><h1 id="Docker-for-Windows"><a href="#Docker-for-Windows" class="headerlink" title="Docker for Windows"></a>Docker for Windows</h1><p>Docker for Windows 底層是透過 Hyper-V 來乘載 Docker Engine，也因為需要多一層 Hyper-V  ，所以執行效率比之後出的 Docker on Windows Server 直接原生 Docker Engine 效率來說差了一截，但也因為有 Hyper-V 的協助下，可切換成能執行 Linux Container 的模式。</p><p><img src="/images/20190221/1.png" alt="/images/20190221/1.png"></p><p> Windows 10 Professional 版本就可以安裝 ( 因為Professional 版本才有 Hyper-V )</p><p><img src="/images/20190221/2.png" alt="/images/20190221/2.png"></p><p>圖片來源 : <a href="https://docs.microsoft.com/zh-tw/virtualization/windowscontainers/deploy-containers/linux-containers" target="_blank" rel="noopener">Microsoft</a></p><div class="note info"><p><a href="https://docs.microsoft.com/zh-tw/virtualization/windowscontainers/quick-start/quick-start-windows-10" target="_blank" rel="noopener">Windows 10 上的 Windows 容器</a></p><p><a href="https://docs.docker.com/docker-for-windows/" target="_blank" rel="noopener">Get started with Docker for Windows</a></p><p><a href="https://docs.microsoft.com/zh-tw/virtualization/windowscontainers/deploy-containers/linux-containers" target="_blank" rel="noopener">Windows 上的 Linux 容器</a></p></div><p><br></p><h1 id="Windows-Containers-on-Windows-Server"><a href="#Windows-Containers-on-Windows-Server" class="headerlink" title="Windows Containers on Windows Server"></a>Windows Containers on Windows Server</h1><div class="note info"><p><a href="https://docs.docker.com/install/windows/docker-ee/" target="_blank" rel="noopener">Install Docker Engine - Enterprise on Windows Servers</a></p></div><p>Windows Server 2016 或更新的版本才可使用，直接在 OS 上執行 Docker Engine，所以效能比需要 Hyper-V 的 Docker for Windows 好上一大截，如果要跑 Linux 類的 Container 也可以透過 <code>--isolation=hyperv</code> 的方式，不過有個限制是這個方法不能在 VM 中用，也就是說如果你今天是用雲端的 Windows Server，本身已經是在 VM 裡面了，就無法在裡面執行 <code>isolation</code>。</p><p><img src="/images/20190221/3.png" alt="/images/20190221/3.png"></p><p>圖片來源 : <a href="https://blogs.msdn.microsoft.com/msgulfcommunity/2015/06/20/what-is-windows-server-containers-and-hyper-v-containers/" target="_blank" rel="noopener">MSDN</a></p><p>目前因為公司內部很多既有專案都是用 .Net Framework 開發的，所以轉移到 Container 也是選擇用 Windows Containers on Windows Server，畢竟如果是 Production Service，效能還是非常重要的一個考量</p><p><br></p><div class="note info"><p>參考文章</p><p><a href="https://columns.chicken-house.net/2016/09/05/windows-container-faq/#q3-windows-container-%E8%83%BD%E5%9F%B7%E8%A1%8C%E7%8F%BE%E6%9C%89%E7%9A%84-docker-container-image-%E5%97%8E" target="_blank" rel="noopener">Windows Container FAQ - 官網沒有說的事</a></p><p><a href="https://blog.vizuri.com/docker-for-windows-vs.-docker-on-windows-server" target="_blank" rel="noopener">Docker FOR Windows vs. Docker ON Windows Server - vizuri</a></p></div>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;img src=&quot;/images/20190221/0.png&quot; alt=&quot;/images/20190221/0.png&quot;&gt;&lt;/p&gt;
-&lt;p&gt;一開始以為 Docker For Windows 跟 Windows Containers on Windows Server 是一
       
     
     </summary>

@@ -293,6 +293,145 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/03/07/【Unit-Test】重構-二-單元測試的可讀性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/03/07/【Unit-Test】重構-二-單元測試的可讀性/" itemprop="url">【Unit Test】重構 (二) 單元測試的可讀性</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-03-07T10:03:00+08:00">
+                2016-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/03/07/【Unit-Test】重構-二-單元測試的可讀性/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/07/【Unit-Test】重構-二-單元測試的可讀性/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li><p><span style="color: #073763; font-weight: normal;">方法命名 &nbsp;: &nbsp;受測的方法名稱Test_動作_預期結果</span><br><span style="font-weight: normal;"><span style="font-weight: normal;"><br></span></span><span style="font-weight: normal;"><span style="font-weight: normal;">這樣可以看標題名稱，馬上就能大略的明白此單元測試的受測者與目標是什麼，對於之後如果改版發生單元錯誤時，也才能明白該如何修復</span></span></p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-CaS4BNBA6a4/VtzcFkfagkI/AAAAAAAAHuQ/2mAf5riuHfk/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-CaS4BNBA6a4/VtzcFkfagkI/AAAAAAAAHuQ/2mAf5riuHfk/s1600/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">錯誤寫法&nbsp;</td></tr></tbody></table><span style="font-weight: normal;"><br>&nbsp;哪天因為改版造成這個單元測試錯誤了，要修復時非得看完全部的Code才能明白何謂”正確的狀況”，對於維護來說是不利的</span><br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-B7ro_7k5cAo/VtzauPAEglI/AAAAAAAAHuE/KnntqnWuvpQ/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-B7ro_7k5cAo/VtzauPAEglI/AAAAAAAAHuE/KnntqnWuvpQ/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">建議寫法</td></tr></tbody></table>
+</li>
+<li><p><span style="color: #073763; font-weight: normal;">共用的參數應該有個父類別來管理</span><br>有時候我們會為了測試某些情境，對於public static的東西進行設定，但也因為這是public static的變數，為了避免與其它單元測試交互影響，所以我們會在TestCleanUp的方法中做清除的動作</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-t9BldDR6eJU/VtzepBta3lI/AAAAAAAAHug/Uv5g94SdikU/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-t9BldDR6eJU/VtzepBta3lI/AAAAAAAAHug/Uv5g94SdikU/s640/1.png" alt></a></div>
+
+<p>但這種寫法如果散落在各個單元測試的Class之中，對於維護也是一大挑戰，所以建議建立一個TestBase之類的父類別，讓所有單元測試的類別繼承它，並統一管理。<br>總結，單元測試是為了讓程式更有品質，且在一些保護的基礎上進行改版，但如果單元測試的撰寫沒有一些有效的管理，對於後續的維護成本可能會比沒單元測試來的更高更難維護，如果單元測試寫的不清不楚，誰會知道這個測試到底要保護什麼呢?</p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/03/02/【Unit-Test】重構-一-透過繼承解耦/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -862,6 +1001,140 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/12/14/【SQL】遞迴/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/12/14/【SQL】遞迴/" itemprop="url">【SQL】遞迴</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+08:00">
+                2015-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/14/【SQL】遞迴/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/14/【SQL】遞迴/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>有張表格如下，Parent欄位代表他的父層的RegionID，所以裡面包含所有縣市、行政區、鄉里等資料，那要如何用SQL遞迴的方式把台北市用階層的方式表列出來呢?<br>台北市 &gt; 信義區、大安區、中正區…. &gt;&nbsp;港華里、老泉里…..</p>
+<p><a href="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" alt></a></p>
+<p>用CTE的寫法可以解決，把台北市當做茅點，然後Join自己即可達到遞迴的效果</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> 遞迴 <span class="keyword">as</span>(</span><br><span class="line"><span class="comment">------茅點 start-------</span></span><br><span class="line"><span class="keyword">SELECT</span> RegionID , <span class="keyword">Name</span></span><br><span class="line"><span class="keyword">FROM</span> Region a</span><br><span class="line"><span class="keyword">WHERE</span> RegionID = <span class="number">1</span> <span class="comment">--台北市</span></span><br><span class="line"><span class="comment">------茅點 end ---------</span></span><br><span class="line"><span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"><span class="keyword">select</span> b.RegionID , b.name</span><br><span class="line"><span class="keyword">from</span> Region b</span><br><span class="line"><span class="keyword">join</span> 遞迴 <span class="keyword">on</span>  b.Parent = 遞迴.RegionID</span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 遞迴</span><br></pre></td></tr></table></figure>
+<p>搜尋出來的結果<br><a href="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" alt></a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/12/14/【WebAPI】Custom-ActionFilter-Order/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -963,140 +1236,6 @@
 <p><img src="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png" alt="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png"></p>
 <p>可以看到Four排在Three的前面了</p>
 <p><img src="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png" alt="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/12/14/【SQL】遞迴/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/12/14/【SQL】遞迴/" itemprop="url">【SQL】遞迴</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+08:00">
-                2015-12-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/12/14/【SQL】遞迴/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/14/【SQL】遞迴/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>有張表格如下，Parent欄位代表他的父層的RegionID，所以裡面包含所有縣市、行政區、鄉里等資料，那要如何用SQL遞迴的方式把台北市用階層的方式表列出來呢?<br>台北市 &gt; 信義區、大安區、中正區…. &gt;&nbsp;港華里、老泉里…..</p>
-<p><a href="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-ezOt-MPBhp8/Vm4i1FAr5_I/AAAAAAAAHq8/GEW1WgWPjps/s1600/1.png" alt></a></p>
-<p>用CTE的寫法可以解決，把台北市當做茅點，然後Join自己即可達到遞迴的效果</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> 遞迴 <span class="keyword">as</span>(</span><br><span class="line"><span class="comment">------茅點 start-------</span></span><br><span class="line"><span class="keyword">SELECT</span> RegionID , <span class="keyword">Name</span></span><br><span class="line"><span class="keyword">FROM</span> Region a</span><br><span class="line"><span class="keyword">WHERE</span> RegionID = <span class="number">1</span> <span class="comment">--台北市</span></span><br><span class="line"><span class="comment">------茅點 end ---------</span></span><br><span class="line"><span class="keyword">union</span> <span class="keyword">all</span></span><br><span class="line"><span class="keyword">select</span> b.RegionID , b.name</span><br><span class="line"><span class="keyword">from</span> Region b</span><br><span class="line"><span class="keyword">join</span> 遞迴 <span class="keyword">on</span>  b.Parent = 遞迴.RegionID</span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> 遞迴</span><br></pre></td></tr></table></figure>
-<p>搜尋出來的結果<br><a href="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" target="_blank" rel="noopener"><img src="http://4.bp.blogspot.com/-SGZfLH0gsGo/Vm4kfeQCk6I/AAAAAAAAHrI/M3N0VaRWT-8/s1600/1.png" alt></a></p>
 
           
         
@@ -1565,145 +1704,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/10/23/AutoMapper運用-二/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/23/AutoMapper運用-二/" itemprop="url">AutoMapper運用 (二)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-10-23T14:49:00+08:00">
-                2015-10-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/10/23/AutoMapper運用-二/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/23/AutoMapper運用-二/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>如果是複雜Class要Mapper時<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Category</span> </span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">int</span> id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">  <span class="keyword">public</span> List&lt;product&gt;  products &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Product</span> </span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">int</span> id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">string</span> name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">int</span> qantity &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>Category要Mapping到CategoryViewModel</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CategoryViewModel</span> </span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">int</span> id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> List&lt;Book&gt;  books &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Book</span> </span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> title &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">int</span> number&#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>有兩種做法,結果都會是一樣的</p>
-<ol>
-<li><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">Category category = <span class="keyword">new</span> Category()</span><br><span class="line"> &#123;</span><br><span class="line">  id = <span class="number">1</span>,</span><br><span class="line">  products = <span class="keyword">new</span> List&lt;Product&gt;()</span><br><span class="line">  &#123;</span><br><span class="line">   <span class="keyword">new</span> Product()</span><br><span class="line">   &#123;</span><br><span class="line">    id = <span class="number">1</span>,</span><br><span class="line">    name = <span class="string">"西遊戲"</span>,</span><br><span class="line">    qantity =<span class="number">10</span>,</span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="keyword">new</span> Product()</span><br><span class="line">   &#123;</span><br><span class="line">    id = <span class="number">2</span>,</span><br><span class="line">    name = <span class="string">"三國志"</span>,</span><br><span class="line">    qantity =<span class="number">30</span>,</span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="keyword">new</span> Product()</span><br><span class="line">   &#123;</span><br><span class="line">    id = <span class="number">3</span>,</span><br><span class="line">    name = <span class="string">"鹿鼎記"</span>,</span><br><span class="line">    qantity =<span class="number">50</span>,</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line">     Mapper.CreateMap&lt;Category, CategoryViewModel&gt;()</span><br><span class="line">  .ForMember(d =&gt; d.id, o =&gt; o.MapFrom(s =&gt; s.id))</span><br><span class="line">  .ForMember(d =&gt; d.books, o =&gt; o.MapFrom(s =&gt; s.products));</span><br><span class="line"></span><br><span class="line">     Mapper.CreateMap&lt;Product, Book&gt;()</span><br><span class="line">  .ForMember(d =&gt; d.title, o =&gt; o.MapFrom(s =&gt; s.name))</span><br><span class="line">  .ForMember(d =&gt; d.number, o =&gt; o.MapFrom(s =&gt; s.qantity));</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> viewModel = Mapper.Map&lt;CategoryViewModel&gt;(category);</span><br><span class="line"> viewModel.Dump();</span><br></pre></td></tr></table></figure>
-</li>
-<li><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   Category category = <span class="keyword">new</span> Category()</span><br><span class="line">   &#123;</span><br><span class="line">     id = <span class="number">1</span>,</span><br><span class="line">     products = <span class="keyword">new</span> List&lt;Product&gt;()</span><br><span class="line">     &#123;</span><br><span class="line">       <span class="keyword">new</span> Product()</span><br><span class="line">       &#123;</span><br><span class="line">         id = <span class="number">1</span>,</span><br><span class="line">         name = <span class="string">"西遊戲"</span>,</span><br><span class="line">         qantity =<span class="number">10</span>,</span><br><span class="line">       &#125;,</span><br><span class="line">       <span class="keyword">new</span> Product()</span><br><span class="line">       &#123;</span><br><span class="line">         id = <span class="number">2</span>,</span><br><span class="line">         name = <span class="string">"三國志"</span>,</span><br><span class="line">         qantity =<span class="number">30</span>,</span><br><span class="line">       &#125;,</span><br><span class="line">       <span class="keyword">new</span> Product()</span><br><span class="line">       &#123;</span><br><span class="line">         id = <span class="number">3</span>,</span><br><span class="line">         name = <span class="string">"鹿鼎記"</span>,</span><br><span class="line">         qantity =<span class="number">50</span>,</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line">     Mapper.CreateMap&lt;Category, CategoryViewModel&gt;()</span><br><span class="line">  .ForMember(d =&gt; d.id, o =&gt; o.MapFrom(s =&gt; s.id))</span><br><span class="line">  .ForMember(d =&gt; d.books, o =&gt; o.ResolveUsing&lt;BookResolve&gt;().FromMember(s =&gt; s.products));</span><br><span class="line"></span><br><span class="line">     <span class="keyword">var</span> viewModel = Mapper.Map&lt;CategoryViewModel&gt;(category);</span><br><span class="line"> viewModel.Dump();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    public class BookResolve : ValueResolver&lt;IList&lt;Product&gt;, IList&lt;Book&gt;&gt;&#123;</span><br><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> IList&lt;Book&gt; <span class="title">ResolveCore</span>(<span class="params">IList&lt;Product&gt; source</span>)</span> &#123;</span><br><span class="line">    List&lt;Book&gt; books = <span class="keyword">new</span> List&lt;Book&gt;();</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> source)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">var</span> book = <span class="keyword">new</span> Book()      &#123;</span><br><span class="line">        number = item.qantity,</span><br><span class="line">        title = item.name</span><br><span class="line">      &#125;;</span><br><span class="line">      books.Add(book);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> books;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1756,7 +1756,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>

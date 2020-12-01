@@ -293,6 +293,145 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/10/23/AutoMapper運用-二/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/10/23/AutoMapper運用-二/" itemprop="url">AutoMapper運用 (二)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-10-23T14:49:00+08:00">
+                2015-10-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/10/23/AutoMapper運用-二/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/10/23/AutoMapper運用-二/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>如果是複雜Class要Mapper時<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Category</span> </span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">int</span> id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">  <span class="keyword">public</span> List&lt;product&gt;  products &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Product</span> </span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">int</span> id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">string</span> name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">int</span> qantity &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Category要Mapping到CategoryViewModel</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CategoryViewModel</span> </span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">int</span> id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> List&lt;Book&gt;  books &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Book</span> </span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">string</span> title &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">int</span> number&#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有兩種做法,結果都會是一樣的</p>
+<ol>
+<li><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">Category category = <span class="keyword">new</span> Category()</span><br><span class="line"> &#123;</span><br><span class="line">  id = <span class="number">1</span>,</span><br><span class="line">  products = <span class="keyword">new</span> List&lt;Product&gt;()</span><br><span class="line">  &#123;</span><br><span class="line">   <span class="keyword">new</span> Product()</span><br><span class="line">   &#123;</span><br><span class="line">    id = <span class="number">1</span>,</span><br><span class="line">    name = <span class="string">"西遊戲"</span>,</span><br><span class="line">    qantity =<span class="number">10</span>,</span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="keyword">new</span> Product()</span><br><span class="line">   &#123;</span><br><span class="line">    id = <span class="number">2</span>,</span><br><span class="line">    name = <span class="string">"三國志"</span>,</span><br><span class="line">    qantity =<span class="number">30</span>,</span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="keyword">new</span> Product()</span><br><span class="line">   &#123;</span><br><span class="line">    id = <span class="number">3</span>,</span><br><span class="line">    name = <span class="string">"鹿鼎記"</span>,</span><br><span class="line">    qantity =<span class="number">50</span>,</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line">     Mapper.CreateMap&lt;Category, CategoryViewModel&gt;()</span><br><span class="line">  .ForMember(d =&gt; d.id, o =&gt; o.MapFrom(s =&gt; s.id))</span><br><span class="line">  .ForMember(d =&gt; d.books, o =&gt; o.MapFrom(s =&gt; s.products));</span><br><span class="line"></span><br><span class="line">     Mapper.CreateMap&lt;Product, Book&gt;()</span><br><span class="line">  .ForMember(d =&gt; d.title, o =&gt; o.MapFrom(s =&gt; s.name))</span><br><span class="line">  .ForMember(d =&gt; d.number, o =&gt; o.MapFrom(s =&gt; s.qantity));</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> viewModel = Mapper.Map&lt;CategoryViewModel&gt;(category);</span><br><span class="line"> viewModel.Dump();</span><br></pre></td></tr></table></figure>
+</li>
+<li><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   Category category = <span class="keyword">new</span> Category()</span><br><span class="line">   &#123;</span><br><span class="line">     id = <span class="number">1</span>,</span><br><span class="line">     products = <span class="keyword">new</span> List&lt;Product&gt;()</span><br><span class="line">     &#123;</span><br><span class="line">       <span class="keyword">new</span> Product()</span><br><span class="line">       &#123;</span><br><span class="line">         id = <span class="number">1</span>,</span><br><span class="line">         name = <span class="string">"西遊戲"</span>,</span><br><span class="line">         qantity =<span class="number">10</span>,</span><br><span class="line">       &#125;,</span><br><span class="line">       <span class="keyword">new</span> Product()</span><br><span class="line">       &#123;</span><br><span class="line">         id = <span class="number">2</span>,</span><br><span class="line">         name = <span class="string">"三國志"</span>,</span><br><span class="line">         qantity =<span class="number">30</span>,</span><br><span class="line">       &#125;,</span><br><span class="line">       <span class="keyword">new</span> Product()</span><br><span class="line">       &#123;</span><br><span class="line">         id = <span class="number">3</span>,</span><br><span class="line">         name = <span class="string">"鹿鼎記"</span>,</span><br><span class="line">         qantity =<span class="number">50</span>,</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line">     Mapper.CreateMap&lt;Category, CategoryViewModel&gt;()</span><br><span class="line">  .ForMember(d =&gt; d.id, o =&gt; o.MapFrom(s =&gt; s.id))</span><br><span class="line">  .ForMember(d =&gt; d.books, o =&gt; o.ResolveUsing&lt;BookResolve&gt;().FromMember(s =&gt; s.products));</span><br><span class="line"></span><br><span class="line">     <span class="keyword">var</span> viewModel = Mapper.Map&lt;CategoryViewModel&gt;(category);</span><br><span class="line"> viewModel.Dump();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    public class BookResolve : ValueResolver&lt;IList&lt;Product&gt;, IList&lt;Book&gt;&gt;&#123;</span><br><span class="line"> <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> IList&lt;Book&gt; <span class="title">ResolveCore</span>(<span class="params">IList&lt;Product&gt; source</span>)</span> &#123;</span><br><span class="line">    List&lt;Book&gt; books = <span class="keyword">new</span> List&lt;Book&gt;();</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> source)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">var</span> book = <span class="keyword">new</span> Book()      &#123;</span><br><span class="line">        number = item.qantity,</span><br><span class="line">        title = item.name</span><br><span class="line">      &#125;;</span><br><span class="line">      books.Add(book);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> books;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/10/23/AutoMapper運用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1563,150 +1702,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/09/swift-UIAlertController/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/03/09/swift-UIAlertController/" itemprop="url">[swift] UIAlertController</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2015-03-09T15:44:00+08:00">
-                2015-03-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/03/09/swift-UIAlertController/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/09/swift-UIAlertController/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ul>
-<li><p>APP常常有一種狀況是當使用者按下某個選項時,從下面滑出更多的選項讓它做進一步動作,例如在iphone的照片點選垃圾桶時</p>
-<p><a href="http://2.bp.blogspot.com/-3nruP8qpby4/VP1MZiLDRrI/AAAAAAAAEhQ/AjByBZQXUfs/s1600/IMG_2020.PNG" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-3nruP8qpby4/VP1MZiLDRrI/AAAAAAAAEhQ/AjByBZQXUfs/s400/IMG_2020.PNG" alt></a></p>
-</li>
-<li>在IOS 8中多了一個UIAlertController的類別來取代UIAlerView,實際作法如下<br>首先將程式碼加到viewDidAppear,否則無法顯示效果,原因請看IOS生命週期的說明<a href="http://stablekernel.com/blog/uiviewcontroller-best-practices-viewwillappear-or-viewdidload/" target="_blank" rel="noopener">點我 </a><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidAppear</span><span class="params">(animated: Bool)</span></span> &#123;</span><br><span class="line">        <span class="comment">//建立UIAlertController</span></span><br><span class="line">        <span class="keyword">let</span> quetion = <span class="type">UIAlertController</span>(title: <span class="literal">nil</span>, message: <span class="string">"What Do u want?"</span>, preferredStyle: .<span class="type">ActionSheet</span>);</span><br><span class="line">        <span class="comment">//新增選項</span></span><br><span class="line">        <span class="keyword">let</span> callaction = <span class="type">UIAlertAction</span>(title: <span class="string">"call xxx"</span>, style: .<span class="type">Default</span> , handler:<span class="literal">nil</span>);</span><br><span class="line">        <span class="comment">//把選項加到UIAlertController</span></span><br><span class="line">        quetion.addAction(callaction);</span><br><span class="line">        <span class="comment">//Show</span></span><br><span class="line">        <span class="keyword">self</span>.presentViewController(quetion, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>執行看到的結果如下圖<br><a href="http://3.bp.blogspot.com/-FSopEARqG_0/VP1Oau8suBI/AAAAAAAAEhc/v6cpxkt6bWc/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8B%E5%8D%883.39.39.png" target="_blank" rel="noopener"><img src="http://3.bp.blogspot.com/-FSopEARqG_0/VP1Oau8suBI/AAAAAAAAEhc/v6cpxkt6bWc/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8B%E5%8D%883.39.39.png" alt></a></p>
-<ul>
-<li>如果將ActionSheet改成Alert,則結果 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> quetion = <span class="type">UIAlertController</span>(title: <span class="literal">nil</span>, message: <span class="string">"What Do u want?"</span>, preferredStyle: .<span class="type">Alert</span>);</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p><a href="http://2.bp.blogspot.com/-Tn1snLcsaxI/VP1PGsV8gtI/AAAAAAAAEhk/r84kalhfkHw/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8B%E5%8D%883.43.05.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-Tn1snLcsaxI/VP1PGsV8gtI/AAAAAAAAEhk/r84kalhfkHw/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8B%E5%8D%883.43.05.png" alt></a></p>
-<ul>
-<li>如果更進階一些,在選擇選項後有些回應時<br>我們拉一個label到ViewController裡面來,並且在按下call xxx選項時,把label的字樣給改變 <figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AlertViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> showaction: <span class="type">UILabel!</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidAppear</span><span class="params">(animated: Bool)</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> quetion = <span class="type">UIAlertController</span>(title: <span class="literal">nil</span>, message: <span class="string">"What Do u want?"</span>, preferredStyle: .<span class="type">Alert</span>);</span><br><span class="line">        <span class="keyword">let</span> callaction = <span class="type">UIAlertAction</span>(title: <span class="string">"call xxx"</span>,style: .<span class="type">Default</span>, handler:&#123;</span><br><span class="line">            (action:<span class="type">UIAlertAction!</span>) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">self</span>.showaction.text = <span class="string">"Do call xxx"</span>;</span><br><span class="line">        &#125;);</span><br><span class="line">        quetion.addAction(callaction);</span><br><span class="line">        <span class="keyword">self</span>.presentViewController(quetion, animated: <span class="literal">true</span>, completion: <span class="literal">nil</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>執行看看吧！！</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1759,7 +1754,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>

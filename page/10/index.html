@@ -293,6 +293,167 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/08/17/【重構系列】-二-DI與IOC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016/08/17/【重構系列】-二-DI與IOC/" itemprop="url">【重構系列】(二) DI與IOC</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-08-17T16:36:00+08:00">
+                2016-08-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/08/17/【重構系列】-二-DI與IOC/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/17/【重構系列】-二-DI與IOC/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>SourceCode :&nbsp;<a href="https://github.com/toyo0103/Demo_EditTemplate_1" target="_blank" rel="noopener">https://github.com/toyo0103/Demo_EditTemplate_1</a></p>
+<p>依據前一篇延續，接著我們把焦點放在Application與Service之間的狀況</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-urWNSzGdlp8/V7O6-tD1woI/AAAAAAAAH6w/z2GwsqBn9hANkslSqNpALNAuRiBIuuI4ACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-urWNSzGdlp8/V7O6-tD1woI/AAAAAAAAH6w/z2GwsqBn9hANkslSqNpALNAuRiBIuuI4ACLcB/s400/1.png" alt></a></div><br>前一篇有提到程式應該要面對<strong>抽象</strong>避免高耦合的情況發生，改一髮進而動全身，所以有用<strong>介面</strong>的方式去處理<br><br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-O7kXIwvgtDk/V7O7kOH1D0I/AAAAAAAAH60/M49OysRZ7R4LxOLv4UNE9WJVLBBpsICJwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-O7kXIwvgtDk/V7O7kOH1D0I/AAAAAAAAH60/M49OysRZ7R4LxOLv4UNE9WJVLBBpsICJwCLcB/s400/1.png" alt></a></div>
+
+<p>然而來看看目前實際的程式狀況 : <strong>直接耦合</strong></p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-csgLbuLY5Dw/V7O9BEEADYI/AAAAAAAAH7A/n6mzb9hYUiksdAHYuQmBXuH6aPO0Sk8-wCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-csgLbuLY5Dw/V7O9BEEADYI/AAAAAAAAH7A/n6mzb9hYUiksdAHYuQmBXuH6aPO0Sk8-wCLcB/s400/1.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-LkVwTAXMQHc/V7O9TcpERgI/AAAAAAAAH7I/18cwMlw6YtQxVKhppexI25lzS--gxIIagCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-LkVwTAXMQHc/V7O9TcpERgI/AAAAAAAAH7I/18cwMlw6YtQxVKhppexI25lzS--gxIIagCLcB/s400/1.png" alt></a></div>
+
+<p>這邊會談到兩個用來解開這種狀況的觀念</p>
+<ul>
+<li><strong><span style="color: red;">依賴注入</span></strong>(Dependency Injection)簡稱DI</li>
+<li><strong><span style="color: red;">控制反轉(</span></strong>Inversion Of Control)簡稱IOC</li>
+</ul>
+<p>先看看Google怎麼解釋<br><span style="color: #222222; font-family: &quot;arial&quot; , sans-serif;"><span style="background-color: #cccccc; line-height: 19.2px;"><strong>控制反轉（Inversion of Control，縮寫為IoC），是面向對象編程中的一種設計原則，可以用來減低計算機代碼之間的耦合度。其中最常見的方式叫做依賴注入（Dependency Injection，簡稱DI）</strong></span></span></p>
+<p>不知道看完有沒有懂的感覺XD，明明都是中文看完卻很想說「先生(小姐)可以講中文嗎?」。<br>撇開這些專業的術語不看，我們直接開始重構來體會這兩個概念</p>
+<p><span style="color: #444444;"><br></span><span style="color: #444444; font-size: x-large;">一、重構開始</span></p>
+<p><span style="font-size: large;"><strong>抽取介面</strong></span><br>避免直接耦合的第一步，抽取介面來隔離實體，既然這邊實際耦合了<strong>POIService</strong>，那我們就為它抽取出Interface <span style="color: #bf9000;">IPOIService</span></p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-LrWsJfLH2vU/V7PAEPoqZKI/AAAAAAAAH7Y/VCUD_9YVxnEPfAzFCKpQvHY3jQRkMBD9ACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-LrWsJfLH2vU/V7PAEPoqZKI/AAAAAAAAH7Y/VCUD_9YVxnEPfAzFCKpQvHY3jQRkMBD9ACLcB/s1600/1.png" alt></a></div><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IPOIService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 取得屬於頻道的POI資料</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="channelID"&gt;</span>The channel identifier.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>List&amp;lt;POI&amp;gt;.<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function">List&lt;POI&gt; <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> channelID</span>)</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>將<strong>POIService</strong>掛上<span style="color: #bf9000;">IPOIService</span><br><span style="color: #bf9000;"><br></span><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-YS5Dd3-SnX4/V7PA1QAh0ZI/AAAAAAAAH7g/Av6PbiG5yYgct0SYM1kP_n8mTQTLy0N2ACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-YS5Dd3-SnX4/V7PA1QAh0ZI/AAAAAAAAH7g/Av6PbiG5yYgct0SYM1kP_n8mTQTLy0N2ACLcB/s400/1.png" alt></a></div><span style="color: #bf9000;"><br></span><span style="color: #bf9000;"><br></span><strong>讓Application依賴介面</strong><br><br>上一篇遇到這種狀況時，我們會做一個Factory來產生實體，並且封裝在Service層。這次我們不這麼做，改成用依賴注入(DI)的方式來實作，將<span style="color: #bf9000;">IPOIService</span>改成用建構子帶入<br><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HomeController</span> : <span class="title">Controller</span></span><br><span class="line">    &#123;</span><br><span class="line">        IPOIService _POIService;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">HomeController</span>(<span class="params">IPOIService poiService</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//POIService改成依賴介面IPOIService</span></span><br><span class="line">            <span class="comment">//並且實體是由外部來決定，也就是所謂的依賴注入DI</span></span><br><span class="line">            _POIService = poiService;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> ActionResult <span class="title">Index</span>(<span class="params"><span class="keyword">string</span> id</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//依賴外部注入的IPOIService介面</span></span><br><span class="line">            <span class="keyword">var</span> POIs = _POIService.Get(id);</span><br><span class="line">            <span class="keyword">return</span> Json(POIs,JsonRequestBehavior.AllowGet);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><br><br>這邊用的<span style="color: #bf9000;">IPOIService</span>是由外部注入的，實體已經不由<strong>HomeController </strong>內部來決定了(不New實體了)，也就是上面所提到的<strong>DI 依賴注入</strong>(<em>要用的實體由建構子注入</em>)，<strong>IOC控制反轉</strong>(<em>實體已經由內部控制改由外部控制了</em>)<br><br>接下來面臨的問題是，雖然我們讓實體改成用外部注入的方式，但HomeController在建立的時候是由系統去產生的，它怎麼知道<span style="color: #bf9000;">IPOIService</span>的實體是要注入誰，所以現在執行程式會看到以下結果<br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-0ijdWklCbSk/V7QYVfZnz_I/AAAAAAAAH7w/Bj3Sa8cECEcTJNOsObhzWMd6vMjwUJIggCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-0ijdWklCbSk/V7QYVfZnz_I/AAAAAAAAH7w/Bj3Sa8cECEcTJNOsObhzWMd6vMjwUJIggCLcB/s1600/1.png" alt></a></div>
+
+<p>這時候就要介紹<strong>Unity</strong>這個套件來幫我們解決這個問題了</p>
+<p>**</p>
+<hr>
+<p><strong>**何謂Unity</strong></p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-PEXphTQycyE/V7QY_Y7zGoI/AAAAAAAAH70/n8FT2stz8PQnOEXWrUSl95ilLNBrmTz1gCLcB/s1600/MSUNITY.jpg" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-PEXphTQycyE/V7QY_Y7zGoI/AAAAAAAAH70/n8FT2stz8PQnOEXWrUSl95ilLNBrmTz1gCLcB/s400/MSUNITY.jpg" alt></a></div>MSDN上的Unity套件介紹 : <a href="https://msdn.microsoft.com/en-us/library/ff647202.aspx" target="_blank" rel="noopener">https://msdn.microsoft.com/en-us/library/ff647202.aspx</a><br><strong>
+</strong><span style="font-size: large;">其實這個套件說穿了就是在Application啟動時，註冊每個Interface對應的實體是誰，當碰到要注入這個Interface時，Unity就會去找找看你有沒有跟它說對應的實體，如果有，它就把實體產生出來幫你帶入。</span>那就一步一步做做看邊體會它的意思<br><span style="font-size: large;"><br></span><br><span style="font-size: large;"><br></span><span style="font-size: large;"><strong>1.安裝Unity套件&nbsp;</strong></span><br><span style="font-size: large;"><br></span>請在Application專案透過Nuget搜尋Unity安裝<strong>Unity.Mvc</strong><br><div class="separator" style="clear: both; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-HhIfl_RkSKA/V7QbZyR_3SI/AAAAAAAAH8M/C4VxtKVrLdUkdbq6eGIXxg0bH9m_A6DpACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-HhIfl_RkSKA/V7QbZyR_3SI/AAAAAAAAH8M/C4VxtKVrLdUkdbq6eGIXxg0bH9m_A6DpACLcB/s640/1.png" alt></a></div><br><strong><br>**</strong><b style="font-size: medium;">2.註冊Interface應該對應的實體<strong></strong></b>
+<b style="font-size: medium;"><br><strong></strong></b>這時候打開App_Start資料夾應該會看到多了一個檔案UnityConfig.cs<strong><br><br><div class="separator" style="clear: both; font-weight: bold; text-align: center;"><a href="https://2.bp.blogspot.com/-MCmsg-5dEEY/V7Qb_xiRLFI/AAAAAAAAH8U/3JMMEHww4joUlfQI3HjpW0abcn343O9KwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-MCmsg-5dEEY/V7Qb_xiRLFI/AAAAAAAAH8U/3JMMEHww4joUlfQI3HjpW0abcn343O9KwCLcB/s320/1.png" alt></a></div><div class="separator" style="clear: both; font-weight: bold; text-align: center;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;">打開它會看到以下Code跟註解，教你怎麼使用它</div><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-B5FxVSeEW9Q/V7QcPsxDVeI/AAAAAAAAH8Y/lsWGO864ftoAVFsUH3nmO9mB4LL0lOAZwCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-B5FxVSeEW9Q/V7QcPsxDVeI/AAAAAAAAH8Y/lsWGO864ftoAVFsUH3nmO9mB4LL0lOAZwCLcB/s640/1.png" alt></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;">請將</div></strong>RegisterTypes**&nbsp;改成以下<div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;"><br></div><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span>Registers the type mappings with the Unity container.<span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="container"&gt;</span>The unity container to configure.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;remarks&gt;</span>There is no need to register concrete types such as controllers or API controllers (unless you want to </span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.<span class="doctag">&lt;/remarks&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RegisterTypes</span>(<span class="params">IUnityContainer container</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//TransientLifetimeManager為這個實體的創建生命週期</span></span><br><span class="line">            <span class="comment">//表示執行程式時，每次碰到IPOIService都會去new 一個新的POIService</span></span><br><span class="line">            <span class="comment">//Unity有許多生命週期可以使用，可以參考官方的文件</span></span><br><span class="line">            <span class="comment">//例如PerResolveLifetimeManager就是本次Request只有New一次實體，如果同個Request碰到多次</span></span><br><span class="line">            <span class="comment">//都還是會返回第一次New的實體，直到Reqeust結束才會被消滅掉,Singleton的概念</span></span><br><span class="line">            container.RegisterType&lt;IPOIService, POIService&gt;(<span class="keyword">new</span> TransientLifetimeManager());</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure><br><br>關於Unity創建實體的生命週期請參考官方文件 :&nbsp;<a href="https://msdn.microsoft.com/en-us/library/ff660872(v=pandp.20" target="_blank" rel="noopener">https://msdn.microsoft.com/en-us/library/ff660872(v=pandp.20).aspx</a>.aspx)<br><br>註冊好後接著執行看看，會發現程式又活過來了，不會再出現剛剛的錯誤頁面，因為程式已經知道該Interface對應的實體是誰，當由外部注入時，Unity會自己去幫你控制實體的產生並且注入<br><br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-QgBTpClZA_g/V7QgW_P_VNI/AAAAAAAAH8o/EBBv1BKh0pIIbOKaZoPRQB4Gt-dmnLcmgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-QgBTpClZA_g/V7QgW_P_VNI/AAAAAAAAH8o/EBBv1BKh0pIIbOKaZoPRQB4Gt-dmnLcmgCLcB/s640/1.png" alt></a></div>
+
+<p>透過這個重構的實例，我們可以從裡面瞭解到何謂<strong>DI</strong>與<strong>IOC</strong>的概念，但可能會想說，那這樣的好處是什麼? 直接New錯了嗎?</p>
+<p>回到前一篇提到的，如果直接New的話也就是高耦合的狀況，如果今天面對的實體改動時，很難避免耦合的地方不會跟著變動，所以我們<strong>依賴抽象</strong>(Interface)，用了Unity後其實又牽扯到一個大重點”<strong>職責分離</strong>“。</p>
+<p>以後如果有Interface與實體的對應關係，直接就會想到要去<strong>UnityConfig.cs</strong>來改，所有的註冊表在這邊統一管理而且一目了然，如果哪天主管跟你說<strong>POIService</strong>它不喜歡，要重新寫個<strong>NewPOIService</strong>，那我們是不是直接把<strong>NewPOIService實作</strong><span style="color: #bf9000;">IPOIService</span>後，然後打開<strong>UnityConfig.cs</strong>改成這樣即可</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">container.RegisterType&lt;IPOIService, NewPOIService&gt;(<span class="keyword">new</span> TransientLifetimeManager());</span><br></pre></td></tr></table></figure>
+<p>其他地方連動都不用動，就已經直接將對應的實體給換掉了!!! 統一管理之外，也能達到最小更動原則。</p>
+<p>這次的重構就先到這邊~</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/08/16/【重構系列】-一-多型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1579,145 +1740,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/03/07/【Unit-Test】重構-二-單元測試的可讀性/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/03/07/【Unit-Test】重構-二-單元測試的可讀性/" itemprop="url">【Unit Test】重構 (二) 單元測試的可讀性</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-03-07T10:03:00+08:00">
-                2016-03-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/03/07/【Unit-Test】重構-二-單元測試的可讀性/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/07/【Unit-Test】重構-二-單元測試的可讀性/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><p><span style="color: #073763; font-weight: normal;">方法命名 &nbsp;: &nbsp;受測的方法名稱Test_動作_預期結果</span><br><span style="font-weight: normal;"><span style="font-weight: normal;"><br></span></span><span style="font-weight: normal;"><span style="font-weight: normal;">這樣可以看標題名稱，馬上就能大略的明白此單元測試的受測者與目標是什麼，對於之後如果改版發生單元錯誤時，也才能明白該如何修復</span></span></p>
-<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-CaS4BNBA6a4/VtzcFkfagkI/AAAAAAAAHuQ/2mAf5riuHfk/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-CaS4BNBA6a4/VtzcFkfagkI/AAAAAAAAHuQ/2mAf5riuHfk/s1600/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">錯誤寫法&nbsp;</td></tr></tbody></table><span style="font-weight: normal;"><br>&nbsp;哪天因為改版造成這個單元測試錯誤了，要修復時非得看完全部的Code才能明白何謂”正確的狀況”，對於維護來說是不利的</span><br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-B7ro_7k5cAo/VtzauPAEglI/AAAAAAAAHuE/KnntqnWuvpQ/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-B7ro_7k5cAo/VtzauPAEglI/AAAAAAAAHuE/KnntqnWuvpQ/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">建議寫法</td></tr></tbody></table>
-</li>
-<li><p><span style="color: #073763; font-weight: normal;">共用的參數應該有個父類別來管理</span><br>有時候我們會為了測試某些情境，對於public static的東西進行設定，但也因為這是public static的變數，為了避免與其它單元測試交互影響，所以我們會在TestCleanUp的方法中做清除的動作</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-t9BldDR6eJU/VtzepBta3lI/AAAAAAAAHug/Uv5g94SdikU/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-t9BldDR6eJU/VtzepBta3lI/AAAAAAAAHug/Uv5g94SdikU/s640/1.png" alt></a></div>
-
-<p>但這種寫法如果散落在各個單元測試的Class之中，對於維護也是一大挑戰，所以建議建立一個TestBase之類的父類別，讓所有單元測試的類別繼承它，並統一管理。<br>總結，單元測試是為了讓程式更有品質，且在一些保護的基礎上進行改版，但如果單元測試的撰寫沒有一些有效的管理，對於後續的維護成本可能會比沒單元測試來的更高更難維護，如果單元測試寫的不清不楚，誰會知道這個測試到底要保護什麼呢?</p>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1770,7 +1792,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>

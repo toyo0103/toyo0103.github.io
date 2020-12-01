@@ -293,6 +293,148 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/04/13/【SharePoint-2013】開啟以不同使用者登入選項/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2013/04/13/【SharePoint-2013】開啟以不同使用者登入選項/" itemprop="url">【SharePoint 2013】開啟以不同使用者登入選項</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-04-13T17:33:30+08:00">
+                2013-04-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2013/04/13/【SharePoint-2013】開啟以不同使用者登入選項/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/04/13/【SharePoint-2013】開啟以不同使用者登入選項/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在SharePoint 2013中，預設沒有切換使用者的選項</p>
+<p><img src="https://1.bp.blogspot.com/-3Fzzh6KvIog/UWvXRQFmtgI/AAAAAAAACYE/M96nwlEF1gs/s1600/111.png" alt="https://1.bp.blogspot.com/-3Fzzh6KvIog/UWvXRQFmtgI/AAAAAAAACYE/M96nwlEF1gs/s1600/111.png"></p>
+<p>叫出來的方法如下:</p>
+<ul>
+<li>先找到以下路徑開啟 <strong>\15\TEMPLATE\CONTROLTEMPLATES\Welcome.ascx</strong><br><img src="https://2.bp.blogspot.com/-XTar0tN4fs4/UWvY1NbOs2I/AAAAAAAACYQ/IZLGfEJyrOA/s1600/11.png" alt="https://2.bp.blogspot.com/-XTar0tN4fs4/UWvY1NbOs2I/AAAAAAAACYQ/IZLGfEJyrOA/s1600/11.png"></li>
+<li>用編輯器打開，並找到ID為 <strong>ID_RequestAccess</strong>的控制項<br><img src="https://2.bp.blogspot.com/-foGebgpfQQU/UWvZvzG7kxI/AAAAAAAACYg/Ft0kIEB-Ejg/s1600/11.png" alt="https://2.bp.blogspot.com/-foGebgpfQQU/UWvZvzG7kxI/AAAAAAAACYg/Ft0kIEB-Ejg/s1600/11.png"></li>
+<li>在該控制項前面加入以下程式碼 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">SharePoint:MenuItemTemplate</span>  <span class="attr">runat</span>=<span class="string">"server"</span>  <span class="attr">ID</span>=<span class="string">"ID_LoginAsDifferentUser"</span></span></span><br><span class="line"><span class="tag"> <span class="attr">Text</span>=<span class="string">"&lt;%$Resources:wss,personalactions_loginasdifferentuser%&gt;"</span></span></span><br><span class="line"><span class="tag"> <span class="attr">Description</span>=<span class="string">"    &lt;%$Resources:wss,personalactions_loginasdifferentuserdescription%&gt;"</span>              </span></span><br><span class="line"><span class="tag"> <span class="attr">MenuGroupId</span>=<span class="string">"100"</span> </span></span><br><span class="line"><span class="tag"> <span class="attr">Sequence</span>=<span class="string">"100"</span></span></span><br><span class="line"><span class="tag"> <span class="attr">UseShortId</span>=<span class="string">"true"</span>  /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://3.bp.blogspot.com/-FDGUOFCxbhs/UWvarNajT7I/AAAAAAAACYs/iLMMk-yB1tw/s1600/11.png" alt="https://3.bp.blogspot.com/-FDGUOFCxbhs/UWvarNajT7I/AAAAAAAACYs/iLMMk-yB1tw/s1600/11.png"></p>
+<ul>
+<li>大功告成<br><img src="https://4.bp.blogspot.com/-uFjLjbAQEO0/UWva_j6HqfI/AAAAAAAACY0/2ELRqrG5QS8/s1600/11.png" alt="https://4.bp.blogspot.com/-uFjLjbAQEO0/UWva_j6HqfI/AAAAAAAACY0/2ELRqrG5QS8/s1600/11.png"></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/01/31/【C-】GridView動態加入textbox/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1472,169 +1614,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/11/01/【SharePoint】-佈署方式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2012/11/01/【SharePoint】-佈署方式/" itemprop="url">【SharePoint】 佈署方式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2012-11-01T15:18:00+08:00">
-                2012-11-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2012/11/01/【SharePoint】-佈署方式/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/11/01/【SharePoint】-佈署方式/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="http://www.dotblogs.com.tw/ching/archive/2011/01/30/21143.aspx" target="_blank" rel="noopener">參考資料</a></p>
-<p><strong>透過命令提示字元佈署</strong></p>
-<ul>
-<li><p>stsadn 路徑       <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files\Common Files\Microsoft Shared\Web Server Extensions\14\BIN</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>部署</p>
-<pre><code>*   加入Solution               <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stsadm -o addSolution –filename [xxxx.wsp]</span><br></pre></td></tr></table></figure>
-</code></pre><ul>
-<li>部署Solution               <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stsadm -o deploysolution –name [xxxx.wsp] -immediate –url [SiteURL] -allowGacDeployment</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>移除</p>
-<pre><code>*   解除Solution<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stsadm -o retractsolution –name [xxxx.wsp] -immediate -url [SiteURL]</span><br></pre></td></tr></table></figure>
-</code></pre><ul>
-<li>移除Solution<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stsadm -o deletesolution –name [xxxx.wsp]</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>更新</p>
-<pre><code>*   如果Solution已經在網站上使用，就可以使用下面一句命令就可以更新，不用先執行上面先解除再移除然後再重新部署               <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stsadm -o upgradesolution –name [xxxx.wsp] –filename [xxxx.wsp] -immediate -allowgacdeployment</span><br></pre></td></tr></table></figure>
-</code></pre></li>
-</ul>
-<p><strong>透過SharePoint管理介面更新佈署</strong></p>
-<ul>
-<li><p>部署</p>
-<pre><code>*   加入Solution              <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Add-SPSolution C:\xxx.wsp</span><br></pre></td></tr></table></figure>
-</code></pre><ul>
-<li>安裝Solution              <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Install-SPSolution -Identity xxx.wsp -WebApplication http://xxxx.com.tw -GACDeployment</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>更新          <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Update-SPSolution -Identity xxx.wsp -LiteralPath C:\xxx.wsp -GACDeployment</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>Restore          <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">restore-spsite -identity http://xxx.com.tw -path d:\xxx.bak -force</span><br></pre></td></tr></table></figure></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1687,7 +1666,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>

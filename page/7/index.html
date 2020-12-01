@@ -293,6 +293,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/11/17/【MVC】多語系/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/11/17/【MVC】多語系/" itemprop="url">【MVC】多語系</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-11-17T11:31:00+08:00">
+                2017-11-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/17/【MVC】多語系/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/17/【MVC】多語系/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>網站如果希望能提供多語系版本，且網址規則如下該如何實作?</p>
+<p><a href="http://abcdefg.com/index" target="_blank" rel="noopener">http://abcdefg.com/index</a>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;【預設繁體中文】<br><a href="http://abcdefg.com/zh-TW/index" target="_blank" rel="noopener">http://abcdefg.com/zh-TW/index</a> 【繁體中文】<br><a href="http://abcdefg.com/zh-CN/index" target="_blank" rel="noopener">http://abcdefg.com/zh-CN/index</a>&nbsp; 【簡體中文】<br><a href="http://abcdefg.com/en-US/index" target="_blank" rel="noopener">http://abcdefg.com/en-US/index</a>&nbsp; 【英文】</p>
+<p>先從Action開始，挖個Route參數來抓目前使用者希望的語系為何，並且設定Culture<br><span style="color: #999999;">(因為重點是多語系範例，所以就不考慮大小寫判斷那些，還請暫時忽略)</span><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Route(<span class="meta-string">"~/index"</span>)</span>]</span><br><span class="line">[<span class="meta">Route(<span class="meta-string">"~/&#123;culture&#125;/index"</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">Index</span>(<span class="params"><span class="keyword">string</span> culture</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (culture)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"zh-CN"</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"en-US"</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            culture = <span class="string">"zh-TW"</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//設定多語系</span></span><br><span class="line">    CultureInfo ci = <span class="keyword">new</span> CultureInfo(culture);</span><br><span class="line">    Thread.CurrentThread.CurrentCulture = ci;</span><br><span class="line">    Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture(ci.Name);</span><br><span class="line">    <span class="keyword">return</span> View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接著新增語系檔資料夾<strong>App_GlobalResource</strong><br><span style="font-weight: normal;">專案右鍵&nbsp; &gt;&nbsp; 加入&nbsp; &gt; 加入ASP.NET資料夾 &gt; App_GlobalResource</span></p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-X0T0qbHbM4g/Wg5DB8tdjCI/AAAAAAAAIQc/OFuD0klzB4sOBimU6auOHx-nduJNgxSagCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-X0T0qbHbM4g/Wg5DB8tdjCI/AAAAAAAAIQc/OFuD0klzB4sOBimU6auOHx-nduJNgxSagCLcBGAs/s640/1.png" alt></a></div>
+
+<p><span style="font-weight: normal;">新增對應語系的設定檔</span><span style="font-weight: normal;">App_GlobalResources右鍵&nbsp; &gt;&nbsp; 加入&nbsp; &gt; 資源檔</span></p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-yDb53fw_k78/Wg5Dp4kiDQI/AAAAAAAAIQk/7nBQ-vbv1PcOVvNkoS1H6QpdHvBZIIV-ACLcBGAs/s1600/2.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-yDb53fw_k78/Wg5Dp4kiDQI/AAAAAAAAIQk/7nBQ-vbv1PcOVvNkoS1H6QpdHvBZIIV-ACLcBGAs/s640/2.png" alt></a></div><strong><br>**</strong><br><strong><br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-7b1G9a0T0Ec/Wg5EFbj8FoI/AAAAAAAAIQo/xi6QYst8RssqaLd6fxDr9avHWL9XwtCdACLcBGAs/s1600/3.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-7b1G9a0T0Ec/Wg5EFbj8FoI/AAAAAAAAIQo/xi6QYst8RssqaLd6fxDr9avHWL9XwtCdACLcBGAs/s1600/3.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">這邊的資源檔名稱是固定的，不能任意更改</td></tr></tbody></table></strong><br>**<br>在各個設定檔設定簡單文字，用來判別是否有正確切換語系<br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-_tlyjSac5Mw/Wg5FEUE-MPI/AAAAAAAAIQ4/EqScZ5b_GUMrvQiG6EU5Pg2qyAKmzs8cgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-_tlyjSac5Mw/Wg5FEUE-MPI/AAAAAAAAIQ4/EqScZ5b_GUMrvQiG6EU5Pg2qyAKmzs8cgCLcBGAs/s640/1.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-SbOTT0V8vy0/Wg5FETAHr3I/AAAAAAAAIQ8/UIejGSO6TDYAihR8r5KtuUMIgV6ERa1ZQCLcBGAs/s1600/2.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-SbOTT0V8vy0/Wg5FETAHr3I/AAAAAAAAIQ8/UIejGSO6TDYAihR8r5KtuUMIgV6ERa1ZQCLcBGAs/s640/2.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-7JPMV22L3uc/Wg5FEd-t4dI/AAAAAAAAIQ0/0DFlVpoEqPk2LdRgl-dCU_htY2lLaasPQCLcBGAs/s1600/3.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-7JPMV22L3uc/Wg5FEd-t4dI/AAAAAAAAIQ0/0DFlVpoEqPk2LdRgl-dCU_htY2lLaasPQCLcBGAs/s640/3.png" alt></a></div>
+
+<p>View上面就簡單做，只顯示出對應語系的CultureNow</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-rkJslBeNSY4/Wg5FaG31wvI/AAAAAAAAIRA/hi6OuzPU7Mw9fmD-tGoDFJ_Z-shVMCpTgCLcBGAs/s1600/1.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-rkJslBeNSY4/Wg5FaG31wvI/AAAAAAAAIRA/hi6OuzPU7Mw9fmD-tGoDFJ_Z-shVMCpTgCLcBGAs/s400/1.png" alt></a></div>
+
+<p>測試</p>
+<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-jdlM9kSYyjM/Wg5G94F9tWI/AAAAAAAAIRg/E66m5xlgo64zLs9IcyAenpJUZcdiwm_YQCLcBGAs/s1600/Webp.net-gifmaker.gif" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-jdlM9kSYyjM/Wg5G94F9tWI/AAAAAAAAIRg/E66m5xlgo64zLs9IcyAenpJUZcdiwm_YQCLcBGAs/s640/Webp.net-gifmaker.gif" alt></a></div>
+
+<p><div class="separator" style="clear: both; text-align: center;"><br></div>&nbsp;<span style="text-align: center;">好的做到這邊看起來沒什麼問題，但接下來的問題是，是否後續開發都要在每個Action加上這個RouteAttribute</span><br><span style="text-align: center;"><br></span><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Route(<span class="meta-string">"~/&#123;culture&#125;/index"</span>)</span>]</span><br><span class="line">[<span class="meta">Route(<span class="meta-string">"~/&#123;culture&#125;/home"</span>)</span>]</span><br><span class="line">[<span class="meta">Route(<span class="meta-string">"~/&#123;culture&#125;/user"</span>)</span>]</span><br><span class="line">......</span><br></pre></td></tr></table></figure></p>
+<p>且設定語系的段落勢必也要寫成ActionFilterAttribute，這樣其實增加了開發的困難之外，只要有人忘記加上，那新的頁面就會少了多語系功能。</p>
+<p>工程師的美德就是懶，是否有辦法只做一次就讓全站Route都自動設定好呢? 這時候就要用到<a href="https://msdn.microsoft.com/en-us/library/system.web.mvc.routing.defaultdirectrouteprovider(v=vs.118" target="_blank" rel="noopener">DefaultDirectRouteProvider&nbsp;</a>.aspx)來解決這這個問題了<br><div class="note info"><p>DefaultDirectProvider能幫我們做什麼?</p>
+<p>它能幫我們在註冊全站Route Template的時候做一些邏輯的加工，在這邊的案例應用上，<br>我們希望在註冊全站的Route的時候都自動幫我們在Template最前面加上{culture}<br>來達到做一次多語系設定即可</p></div></p>
+<p>讓我來實作看看，先新增一個CultureRouteProvider<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 多語系Route Provider</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;seealso cref="System.Web.Mvc.Routing.DefaultDirectRouteProvider" /&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CultureRouteProvider</span>: <span class="title">DefaultDirectRouteProvider</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 取得所指定之動作描述元的一組路由 Factory。</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="actionDescriptor"&gt;</span>動作描述元。<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 一組路由 Factory。</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> IReadOnlyList&lt;IDirectRouteFactory&gt; <span class="title">GetActionRouteFactories</span>(<span class="params">ActionDescriptor actionDescriptor</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            IReadOnlyList&lt;IDirectRouteFactory&gt; actionRouteFactories = <span class="keyword">base</span>.GetActionRouteFactories(actionDescriptor);</span><br><span class="line"></span><br><span class="line">            List&lt;IDirectRouteFactory&gt; actionDirectRouteFactories = <span class="keyword">new</span> List&lt;IDirectRouteFactory&gt;();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">foreach</span> (IDirectRouteFactory routeFactory <span class="keyword">in</span> actionRouteFactories)</span><br><span class="line">            &#123;</span><br><span class="line">                RouteAttribute routeAttr = routeFactory <span class="keyword">as</span> RouteAttribute;</span><br><span class="line">                <span class="keyword">if</span> (routeAttr != <span class="literal">null</span> &amp;&amp; !<span class="keyword">string</span>.IsNullOrEmpty(routeAttr.Template))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">//每個Route Template原本的樣子</span></span><br><span class="line">                    <span class="comment">//已剛剛的Action為例，就是 "~/index"</span></span><br><span class="line">                    <span class="keyword">var</span> template = <span class="string">$"<span class="subst">&#123;routeAttr.Template&#125;</span>"</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">var</span> routeAttribute = <span class="keyword">new</span> RouteAttribute(template)</span><br><span class="line">                    &#123;</span><br><span class="line">                        Order = routeAttr.Order,</span><br><span class="line">                        Name = routeAttr.Name</span><br><span class="line">                    &#125;;</span><br><span class="line">                    actionDirectRouteFactories.Add(routeAttribute);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//替每組Action都多加上一組&#123;culture&#125;/RouterTemplateLanguage的多語系RouteMap</span></span><br><span class="line">                    <span class="comment">//EX: "~/index" 多一組 "~/&#123;culture&#125;/index"</span></span><br><span class="line">                    <span class="keyword">var</span> includeLangTemplate = routeAttr.Template.Replace(<span class="string">"~/"</span>, <span class="keyword">string</span>.Format(<span class="string">@"~/&#123;&#123;culture:regex(^(zh\-tw|en\-us|zh\-cn)$)&#125;&#125;/"</span>));</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//註冊這組多語系的Route Template</span></span><br><span class="line">                    <span class="keyword">var</span> includeLangRouteAttribute = <span class="keyword">new</span> RouteAttribute(includeLangTemplate);</span><br><span class="line">                    includeLangRouteAttribute.Order = routeAttr.Order + <span class="number">1</span>;</span><br><span class="line">                    includeLangRouteAttribute.Name = routeAttr.Name;</span><br><span class="line"></span><br><span class="line">                    actionDirectRouteFactories.Add(includeLangRouteAttribute);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> actionDirectRouteFactories;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>這邊需要特別注意一下，我在culture後面加上了RouteConstraint的正規表示法限制，目的是讓只有zh-tw ,&nbsp; en-us , zh-cn才會落入這個模板的範圍，如果沒有這段限制，就會變成萬用Route，有點像是{Controller}/{action}/{id}那般，所有網址都會跑到這邊，造成網址大亂!!!</p>
+<p>接著將這組CultureRouteProvider在RouteConfig註冊使用<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RouteConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RegisterRoutes</span>(<span class="params">RouteCollection routes</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        routes.IgnoreRoute(<span class="string">"&#123;resource&#125;.axd/&#123;*pathInfo&#125;"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//註冊CultureRouteProvider</span></span><br><span class="line">        <span class="keyword">var</span> constraintsResolver = <span class="keyword">new</span> DefaultInlineConstraintResolver();</span><br><span class="line">        RouteTable.Routes.MapMvcAttributeRoutes(<span class="keyword">new</span> CultureRouteProvider());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然後將原本Action那組多語系RouteAttribute拿掉試試看<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//拿掉多語系RouteAttribute</span></span><br><span class="line">[<span class="meta">Route(<span class="meta-string">"~/index"</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">Index</span>(<span class="params"><span class="keyword">string</span> culture</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (culture)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"zh-CN"</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"en-US"</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            culture = <span class="string">"zh-TW"</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//設定多語系</span></span><br><span class="line">    CultureInfo ci = <span class="keyword">new</span> CultureInfo(culture);</span><br><span class="line">    Thread.CurrentThread.CurrentCulture = ci;</span><br><span class="line">    Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture(ci.Name);</span><br><span class="line">    <span class="keyword">return</span> View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>會發現多語系的功能依然存在，所以CultureRouteProvider有正確運作，自動的幫我們加上了多語系的Route Template。</p>
+<p>接著是處理設定語系的段落，不應該讓設定語系的判斷落在每個Action裡面，所以將它獨立拉出來到自定義的CultureFilter中<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CultureFilter</span> : <span class="title">IAuthorizationFilter</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> List&lt;<span class="keyword">string</span>&gt; AllowCultures = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">"zh-cn"</span>,<span class="string">"zh-tw"</span>,<span class="string">"en-us"</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnAuthorization</span>(<span class="params">AuthorizationContext filterContext</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">string</span> culture = <span class="keyword">string</span>.Empty;</span><br><span class="line">        <span class="keyword">if</span> (filterContext.RequestContext.HttpContext.Request.Url.Segments.Count() &amp; gt; <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            culture = filterContext.RequestContext.HttpContext.Request.Url.Segments[<span class="number">1</span>].Replace(<span class="string">"/"</span>, <span class="keyword">string</span>.Empty);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">string</span>.IsNullOrWhiteSpace(culture) ||</span><br><span class="line">            !AllowCultures.Any(x = &gt; x.ToLower() == culture.ToLower()))</span><br><span class="line">            &#123;</span><br><span class="line">            culture = <span class="string">"zh-tw"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//設定多語系</span></span><br><span class="line">        CultureInfo ci = <span class="keyword">new</span> CultureInfo(culture);</span><br><span class="line">        Thread.CurrentThread.CurrentCulture = ci;</span><br><span class="line">        Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture(ci.Name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在FilterConfig註冊CultureFilter<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FilterConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RegisterGlobalFilters</span>(<span class="params">GlobalFilterCollection filters</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        filters.Add(<span class="keyword">new</span> HandleErrorAttribute());</span><br><span class="line">        <span class="comment">//多國語系</span></span><br><span class="line">        filters.Add(<span class="keyword">new</span> CultureFilter());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>將原本的Action所有判斷拿掉會發現多語系的功能還是一切正常<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Route(<span class="meta-string">"~/index"</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">Index</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> View();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>這樣就差不多大功告成，其實要優化的地方還很多，例如大小寫判斷，多語系應該拉成Enum方便擴充，Route Constraint應該跟隨著多語系的Enum去自動產生….等，因為這是獨立拉出來Demo的程式，就不搞得像Production Code一樣複雜了，知道自己注意一下就好XD</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/11/16/【MVC】Router-Constraint/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1714,172 +1871,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/17/【Unit-Test】Day-1-為何要寫單元測試/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/17/【Unit-Test】Day-1-為何要寫單元測試/" itemprop="url">【Unit Test】Day 1 - 為何要寫單元測試</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-04-17T11:55:00+08:00">
-                2017-04-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/學習單元測試/" itemprop="url" rel="index">
-                    <span itemprop="name">學習單元測試</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/04/17/【Unit-Test】Day-1-為何要寫單元測試/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/17/【Unit-Test】Day-1-為何要寫單元測試/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <div class="note info"><p>Demo檔案 : <a href="https://github.com/toyo0103/UnitTest_Day1" target="_blank" rel="noopener">Git傳送門</a></p></div>
-<p>算一算開始寫單元測試也快兩年了，很感謝當時能有機會得到前輩的指導並接觸到這個技術，在實際運用到開發上面時，也真正的感受到它的好，為了將單元測試這好東西分享給更多人知道，所以有了寫這系列文章的想法。</p>
-<p>這系列文章是希望在讀者讀完後，能讓你從一位不會寫單元測試的開發者，粗略的搞懂單元測試為何、如何撰寫、並且能透過實作中體會到它如何幫助專案更加穩固。</p>
-<div class="note info"><p>我不是什麼技術大牛，如果發現文章有疏漏的地方，還請不吝指正指導。 感謝!!</p></div>
-<h3 id="為何我要寫單元測試"><a href="#為何我要寫單元測試" class="headerlink" title="為何我要寫單元測試"></a>為何我要寫單元測試</h3><p>不知你可曾遇過這樣的狀況….</p>
-<h4 id="情境一"><a href="#情境一" class="headerlink" title="情境一 :"></a>情境一 :</h4><p>接手了一個很舊的系統維護，關於規格與文件皆已不可考，連開發過的工程師們都已離職不幹了，現在PM跟你說他想改一個功能，並拍拍你肩說「這個很簡單，一下下就好」。而你卻不知道該從何下手….<br>_<br>__單元測試能幫你做什麼?_<br><div class="note info"><p>優良的單元測試就像活著的規格書，不僅能幫助你了解那些不是你負責的功能，更是能夠執行的規格書</p></div></p>
-<h4 id="情境二"><a href="#情境二" class="headerlink" title="情境二:"></a>情境二:</h4><div>是否曾經改發生過改好新功能，但舊功能就壞掉，修好舊功能，新功能又壞掉了呢?&nbsp; 假設下圖就是你的功能，而你希望它三個能同時選取時….<br><div class="separator" style="clear: both; text-align: center;"></div><br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-VWE1ZTU6uKI/WPRM9LqlYgI/AAAAAAAAIGc/F2gVhAE0QQEBLjrFwBHlc6AKJsJBoqxBACLcB/s1600/GoodCheapFast_MissingCloud_O%255B1%255D.gif" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-VWE1ZTU6uKI/WPRM9LqlYgI/AAAAAAAAIGc/F2gVhAE0QQEBLjrFwBHlc6AKJsJBoqxBACLcB/s320/GoodCheapFast_MissingCloud_O%255B1%255D.gif" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;"><a href="http://abcdefghijklmn-pqrstuvwxyz.com/en/you-cant-have-it-all/" target="_blank" rel="noopener">http://abcdefghijklmn-pqrstuvwxyz.com/en/you-cant-have-it-all/</a></td></tr></tbody></table><br></div><em>單元測試能幫你做什麼?</em><br><div class="note info"><p>它能告訴你目前的程式，是否執行都符合當時所要求的規格與產出結果，如果舊規格舊方法沒有改的情況下，單元測試壞了，那就表示你這次的改動絕對有影響到它，趕緊去修好它吧!!</p></div><br><br><br>#### 情境三 :<br><div>一個你覺得很簡單的功能，直到你上線才發現原來功能是錯的無法正常執行，偵錯下去才發現，天殺的，原來是自己觀念上錯誤或不熟悉。例如Double&nbsp;a&nbsp; = 1.1加上Double b&nbsp;=&nbsp;1.2，而你以為它的結果會是2.3….&nbsp; </div>_<br>__單元測試能幫你做什麼?_<br><div class="note info"><p>它能即時的驗證你的想法，而不是到上線時才賭人品，尤其是那些你覺得理所當然會對的功能中，魔鬼往往藏在細節裡</p></div><br><br>在你還沒寫單元測試之前，上述狀況是否都似曾相識呢?如果你想解決這些問題，那麼開始寫單元測試將是可以大幅度降低這些錯誤的有效方法，而且你一定會愛上它。<br><br>### 該如何開始寫單元測試<br>接著我們就來用實際案例重現上面提到了一些問題，並且透過撰寫單元測試來看看它如何幫我們避免這些狀況。<br><br><strong>首先準備一個類別庫專案</strong><br><a href="https://4.bp.blogspot.com/-LYJzaBr-6qU/WPReTQlg_EI/AAAAAAAAIGs/JdQPXNcMt2s0xnjtr0iRh1sp4lf6wJBIQCLcB/s1600/Image%2B2.jpg" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-LYJzaBr-6qU/WPReTQlg_EI/AAAAAAAAIGs/JdQPXNcMt2s0xnjtr0iRh1sp4lf6wJBIQCLcB/s320/Image%2B2.jpg" alt></a><br><strong><br>**</strong>寫下一段簡單的程式，而這段程式很簡單，就只是把基數加上2回傳回去即可 <strong>
-</strong><br><strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EasyMethod</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">private</span> <span class="keyword">int</span> BaseNumber = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Method1</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>   &#123;</span><br><span class="line">      <span class="keyword">return</span> BaseNumber + <span class="number">2</span>;</span><br><span class="line">   &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><br>而這段程式真的非常簡單，簡單到你一看就覺得它回傳是7，不過沒關係我們繼續完成單元測試，看它能幫助我們什麼
-
-</strong>接著建立單元測試專案<strong><br><div>在Method1的的方案下右鍵 &gt; 建立單元測試<br><div class="note info"><p>如果你是用VS2017，可能會發現沒有建立單元測試這個選項，請將VS更新到最新版就有了</p></div><br><br><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-pl7THbVdv5Q/WPRl5WWW7cI/AAAAAAAAIG8/iTQ4_sz0Fosq4W8Ecx3h91bG4MstQKutgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25882.50.45.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-pl7THbVdv5Q/WPRl5WWW7cI/AAAAAAAAIG8/iTQ4_sz0Fosq4W8Ecx3h91bG4MstQKutgCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25882.50.45.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-LM9F1XlZwb4/WPRmLeGDlYI/AAAAAAAAIHA/3yZqleBgG6gO4V_w3HogGIU5fT-b6gydQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25882.52.06.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-LM9F1XlZwb4/WPRmLeGDlYI/AAAAAAAAIHA/3yZqleBgG6gO4V_w3HogGIU5fT-b6gydQCLcB/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25882.52.06.png" alt></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div class="separator" style="clear: both; text-align: left;">接著就會看到單元測試專案已經幫你建立完成</div><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-zM7aFE7GH3Y/WPRmlQOhxaI/AAAAAAAAIHE/qkSV7SacRQcPC6LrXIfxXSa5fMoxKMgzACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25882.53.38.png" target="_blank" rel="noopener"><img src="https://4.bp.blogspot.com/-zM7aFE7GH3Y/WPRmlQOhxaI/AAAAAAAAIHE/qkSV7SacRQcPC6LrXIfxXSa5fMoxKMgzACLcB/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25882.53.38.png" alt></a></div><div class="separator" style="clear: both; text-align: left;"><br></div><div style="clear: both; text-align: left;"></div></div></strong><br><strong><div style="clear: both; text-align: left;"></div></strong>讓我們來寫下第一個完整的單元測試<strong>將那個自動建立的單元測試改成<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> Method1Test_呼叫時應回傳結果為<span class="number">7</span>()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> EasyMethod();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Method1();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(expected, actual);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure><br><br>稍微檢視一下這個單元測試能帶給我們什麼？首先從標題上我們可以知道這個方法的目的跟應得到的結果，接著我們可以從單元測試的程式碼中看出這個方法該如何使用。<br><br>接著我們在測試總管中執行單元測試，知道目前這個方法符合我們需求跟得到預期的結果<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-QgRTYArFcLg/WPRpcgKZECI/AAAAAAAAIHQ/1IQu0Kv4A8oH3gUolF7t2Ztf8iDe6e5FACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.04.21.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-QgRTYArFcLg/WPRpcgKZECI/AAAAAAAAIHQ/1IQu0Kv4A8oH3gUolF7t2Ztf8iDe6e5FACLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.04.21.png" alt></a></div><div class="separator" style="clear: both; text-align: center;"><br></div></strong>當我們面臨需求的更改…..<strong><br><div>接著我們知道日常狀況是，需求總是一直的在擴充及變動，所以我們有了一個新需求</div><div><br><div class="note info"><p>我希望能有個新的方法，並且呼叫它時能回傳給我10這個答案，而且因應業務需求，基數需要改變成2</p></div><br></div>OK!!一切聽起來都不是太難，那就讓我們直接動手下去做吧<br>首先我先將基數改成2，並且新增一個</strong>Method2<strong>的方法，並且讓他加上基數後得到10這個結果回傳。<br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-FRy0jhit7No/WPRq_jFpwqI/AAAAAAAAIHc/y44CWdcjDrcJQDxL7R_IKJu2toEwKfXnACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.12.47.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-FRy0jhit7No/WPRq_jFpwqI/AAAAAAAAIHc/y44CWdcjDrcJQDxL7R_IKJu2toEwKfXnACLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.12.47.png" alt></a></div><br>老方法，在Method2那邊按下右鍵 &gt; 建立單元測試，並寫上新的方法的單元測試<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">UnitTestDay1.Tests</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">TestClass()</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EasyMethodTests</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> Method1Test_呼叫時應回傳結果為<span class="number">7</span>()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> EasyMethod();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Method1();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(expected, actual);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> Method2Test_呼叫時應回傳結果為<span class="number">10</span>()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> EasyMethod();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Method2();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(expected, actual);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br><br>一切完美直到你執行單元測試時你會發現，原本的</strong>Method1壞掉啦！！**<br><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-ONucqHcnfT8/WPRtaLBmZyI/AAAAAAAAIHo/uo-JgM5v1vAAkpq_vhK0zdcGEA3nrq2KACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.23.01.png" target="_blank" rel="noopener"><img src="https://1.bp.blogspot.com/-ONucqHcnfT8/WPRtaLBmZyI/AAAAAAAAIHo/uo-JgM5v1vAAkpq_vhK0zdcGEA3nrq2KACLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.23.01.png" alt></a></div>原來因為我們更改了基數所以造成了Method1回傳時不符合當時所制定的規格，這時候我們如果確定原需求沒有變動的情況下，那就是去修改原本的方法讓它能通過單元測試。這樣新舊需求就都確保正確的情況下更正完成了。<br><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-4utjp7_INMM/WPRuZ_dtOGI/AAAAAAAAIH0/UD48Au_NHgMZuOiSgIV4CcDf-GhIzRb1gCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.26.26.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-4utjp7_INMM/WPRuZ_dtOGI/AAAAAAAAIH0/UD48Au_NHgMZuOiSgIV4CcDf-GhIzRb1gCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.26.26.png" alt></a></div><br><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-jPiCnkysVEA/WPRuZ6HDvaI/AAAAAAAAIHw/3kcZvX35-BECFdVE-PJWHIDJSCQt_RdUQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.26.40.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-jPiCnkysVEA/WPRuZ6HDvaI/AAAAAAAAIHw/3kcZvX35-BECFdVE-PJWHIDJSCQt_RdUQCLcB/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.26.40.png" alt></a></div>
-
-<h3 id="今日小結"><a href="#今日小結" class="headerlink" title="今日小結"></a>今日小結</h3><p>從這個範例中我們可以整理出一些單元測試所能帶來的好處。</p>
-<p>首先，因為在撰寫程式時，我們會在當下寫上單元測試，並且讓它通過，日後不管任何原因它壞掉了，我們都能從標題中或是案例來知道當時的需求與狀況，形成上面提到的所謂活著可執行的規格書，（當然前提是你的標題跟內容要寫得乾淨易懂，否則維護單元測試可能又是另一場災難），即便規格書遺失或是人員異動，對於程式本身的維護都有一定品質的保障。</p>
-<p>接著是需求異動，雖然這個範例舉例的有點極端，但我只是想表達一種狀況，常常我們在改動共用方法或是核心功能時，往往不知道這樣改可能會造成哪邊的錯誤，甚至是編譯執行都是正常，但其實違反了當時所定義的程式或商業邏輯，而這往往是要上線的時候才會發現，但從這案例中，基數被改變時，雖然把Mehod2順利地完成的，但我們卻忽略了Method1可能導致它變動進而產生錯誤，有了單元測試或是整合測試，這樣的狀況可以有效地減少跟被控管（特別強調：非百分之百！！所以整合測試跟單元測試都一樣很重要，如果可以，兩個都做會是最好的選擇）</p>
-<p>好的，希望第一篇文章可以淺顯易懂的讓大家感受單元測試的好處！！</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1932,7 +1923,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
