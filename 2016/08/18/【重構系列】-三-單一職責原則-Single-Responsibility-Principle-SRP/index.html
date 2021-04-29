@@ -1,139 +1,53 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="zh-tw">
-<head><meta name="generator" content="Hexo 3.8.0">
-  ﻿<meta charset="UTF-8">
-<meta name="google-site-verification" content="a-sIQSCKPw8MyRi4iUo9hmDiL3P1Txg2Ri8zx8Wk0G0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="C#,Refactor,">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
-
-
-
-
-
-
-<meta name="description" content="SourceCode :&amp;nbsp;https://github.com/toyo0103/Demo_EditTemplate_1 這邊提供幾篇覺得很棒的文章，看完其實也可以略過這篇了XD &amp;nbsp;1.&amp;nbsp;30天快速上手 TDD Day 12 - Refactoring - 職責分離 &amp;nbsp;By 91 &amp;nbsp;2. [ASP.NET]91之ASP.NET由淺入深 不負責講座">
-<meta name="keywords" content="C#,Refactor">
+  <meta name="description" content="SourceCode :&amp;nbsp;https:&#x2F;&#x2F;github.com&#x2F;toyo0103&#x2F;Demo_EditTemplate_1 這邊提供幾篇覺得很棒的文章，看完其實也可以略過這篇了XD &amp;nbsp;1.&amp;nbsp;30天快速上手 TDD Day 12 - Refactoring - 職責分離 &amp;nbsp;By 91 &amp;nbsp;2. [ASP.NET]91之ASP.NET由淺入深 不負責講座">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【重構系列】(三) 單一職責原則(Single Responsibility Principle , SRP)">
-<meta property="og:url" content="https://toyo0103.github.io/2016/08/18/【重構系列】-三-單一職責原則-Single-Responsibility-Principle-SRP/index.html">
+<meta property="og:url" content="https://toyo0103.github.io/2016/08/18/%E3%80%90%E9%87%8D%E6%A7%8B%E7%B3%BB%E5%88%97%E3%80%91-%E4%B8%89-%E5%96%AE%E4%B8%80%E8%81%B7%E8%B2%AC%E5%8E%9F%E5%89%87-Single-Responsibility-Principle-SRP/index.html">
 <meta property="og:site_name" content="程式隨筆">
-<meta property="og:description" content="SourceCode :&amp;nbsp;https://github.com/toyo0103/Demo_EditTemplate_1 這邊提供幾篇覺得很棒的文章，看完其實也可以略過這篇了XD &amp;nbsp;1.&amp;nbsp;30天快速上手 TDD Day 12 - Refactoring - 職責分離 &amp;nbsp;By 91 &amp;nbsp;2. [ASP.NET]91之ASP.NET由淺入深 不負責講座">
-<meta property="og:locale" content="zh-tw">
-<meta property="og:image" content="https://2.bp.blogspot.com/-cYpekfGnPkg/V7UdvdmnldI/AAAAAAAAH84/MR0-YMqszPUeIoiFGPID_Tmx_ERoWnO0wCLcB/s320/srp.jpg">
-<meta property="og:image" content="https://2.bp.blogspot.com/-CbLQzZGAVWA/V7Uk_BjnrQI/AAAAAAAAH9I/2X3Wh9Igf34lYISJFe19Tu2pANOaX6tUgCLcB/s1600/1.png">
+<meta property="og:description" content="SourceCode :&amp;nbsp;https:&#x2F;&#x2F;github.com&#x2F;toyo0103&#x2F;Demo_EditTemplate_1 這邊提供幾篇覺得很棒的文章，看完其實也可以略過這篇了XD &amp;nbsp;1.&amp;nbsp;30天快速上手 TDD Day 12 - Refactoring - 職責分離 &amp;nbsp;By 91 &amp;nbsp;2. [ASP.NET]91之ASP.NET由淺入深 不負責講座">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://3.bp.blogspot.com/-vp--aOOPX5s/V7UmVz9p1sI/AAAAAAAAH9M/bZNYIW4-xJ4ckr5k11B_jWgSrr55nn5oQCLcB/s640/1.png">
-<meta property="og:image" content="https://3.bp.blogspot.com/-rn9m0xATZ2A/V7Umyyoz9_I/AAAAAAAAH9U/rAETSPwprloEh1HSjPDpP3v0Cq0iAp_gACLcB/s640/1.png">
-<meta property="og:image" content="https://2.bp.blogspot.com/-NHl1LCbQLR0/V7UoU2H1ijI/AAAAAAAAH9g/1CJwhDpona4tNKcNlesR5HCDoruhHCvVgCLcB/s320/687474703a2f2f692e696d6775722e636f6d2f63464a6b6638692e6a7067.jpg">
-<meta property="og:updated_time" content="2018-10-18T08:50:52.872Z">
+<meta property="article:published_time" content="2016-08-18T03:16:00.000Z">
+<meta property="article:modified_time" content="2018-10-18T08:50:52.872Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Refactor">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【重構系列】(三) 單一職責原則(Single Responsibility Principle , SRP)">
-<meta name="twitter:description" content="SourceCode :&amp;nbsp;https://github.com/toyo0103/Demo_EditTemplate_1 這邊提供幾篇覺得很棒的文章，看完其實也可以略過這篇了XD &amp;nbsp;1.&amp;nbsp;30天快速上手 TDD Day 12 - Refactoring - 職責分離 &amp;nbsp;By 91 &amp;nbsp;2. [ASP.NET]91之ASP.NET由淺入深 不負責講座">
-<meta name="twitter:image" content="https://2.bp.blogspot.com/-cYpekfGnPkg/V7UdvdmnldI/AAAAAAAAH84/MR0-YMqszPUeIoiFGPID_Tmx_ERoWnO0wCLcB/s320/srp.jpg">
+<meta name="twitter:image" content="https://3.bp.blogspot.com/-vp--aOOPX5s/V7UmVz9p1sI/AAAAAAAAH9M/bZNYIW4-xJ4ckr5k11B_jWgSrr55nn5oQCLcB/s640/1.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2016/08/18/%E3%80%90%E9%87%8D%E6%A7%8B%E7%B3%BB%E5%88%97%E3%80%91-%E4%B8%89-%E5%96%AE%E4%B8%80%E8%81%B7%E8%B2%AC%E5%8E%9F%E5%89%87-Single-Responsibility-Principle-SRP/">
 
 
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
   };
 </script>
-
-
-
-  <link rel="canonical" href="https://toyo0103.github.io/2016/08/18/【重構系列】-三-單一職責原則-Single-Responsibility-Principle-SRP/">
-
-
-
-
 
   <title>【重構系列】(三) 單一職責原則(Single Responsibility Principle , SRP) | 程式隨筆</title>
   
@@ -141,235 +55,158 @@
 
 
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA\-119162267\-1', 'auto');
-  ga('send', 'pageview');
-</script>
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">程式隨筆</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
+
+
+
 
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            首頁
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
         <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
-            
-            關於
-          </a>
-        </li>
-      
-        
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>معلومات</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
-            
-            標籤
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>الوسوم</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>التصنيفات</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            歸檔
-          </a>
-        </li>
-      
 
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
-            
-            搜尋
-          </a>
-        </li>
-      
-    </ul>
-  
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
+  </li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/08/18/【重構系列】-三-單一職責原則-Single-Responsibility-Principle-SRP/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/08/18/%E3%80%90%E9%87%8D%E6%A7%8B%E7%B3%BB%E5%88%97%E3%80%91-%E4%B8%89-%E5%96%AE%E4%B8%80%E8%81%B7%E8%B2%AC%E5%8E%9F%E5%89%87-Single-Responsibility-Principle-SRP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="程式隨筆">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">【重構系列】(三) 單一職責原則(Single Responsibility Principle , SRP)</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          【重構系列】(三) 單一職責原則(Single Responsibility Principle , SRP)
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2016-08-18T11:16:00+08:00">
-                2016-08-18
-              </time>
-            
+              <span class="post-meta-item-text">نُشر في</span>
 
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <time title="أُنشأ: 2016-08-18 11:16:00" itemprop="dateCreated datePublished" datetime="2016-08-18T11:16:00+08:00">2016-08-18</time>
+            </span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-                <a href="/2016/08/18/【重構系列】-三-單一職責原則-Single-Responsibility-Principle-SRP/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/18/【重構系列】-三-單一職責原則-Single-Responsibility-Principle-SRP/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2018-10-18 16:50:52" itemprop="dateModified" datetime="2018-10-18T16:50:52+08:00">2018-10-18</time>
               </span>
-            
-          
-
-          
-          
-
-          
-
-          
 
           
 
         </div>
       </header>
-    
 
     
     
@@ -377,351 +214,277 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        <p>SourceCode :&nbsp;<a href="https://github.com/toyo0103/Demo_EditTemplate_1" target="_blank" rel="noopener">https://github.com/toyo0103/Demo_EditTemplate_1</a></p>
+        <p>SourceCode :&nbsp;<a target="_blank" rel="noopener" href="https://github.com/toyo0103/Demo_EditTemplate_1">https://github.com/toyo0103/Demo_EditTemplate_1</a></p>
 <p>這邊提供幾篇覺得很棒的文章，看完其實也可以略過這篇了XD</p>
-<p>&nbsp;1.&nbsp;<a href="https://msdn.microsoft.com/zh-tw/library/dn155886.aspx" target="_blank" rel="noopener">30天快速上手 TDD Day 12 - Refactoring - 職責分離 &nbsp;By 91</a></p>
-<p>&nbsp;2. <a href="https://dotblogs.com.tw/hatelove/archive/2010/10/16/single-responsibility-principle.aspx" target="_blank" rel="noopener">[ASP.NET]91之ASP.NET由淺入深 不負責講座 Day17 – 單一職責原則</a></p>
-<p>&nbsp;3.&nbsp;<a href="https://vinta.ws/booch/?p=101" target="_blank" rel="noopener">Clean code: 無瑕的程式碼 – 書摘心得（二）</a></p>
+<p>&nbsp;1.&nbsp;<a target="_blank" rel="noopener" href="https://msdn.microsoft.com/zh-tw/library/dn155886.aspx">30天快速上手 TDD Day 12 - Refactoring - 職責分離 &nbsp;By 91</a></p>
+<p>&nbsp;2. <a target="_blank" rel="noopener" href="https://dotblogs.com.tw/hatelove/archive/2010/10/16/single-responsibility-principle.aspx">[ASP.NET]91之ASP.NET由淺入深 不負責講座 Day17 – 單一職責原則</a></p>
+<p>&nbsp;3.&nbsp;<a target="_blank" rel="noopener" href="https://vinta.ws/booch/?p=101">Clean code: 無瑕的程式碼 – 書摘心得（二）</a></p>
 <p>好的!!誠如上面幾篇文章提到的，我對於SRP的理解是「<strong>每個類別應該都只有一個理由被修改</strong>」。 其實看起來很簡單但卻又抽象到頭痛，之前寫程式時常常為了分離程式碼而頭痛不已，不可否認的是，全部寫成一起在開發上又快又方便，但這其實無形中堆高了技術債，為了在改動需求或修改程式時，要嘛就從頭看到尾找出其中的一兩行改，要嘛就是乾脆重寫，因為互相綁得太死了，牽一髮動全身阿(遠目)</p>
-<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://2.bp.blogspot.com/-cYpekfGnPkg/V7UdvdmnldI/AAAAAAAAH84/MR0-YMqszPUeIoiFGPID_Tmx_ERoWnO0wCLcB/s1600/srp.jpg" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-cYpekfGnPkg/V7UdvdmnldI/AAAAAAAAH84/MR0-YMqszPUeIoiFGPID_Tmx_ERoWnO0wCLcB/s320/srp.jpg" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">如果想在這萬能的瑞士刀加上一個新型刀片，除了重做一個更長的基座，似乎無解阿….</td></tr></tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://2.bp.blogspot.com/-cYpekfGnPkg/V7UdvdmnldI/AAAAAAAAH84/MR0-YMqszPUeIoiFGPID_Tmx_ERoWnO0wCLcB/s320/srp.jpg)](https://2.bp.blogspot.com/-cYpekfGnPkg/V7UdvdmnldI/AAAAAAAAH84/MR0-YMqszPUeIoiFGPID_Tmx_ERoWnO0wCLcB/s1600/srp.jpg)</td></tr><tr><td class="tr-caption" style="text-align: center;">如果想在這萬能的瑞士刀加上一個新型刀片，除了重做一個更長的基座，似乎無解阿....</td></tr></tbody></table>
 
 <p><span style="font-size: large;">一、分析</span></p>
 <p>讓我們來看看原本的程式中哪邊明顯的沒有單一職責?</p>
-<p><strong><br>**</strong>Application層<strong>
-</strong><br>**傳入Channel ID,透過IPOISerice取得對應的POI資料並且回傳資料，看起來職責非常明確</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HomeController</span> : <span class="title">Controller</span></span><br><span class="line">    &#123;</span><br><span class="line">        IPOIService _POIService;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">HomeController</span>(<span class="params">IPOIService poiService</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//POIService改成依賴介面IPOIService</span></span><br><span class="line">            <span class="comment">//並且實體是由外部來決定，也就是所謂的依賴注入DI</span></span><br><span class="line">            _POIService = poiService;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> ActionResult <span class="title">Index</span>(<span class="params"><span class="keyword">string</span> id</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//依賴外部注入的IPOIService介面</span></span><br><span class="line">            <span class="keyword">var</span> POIs = _POIService.Get(id);</span><br><span class="line">            <span class="keyword">return</span> Json(POIs,JsonRequestBehavior.AllowGet);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>**<br>**<strong>Application層</strong><br>**<br>**傳入Channel ID,透過IPOISerice取得對應的POI資料並且回傳資料，看起來職責非常明確</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HomeController</span> : <span class="title">Controller</span></span><br><span class="line">    &#123;</span><br><span class="line">        IPOIService _POIService;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">HomeController</span>(<span class="params">IPOIService poiService</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//POIService改成依賴介面IPOIService</span></span><br><span class="line">            <span class="comment">//並且實體是由外部來決定，也就是所謂的依賴注入DI</span></span><br><span class="line">            _POIService = poiService;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> ActionResult <span class="title">Index</span>(<span class="params"><span class="built_in">string</span> id</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//依賴外部注入的IPOIService介面</span></span><br><span class="line">            <span class="keyword">var</span> POIs = _POIService.Get(id);</span><br><span class="line">            <span class="keyword">return</span> Json(POIs,JsonRequestBehavior.AllowGet);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
 <p><strong>Repository層</strong></p>
-<p>看起來兩個供應商的Repository也都恰如其分的只撈自己所屬的資料，職責明確，要改哪個供應商撈資料的方式，打開對應的Repository檔案即可，腎好腎好 (難道肝不好嗎?)<br><strong>
-</strong><br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> POI A供應商</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">ASupplierRepository</span> : <span class="title">ISupplierRepository</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> List&lt;POI&gt; <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//隨機建立十筆Supplier為A的資料回傳</span></span><br><span class="line">            <span class="keyword">var</span> fixture = <span class="keyword">new</span> Fixture();</span><br><span class="line">            <span class="keyword">var</span> Result = fixture.Build&lt;POI&gt;()</span><br><span class="line">                            .With(x =&gt; x.Name, <span class="keyword">string</span>.Concat(<span class="string">"捷運"</span>, rnd.Next(<span class="number">1</span>, <span class="number">100</span>)))</span><br><span class="line">                            .With(x =&gt; x.Supplier, SupplierEnum.A)</span><br><span class="line">                            .CreateMany().ToList();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> POI B供應商</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">BSupplierRepository</span> : <span class="title">ISupplierRepository</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> List&lt;POI&gt; <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//隨機建立十筆Supplier為B的資料回傳</span></span><br><span class="line">            <span class="keyword">var</span> fixture = <span class="keyword">new</span> Fixture();</span><br><span class="line">            <span class="keyword">var</span> Result = fixture.Build&lt;POI&gt;()</span><br><span class="line">                            .With(x =&gt; x.Name, <span class="keyword">string</span>.Concat(<span class="string">"捷運"</span>, rnd.Next(<span class="number">1</span>, <span class="number">100</span>)))</span><br><span class="line">                            .With(x =&gt; x.Supplier, SupplierEnum.B)</span><br><span class="line">                            .CreateMany().ToList();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>看起來兩個供應商的Repository也都恰如其分的只撈自己所屬的資料，職責明確，要改哪個供應商撈資料的方式，打開對應的Repository檔案即可，腎好腎好 (難道肝不好嗎?)<br>**<br>**</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> POI A供應商</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">ASupplierRepository</span> : <span class="title">ISupplierRepository</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> List&lt;POI&gt; <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//隨機建立十筆Supplier為A的資料回傳</span></span><br><span class="line">            <span class="keyword">var</span> fixture = <span class="keyword">new</span> Fixture();</span><br><span class="line">            <span class="keyword">var</span> Result = fixture.Build&lt;POI&gt;()</span><br><span class="line">                            .With(x =&gt; x.Name, <span class="built_in">string</span>.Concat(<span class="string">&quot;捷運&quot;</span>, rnd.Next(<span class="number">1</span>, <span class="number">100</span>)))</span><br><span class="line">                            .With(x =&gt; x.Supplier, SupplierEnum.A)</span><br><span class="line">                            .CreateMany().ToList();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> POI B供應商</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">BSupplierRepository</span> : <span class="title">ISupplierRepository</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> List&lt;POI&gt; <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Random rnd = <span class="keyword">new</span> Random();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//隨機建立十筆Supplier為B的資料回傳</span></span><br><span class="line">            <span class="keyword">var</span> fixture = <span class="keyword">new</span> Fixture();</span><br><span class="line">            <span class="keyword">var</span> Result = fixture.Build&lt;POI&gt;()</span><br><span class="line">                            .With(x =&gt; x.Name, <span class="built_in">string</span>.Concat(<span class="string">&quot;捷運&quot;</span>, rnd.Next(<span class="number">1</span>, <span class="number">100</span>)))</span><br><span class="line">                            .With(x =&gt; x.Supplier, SupplierEnum.B)</span><br><span class="line">                            .CreateMany().ToList();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>**</p>
 <hr>
-<p><strong>**Service層</strong><br>**</p>
+<p>**<strong>Service層</strong><br>**</p>
 <hr>
-<p>**<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">POIService</span> :<span class="title">IPOIService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> List&lt;POI&gt; <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> channelID</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;POI&gt;();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> channel = GetChannel(channelID);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//逐一搜尋頻道底下的各類別</span></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> category <span class="keyword">in</span> channel.Categorys)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//依據該類別所指定的供應商向Repository要資料</span></span><br><span class="line">                category.Supplier.ForEach(x =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Repository = SupplierFactory.Generate(x);</span><br><span class="line">                    <span class="keyword">var</span> POIs = Repository.Get();</span><br><span class="line">                    Result.AddRange(POIs);</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//並接總合的結果回傳</span></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 模擬頻道類別對應表</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="channelID"&gt;</span>The channel identifier.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>Channel.<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function">Channel <span class="title">GetChannel</span>(<span class="params"><span class="keyword">string</span> channelID</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (channelID == <span class="string">"1"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Channel</span><br><span class="line">                &#123;</span><br><span class="line">                    ID = <span class="string">"1"</span>,</span><br><span class="line">                    Categorys = <span class="keyword">new</span> List&lt;Channel.Category&gt;</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">new</span> Channel.Category</span><br><span class="line">                        &#123;</span><br><span class="line">                            Name = <span class="string">"交通"</span>,</span><br><span class="line">                            Supplier =<span class="keyword">new</span> List&lt;SupplierEnum&gt; &#123; SupplierEnum.A &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Channel</span><br><span class="line">            &#123;</span><br><span class="line">                ID = channelID,</span><br><span class="line">                Categorys = <span class="keyword">new</span> List&lt;Channel.Category&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">new</span> Channel.Category</span><br><span class="line">                    &#123;</span><br><span class="line">                        Name = <span class="string">"交通"</span>,</span><br><span class="line">                        Supplier = <span class="keyword">new</span> List&lt;SupplierEnum&gt; &#123; SupplierEnum.A , SupplierEnum.B &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>**</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">POIService</span> :<span class="title">IPOIService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> List&lt;POI&gt; <span class="title">Get</span>(<span class="params"><span class="built_in">string</span> channelID</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;POI&gt;();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> channel = GetChannel(channelID);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//逐一搜尋頻道底下的各類別</span></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> category <span class="keyword">in</span> channel.Categorys)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//依據該類別所指定的供應商向Repository要資料</span></span><br><span class="line">                category.Supplier.ForEach(x =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Repository = SupplierFactory.Generate(x);</span><br><span class="line">                    <span class="keyword">var</span> POIs = Repository.Get();</span><br><span class="line">                    Result.AddRange(POIs);</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//並接總合的結果回傳</span></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 模擬頻道類別對應表</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;channelID&quot;&gt;</span>The channel identifier.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>Channel.<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function">Channel <span class="title">GetChannel</span>(<span class="params"><span class="built_in">string</span> channelID</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (channelID == <span class="string">&quot;1&quot;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Channel</span><br><span class="line">                &#123;</span><br><span class="line">                    ID = <span class="string">&quot;1&quot;</span>,</span><br><span class="line">                    Categorys = <span class="keyword">new</span> List&lt;Channel.Category&gt;</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">new</span> Channel.Category</span><br><span class="line">                        &#123;</span><br><span class="line">                            Name = <span class="string">&quot;交通&quot;</span>,</span><br><span class="line">                            Supplier =<span class="keyword">new</span> List&lt;SupplierEnum&gt; &#123; SupplierEnum.A &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Channel</span><br><span class="line">            &#123;</span><br><span class="line">                ID = channelID,</span><br><span class="line">                Categorys = <span class="keyword">new</span> List&lt;Channel.Category&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">new</span> Channel.Category</span><br><span class="line">                    &#123;</span><br><span class="line">                        Name = <span class="string">&quot;交通&quot;</span>,</span><br><span class="line">                        Supplier = <span class="keyword">new</span> List&lt;SupplierEnum&gt; &#123; SupplierEnum.A , SupplierEnum.B &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
 <p>讓我們用人話的方式說說它目前都做了啥(驚世劇場口氣)!!</p>
 <ul>
-<li>Get() : 傳入Channel ID,先呼叫私有方法GetChannel，取得該頻道該有的類別跟對應POI廠商表，然後依據POI廠商去跟源頭Repository要資料</li>
-<li>GetChannel() : 傳入Channel ID，取回該頻道該有的類別與對應的POI廠商表</li>
+<li>  Get() : 傳入Channel ID,先呼叫私有方法GetChannel，取得該頻道該有的類別跟對應POI廠商表，然後依據POI廠商去跟源頭Repository要資料</li>
+<li>  GetChannel() : 傳入Channel ID，取回該頻道該有的類別與對應的POI廠商表</li>
 </ul>
 <p>如果今天我要修改<strong>取POI源頭資料的邏輯</strong>，我要打開POIService修改。</p>
 <p>如果今天我要修改<strong>取頻道與廠商的對應表邏輯，或是接上真實的DB資料</strong>，我也要打開POIService修改</p>
 <p>對於POIService來說，它的職責已經包含兩個不同面向的事情了，所以在這邊我們要抽離<strong>取頻道與廠商的對應表邏輯</strong>到專屬負責的類別去，來符合SRP</p>
-<p><span style="font-size: large;"><br></span><span style="font-size: large;">二、重構開始</span><br><span style="font-size: large;"><br></span>首先在<strong>Service層</strong>建立專屬的類別來取頻道與廠商的對應表，所以這邊建立一個<strong>ChannelService</strong>，然後將原本屬於POIService的邏輯搬到這邊來</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChannelService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 模擬頻道類別對應表</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name="channelID"&gt;</span>The channel identifier.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>Channel.<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Channel <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> channelID</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (channelID == <span class="string">"1"</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Channel</span><br><span class="line">                &#123;</span><br><span class="line">                    ID = <span class="string">"1"</span>,</span><br><span class="line">                    Categorys = <span class="keyword">new</span> List&lt;Channel.Category&gt;</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">new</span> Channel.Category</span><br><span class="line">                        &#123;</span><br><span class="line">                            Name = <span class="string">"交通"</span>,</span><br><span class="line">                            Supplier =<span class="keyword">new</span> List&lt;SupplierEnum&gt; &#123; SupplierEnum.A &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Channel</span><br><span class="line">            &#123;</span><br><span class="line">                ID = channelID,</span><br><span class="line">                Categorys = <span class="keyword">new</span> List&lt;Channel.Category&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">new</span> Channel.Category</span><br><span class="line">                    &#123;</span><br><span class="line">                        Name = <span class="string">"交通"</span>,</span><br><span class="line">                        Supplier = <span class="keyword">new</span> List&lt;SupplierEnum&gt; &#123; SupplierEnum.A , SupplierEnum.B &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>把原本不該屬於POIService的程式碼刪除，改成如下<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">POIService</span> :<span class="title">IPOIService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> List&lt;POI&gt; <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> channelID</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;POI&gt;();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//取得ChannelService實體，取得Channel對應供應商資料</span></span><br><span class="line">            <span class="keyword">var</span> channelService = <span class="keyword">new</span> ChannelService();</span><br><span class="line">            <span class="keyword">var</span> channel = channelService.Get(channelID);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//逐一搜尋頻道底下的各類別</span></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> category <span class="keyword">in</span> channel.Categorys)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//依據該類別所指定的供應商向Repository要資料</span></span><br><span class="line">                category.Supplier.ForEach(x =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Repository = SupplierFactory.Generate(x);</span><br><span class="line">                    <span class="keyword">var</span> POIs = Repository.Get();</span><br><span class="line">                    Result.AddRange(POIs);</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//並接總合的結果回傳</span></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<p>接下來是不是因為達成職責分離了，所以大家可以手拉手一起去吃冰快樂的下午茶了阿。<br>如果是的話請到旁邊面壁思過(拍掉已經牽起來的手)，<strong>說好的高內聚低耦合呢? 說好的IOC與DI呢 ? 說好的面對抽象呢? </strong>(左手心拍右手背)</p>
+<span style="font-size: large;">
+</span><span style="font-size: large;">二、重構開始</span>
+<span style="font-size: large;">
+</span>首先在**Service層**建立專屬的類別來取頻道與廠商的對應表，所以這邊建立一個**ChannelService**，然後將原本屬於POIService的邏輯搬到這邊來
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChannelService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 模擬頻道類別對應表</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;channelID&quot;&gt;</span>The channel identifier.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>Channel.<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Channel <span class="title">Get</span>(<span class="params"><span class="built_in">string</span> channelID</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (channelID == <span class="string">&quot;1&quot;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Channel</span><br><span class="line">                &#123;</span><br><span class="line">                    ID = <span class="string">&quot;1&quot;</span>,</span><br><span class="line">                    Categorys = <span class="keyword">new</span> List&lt;Channel.Category&gt;</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">new</span> Channel.Category</span><br><span class="line">                        &#123;</span><br><span class="line">                            Name = <span class="string">&quot;交通&quot;</span>,</span><br><span class="line">                            Supplier =<span class="keyword">new</span> List&lt;SupplierEnum&gt; &#123; SupplierEnum.A &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Channel</span><br><span class="line">            &#123;</span><br><span class="line">                ID = channelID,</span><br><span class="line">                Categorys = <span class="keyword">new</span> List&lt;Channel.Category&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">new</span> Channel.Category</span><br><span class="line">                    &#123;</span><br><span class="line">                        Name = <span class="string">&quot;交通&quot;</span>,</span><br><span class="line">                        Supplier = <span class="keyword">new</span> List&lt;SupplierEnum&gt; &#123; SupplierEnum.A , SupplierEnum.B &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>把原本不該屬於POIService的程式碼刪除，改成如下 </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">POIService</span> :<span class="title">IPOIService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> List&lt;POI&gt; <span class="title">Get</span>(<span class="params"><span class="built_in">string</span> channelID</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;POI&gt;();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//取得ChannelService實體，取得Channel對應供應商資料</span></span><br><span class="line">            <span class="keyword">var</span> channelService = <span class="keyword">new</span> ChannelService();</span><br><span class="line">            <span class="keyword">var</span> channel = channelService.Get(channelID);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//逐一搜尋頻道底下的各類別</span></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> category <span class="keyword">in</span> channel.Categorys)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//依據該類別所指定的供應商向Repository要資料</span></span><br><span class="line">                category.Supplier.ForEach(x =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Repository = SupplierFactory.Generate(x);</span><br><span class="line">                    <span class="keyword">var</span> POIs = Repository.Get();</span><br><span class="line">                    Result.AddRange(POIs);</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//並接總合的結果回傳</span></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>接下來是不是因為達成職責分離了，所以大家可以手拉手一起去吃冰快樂的下午茶了阿。<br>如果是的話請到旁邊面壁思過(拍掉已經牽起來的手)，**說好的高內聚低耦合呢? 說好的IOC與DI呢 ? 說好的面對抽象呢? **(左手心拍右手背)</p>
 <ul>
 <li><p>隔離ChannelService，建立Interface</p>
-<p><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-CbLQzZGAVWA/V7Uk_BjnrQI/AAAAAAAAH9I/2X3Wh9Igf34lYISJFe19Tu2pANOaX6tUgCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-CbLQzZGAVWA/V7Uk_BjnrQI/AAAAAAAAH9I/2X3Wh9Igf34lYISJFe19Tu2pANOaX6tUgCLcB/s1600/1.png" alt></a></div></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IChannelService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">Channel <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> channelID</span>)</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+  <div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-CbLQzZGAVWA/V7Uk_BjnrQI/AAAAAAAAH9I/2X3Wh9Igf34lYISJFe19Tu2pANOaX6tUgCLcB/s1600/1.png)](https://2.bp.blogspot.com/-CbLQzZGAVWA/V7Uk_BjnrQI/AAAAAAAAH9I/2X3Wh9Igf34lYISJFe19Tu2pANOaX6tUgCLcB/s1600/1.png)</div>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IChannelService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">Channel <span class="title">Get</span>(<span class="params"><span class="built_in">string</span> channelID</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>POIService透過DI與IOC的概念，面對IChannelService而非實體 ```csharp<br>public class POIService :IPOIService<br>  {</p>
+<pre><code>  IChannelService _ChannelService;
+  public POIService(IChannelService channelService)
+  &#123;
+      //DI
+      _ChannelService = channelService;
+  &#125;
+
+      public List&lt;POI&gt; Get(string channelID)
+  &#123;
+      var Result = new List&lt;POI&gt;();
+
+          //面對抽象
+      var channel = _ChannelService.Get(channelID);
+
+          //逐一搜尋頻道底下的各類別
+      foreach (var category in channel.Categorys)
+      &#123;
+          //依據該類別所指定的供應商向Repository要資料
+          category.Supplier.ForEach(x =&gt;
+          &#123;
+              var Repository = SupplierFactory.Generate(x);
+              var POIs = Repository.Get();
+              Result.AddRange(POIs);
+          &#125;);
+      &#125;
+
+          //並接總合的結果回傳
+      return Result;
+  &#125;
+</code></pre>
+<p>  }</p>
 </li>
-<li><p>POIService透過DI與IOC的概念，面對IChannelService而非實體 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">POIService</span> :<span class="title">IPOIService</span></span><br><span class="line">    &#123;</span><br><span class="line">        IChannelService _ChannelService;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">POIService</span>(<span class="params">IChannelService channelService</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//DI</span></span><br><span class="line">            _ChannelService = channelService;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> List&lt;POI&gt; <span class="title">Get</span>(<span class="params"><span class="keyword">string</span> channelID</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> Result = <span class="keyword">new</span> List&lt;POI&gt;();</span><br><span class="line"></span><br><span class="line">                <span class="comment">//面對抽象</span></span><br><span class="line">            <span class="keyword">var</span> channel = _ChannelService.Get(channelID);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//逐一搜尋頻道底下的各類別</span></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> category <span class="keyword">in</span> channel.Categorys)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//依據該類別所指定的供應商向Repository要資料</span></span><br><span class="line">                category.Supplier.ForEach(x =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Repository = SupplierFactory.Generate(x);</span><br><span class="line">                    <span class="keyword">var</span> POIs = Repository.Get();</span><br><span class="line">                    Result.AddRange(POIs);</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//並接總合的結果回傳</span></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-</li>
-<li><p>別忘記到Unity把Interface與實體的關係註冊起來<div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-vp--aOOPX5s/V7UmVz9p1sI/AAAAAAAAH9M/bZNYIW4-xJ4ckr5k11B_jWgSrr55nn5oQCLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-vp--aOOPX5s/V7UmVz9p1sI/AAAAAAAAH9M/bZNYIW4-xJ4ckr5k11B_jWgSrr55nn5oQCLcB/s640/1.png" alt></a></div><span style="font-size: large;"><br></span><span style="font-size: large;"><br></span><span style="font-size: large;"><br></span><span style="font-size: large;"><br></span><span style="font-size: large;">三、小結</span><br><span style="font-size: large;"><br></span>看看執行的結果是否正常<br><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://3.bp.blogspot.com/-rn9m0xATZ2A/V7Umyyoz9_I/AAAAAAAAH9U/rAETSPwprloEh1HSjPDpP3v0Cq0iAp_gACLcB/s1600/1.png" target="_blank" rel="noopener"><img src="https://3.bp.blogspot.com/-rn9m0xATZ2A/V7Umyyoz9_I/AAAAAAAAH9U/rAETSPwprloEh1HSjPDpP3v0Cq0iAp_gACLcB/s640/1.png" alt></a></td></tr><tr><td class="tr-caption" style="text-align: center;">妥妥的阿!!!</td></tr></tbody></table><br>所以這邊我們重構了Service的部分，讓它職責更為明確，而且也用了前幾篇提到的物件導向觀念，讓彼此是互相合作但是又具有高獨立性的。</p>
-</li>
+</ul>
+<p>```</p>
+<ul>
+<li>  別忘記到Unity把Interface與實體的關係註冊起來<div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="https://3.bp.blogspot.com/-vp--aOOPX5s/V7UmVz9p1sI/AAAAAAAAH9M/bZNYIW4-xJ4ckr5k11B_jWgSrr55nn5oQCLcB/s1600/1.png"><img src="https://3.bp.blogspot.com/-vp--aOOPX5s/V7UmVz9p1sI/AAAAAAAAH9M/bZNYIW4-xJ4ckr5k11B_jWgSrr55nn5oQCLcB/s640/1.png"></a></div><span style="font-size: large;"><br></span><span style="font-size: large;"><br></span><span style="font-size: large;"><br></span><span style="font-size: large;"><br></span><span style="font-size: large;">三、小結</span><span style="font-size: large;">
+</span>看看執行的結果是否正常
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://3.bp.blogspot.com/-rn9m0xATZ2A/V7Umyyoz9_I/AAAAAAAAH9U/rAETSPwprloEh1HSjPDpP3v0Cq0iAp_gACLcB/s640/1.png)](https://3.bp.blogspot.com/-rn9m0xATZ2A/V7Umyyoz9_I/AAAAAAAAH9U/rAETSPwprloEh1HSjPDpP3v0Cq0iAp_gACLcB/s1600/1.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">妥妥的阿!!!</td></tr></tbody></table>
+所以這邊我們重構了Service的部分，讓它職責更為明確，而且也用了前幾篇提到的物件導向觀念，讓彼此是互相合作但是又具有高獨立性的。</li>
 </ul>
 <p>如果現在真的想把取Channel的對應資料改去接DB，我們只要打開<strong>ChannelService</strong>去接對應的Repository即可，其他地方都不會動到。</p>
 <p>如果現在是主管說Demo的時候要用假資料，正式機要接DB取真實的Channel資料，那我們只要保留原本<strong>ChannelService，</strong>另外寫一個<strong>ChannelFromDBService</strong>，然後都實做<span style="color: #bf9000;">IChannelService</span>，並且在Unity那邊做個開關動態改變註冊的實體即可</p>
 <p>應該有漸漸感受到，物件導向對於變動這件事情的高擴展性與可維護性了，相信天下沒有不改需求的PM，所以也就不可能有不改版的軟體了阿(再次遠目)</p>
 <p>最後記住一件事情，<strong>「別讓你的Code又臭又長」</strong>，那麼下回見啦~</p>
-<div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-NHl1LCbQLR0/V7UoU2H1ijI/AAAAAAAAH9g/1CJwhDpona4tNKcNlesR5HCDoruhHCvVgCLcB/s1600/687474703a2f2f692e696d6775722e636f6d2f63464a6b6638692e6a7067.jpg" target="_blank" rel="noopener"><img src="https://2.bp.blogspot.com/-NHl1LCbQLR0/V7UoU2H1ijI/AAAAAAAAH9g/1CJwhDpona4tNKcNlesR5HCDoruhHCvVgCLcB/s320/687474703a2f2f692e696d6775722e636f6d2f63464a6b6638692e6a7067.jpg" alt></a></div>
-      
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-NHl1LCbQLR0/V7UoU2H1ijI/AAAAAAAAH9g/1CJwhDpona4tNKcNlesR5HCDoruhHCvVgCLcB/s320/687474703a2f2f692e696d6775722e636f6d2f63464a6b6638692e6a7067.jpg)](https://2.bp.blogspot.com/-NHl1LCbQLR0/V7UoU2H1ijI/AAAAAAAAH9g/1CJwhDpona4tNKcNlesR5HCDoruhHCvVgCLcB/s1600/687474703a2f2f692e696d6775722e636f6d2f63464a6b6638692e6a7067.jpg)</div>
     </div>
+
     
     
     
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/C/" rel="tag"># C#</a>
-          
-            <a href="/tags/Refactor/" rel="tag"># Refactor</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/08/17/【重構系列】-二-DI與IOC/" rel="next" title="【重構系列】(二) DI與IOC">
-                <i class="fa fa-chevron-left"></i> 【重構系列】(二) DI與IOC
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+              <a href="/tags/Refactor/" rel="tag"># Refactor</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/09/26/【四元樹】透過四元樹搜尋範圍內的座標/" rel="prev" title="【四元樹】透過四元樹搜尋範圍內的座標">
-                【四元樹】透過四元樹搜尋範圍內的座標 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/08/17/%E3%80%90%E9%87%8D%E6%A7%8B%E7%B3%BB%E5%88%97%E3%80%91-%E4%BA%8C-DI%E8%88%87IOC/" rel="prev" title="【重構系列】(二) DI與IOC">
+      <i class="fa fa-chevron-left"></i> 【重構系列】(二) DI與IOC
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/09/26/%E3%80%90%E5%9B%9B%E5%85%83%E6%A8%B9%E3%80%91%E9%80%8F%E9%81%8E%E5%9B%9B%E5%85%83%E6%A8%B9%E6%90%9C%E5%B0%8B%E7%AF%84%E5%9C%8D%E5%85%A7%E7%9A%84%E5%BA%A7%E6%A8%99/" rel="next" title="【四元樹】透過四元樹搜尋範圍內的座標">
+      【四元樹】透過四元樹搜尋範圍內的座標 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
 
 
           </div>
           
 
-
-          
-
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Toyo">
-            
-              <p class="site-author-name" itemprop="name">Toyo</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">196</span>
-                  <span class="site-state-item-name">文章</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
-                  <span class="site-state-item-name">分類</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">67</span>
-                  <span class="site-state-item-name">標籤</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-            <div class="links-of-author motion-element">
-                
-                  <span class="links-of-author-item">
-                    <a href="https://github.com/toyo0103" target="_blank" title="GitHub">
-                      
-                        <i class="fa fa-fw fa-github"></i></a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="https://tw.linkedin.com/in/steven-tsai-096580110" target="_blank" title="Linkedin">
-                      
-                        <i class="fa fa-fw fa-linkedin"></i></a>
-                  </span>
-                
-            </div>
-          
-
-          
-          
-
-          
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-block">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-folder-open"></i>
-                系列文章
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="/categories/學習MVC" title="MVC" target="_blank">MVC</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="/categories/學習單元測試" title="單元測試" target="_blank">單元測試</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="/categories/VSTS建置CI-CD" title="VSTS建置CI/CD" target="_blank">VSTS建置CI/CD</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="/categories/LeetCode" title="LeetCode" target="_blank">LeetCode</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="/2019/03/21/microservice_battlefield/" title="微服務" target="_blank">微服務</a>
-                  </li>
-                
-              </ul>
-            </div>
-          
-
-          
-
-        </div>
-      </section>
-
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Toyo</span>
-
-  
-</div>
-
-
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">197</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
 
 
 
 
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -739,443 +502,8 @@
 
 
 
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
 
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
 
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://toyo0103.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'https://toyo0103.github.io/2016/08/18/【重構系列】-三-單一職責原則-Single-Responsibility-Principle-SRP/';
-          this.page.identifier = '2016/08/18/【重構系列】-三-單一職責原則-Single-Responsibility-Principle-SRP/';
-          this.page.title = '【重構系列】(三) 單一職責原則(Single Responsibility Principle , SRP)';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://toyo0103.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
 
   
 

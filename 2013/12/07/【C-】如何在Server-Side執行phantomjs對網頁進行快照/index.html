@@ -1,134 +1,51 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="zh-tw">
-<head><meta name="generator" content="Hexo 3.8.0">
-  ﻿<meta charset="UTF-8">
-<meta name="google-site-verification" content="a-sIQSCKPw8MyRi4iUo9hmDiL3P1Txg2Ri8zx8Wk0G0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Hexo, NexT">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
-
-
-
-
-
-
-<meta name="description" content="phantomjs如何使用，詳細請參考參考黑暗執行緒前輩的文章 首先寫了一支snapshot.js放到phantomjs的根目錄1234567891011121314var page = require(&apos;webpage&apos;).create(),system = require(&apos;system&apos;),edmid,address;address = system.args[1];edmid = syst">
+  <meta name="description" content="phantomjs如何使用，詳細請參考參考黑暗執行緒前輩的文章 首先寫了一支snapshot.js放到phantomjs的根目錄  123456789101112131415var page &#x3D; require(&amp;#x27;webpage&amp;#x27;).create(),system &#x3D; require(&amp;#x27;system&amp;#x27;),edmid,address;address &#x3D; sys">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【C#】如何在Server Side執行phantomjs對網頁進行快照">
-<meta property="og:url" content="https://toyo0103.github.io/2013/12/07/【C-】如何在Server-Side執行phantomjs對網頁進行快照/index.html">
+<meta property="og:url" content="https://toyo0103.github.io/2013/12/07/%E3%80%90C-%E3%80%91%E5%A6%82%E4%BD%95%E5%9C%A8Server-Side%E5%9F%B7%E8%A1%8Cphantomjs%E5%B0%8D%E7%B6%B2%E9%A0%81%E9%80%B2%E8%A1%8C%E5%BF%AB%E7%85%A7/index.html">
 <meta property="og:site_name" content="程式隨筆">
-<meta property="og:description" content="phantomjs如何使用，詳細請參考參考黑暗執行緒前輩的文章 首先寫了一支snapshot.js放到phantomjs的根目錄1234567891011121314var page = require(&apos;webpage&apos;).create(),system = require(&apos;system&apos;),edmid,address;address = system.args[1];edmid = syst">
-<meta property="og:locale" content="zh-tw">
+<meta property="og:description" content="phantomjs如何使用，詳細請參考參考黑暗執行緒前輩的文章 首先寫了一支snapshot.js放到phantomjs的根目錄  123456789101112131415var page &#x3D; require(&amp;#x27;webpage&amp;#x27;).create(),system &#x3D; require(&amp;#x27;system&amp;#x27;),edmid,address;address &#x3D; sys">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="http://2.bp.blogspot.com/-JzNg1l0-ucc/VPO_j7wIZfI/AAAAAAAAEVk/4wOAYPCPFe0/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png">
-<meta property="og:updated_time" content="2018-10-18T08:50:52.842Z">
+<meta property="article:published_time" content="2013-12-06T16:57:00.000Z">
+<meta property="article:modified_time" content="2018-10-18T08:50:52.842Z">
+<meta property="article:author" content="Toyo">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【C#】如何在Server Side執行phantomjs對網頁進行快照">
-<meta name="twitter:description" content="phantomjs如何使用，詳細請參考參考黑暗執行緒前輩的文章 首先寫了一支snapshot.js放到phantomjs的根目錄1234567891011121314var page = require(&apos;webpage&apos;).create(),system = require(&apos;system&apos;),edmid,address;address = system.args[1];edmid = syst">
 <meta name="twitter:image" content="http://2.bp.blogspot.com/-JzNg1l0-ucc/VPO_j7wIZfI/AAAAAAAAEVk/4wOAYPCPFe0/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png">
 
+<link rel="canonical" href="https://toyo0103.github.io/2013/12/07/%E3%80%90C-%E3%80%91%E5%A6%82%E4%BD%95%E5%9C%A8Server-Side%E5%9F%B7%E8%A1%8Cphantomjs%E5%B0%8D%E7%B6%B2%E9%A0%81%E9%80%B2%E8%A1%8C%E5%BF%AB%E7%85%A7/">
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Gemini',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
   };
 </script>
-
-
-
-  <link rel="canonical" href="https://toyo0103.github.io/2013/12/07/【C-】如何在Server-Side執行phantomjs對網頁進行快照/">
-
-
-
-
 
   <title>【C#】如何在Server Side執行phantomjs對網頁進行快照 | 程式隨筆</title>
   
@@ -136,235 +53,158 @@
 
 
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA\-119162267\-1', 'auto');
-  ga('send', 'pageview');
-</script>
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-tw">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">程式隨筆</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-      
-        <p class="site-subtitle"></p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
+
+
+
 
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            首頁
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
         <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
-            
-            關於
-          </a>
-        </li>
-      
-        
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>معلومات</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
-            
-            標籤
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>الوسوم</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>التصنيفات</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            歸檔
-          </a>
-        </li>
-      
 
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
-            
-            搜尋
-          </a>
-        </li>
-      
-    </ul>
-  
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
-
-
-
-    </div>
-  
+  </li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/12/07/【C-】如何在Server-Side執行phantomjs對網頁進行快照/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/12/07/%E3%80%90C-%E3%80%91%E5%A6%82%E4%BD%95%E5%9C%A8Server-Side%E5%9F%B7%E8%A1%8Cphantomjs%E5%B0%8D%E7%B6%B2%E9%A0%81%E9%80%B2%E8%A1%8C%E5%BF%AB%E7%85%A7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="程式隨筆">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">【C#】如何在Server Side執行phantomjs對網頁進行快照</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          【C#】如何在Server Side執行phantomjs對網頁進行快照
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2013-12-07T00:57:00+08:00">
-                2013-12-07
-              </time>
-            
+              <span class="post-meta-item-text">نُشر في</span>
 
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <time title="أُنشأ: 2013-12-07 00:57:00" itemprop="dateCreated datePublished" datetime="2013-12-07T00:57:00+08:00">2013-12-07</time>
+            </span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-                <a href="/2013/12/07/【C-】如何在Server-Side執行phantomjs對網頁進行快照/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/12/07/【C-】如何在Server-Side執行phantomjs對網頁進行快照/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2018-10-18 16:50:52" itemprop="dateModified" datetime="2018-10-18T16:50:52+08:00">2018-10-18</time>
               </span>
-            
-          
-
-          
-          
-
-          
-
-          
 
           
 
         </div>
       </header>
-    
 
     
     
@@ -372,301 +212,184 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
+        <p>phantomjs如何使用，詳細請參考<a target="_blank" rel="noopener" href="http://blog.darkthread.net/post-2013-08-29-phantomjs.aspx">參考黑暗執行緒前輩的文章</a></p>
+<p>首先寫了一支snapshot.js放到phantomjs的根目錄 </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> page = <span class="built_in">require</span>(<span class="string">&#x27;webpage&#x27;</span>).create(),</span><br><span class="line">system = <span class="built_in">require</span>(<span class="string">&#x27;system&#x27;</span>),</span><br><span class="line">edmid,</span><br><span class="line">address;</span><br><span class="line"></span><br><span class="line">address = system.args[<span class="number">1</span>];</span><br><span class="line">edmid = system.args[<span class="number">2</span>];</span><br><span class="line">path = system.args[<span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">page.open(address,<span class="function"><span class="keyword">function</span>(<span class="params">status</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">  page.render(path + <span class="string">&#x27;/&#x27;</span> + edmid+<span class="string">&#x27;.png&#x27;</span>);</span><br><span class="line">         phantom.exit();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>這支JS需要傳遞三個參數，1.網址 2.圖片的名稱 3.拍好的圖片存的路徑<br>在cmd的執行方式如下 <a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-JzNg1l0-ucc/VPO_j7wIZfI/AAAAAAAAEVk/4wOAYPCPFe0/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png"><img src="http://2.bp.blogspot.com/-JzNg1l0-ucc/VPO_j7wIZfI/AAAAAAAAEVk/4wOAYPCPFe0/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png"></a><br>這次的功能是要在網站上按下一個按鈕後就對特定的網頁進行快照，程式如下 </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//phantomjs在伺服器上的根目錄資料夾</span></span><br><span class="line">                <span class="built_in">string</span> path = HostingEnvironment.MapPath(<span class="string">@&quot;~/phantomjs&quot;</span>);</span><br><span class="line">                <span class="comment">//因為拍照可能需要數秒的時間，避免網頁被hand住所以切出執行緒來進行。故抓MapPath的方式需要改成 HostingEnvironment.MapPath</span></span><br><span class="line">                <span class="comment">//這裡是我把拍好的圖片放到哪個資料夾的路徑</span></span><br><span class="line">                <span class="built_in">string</span> snapshotPath = HostingEnvironment.MapPath(<span class="string">&quot;~/phantomjs/snapshot&quot;</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//透過Process這個類別來對cmd操作</span></span><br><span class="line">                <span class="keyword">using</span> (System.Diagnostics.Process exep = <span class="keyword">new</span> System.Diagnostics.Process())</span><br><span class="line">                &#123;</span><br><span class="line">                    System.Diagnostics.Process p = <span class="keyword">new</span> System.Diagnostics.Process();</span><br><span class="line">                    p.StartInfo.FileName = <span class="string">@&quot;C:\Windows\System32\cmd.exe&quot;</span>;</span><br><span class="line">                    p.StartInfo.RedirectStandardOutput = <span class="literal">true</span>;</span><br><span class="line">                    p.StartInfo.RedirectStandardInput = <span class="literal">true</span>;</span><br><span class="line">                    p.StartInfo.UseShellExecute = <span class="literal">false</span>;</span><br><span class="line">                    p.Start();</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//StandardInput的資訊流指定給StreamWriter ，這樣只要透過StreamWriter寫指令就等於對cmd下command了</span></span><br><span class="line">                    StreamWriter sw = p.StandardInput;</span><br><span class="line">                    sw.WriteLine(<span class="string">@&quot;cd\&quot;</span>);</span><br><span class="line">                    sw.WriteLine(<span class="built_in">string</span>.Format(<span class="string">@&quot;&#123;0&#125;:&quot;</span>, path.Substring(<span class="number">0</span>, <span class="number">1</span>)));</span><br><span class="line">                    sw.WriteLine(<span class="string">@&quot;cd &quot;</span> + path);</span><br><span class="line">                    sw.WriteLine(<span class="built_in">string</span>.Format(<span class="string">@&quot;phantomjs snapshot.js &#123;0&#125; &#123;1&#125; &#123;2&#125;&quot;</span>, 網址, 圖片名稱, snapshotPath ));</span><br><span class="line">                    sw.Close();</span><br><span class="line">                    p.WaitForExit();</span><br><span class="line">               &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-      
-        <p>phantomjs如何使用，詳細請參考<a href="http://blog.darkthread.net/post-2013-08-29-phantomjs.aspx" target="_blank" rel="noopener">參考黑暗執行緒前輩的文章</a></p>
-<p>首先寫了一支snapshot.js放到phantomjs的根目錄<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> page = <span class="built_in">require</span>(<span class="string">'webpage'</span>).create(),</span><br><span class="line">system = <span class="built_in">require</span>(<span class="string">'system'</span>),</span><br><span class="line">edmid,</span><br><span class="line">address;</span><br><span class="line"></span><br><span class="line">address = system.args[<span class="number">1</span>];</span><br><span class="line">edmid = system.args[<span class="number">2</span>];</span><br><span class="line">path = system.args[<span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">page.open(address,<span class="function"><span class="keyword">function</span>(<span class="params">status</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">  page.render(path + <span class="string">'/'</span> + edmid+<span class="string">'.png'</span>);</span><br><span class="line">         phantom.exit();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<p>這支JS需要傳遞三個參數，1.網址 2.圖片的名稱 3.拍好的圖片存的路徑<br>在cmd的執行方式如下 <a href="http://2.bp.blogspot.com/-JzNg1l0-ucc/VPO_j7wIZfI/AAAAAAAAEVk/4wOAYPCPFe0/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" target="_blank" rel="noopener"><img src="http://2.bp.blogspot.com/-JzNg1l0-ucc/VPO_j7wIZfI/AAAAAAAAEVk/4wOAYPCPFe0/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png" alt></a><br>這次的功能是要在網站上按下一個按鈕後就對特定的網頁進行快照，程式如下 </p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//phantomjs在伺服器上的根目錄資料夾</span></span><br><span class="line">                <span class="keyword">string</span> path = HostingEnvironment.MapPath(<span class="string">@"~/phantomjs"</span>);</span><br><span class="line">                <span class="comment">//因為拍照可能需要數秒的時間，避免網頁被hand住所以切出執行緒來進行。故抓MapPath的方式需要改成 HostingEnvironment.MapPath</span></span><br><span class="line">                <span class="comment">//這裡是我把拍好的圖片放到哪個資料夾的路徑</span></span><br><span class="line">                <span class="keyword">string</span> snapshotPath = HostingEnvironment.MapPath(<span class="string">"~/phantomjs/snapshot"</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//透過Process這個類別來對cmd操作</span></span><br><span class="line">                <span class="keyword">using</span> (System.Diagnostics.Process exep = <span class="keyword">new</span> System.Diagnostics.Process())</span><br><span class="line">                &#123;</span><br><span class="line">                    System.Diagnostics.Process p = <span class="keyword">new</span> System.Diagnostics.Process();</span><br><span class="line">                    p.StartInfo.FileName = <span class="string">@"C:\Windows\System32\cmd.exe"</span>;</span><br><span class="line">                    p.StartInfo.RedirectStandardOutput = <span class="literal">true</span>;</span><br><span class="line">                    p.StartInfo.RedirectStandardInput = <span class="literal">true</span>;</span><br><span class="line">                    p.StartInfo.UseShellExecute = <span class="literal">false</span>;</span><br><span class="line">                    p.Start();</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//StandardInput的資訊流指定給StreamWriter ，這樣只要透過StreamWriter寫指令就等於對cmd下command了</span></span><br><span class="line">                    StreamWriter sw = p.StandardInput;</span><br><span class="line">                    sw.WriteLine(<span class="string">@"cd\"</span>);</span><br><span class="line">                    sw.WriteLine(<span class="keyword">string</span>.Format(<span class="string">@"&#123;0&#125;:"</span>, path.Substring(<span class="number">0</span>, <span class="number">1</span>)));</span><br><span class="line">                    sw.WriteLine(<span class="string">@"cd "</span> + path);</span><br><span class="line">                    sw.WriteLine(<span class="keyword">string</span>.Format(<span class="string">@"phantomjs snapshot.js &#123;0&#125; &#123;1&#125; &#123;2&#125;"</span>, 網址, 圖片名稱, snapshotPath ));</span><br><span class="line">                    sw.Close();</span><br><span class="line">                    p.WaitForExit();</span><br><span class="line">               &#125;</span><br></pre></td></tr></table></figure>
 <p>重點在於只要自己透過cmd操作過phantomjs.exe來拍照，依樣畫葫蘆的透過Process逐步的下指令就可以達成了!! </p>
-<p>另外phantomjs是將要被拍照的DOM元件抓下來在進行組合拍照，有了這個特性你就可以對想拍照的網站進行一些修改。例如載入JQuery把某個區塊移除之類的<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Wait until the test condition is true or a timeout occurs. Useful for waiting</span></span><br><span class="line"><span class="comment"> * on a server response or for a ui change (fadeIn, etc.) to occur.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * @param testFx javascript condition that evaluates to a boolean,</span></span><br><span class="line"><span class="comment"> * it can be passed in as a string (e.g.: "1 == 1" or "$('#bar').is(':visible')" or</span></span><br><span class="line"><span class="comment"> * as a callback function.</span></span><br><span class="line"><span class="comment"> * @param onReady what to do when testFx condition is fulfilled,</span></span><br><span class="line"><span class="comment"> * it can be passed in as a string (e.g.: "1 == 1" or "$('#bar').is(':visible')" or</span></span><br><span class="line"><span class="comment"> * as a callback function.</span></span><br><span class="line"><span class="comment"> * @param timeOutMillis the max amount of time to wait. If not specified, 3 sec is used.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waitFor</span>(<span class="params">testFx, onReady, timeOutMillis</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> maxtimeOutMillis = timeOutMillis ? timeOutMillis : <span class="number">3000</span>, <span class="comment">//&lt; Default Max Timout is 3s</span></span><br><span class="line">        start = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime(),</span><br><span class="line">        condition = <span class="literal">false</span>,</span><br><span class="line">        interval = setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> ( (<span class="keyword">new</span> <span class="built_in">Date</span>().getTime() - start &lt; maxtimeOutMillis) &amp;&amp; !condition ) &#123;</span><br><span class="line">                <span class="comment">// If not time-out yet and condition not yet fulfilled</span></span><br><span class="line">                condition = (<span class="keyword">typeof</span>(testFx) === <span class="string">"string"</span> ? <span class="built_in">eval</span>(testFx) : testFx()); <span class="comment">//&lt; defensive code</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span>(!condition) &#123;</span><br><span class="line">                    <span class="comment">// If condition still not fulfilled (timeout but condition is 'false')</span></span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"'waitFor()' timeout"</span>);</span><br><span class="line">                    phantom.exit(<span class="number">1</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// Condition fulfilled (timeout and/or condition is 'true')</span></span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">"'waitFor()' finished in "</span> + (<span class="keyword">new</span> <span class="built_in">Date</span>().getTime() - start) + <span class="string">"ms."</span>);</span><br><span class="line">                    <span class="keyword">typeof</span>(onReady) === <span class="string">"string"</span> ? <span class="built_in">eval</span>(onReady) : onReady(); <span class="comment">//&lt; Do what it's supposed to do once the condition is fulfilled</span></span><br><span class="line">                    clearInterval(interval); <span class="comment">//&lt; Stop this interval</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="number">250</span>); <span class="comment">//&lt; repeat check every 250ms</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> page = <span class="built_in">require</span>(<span class="string">'webpage'</span>).create(),</span><br><span class="line">system = <span class="built_in">require</span>(<span class="string">'system'</span>),</span><br><span class="line">edmid,</span><br><span class="line">address;</span><br><span class="line"></span><br><span class="line">edmid = system.args[<span class="number">1</span>];</span><br><span class="line">address = <span class="string">'http://xxx.com.tw/'</span>+ edmid;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Open Twitter on 'sencha' profile and, onPageLoad, do...</span></span><br><span class="line">page.open(address, <span class="function"><span class="keyword">function</span> (<span class="params">status</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Check for page load success</span></span><br><span class="line">    <span class="keyword">if</span> (status !== <span class="string">"success"</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"Unable to access network"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Wait for 'signin-dropdown' to be visible</span></span><br><span class="line">        waitFor(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="comment">// Check in the page if a specific element is now visible</span></span><br><span class="line">            <span class="keyword">return</span> page.evaluate(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> ($(<span class="string">"body"</span>).prop(<span class="string">"class"</span>) == <span class="string">"allready"</span> );</span><br><span class="line">  <span class="comment">//return $("#signin-dropdown").is(":visible");</span></span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">           <span class="built_in">console</span>.log(<span class="string">"body allready now."</span>);</span><br><span class="line">           page.render(<span class="string">'D:\\test\\'</span>+edmid+<span class="string">'.png'</span>);</span><br><span class="line">           phantom.exit();</span><br><span class="line">        &#125;);        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>另外phantomjs是將要被拍照的DOM元件抓下來在進行組合拍照，有了這個特性你就可以對想拍照的網站進行一些修改。例如載入JQuery把某個區塊移除之類的 </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Wait until the test condition is true or a timeout occurs. Useful for waiting</span></span><br><span class="line"><span class="comment"> * on a server response or for a ui change (fadeIn, etc.) to occur.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>testFx javascript condition that evaluates to a boolean,</span></span><br><span class="line"><span class="comment"> * it can be passed in as a string (e.g.: &quot;1 == 1&quot; or &quot;$(&#x27;#bar&#x27;).is(&#x27;:visible&#x27;)&quot; or</span></span><br><span class="line"><span class="comment"> * as a callback function.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>onReady what to do when testFx condition is fulfilled,</span></span><br><span class="line"><span class="comment"> * it can be passed in as a string (e.g.: &quot;1 == 1&quot; or &quot;$(&#x27;#bar&#x27;).is(&#x27;:visible&#x27;)&quot; or</span></span><br><span class="line"><span class="comment"> * as a callback function.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param </span>timeOutMillis the max amount of time to wait. If not specified, 3 sec is used.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waitFor</span>(<span class="params">testFx, onReady, timeOutMillis</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> maxtimeOutMillis = timeOutMillis ? timeOutMillis : <span class="number">3000</span>, <span class="comment">//&lt; Default Max Timout is 3s</span></span><br><span class="line">        start = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime(),</span><br><span class="line">        condition = <span class="literal">false</span>,</span><br><span class="line">        interval = <span class="built_in">setInterval</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> ( (<span class="keyword">new</span> <span class="built_in">Date</span>().getTime() - start &lt; maxtimeOutMillis) &amp;&amp; !condition ) &#123;</span><br><span class="line">                <span class="comment">// If not time-out yet and condition not yet fulfilled</span></span><br><span class="line">                condition = (<span class="keyword">typeof</span>(testFx) === <span class="string">&quot;string&quot;</span> ? <span class="built_in">eval</span>(testFx) : testFx()); <span class="comment">//&lt; defensive code</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span>(!condition) &#123;</span><br><span class="line">                    <span class="comment">// If condition still not fulfilled (timeout but condition is &#x27;false&#x27;)</span></span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">&quot;&#x27;waitFor()&#x27; timeout&quot;</span>);</span><br><span class="line">                    phantom.exit(<span class="number">1</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// Condition fulfilled (timeout and/or condition is &#x27;true&#x27;)</span></span><br><span class="line">                    <span class="built_in">console</span>.log(<span class="string">&quot;&#x27;waitFor()&#x27; finished in &quot;</span> + (<span class="keyword">new</span> <span class="built_in">Date</span>().getTime() - start) + <span class="string">&quot;ms.&quot;</span>);</span><br><span class="line">                    <span class="keyword">typeof</span>(onReady) === <span class="string">&quot;string&quot;</span> ? <span class="built_in">eval</span>(onReady) : onReady(); <span class="comment">//&lt; Do what it&#x27;s supposed to do once the condition is fulfilled</span></span><br><span class="line">                    <span class="built_in">clearInterval</span>(interval); <span class="comment">//&lt; Stop this interval</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="number">250</span>); <span class="comment">//&lt; repeat check every 250ms</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> page = <span class="built_in">require</span>(<span class="string">&#x27;webpage&#x27;</span>).create(),</span><br><span class="line">system = <span class="built_in">require</span>(<span class="string">&#x27;system&#x27;</span>),</span><br><span class="line">edmid,</span><br><span class="line">address;</span><br><span class="line"></span><br><span class="line">edmid = system.args[<span class="number">1</span>];</span><br><span class="line">address = <span class="string">&#x27;http://xxx.com.tw/&#x27;</span>+ edmid;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Open Twitter on &#x27;sencha&#x27; profile and, onPageLoad, do...</span></span><br><span class="line">page.open(address, <span class="function"><span class="keyword">function</span> (<span class="params">status</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Check for page load success</span></span><br><span class="line">    <span class="keyword">if</span> (status !== <span class="string">&quot;success&quot;</span>) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;Unable to access network&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Wait for &#x27;signin-dropdown&#x27; to be visible</span></span><br><span class="line">        waitFor(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="comment">// Check in the page if a specific element is now visible</span></span><br><span class="line">            <span class="keyword">return</span> page.evaluate(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> ($(<span class="string">&quot;body&quot;</span>).prop(<span class="string">&quot;class&quot;</span>) == <span class="string">&quot;allready&quot;</span> );</span><br><span class="line">  <span class="comment">//return $(&quot;#signin-dropdown&quot;).is(&quot;:visible&quot;);</span></span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">           <span class="built_in">console</span>.log(<span class="string">&quot;body allready now.&quot;</span>);</span><br><span class="line">           page.render(<span class="string">&#x27;D:\\test\\&#x27;</span>+edmid+<span class="string">&#x27;.png&#x27;</span>);</span><br><span class="line">           phantom.exit();</span><br><span class="line">        &#125;);        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-      
     </div>
-    
-    
-    
 
     
-
+    
     
 
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2013/11/20/%E3%80%90C-%E3%80%91%E5%8F%96%E5%BE%97dynamic%E7%9A%84%E5%B1%AC%E6%80%A7/" rel="prev" title="【C#】取得dynamic的屬性">
+      <i class="fa fa-chevron-left"></i> 【C#】取得dynamic的屬性
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2013/12/09/%E3%80%90%E5%BF%83%E6%83%85%E3%80%91%E4%B8%96%E6%AE%8A%E4%BA%8B%E7%95%B0/" rel="next" title="【心情】世殊事異">
+      【心情】世殊事異 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
     
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2013/11/20/【C-】取得dynamic的屬性/" rel="next" title="【C#】取得dynamic的屬性">
-                <i class="fa fa-chevron-left"></i> 【C#】取得dynamic的屬性
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2013/12/09/【心情】世殊事異/" rel="prev" title="【心情】世殊事異">
-                【心情】世殊事異 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
 
 
           </div>
           
 
-
-          
-
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Toyo">
-            
-              <p class="site-author-name" itemprop="name">Toyo</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">196</span>
-                  <span class="site-state-item-name">文章</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
-                  <span class="site-state-item-name">分類</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">67</span>
-                  <span class="site-state-item-name">標籤</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          
-            <div class="links-of-author motion-element">
-                
-                  <span class="links-of-author-item">
-                    <a href="https://github.com/toyo0103" target="_blank" title="GitHub">
-                      
-                        <i class="fa fa-fw fa-github"></i></a>
-                  </span>
-                
-                  <span class="links-of-author-item">
-                    <a href="https://tw.linkedin.com/in/steven-tsai-096580110" target="_blank" title="Linkedin">
-                      
-                        <i class="fa fa-fw fa-linkedin"></i></a>
-                  </span>
-                
-            </div>
-          
-
-          
-          
-
-          
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-block">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-folder-open"></i>
-                系列文章
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="/categories/學習MVC" title="MVC" target="_blank">MVC</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="/categories/學習單元測試" title="單元測試" target="_blank">單元測試</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="/categories/VSTS建置CI-CD" title="VSTS建置CI/CD" target="_blank">VSTS建置CI/CD</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="/categories/LeetCode" title="LeetCode" target="_blank">LeetCode</a>
-                  </li>
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="/2019/03/21/microservice_battlefield/" title="微服務" target="_blank">微服務</a>
-                  </li>
-                
-              </ul>
-            </div>
-          
-
-          
-
-        </div>
-      </section>
-
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Toyo</span>
-
-  
-</div>
-
-
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 強力驅動</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">197</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">التصنيفات</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">69</span>
+        <span class="site-state-item-name">الوسوم</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
 
 
 
 
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -684,443 +407,8 @@
 
 
 
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
 
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
 
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://toyo0103.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'https://toyo0103.github.io/2013/12/07/【C-】如何在Server-Side執行phantomjs對網頁進行快照/';
-          this.page.identifier = '2013/12/07/【C-】如何在Server-Side執行phantomjs對網頁進行快照/';
-          this.page.title = '【C#】如何在Server Side執行phantomjs對網頁進行快照';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://toyo0103.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    var isXml = true;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length === 0) {
-      search_path = "search.xml";
-    } else if (/json$/i.test(search_path)) {
-      isXml = false;
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    var onPopupClose = function (e) {
-      $('.popup').hide();
-      $('#local-search-input').val('');
-      $('.search-result-list').remove();
-      $('#no-result').remove();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    }
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.search-popup-overlay').click(onPopupClose);
-      $('.popup').toggle();
-      var $localSearchInput = $('#local-search-input');
-      $localSearchInput.attr("autocapitalize", "none");
-      $localSearchInput.attr("autocorrect", "off");
-      $localSearchInput.focus();
-    }
-
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-
-      // start loading animation
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
-          '<div id="search-loading-icon">' +
-          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
-          '</div>' +
-          '</div>')
-        .css('overflow', 'hidden');
-      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
-
-      $.ajax({
-        url: path,
-        dataType: isXml ? "xml" : "json",
-        async: true,
-        success: function(res) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = isXml ? $("entry", res).map(function() {
-            return {
-              title: $("title", this).text(),
-              content: $("content",this).text(),
-              url: $("url" , this).text()
-            };
-          }).get() : res;
-          var input = document.getElementById(search_id);
-          var resultContent = document.getElementById(content_id);
-          var inputEventFunction = function() {
-            var searchText = input.value.trim().toLowerCase();
-            var keywords = searchText.split(/[\s\-]+/);
-            if (keywords.length > 1) {
-              keywords.push(searchText);
-            }
-            var resultItems = [];
-            if (searchText.length > 0) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var hitCount = 0;
-                var searchTextCount = 0;
-                var title = data.title.trim();
-                var titleInLowerCase = title.toLowerCase();
-                var content = data.content.trim().replace(/<[^>]+>/g,"");
-                var contentInLowerCase = content.toLowerCase();
-                var articleUrl = decodeURIComponent(data.url);
-                var indexOfTitle = [];
-                var indexOfContent = [];
-                // only match articles with not empty titles
-                if(title != '') {
-                  keywords.forEach(function(keyword) {
-                    function getIndexByWord(word, text, caseSensitive) {
-                      var wordLen = word.length;
-                      if (wordLen === 0) {
-                        return [];
-                      }
-                      var startPosition = 0, position = [], index = [];
-                      if (!caseSensitive) {
-                        text = text.toLowerCase();
-                        word = word.toLowerCase();
-                      }
-                      while ((position = text.indexOf(word, startPosition)) > -1) {
-                        index.push({position: position, word: word});
-                        startPosition = position + wordLen;
-                      }
-                      return index;
-                    }
-
-                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
-                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
-                  });
-                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
-                    isMatch = true;
-                    hitCount = indexOfTitle.length + indexOfContent.length;
-                  }
-                }
-
-                // show search results
-
-                if (isMatch) {
-                  // sort index by position of keyword
-
-                  [indexOfTitle, indexOfContent].forEach(function (index) {
-                    index.sort(function (itemLeft, itemRight) {
-                      if (itemRight.position !== itemLeft.position) {
-                        return itemRight.position - itemLeft.position;
-                      } else {
-                        return itemLeft.word.length - itemRight.word.length;
-                      }
-                    });
-                  });
-
-                  // merge hits into slices
-
-                  function mergeIntoSlice(text, start, end, index) {
-                    var item = index[index.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    var hits = [];
-                    var searchTextCountInSlice = 0;
-                    while (position + word.length <= end && index.length != 0) {
-                      if (word === searchText) {
-                        searchTextCountInSlice++;
-                      }
-                      hits.push({position: position, length: word.length});
-                      var wordEnd = position + word.length;
-
-                      // move to next position of hit
-
-                      index.pop();
-                      while (index.length != 0) {
-                        item = index[index.length - 1];
-                        position = item.position;
-                        word = item.word;
-                        if (wordEnd > position) {
-                          index.pop();
-                        } else {
-                          break;
-                        }
-                      }
-                    }
-                    searchTextCount += searchTextCountInSlice;
-                    return {
-                      hits: hits,
-                      start: start,
-                      end: end,
-                      searchTextCount: searchTextCountInSlice
-                    };
-                  }
-
-                  var slicesOfTitle = [];
-                  if (indexOfTitle.length != 0) {
-                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
-                  }
-
-                  var slicesOfContent = [];
-                  while (indexOfContent.length != 0) {
-                    var item = indexOfContent[indexOfContent.length - 1];
-                    var position = item.position;
-                    var word = item.word;
-                    // cut out 100 characters
-                    var start = position - 20;
-                    var end = position + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if (end < position + word.length) {
-                      end = position + word.length;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
-                  }
-
-                  // sort slices in content by search text's count and hits' count
-
-                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
-                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
-                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
-                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
-                      return sliceRight.hits.length - sliceLeft.hits.length;
-                    } else {
-                      return sliceLeft.start - sliceRight.start;
-                    }
-                  });
-
-                  // select top N slices in content
-
-                  var upperBound = parseInt('1');
-                  if (upperBound >= 0) {
-                    slicesOfContent = slicesOfContent.slice(0, upperBound);
-                  }
-
-                  // highlight title and content
-
-                  function highlightKeyword(text, slice) {
-                    var result = '';
-                    var prevEnd = slice.start;
-                    slice.hits.forEach(function (hit) {
-                      result += text.substring(prevEnd, hit.position);
-                      var end = hit.position + hit.length;
-                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
-                      prevEnd = end;
-                    });
-                    result += text.substring(prevEnd, slice.end);
-                    return result;
-                  }
-
-                  var resultItem = '';
-
-                  if (slicesOfTitle.length != 0) {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
-                  } else {
-                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
-                  }
-
-                  slicesOfContent.forEach(function (slice) {
-                    resultItem += "<a href='" + articleUrl + "'>" +
-                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
-                      "...</p>" + "</a>";
-                  });
-
-                  resultItem += "</li>";
-                  resultItems.push({
-                    item: resultItem,
-                    searchTextCount: searchTextCount,
-                    hitCount: hitCount,
-                    id: resultItems.length
-                  });
-                }
-              })
-            };
-            if (keywords.length === 1 && keywords[0] === "") {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
-            } else if (resultItems.length === 0) {
-              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
-            } else {
-              resultItems.sort(function (resultLeft, resultRight) {
-                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
-                  return resultRight.searchTextCount - resultLeft.searchTextCount;
-                } else if (resultLeft.hitCount !== resultRight.hitCount) {
-                  return resultRight.hitCount - resultLeft.hitCount;
-                } else {
-                  return resultRight.id - resultLeft.id;
-                }
-              });
-              var searchResultList = '<ul class=\"search-result-list\">';
-              resultItems.forEach(function (result) {
-                searchResultList += result.item;
-              })
-              searchResultList += "</ul>";
-              resultContent.innerHTML = searchResultList;
-            }
-          }
-
-          if ('auto' === 'auto') {
-            input.addEventListener('input', inputEventFunction);
-          } else {
-            $('.search-icon').click(inputEventFunction);
-            input.addEventListener('keypress', function (event) {
-              if (event.keyCode === 13) {
-                inputEventFunction();
-              }
-            });
-          }
-
-          // remove loading animation
-          $(".local-search-pop-overlay").remove();
-          $('body').css('overflow', '');
-
-          proceedsearch();
-        }
-      });
-    }
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched === false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(onPopupClose);
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-    $(document).on('keyup', function (event) {
-      var shouldDismissSearchPopup = event.which === 27 &&
-        $('.search-popup').is(':visible');
-      if (shouldDismissSearchPopup) {
-        onPopupClose();
-      }
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
 
   
 
