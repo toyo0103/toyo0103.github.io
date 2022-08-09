@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="程式隨筆">
+<meta property="og:url" content="https://toyo0103.github.io/page/9/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Toyo">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://toyo0103.github.io/page/9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
+
+  <title>程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/02/14/%E3%80%90UnitTest%E3%80%91Mock-Controller-Request/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/02/14/%E3%80%90UnitTest%E3%80%91Mock-Controller-Request/" class="post-title-link" itemprop="url">【UnitTest】Mock Controller Request</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-02-14 09:37:00" itemprop="dateCreated datePublished" datetime="2017-02-14T09:37:00+00:00">2017-02-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/02/14/%E3%80%90UnitTest%E3%80%91Mock-Controller-Request/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/02/14/【UnitTest】Mock-Controller-Request/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>寫單元測試測試Controller的時候，有時候程式中會用到<a target="_blank" rel="noopener" href="https://msdn.microsoft.com/en-us/library/system.web.mvc.controller.request(v=vs.118).aspx">Controller.Request Property</a>，但單元測試並不是真的Web連線行為，所以呼叫到Request的時候會是Null , 想要做一個假的塞給他，這個屬性卻是只能讀取不能寫入的</p>
+<div class="separator" style="clear: both; text-align: center;">
+</div><div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-4_O_yEIRJeA/WKJdDhYR0MI/AAAAAAAAIEk/pa8aYvPcJw4jt62eTTSYrp6h-hK98eP1ACLcB/s1600/1.png)](https://2.bp.blogspot.com/-4_O_yEIRJeA/WKJdDhYR0MI/AAAAAAAAIEk/pa8aYvPcJw4jt62eTTSYrp6h-hK98eP1ACLcB/s1600/1.png)</div>
+
+<p>每次寫完沒多久碰到就又會忘記，所以筆記下來方便以後查找，這邊一樣用NSubstitute套件做處理</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-dMNVp94tO1Y/WKJeLHnEa8I/AAAAAAAAIEs/7yAUVlh29F0wsXsmTjh_UcSZUdoC8MfpgCLcB/s1600/1.png)](https://4.bp.blogspot.com/-dMNVp94tO1Y/WKJeLHnEa8I/AAAAAAAAIEs/7yAUVlh29F0wsXsmTjh_UcSZUdoC8MfpgCLcB/s1600/1.png)</div>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">YourController Sut = <span class="keyword">new</span> YourController();</span><br><span class="line"> <span class="keyword">var</span> request = Substitute.For&lt;HttpRequestBase&gt;();</span><br><span class="line"> <span class="keyword">var</span> context = Substitute.For&lt;HttpContextBase&gt;();</span><br><span class="line"> request.HttpMethod.Returns(<span class="string">&quot;Get&quot;</span>);</span><br><span class="line"> context.Request.Returns(request);</span><br><span class="line"></span><br><span class="line"> Sut.ControllerContext = <span class="keyword">new</span> ControllerContext(context, <span class="keyword">new</span> RouteData(), Sut);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/01/23/%E3%80%90C-%E3%80%91%E7%A8%8B%E5%BC%8F%E5%BB%BA%E7%AB%8BLocalDB-mdf-%E8%88%87%E5%88%AA%E9%99%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/01/23/%E3%80%90C-%E3%80%91%E7%A8%8B%E5%BC%8F%E5%BB%BA%E7%AB%8BLocalDB-mdf-%E8%88%87%E5%88%AA%E9%99%A4/" class="post-title-link" itemprop="url">【C#】程式建立LocalDB(.mdf)與刪除</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-01-23 15:21:00" itemprop="dateCreated datePublished" datetime="2017-01-23T15:21:00+00:00">2017-01-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/01/23/%E3%80%90C-%E3%80%91%E7%A8%8B%E5%BC%8F%E5%BB%BA%E7%AB%8BLocalDB-mdf-%E8%88%87%E5%88%AA%E9%99%A4/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/23/【C-】程式建立LocalDB-mdf-與刪除/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>之前有寫如何對Repository層做單元測試<span style="background-color: white; font-family: inherit; font-style: inherit; font-weight: inherit;"><span style="border-color: initial; border-image: initial; border-style: initial; font-style: inherit; font-weight: inherit; outline-color: initial; outline-style: initial;"><a target="_blank" rel="noopener" href="http://toyo0103.blogspot.tw/2016/07/unit-testrepository.html">【Unit Test】針對Repository做單元測試 (一)</a>，當時是直接建立LocalDB放在專案之中，測試的時候對它執行，但因為公司導入CICD流程，這些MDF會殘留在佈署的機器上，造成資源的浪費，所以同事教了新的方法，用程式直接建立LocalDB，等到測試完畢後直接砍掉的方法。</span></span></p>
+<p>這邊記錄一下實作方法，以利之後查找</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">string</span> LocalDbMasterConnectionString =</span><br><span class="line">   <span class="string">@&quot;Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">string</span> TestConnectionString =</span><br><span class="line">   <span class="string">@&quot;Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=&#123;0&#125;;Integrated Security=True;</span></span><br><span class="line"><span class="string">                 MultipleActiveResultSets=True;AttachDBFilename=&#123;1&#125;.mdf&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">string</span> DatabaseName &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.DatabaseName = <span class="string">&quot;TestCreateDB&quot;</span>;</span><br><span class="line"> CreateDB();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 建立DB</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CreateDB</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="comment">//先看看有沒有相同的DB存在，如果有的話卸離並移除</span></span><br><span class="line"> <span class="keyword">this</span>.DetachDatabase();</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> fileName = <span class="keyword">this</span>.CleanupDatabase();</span><br><span class="line"></span><br><span class="line"> <span class="keyword">using</span> (<span class="keyword">var</span> connection = <span class="keyword">new</span> SqlConnection(LocalDbMasterConnectionString))</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">var</span> commandText = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">  <span class="comment">//Create DB的語法</span></span><br><span class="line">  commandText.AppendFormat(</span><br><span class="line">   <span class="string">&quot;CREATE DATABASE &#123;0&#125; ON (NAME = N&#x27;&#123;0&#125;&#x27;, FILENAME = &#x27;&#123;1&#125;.mdf&#x27;);&quot;</span>,</span><br><span class="line">   <span class="keyword">this</span>.DatabaseName,</span><br><span class="line">   fileName);</span><br><span class="line"></span><br><span class="line">  connection.Open();</span><br><span class="line">  <span class="keyword">var</span> cmd = connection.CreateCommand();</span><br><span class="line">  cmd.CommandText = commandText.ToString();</span><br><span class="line">  cmd.ExecuteNonQuery();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Detaches the database.</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DetachDatabase</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">using</span> (<span class="keyword">var</span> connection = <span class="keyword">new</span> SqlConnection(LocalDbMasterConnectionString))</span><br><span class="line"> &#123;</span><br><span class="line">  connection.Open();</span><br><span class="line">  <span class="keyword">var</span> cmd = connection.CreateCommand();</span><br><span class="line">  cmd.CommandText = <span class="built_in">string</span>.Format(<span class="string">&quot;exec sp_detach_db &#x27;&#123;0&#125;&#x27;&quot;</span>, <span class="keyword">this</span>.DatabaseName);</span><br><span class="line">  <span class="keyword">try</span></span><br><span class="line">  &#123;</span><br><span class="line">   cmd.ExecuteNonQuery();</span><br><span class="line">  &#125;</span><br><span class="line">  catch</span><br><span class="line">  &#123;</span><br><span class="line">   Console.WriteLine(<span class="string">&quot;Could not detach&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Cleanups the database.</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>System.String.<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="built_in">string</span> <span class="title">CleanupDatabase</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">var</span> fileName = <span class="built_in">string</span>.Concat(<span class="string">@&quot;G:\&quot;</span>,<span class="keyword">this</span>.DatabaseName);</span><br><span class="line"> <span class="keyword">try</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">var</span> mdfPath = <span class="built_in">string</span>.Concat(fileName, <span class="string">&quot;.mdf&quot;</span>);</span><br><span class="line">  <span class="keyword">var</span> ldfPath = <span class="built_in">string</span>.Concat(fileName, <span class="string">&quot;_log.ldf&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> mdfExists = File.Exists(mdfPath);</span><br><span class="line">  <span class="keyword">var</span> ldfExists = File.Exists(ldfPath);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (mdfExists) File.Delete(mdfPath);</span><br><span class="line">  <span class="keyword">if</span> (ldfExists) File.Delete(ldfPath);</span><br><span class="line"> &#125;</span><br><span class="line"> catch</span><br><span class="line"> &#123;</span><br><span class="line">  Console.WriteLine(<span class="string">&quot;Could not delete the files (open in Visual Studio?)&quot;</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">return</span> fileName;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>最後就會在你寫的位置看到產生的DB了</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-zochbU5phtw/WIWuOeDVZ4I/AAAAAAAAID0/MwBAkQ4YEyQCLFLHbWnBaUiXVbtGrIseACLcB/s1600/1.png)](https://2.bp.blogspot.com/-zochbU5phtw/WIWuOeDVZ4I/AAAAAAAAID0/MwBAkQ4YEyQCLFLHbWnBaUiXVbtGrIseACLcB/s1600/1.png)</div>
+
+<h3 id="刪除"><a href="#刪除" class="headerlink" title="刪除"></a>刪除</h3><p>首先要先在專案安裝Entity Framerok，並且補上以下的程式</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 使用 EntityFramework 的 Database 類別 Delete 方法，確認 LocalDB 存在後再移除.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DeleteLocalDb</span>(<span class="params"><span class="built_in">string</span> dbName</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">using</span> (<span class="keyword">var</span> connection = <span class="keyword">new</span> SqlConnection(</span><br><span class="line">                                        <span class="built_in">string</span>.Format(TestConnectionString,dbName, dbName)))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (Database.Exists(connection))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">try</span></span><br><span class="line">                    &#123;</span><br><span class="line">                        SqlConnection.ClearAllPools();</span><br><span class="line">                        Database.Delete(connection);</span><br><span class="line">                    &#125;</span><br><span class="line">                    catch (Exception)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="keyword">using</span> (SqlConnection masterConnection = <span class="keyword">new</span> SqlConnection(LocalDbMasterConnectionString))</span><br><span class="line">                        &#123;</span><br><span class="line">                            SqlCommand cmd = masterConnection.CreateCommand();</span><br><span class="line">                            cmd.CommandText = <span class="built_in">string</span>.Format(</span><br><span class="line">                                <span class="string">@&quot;ALTER DATABASE [&#123;0&#125;] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;</span></span><br><span class="line"><span class="string">                                 DROP DATABASE [&#123;0&#125;];&quot;</span>, connection.Database);</span><br><span class="line"></span><br><span class="line">                            masterConnection.Open();</span><br><span class="line">                            cmd.ExecuteNonQuery();</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>接著呼叫，就可以砍掉剛剛建立出來的MDF了 </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> DatabaseName = <span class="string">&quot;TestCreateDB&quot;</span>;</span><br><span class="line">DeleteLocalDb(DatabaseName);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>但有一點必須特別注意，如果你今天的專案結構跟我一樣</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-x8WxDPWuFrM/WIW661-YM_I/AAAAAAAAIEQ/kV7NxAeClFw5DllZUb6QK2QuKw25ksTKwCLcB/s1600/1.png)](https://3.bp.blogspot.com/-x8WxDPWuFrM/WIW661-YM_I/AAAAAAAAIEQ/kV7NxAeClFw5DllZUb6QK2QuKw25ksTKwCLcB/s1600/1.png)</div>
+
+<p>刪除DB的程式碼寫在ControlLocalDB的專案中，並且在這個專案有安裝Entity Framework，而ConsoleApplication1只是引用ControlLocalDB專案來執行，而沒有安裝Entity Framework，那這時候 </p>
+<div class="note info">
+            <p>Database.Exists(connection)</p>
+          </div>
+<p>會永遠回傳<strong>False</strong>，所以不會去砍掉DB，而且也不會引發Exception的錯誤，不知道算不算是EF的Bug，當時找超久的(崩潰)，所以還請特別注意這個地方，有用到這個方法的專案都要記得專EF</p>
+<p>參考文章:<br>1.<a target="_blank" rel="noopener" href="https://support.microsoft.com/zh-tw/help/307283/how-to-create-a-sql-server-database-programmatically-by-using-ado.net-and-visual-c-.net">HOW TO：使用 ADO.NET 與 Visual C# .NET 程式建立 SQL Server 資料庫</a><br>2.<a target="_blank" rel="noopener" href="http://kevintsengtw.blogspot.tw/2016/10/repository-localdb-part2.html">Repository 測試使用 LocalDB - Part.2</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/01/20/%E3%80%90Regular-Expression%E3%80%91%E5%88%86%E7%BE%A4%E8%88%87%E5%8F%96%E4%BB%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/01/20/%E3%80%90Regular-Expression%E3%80%91%E5%88%86%E7%BE%A4%E8%88%87%E5%8F%96%E4%BB%A3/" class="post-title-link" itemprop="url">【Regular Expression】分群與取代</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-01-20 10:25:00" itemprop="dateCreated datePublished" datetime="2017-01-20T10:25:00+00:00">2017-01-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/01/20/%E3%80%90Regular-Expression%E3%80%91%E5%88%86%E7%BE%A4%E8%88%87%E5%8F%96%E4%BB%A3/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/20/【Regular-Expression】分群與取代/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在正規表示法中，可以將比對的資料做分群與命名，而在.Net中的語法是</p>
+<div class="note info">
+            <p>(?:&lt;群組名稱&gt;)</p>
+          </div>
+
+<p>應用方法如下</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> Date = <span class="string">&quot;2017/1/20&quot;</span>;</span><br><span class="line">Regex reg = <span class="keyword">new</span> Regex(<span class="string">@&quot;^(?&lt;Year&gt;\d&#123;4&#125;)/(?&lt;Month&gt;\d&#123;1,2&#125;)/(?&lt;Day&gt;\d&#123;1,2&#125;)&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> Match = reg.Match(Date);</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="built_in">string</span>.Concat(<span class="string">&quot;年 :&quot;</span>, Match.Groups[<span class="string">&quot;Year&quot;</span>].Value));</span><br><span class="line">Console.WriteLine(<span class="built_in">string</span>.Concat(<span class="string">&quot;月 :&quot;</span>,Match.Groups[<span class="string">&quot;Month&quot;</span>].Value));</span><br><span class="line">Console.WriteLine(<span class="built_in">string</span>.Concat(<span class="string">&quot;日 :&quot;</span>,Match.Groups[<span class="string">&quot;Day&quot;</span>].Value));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://2.bp.blogspot.com/-CiGMf3bSGws/WIFyaQRw3PI/AAAAAAAAIDk/gPerLAyakjoD8gzowmXLB08hPVCK5rIXQCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png"><img src="https://2.bp.blogspot.com/-CiGMf3bSGws/WIFyaQRw3PI/AAAAAAAAIDk/gPerLAyakjoD8gzowmXLB08hPVCK5rIXQCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png"></a></p>
+<p>也可以用來做取代的用途</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> Date = <span class="string">&quot;2017/1/20&quot;</span>;</span><br><span class="line">Regex reg = <span class="keyword">new</span> Regex(<span class="string">@&quot;^(\d&#123;4&#125;)/(\d&#123;1,2&#125;)/(\d&#123;1,2&#125;)&quot;</span>);</span><br><span class="line"></span><br><span class="line">Console.WriteLine(reg.Replace(Date,<span class="string">@&quot;$1年$2月$3日&quot;</span>));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-HQu1GmHFF_M/WIFzWkDPQQI/AAAAAAAAIDo/k5REjSoQ7fMeQBuCYZe7QRSQlXG0SXlFgCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)](https://4.bp.blogspot.com/-HQu1GmHFF_M/WIFzWkDPQQI/AAAAAAAAIDo/k5REjSoQ7fMeQBuCYZe7QRSQlXG0SXlFgCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</div>
+
+<p>括號()包起來的地方，正規表示法比對到時會把他當作一個群組，而其中Replace的地方寫著 <strong>$1</strong>代表第一個括號比對的東西放這邊，所以$1會變成2017，後面以此類推，就會變成<strong>2017年1月20日</strong>這種格式。</p>
+<p>所以也可以改成這樣，變成國外表示年份的格式**$2-$3-$1**，就會變成 1-20-2017</p>
+<p>以上筆記一下。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/01/11/%E3%80%90%E7%A5%9E%E5%A5%87%E4%BA%8B%E4%BB%B6%E3%80%91%E7%9C%8B%E4%B8%8D%E8%A6%8B%E7%9A%84%E9%BB%9E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/01/11/%E3%80%90%E7%A5%9E%E5%A5%87%E4%BA%8B%E4%BB%B6%E3%80%91%E7%9C%8B%E4%B8%8D%E8%A6%8B%E7%9A%84%E9%BB%9E/" class="post-title-link" itemprop="url">【神奇事件】看不見的點</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-01-11 11:18:00" itemprop="dateCreated datePublished" datetime="2017-01-11T11:18:00+00:00">2017-01-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/01/11/%E3%80%90%E7%A5%9E%E5%A5%87%E4%BA%8B%E4%BB%B6%E3%80%91%E7%9C%8B%E4%B8%8D%E8%A6%8B%E7%9A%84%E9%BB%9E/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/11/【神奇事件】看不見的點/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近遇到一個Token怎麼送都錯誤的問題，找遍了程式都找不到原因出在哪，最後沒招只好把傳輸的封包都截下來，看看到底哪邊出了問題，結果發現….</p>
+<div class="note info">
+            <p>“Te6g5R?”</p>
+          </div>
+
+<p>這串部分Token看起來沒有什麼特別的，但如果你把滑鼠放到最後”的位置開始用鍵盤的往前鍵遍覽整串字，你會發現在R”中間需要按兩次才跳得過去，從封包監視器看到的結果卻是多了一個”點”</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-XRCi-hr6diU/WHWjX1QA3RI/AAAAAAAAIDI/qTjeVZqBPm0M81EFKCe0Q1b_8UnOHU7dACLcB/s640/1.png)](https://4.bp.blogspot.com/-XRCi-hr6diU/WHWjX1QA3RI/AAAAAAAAIDI/qTjeVZqBPm0M81EFKCe0Q1b_8UnOHU7dACLcB/s1600/1.png)</div>保哥有篇文章提到類似的問題 : <span style="font-size: x-small;">&nbsp;</span>[魔鬼般的細節：使用 C# 的 String.Trim() 方法刪除空白字元](http://blog.miniasp.com/post/2014/01/15/C-Sharp-String-Trim-ZWSP-Zero-width-space.aspx)
+
+<p>雖然我碰到的字元跟文章中碰到的不同，但應該是類似的問題，用BackSpace把那個看不到的點移除掉後，API就都正常了。</p>
+<p>紀錄一下，提醒自己以後可能是因為這種…..奇怪的事情導致的，不要只顧著埋頭找程式Bug</p>
+<p><strong><span style="color: red;">#更新</span></strong><br>那個看不見的點應該是 : <a target="_blank" rel="noopener" href="http://www.fileformat.info/info/unicode/char/200b/index.htm">Unicode Character ‘ZERO WIDTH SPACE’</a><span style="background-color: white; color: #333333; font-family: &quot;open sans&quot; , &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif;">&nbsp;</span></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/01/04/%E3%80%90Regular-Expression%E3%80%91%E6%AD%A3%E5%90%91%E7%92%B0%E8%A6%96%E3%80%81%E5%8F%8D%E5%90%91%E7%92%B0%E8%A6%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/01/04/%E3%80%90Regular-Expression%E3%80%91%E6%AD%A3%E5%90%91%E7%92%B0%E8%A6%96%E3%80%81%E5%8F%8D%E5%90%91%E7%92%B0%E8%A6%96/" class="post-title-link" itemprop="url">【Regular Expression】正向環視、反向環視</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-01-04 13:37:00" itemprop="dateCreated datePublished" datetime="2017-01-04T13:37:00+00:00">2017-01-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/01/04/%E3%80%90Regular-Expression%E3%80%91%E6%AD%A3%E5%90%91%E7%92%B0%E8%A6%96%E3%80%81%E5%8F%8D%E5%90%91%E7%92%B0%E8%A6%96/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/01/04/【Regular-Expression】正向環視、反向環視/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>說正向環視、反向環視感覺有點文謅謅的而且很難懂，其實白話文就是，比對這個位置的左(<strong>反向環視</strong>)右邊(<strong>正向環視</strong>)是否符合你下的條件，舉個例子</p>
+<p><span style="background-color: #f3f3f3;">**<br>**</span><span style="background-color: #f3f3f3;">**註: **以下案例可以透過 <a target="_blank" rel="noopener" href="https://regex101.com/">https://regex101.com/</a> 做即時操作與測試</span></p>
+<p>我想將下面中文的空格濾掉</p>
+<div class="note info">
+            <p>哈 摟 你 好 嗎 ? Hello how are you?</p>
+          </div>
+
+<p>變成這樣 </p>
+<div class="note info">
+            <p>哈摟你好嗎? Hello how are you?</p>
+          </div>
+
+<p>如果要透過正規表示法比對出空格其實很簡單，只要下<span style="background-color: #cccccc;">&nbsp;**\s **</span>即可，但如果這樣的話會變成這樣的結果。</p>
+<div class="note info">
+            <p>哈摟你好嗎?Hellohowareyou?</p>
+          </div>
+
+<p>因為所有的空格都被濾掉了，但其實英文跟英文單字之間的空格不能濾掉，這樣就變成無法理解的句子了，所以把我們的規則用中文表達就變成【<strong>我想濾掉空格，但該空格的左邊與右邊不能是英文字母</strong>】</p>
+<p>這時候正向環視與反性環視就派上用場了</p>
+<table><thead><tr><td>名稱</td><td>正規表示法</td><td>解釋</td></tr></thead><tbody><tr><td>正向環視</td><td>(?=)</td><td>這位置右邊要出現什麼</td></tr><tr><td>反向環視</td><td>(?&lt;=)</td><td>這位置左邊要出現什麼</td></tr><tr><td>正向環視否定</td><td>(?!)</td><td>這位置右邊不能出現什麼</td></tr><tr><td>反向環視否定</td><td>(?&lt;!)</td><td>這位置左邊不能出現什麼</td></tr></tbody></table>
+所以剛剛的表達方法應該改成 **(?&lt;![a-zA-Z])\s****(?![a-zA-Z])**<span style="background-color: #cccccc; font-weight: bold;">&nbsp;</span><span style="background-color: white;">，其中</span>**(?&lt;![a-zA-Z])**<span style="background-color: white;">表示空格的左邊不能出現英文字母，</span>**(?![a-zA-Z])**<span style="background-color: #cccccc; font-weight: bold;">&nbsp;</span><span style="background-color: white;">表示空格右邊的不能出現英文字母，只有這樣的空格才符合我們要求的，把他過濾掉，結果就會變成我們要的結果了</span>
+<span style="background-color: white;">
+</span><span style="background-color: white;">
+</span>
+最後還有一個讀到的案例覺得也很實用，常常我們會需要在金錢上加上【，】來方便理解位數，例如
+<div class="note info">
+            <p>123,123,123</p>
+          </div>
+
+<p>所以當我們拿到123456時，該怎麼把逗號加上去? 用中文表達就是，<strong>【我希望這個位置的右邊如果有三個數字，就幫我加上逗號】</strong>，所以寫出了**(?=\d{3})**<span style="background-color: white;">，結果就變成了這樣</span><br><span style="background-color: white;"><br></span></p>
+<div class="note info">
+            <p>,1,2,3,456</p>
+          </div>
+<p>看起來怪怪的，但其實符合我們下的判斷式，因為1、2、3右邊都可以數到三個數字，所以補上逗號合理，更精確我們的描述成<strong>【我希望這個位置的右邊有三個數字為一組，且比對到右邊不是數字為止，幫我加上逗號】</strong>，判斷式變成這樣**(?=(\d{3})+(?!\d))<strong><span style="background-color: white;">，其中三個數字一組的表達式</span></strong>(\d{3})+<strong><span style="background-color: white;">，且比對到右邊不是數字為止</span></strong>(?!\d)**<span style="background-color: white;">，結果變成如下</span><br><span style="background-color: white;"><br></span></p>
+<div class="note info">
+            <p>,123,456</p>
+          </div>
+<p>的確三個數字一組的補上逗號，但是最一開頭那邊不應該有逗號，所以應該加上一串描述<strong>【且左邊要是數字時，才補上逗號】</strong>，所以最後結果就變成**(?=(\d{3})+(?!\d))(?&lt;=\d)**<span style="background-color: white;">，而且切出來也就會剛剛好的</span><br><span style="background-color: white;"><br></span></p>
+<div class="note info">
+            <p>123,456</p>
+          </div>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/12/19/%E3%80%90EntityFramework%E3%80%91DBContext-Dispose%E8%88%87%E5%90%A6%EF%BC%8C%E8%88%87DB%E7%9A%84%E9%80%A3%E7%B7%9A%E6%95%B8%E6%98%AF%E5%90%A6%E6%9C%89%E9%97%9C%E4%BF%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/12/19/%E3%80%90EntityFramework%E3%80%91DBContext-Dispose%E8%88%87%E5%90%A6%EF%BC%8C%E8%88%87DB%E7%9A%84%E9%80%A3%E7%B7%9A%E6%95%B8%E6%98%AF%E5%90%A6%E6%9C%89%E9%97%9C%E4%BF%82/" class="post-title-link" itemprop="url">【EntityFramework】DBContext Dispose與否，與DB的連線數是否有關係</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-12-19 15:31:00" itemprop="dateCreated datePublished" datetime="2016-12-19T15:31:00+00:00">2016-12-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/12/19/%E3%80%90EntityFramework%E3%80%91DBContext-Dispose%E8%88%87%E5%90%A6%EF%BC%8C%E8%88%87DB%E7%9A%84%E9%80%A3%E7%B7%9A%E6%95%B8%E6%98%AF%E5%90%A6%E6%9C%89%E9%97%9C%E4%BF%82/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/12/19/【EntityFramework】DBContext-Dispose與否，與DB的連線數是否有關係/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>案情簡介:</strong></p>
+<p>手邊有一個中大型專案，最近Web版上線後，時不時會收到資料庫連線異常相關錯誤，不定時不定量，沒有特定會掛在哪支API，完全沒有邏輯可以歸納。</p>
+<p>該Database Layer的ORM使用Entity Framwork(後面簡稱 EF)做為與DB溝通的橋樑，DBContext採用Singleton的方式，每個Request進來，不管跟DB溝通幾次都只會建造一次Context實體，Request結束後Dispose掉。</p>
+<p><strong>心中的想像:</strong><br>以前寫ADO.NET自己控制連線，都聽前輩說一定要自己Close連線，不然很可能會把連線的Pool占滿，所以寫EF時習慣也都會加上Using</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (<span class="keyword">var</span> DbContext = <span class="keyword">new</span> NorthwindEntities())</span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment">//Do Something</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>而且自己覺得每次Dispose應該都會關閉該次連線，<span style="color: red;">註1</span><strike>每次New Context都會建立新的連線</strike>，一切井然有序好不快樂，直到這個短時間會有大量的Request湧進來的服務上線後，一切都變調，時不時就會接到使用單位來詢問API不定時中斷問題，想破頭還是找不到問題在哪….</p>
+<p><strong>驗證:</strong><br>**<br>**從外天空找到行天宮，最後發現最可能的原因是出在EF底層的運作，根據許多篇國外的文章指出，EF是自己控制連線，並不會依照你Dispose或是New Instance就關閉跟建立新連線，所以我特地寫一個範例立馬來實驗一下</p>
+<p>首先寫一個ADO.NET版本，並且刻意不要寫SqlConnection . Close()，觀察SQL Connection Pool的狀況</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line"> &#123;</span><br><span class="line">  SqlConnection conn = <span class="keyword">new</span> SqlConnection(<span class="keyword">this</span>.Connection.ConnectionString);</span><br><span class="line">  conn.Open();</span><br><span class="line">  SqlCommand command = <span class="keyword">new</span> SqlCommand(<span class="string">&quot;select top 1 CustomerID from Customers&quot;</span>, conn);</span><br><span class="line">  <span class="keyword">var</span> Result = command.ExecuteScalar().ToString();</span><br><span class="line">  Result.Dump();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>資料庫那邊用以下語法查詢目前連線DB得使用者與狀態</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> sys.sysprocesses <span class="keyword">where</span> status <span class="operator">=</span> <span class="string">&#x27;sleeping&#x27;</span> <span class="keyword">and</span> spid <span class="operator">&gt;</span> <span class="number">50</span> <span class="keyword">order</span> <span class="keyword">by</span> login_time <span class="keyword">desc</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>實驗結果發現Pool立馬從4個暴增到14個</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-oEdNrW43zrg/WFj8I-X22EI/AAAAAAAAICY/hGYoeCGf7F0wxC4D-pLB5-ILQmOBQ7ASgCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)](https://1.bp.blogspot.com/-oEdNrW43zrg/WFj8I-X22EI/AAAAAAAAICY/hGYoeCGf7F0wxC4D-pLB5-ILQmOBQ7ASgCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</div><div class="separator" style="clear: both; text-align: center;">
+</div><div class="separator" style="clear: both; text-align: center;">
+</div><div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-4UVQhQQHP_I/WFj74WVDqsI/AAAAAAAAICU/N8MWSU17kiIm9CoqwaOoJYGorDof8BBHQCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)](https://3.bp.blogspot.com/-4UVQhQQHP_I/WFj74WVDqsI/AAAAAAAAICU/N8MWSU17kiIm9CoqwaOoJYGorDof8BBHQCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</div>
+
+<p>接著寫測是第二個版本，有呼叫Close()看看結果</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line"> &#123;</span><br><span class="line">  SqlConnection conn = <span class="keyword">new</span> SqlConnection(<span class="keyword">this</span>.Connection.ConnectionString);</span><br><span class="line">  conn.Open();</span><br><span class="line">  SqlCommand command = <span class="keyword">new</span> SqlCommand(<span class="string">&quot;select top 1 CustomerID from Customers&quot;</span>, conn);</span><br><span class="line">  <span class="keyword">var</span> Result = command.ExecuteScalar().ToString();</span><br><span class="line">  Result.Dump();</span><br><span class="line">  conn.Close(); <span class="comment">//有呼叫Close</span></span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>Pool裡面的閒置Connection數明顯下降，所以有沒有呼叫Close是有差別的，如果有Close的話，會有放掉Connection進而重用閒置的連線</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-n5iNtVFfa1A/WFj8v__0zPI/AAAAAAAAICg/pv_Yn0Yh3REK0G3quPsd2Q_TwuOOLmNqACLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)](https://3.bp.blogspot.com/-n5iNtVFfa1A/WFj8v__0zPI/AAAAAAAAICg/pv_Yn0Yh3REK0G3quPsd2Q_TwuOOLmNqACLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</div>
+
+<p>接著來看看EF的版本，首先測試沒有呼叫Dispose()，且每次Create新的DBContext。(我是用LinqPad測試，所以建立DBContext的地方語法有點不一樣，但不影響結果)</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">var</span> context = <span class="keyword">new</span> TypedDataContext();</span><br><span class="line">  context.Customers.FirstOrDefault().CustomerID.Dump();</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>結果看起來連線數也是會自己重用</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-9dcCNkudzVU/WFj-FcO1zEI/AAAAAAAAICw/u6OqldT3IboAR-5UjsFll0DK4bPdF0FwQCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)](https://1.bp.blogspot.com/-9dcCNkudzVU/WFj-FcO1zEI/AAAAAAAAICw/u6OqldT3IboAR-5UjsFll0DK4bPdF0FwQCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</div>
+
+<p>既然EF會自己控制連線，那是否用Using來Dispose與否也沒差，連線並不會無限制增加?<br>所以我把程式改成這樣再跑一次</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line"> &#123;</span><br><span class="line">    <span class="keyword">using</span> (<span class="keyword">var</span> context = <span class="keyword">new</span> TypedDataContext())</span><br><span class="line">    &#123;</span><br><span class="line">        context.Customers.FirstOrDefault().CustomerID.Dump();</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-ueHmNj18HlA/WFj-9VzgvXI/AAAAAAAAIC4/W9-U8j0R3IEaHodcAc1lSR3WkA34LstAgCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)](https://3.bp.blogspot.com/-ueHmNj18HlA/WFj-9VzgvXI/AAAAAAAAIC4/W9-U8j0R3IEaHodcAc1lSR3WkA34LstAgCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</div>
+
+<p>結果顯示，一模一樣的情況，所以EF的確有自己在控制網路連線這一環，與你Dispose無關，也驗證了這篇文章所說的「 <a target="_blank" rel="noopener" href="http://blog.jongallant.com/2012/10/do-i-have-to-call-dispose-on-dbcontext.html">Do I always have to call Dispose() on my DbContext objects? Nope</a>」</p>
+<p>**<br>**<strong>解決方案 :&nbsp;</strong></p>
+<p>依照上面的時間結果觀察，EF的確有自己在控制連線狀態這件事情，而他什麼時候呼叫Close我並不知道，且還套用了Singleton Pattern，這樣交互影響下不確定是不是導致上述發生的結果，所以我把EF整個拿掉，整個Database Layer用Dapper翻寫，每次連線都自己控制，不再使用EF，上線後至今已經一個禮拜，不再出現任何資料庫連線錯誤。</p>
+<p>雖然不敢保證中間推斷的是否百分之百正確，因為如果要更確定，應該要追到EF的底層Code來看他究竟是怎麼寫的，或許觀念大致相同，但是可能會跟我論述的有落差，但的確可以把問題收斂到是EF這個區塊的問題，因為改用Dapper就沒事了。</p>
+<p>這個問題整整困擾了將近一年的時間，我想在徹底研究出EF該怎麼解決這個問題之前，大型服務我應該都會暫時放棄這條路了，雖然EF真的很方便阿!!!(吶喊~)</p>
+<p><span style="color: red;">註1:</span><br>依照DB Connection Pool的概念，如果有呼叫SqlConnection Close的話，會將Connection釋放到Pool，等到下次有連線時，會優先檢查Pool是否有閒置的可以使用，沒有才會建立新的。<br>參考: <a target="_blank" rel="noopener" href="https://msdn.microsoft.com/zh-tw/library/system.data.sqlclient.sqlconnection.close(v=vs.110).aspx">MSDN - SqlConnection.Close 方法 ()</a></p>
+<h4 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a><strong>參考文章</strong></h4><div>1.&nbsp;[在 SQL Server 發現大量在 Sleeping 的連線](https://blogs.msdn.microsoft.com/jchiou/2012/12/10/sql-server-sleeping/)
+
+</div>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/11/28/%E3%80%90IIS%E3%80%91405-%E4%B8%8D%E5%85%81%E8%A8%B1%E7%94%A8%E4%BE%86%E5%AD%98%E5%8F%96%E6%AD%A4%E7%B6%B2%E9%A0%81%E7%9A%84HTTP-%E6%8C%87%E4%BB%A4%E5%8B%95%E8%A9%9E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/11/28/%E3%80%90IIS%E3%80%91405-%E4%B8%8D%E5%85%81%E8%A8%B1%E7%94%A8%E4%BE%86%E5%AD%98%E5%8F%96%E6%AD%A4%E7%B6%B2%E9%A0%81%E7%9A%84HTTP-%E6%8C%87%E4%BB%A4%E5%8B%95%E8%A9%9E/" class="post-title-link" itemprop="url">【IIS】405  不允許用來存取此網頁的HTTP 指令動詞</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-11-28 10:57:00" itemprop="dateCreated datePublished" datetime="2016-11-28T10:57:00+00:00">2016-11-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/11/28/%E3%80%90IIS%E3%80%91405-%E4%B8%8D%E5%85%81%E8%A8%B1%E7%94%A8%E4%BE%86%E5%AD%98%E5%8F%96%E6%AD%A4%E7%B6%B2%E9%A0%81%E7%9A%84HTTP-%E6%8C%87%E4%BB%A4%E5%8B%95%E8%A9%9E/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/11/28/【IIS】405-不允許用來存取此網頁的HTTP-指令動詞/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>上線WebAPI專案的時候，發現只要用非Get與Post的動詞呼叫API，就會得到這個405的錯誤，最後上網找了一下資料跟請教同事，紀錄一下狀況。</p>
+<p>首先如果IIS的的WebDAV功能有被啟動，那這些Http動詞就會被擋掉。但我同時也懷疑是安裝WebDeploy會開啟這個功能(<span style="color: red;">目前</span><span style="color: red;">沒有證實</span>)，會這樣懷疑是因為這個服務之前是沒問題的，但當天安裝了WebDeploy要建置CI環境時，這服務相關動詞就掛了。<br>但當天安裝WebDeploy的多台機器中，有些裝完也沒啟動WebDAV，現在不知道到底是需要特定環境或設定會開啟這個功能，還是一開始安裝IIS就勾選啟動了這功能，總之要小心就是了</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-HKu_UbhGZWg/WDubNA_FOUI/AAAAAAAAIBw/he7Kx_8_nh8GaCzrFKOzUgIn2zOeodTTwCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)](https://4.bp.blogspot.com/-HKu_UbhGZWg/WDubNA_FOUI/AAAAAAAAIBw/he7Kx_8_nh8GaCzrFKOzUgIn2zOeodTTwCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</div>
+
+<p>如果發現WebDAV被啟動，同時發生405錯誤時，在該網站的WebConfig加上以下區段來解決。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">system.webServer</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modules</span>&gt;</span></span><br><span class="line">      ......</span><br><span class="line">      <span class="tag">&lt;<span class="name">remove</span> <span class="attr">name</span>=<span class="string">&quot;WebDAVModule&quot;</span>/&gt;</span></span><br><span class="line">      ......</span><br><span class="line">    <span class="tag">&lt;/<span class="name">modules</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">handlers</span>&gt;</span></span><br><span class="line">      .......</span><br><span class="line">      <span class="tag">&lt;<span class="name">remove</span> <span class="attr">name</span>=<span class="string">&quot;WebDAV&quot;</span> /&gt;</span></span><br><span class="line">      .......</span><br><span class="line">    <span class="tag">&lt;/<span class="name">handlers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">system.webServer</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/11/25/%E3%80%90FluentValidation%E3%80%91%E7%B9%BC%E6%89%BF%E7%88%B6%E9%A1%9E%E5%88%A5%E7%9A%84%E9%A9%97%E8%AD%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/11/25/%E3%80%90FluentValidation%E3%80%91%E7%B9%BC%E6%89%BF%E7%88%B6%E9%A1%9E%E5%88%A5%E7%9A%84%E9%A9%97%E8%AD%89/" class="post-title-link" itemprop="url">【FluentValidation】繼承父類別的驗證</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-11-25 14:39:00" itemprop="dateCreated datePublished" datetime="2016-11-25T14:39:00+00:00">2016-11-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/11/25/%E3%80%90FluentValidation%E3%80%91%E7%B9%BC%E6%89%BF%E7%88%B6%E9%A1%9E%E5%88%A5%E7%9A%84%E9%A9%97%E8%AD%89/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/11/25/【FluentValidation】繼承父類別的驗證/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>很多時候我們的類別會繼承同一個父類別，而父類別的欄位可能都驗證的規則都一致，一直重寫會覺得很煩 </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Parent</span> </span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="built_in">string</span> Name &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChildA</span> :<span class="title">Parent</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="built_in">string</span> ChildACustomProperty &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChildB</span> : <span class="title">Parent</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="built_in">string</span> ChildBCustomProperty &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>這邊有兩個類別分別為ChildA和 ChildB，它們都繼承Parent這個類別，這時候 Parent的Name規則就是不能為空值跟Null，但真正會傳進來使用的是ChildA 與ChildB這兩個子類別，難道只能將驗證Name的欄位兩邊都寫嗎??</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChildAValidators</span> : <span class="title">AbstractValidator</span>&lt;<span class="title">ChildA</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ChildAValidators</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span> &#123;</span><br><span class="line">  <span class="comment">// Name</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.Name)</span><br><span class="line">   .NotEmpty()</span><br><span class="line">   .WithErrorCode(<span class="string">&quot;400&quot;</span>)</span><br><span class="line">   .WithMessage(<span class="string">&quot;Name 不能為空值&quot;</span>)</span><br><span class="line">   .NotNull()</span><br><span class="line">   .WithErrorCode(<span class="string">&quot;400&quot;</span>)</span><br><span class="line">   .WithMessage(<span class="string">&quot;Name 不能為Null&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ChildACustomProperty</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.ChildACustomProperty)</span><br><span class="line">   .Length(<span class="number">1</span>,<span class="number">6</span>)</span><br><span class="line">   .WithErrorCode(<span class="string">&quot;400&quot;</span>)</span><br><span class="line">   .WithMessage(<span class="string">&quot;ChildACustomProperty 必須介於1~6個字之間&quot;</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChildBValidators</span> : <span class="title">AbstractValidator</span>&lt;<span class="title">ChildB</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ChildBValidators</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span> &#123;</span><br><span class="line">  <span class="comment">// Name</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.Name)</span><br><span class="line">   .NotEmpty()</span><br><span class="line">   .WithErrorCode(<span class="string">&quot;400&quot;</span>)</span><br><span class="line">   .WithMessage(<span class="string">&quot;Name 不能為空值&quot;</span>)</span><br><span class="line">   .NotNull()</span><br><span class="line">   .WithErrorCode(<span class="string">&quot;400&quot;</span>)</span><br><span class="line">   .WithMessage(<span class="string">&quot;Name 不能為Null&quot;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ChildACustomProperty</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.ChildBCustomProperty)</span><br><span class="line">   .Length(<span class="number">1</span>, <span class="number">12</span>)</span><br><span class="line">   .WithErrorCode(<span class="string">&quot;400&quot;</span>)</span><br><span class="line">   .WithMessage(<span class="string">&quot;ChildBCustomProperty 必須介於1~12個字之間&quot;</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>這樣對程式設計來說不是很好，如果哪天Name的限制改變，所有繼承Parent的驗證都要翻出來改，其實FluentValidation也可以寫成繼承的方式，可以改成下面的方法</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChildAValidators</span> : <span class="title">ParentValidators</span>&lt;<span class="title">ChildA</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ChildAValidators</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span> &#123;</span><br><span class="line">  <span class="comment">// ChildACustomProperty</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.ChildACustomProperty)</span><br><span class="line">   .Length(<span class="number">1</span>,<span class="number">6</span>)</span><br><span class="line">   .WithErrorCode(<span class="string">&quot;400&quot;</span>)</span><br><span class="line">   .WithMessage(<span class="string">&quot;ChildACustomProperty 必須介於1~6個字之間&quot;</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ChildBValidators</span> : <span class="title">ParentValidators</span>&lt;<span class="title">ChildB</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ChildBValidators</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span> &#123;</span><br><span class="line">  <span class="comment">// ChildACustomProperty</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.ChildBCustomProperty)</span><br><span class="line">   .Length(<span class="number">1</span>, <span class="number">12</span>)</span><br><span class="line">   .WithErrorCode(<span class="string">&quot;400&quot;</span>)</span><br><span class="line">   .WithMessage(<span class="string">&quot;ChildBCustomProperty 必須介於1~12個字之間&quot;</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ParentValidators</span>&lt;<span class="title">T</span>&gt; : <span class="title">AbstractValidator</span>&lt;<span class="title">T</span>&gt;</span><br><span class="line">  <span class="keyword">where</span> <span class="title">T</span> : <span class="title">Parent</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ParentValidators</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span> &#123;</span><br><span class="line">  <span class="comment">// Name</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.Name)</span><br><span class="line">   .NotEmpty()</span><br><span class="line">   .WithErrorCode(<span class="string">&quot;400&quot;</span>)</span><br><span class="line">   .WithMessage(<span class="string">&quot;Name 不能為空值&quot;</span>)</span><br><span class="line">   .NotNull()</span><br><span class="line">   .WithErrorCode(<span class="string">&quot;400&quot;</span>)</span><br><span class="line">   .WithMessage(<span class="string">&quot;Name 不能為Null&quot;</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>這樣就可以讓程式乾淨許多，也讓它符合物件導向的設計!!!</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/11/10/%E3%80%90Linq%E3%80%91Multiple-Column-with-OrderBy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/11/10/%E3%80%90Linq%E3%80%91Multiple-Column-with-OrderBy/" class="post-title-link" itemprop="url">【Linq】Multiple Column with OrderBy</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-11-10 11:24:00" itemprop="dateCreated datePublished" datetime="2016-11-10T11:24:00+00:00">2016-11-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/11/10/%E3%80%90Linq%E3%80%91Multiple-Column-with-OrderBy/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/11/10/【Linq】Multiple-Column-with-OrderBy/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>用Linq的好處是強型別，讓你在寫程式的時後不會因為Key錯字，但也有些衍伸的問題導致程式會寫得很醜，以前最常碰到的例子就是，當排序可能依據【多欄位】升降冪，程式就會又臭又長。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="comment">//要用來排序的欄位</span></span><br><span class="line"> OrderByColumnEnum OrderByColumn = OrderByColumnEnum.Pin;</span><br><span class="line"> <span class="comment">//排序的方法</span></span><br><span class="line"> OrderByEnum OrderBy = OrderByEnum.ASC;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//準備資料</span></span><br><span class="line"> <span class="keyword">var</span> BuildingList = <span class="keyword">new</span> List&lt;Building&gt;();</span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line"> &#123;</span><br><span class="line">  BuildingList.Add(<span class="keyword">new</span> Building </span><br><span class="line">  &#123;</span><br><span class="line">   Age = <span class="number">1</span> * (i+<span class="number">1</span>),</span><br><span class="line">   Pin = <span class="number">1</span> * (i+<span class="number">1</span>),</span><br><span class="line">   CaseDate = DateTime.Now.AddDays(i +<span class="number">1</span>)</span><br><span class="line">  &#125;);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//排序欄位</span></span><br><span class="line"> <span class="keyword">switch</span> (OrderByColumn)</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">case</span> OrderByColumnEnum.Pin:</span><br><span class="line">   <span class="keyword">switch</span> (OrderBy)</span><br><span class="line">   &#123;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.ASC:</span><br><span class="line">     <span class="comment">//因為裡面用到的欄位不同,又是強型別,只能寫死...</span></span><br><span class="line">     BuildingList = BuildingList.OrderBy(x =&gt; x.Pin).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.DESC:</span><br><span class="line">     BuildingList = BuildingList.OrderByDescending(x =&gt; x.Pin).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> OrderByColumnEnum.Age:</span><br><span class="line">   <span class="keyword">switch</span> (OrderBy)</span><br><span class="line">   &#123;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.ASC:</span><br><span class="line">     BuildingList = BuildingList.OrderBy(x =&gt; x.Age).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.DESC:</span><br><span class="line">     BuildingList = BuildingList.OrderByDescending(x =&gt;x.Age).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> OrderByColumnEnum.CaseDate:</span><br><span class="line">   <span class="keyword">switch</span> (OrderBy)</span><br><span class="line">   &#123;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.ASC:</span><br><span class="line">     BuildingList = BuildingList.OrderBy(x =&gt; x.CaseDate).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> OrderByEnum.DESC:</span><br><span class="line">     BuildingList = BuildingList.OrderByDescending(x =&gt; x.CaseDate).ToList();</span><br><span class="line">     <span class="keyword">break</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> BuildingList.Dump();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Building</span></span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="built_in">int</span> Pin &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="built_in">int</span> Age &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> DateTime CaseDate &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 排序欄位</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="built_in">enum</span> OrderByColumnEnum</span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> 成交日期</span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"> CaseDate,</span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> 建坪</span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"> Pin,</span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> 屋齡</span></span><br><span class="line"> <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"> Age</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 排序方法</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="built_in">enum</span> OrderByEnum</span><br><span class="line">&#123;</span><br><span class="line"> ASC = <span class="number">1</span>,</span><br><span class="line"> DESC = <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>因為每個欄位不同名稱,又有可能升降冪，所以寫的超級長，如果欄位達到5~6個時，幾乎已經無法維護，但其實只要搭配一點點反射可以把這段改得很漂亮的</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//要用來排序的欄位</span></span><br><span class="line"> OrderByColumnEnum OrderByColumn = OrderByColumnEnum.Pin;</span><br><span class="line"> <span class="comment">//排序的方法</span></span><br><span class="line"> OrderByEnum OrderBy = OrderByEnum.ASC;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//準備資料</span></span><br><span class="line"> <span class="keyword">var</span> BuildingList = <span class="keyword">new</span> List&lt;Building&gt;();</span><br><span class="line"> <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line"> &#123;</span><br><span class="line">  BuildingList.Add(<span class="keyword">new</span> Building </span><br><span class="line">  &#123;</span><br><span class="line">   Age = <span class="number">1</span> * (i+<span class="number">1</span>),</span><br><span class="line">   Pin = <span class="number">1</span> * (i+<span class="number">1</span>),</span><br><span class="line">   CaseDate = DateTime.Now.AddDays(i +<span class="number">1</span>)</span><br><span class="line">  &#125;);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//排序欄位</span></span><br><span class="line"> <span class="keyword">var</span> param = OrderByColumnEnum.Pin.ToString();</span><br><span class="line"></span><br><span class="line"> <span class="comment">//透過PropertyInfo操作</span></span><br><span class="line"> <span class="keyword">var</span> propertyInfo = <span class="keyword">typeof</span>(Building).GetProperty(param);</span><br><span class="line"> <span class="keyword">switch</span> (OrderBy)</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">case</span> OrderByEnum.ASC:</span><br><span class="line">   BuildingList = BuildingList.OrderBy(x =&gt; propertyInfo.GetValue(x, <span class="literal">null</span>)).ToList();</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line">  <span class="keyword">case</span> OrderByEnum.DESC:</span><br><span class="line">   BuildingList = BuildingList.OrderByDescending(x =&gt; propertyInfo.GetValue(x, <span class="literal">null</span>)).ToList();</span><br><span class="line">   <span class="keyword">break</span>;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> BuildingList.Dump();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>這樣程式是不是變得乾淨許多,但這邊要特別注意的是，因為我的Enum跟Building的屬性剛好都可以對應起來，如果我的Enum名稱與Building的屬性不能對應，那要另外寫對應方式，例如寫到擴充的Enum Attribute，或是用最簡單的Switch Case解決。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/10/17/%E3%80%90Unit-Test%E3%80%91Fake-DLL%E7%99%BC%E7%94%9Fdoes-not-exist-in-the-namespace-System-Diagnostics-Tracing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/10/17/%E3%80%90Unit-Test%E3%80%91Fake-DLL%E7%99%BC%E7%94%9Fdoes-not-exist-in-the-namespace-System-Diagnostics-Tracing/" class="post-title-link" itemprop="url">【Unit Test】Fake DLL發生does not exist in the namespace 'System.Diagnostics.Tracing'</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-10-17 14:49:00" itemprop="dateCreated datePublished" datetime="2016-10-17T14:49:00+00:00">2016-10-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/10/17/%E3%80%90Unit-Test%E3%80%91Fake-DLL%E7%99%BC%E7%94%9Fdoes-not-exist-in-the-namespace-System-Diagnostics-Tracing/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/17/【Unit-Test】Fake-DLL發生does-not-exist-in-the-namespace-System-Diagnostics-Tracing/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>上一篇<a target="_blank" rel="noopener" href="http://toyo0103.blogspot.tw/2016/10/unittestfake-systemdatetime.html">【Unit Test】Fake System.DateTime</a>&nbsp;寫到如何Fake DLL，在本機建置與進行測試都沒問題，唯獨放到CICD機器去做自動化部屬時，一直鬼擋牆的跳建置方案錯誤，錯誤內容如下</p>
+<p><span style="background-color: white; font-family: &quot;Segoe UI&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana;">The type or namespace name ‘EventSourceCreatedEventArgs’ does not exist in the namespace ‘System.Diagnostics.Tracing’ (are you missing an assembly reference?)&nbsp;</span><br><span style="background-color: white; font-family: &quot;Segoe UI&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana;"><br></span>上網查了一下找到以下解法</p>
+<ul>
+<li>打開mscorlib.fakes，改成以下內容```csharp<Fakes xmlns="http://schemas.microsoft.com/fakes/2011/">
+<Assembly Name="mscorlib" Version="4.0.0.0"/>
+<StubGeneration>
+  <Remove FullName="System.Diagnostics.Tracing"/>
+  <Remove FullName="System.Text.Encoding"/>
+  <Remove FullName="System.Security.Cryptography" />
+</StubGeneration>
+</Fakes></li>
+</ul>
+<p>```</p>
+<p>自動化佈署機器這樣去建置佈署就過關了!!!!</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+</body>
+</html>

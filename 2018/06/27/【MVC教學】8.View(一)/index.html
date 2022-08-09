@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Demo範例 ：Git位置             #目標將網路上下載來的免費漂亮版型套進專案中，從實作中瞭解如何套版跟應用.Net提供的一些API方法，過程中或許會有許多小地方不懂，例如Html結構，View Render的機制等等，沒關係，這會在後續的篇章中慢慢補足，而此篇主要是希望讓讀者知道套版原理，並享受網頁隨著套版變漂亮的過程。              在Go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【MVC教學】8.View(一)">
+<meta property="og:url" content="https://toyo0103.github.io/2018/06/27/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%918.View(%E4%B8%80)/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="Demo範例 ：Git位置             #目標將網路上下載來的免費漂亮版型套進專案中，從實作中瞭解如何套版跟應用.Net提供的一些API方法，過程中或許會有許多小地方不懂，例如Html結構，View Render的機制等等，沒關係，這會在後續的篇章中慢慢補足，而此篇主要是希望讓讀者知道套版原理，並享受網頁隨著套版變漂亮的過程。              在Go">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/1.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/2.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/3.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/4.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/5.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/6.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/7.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/8.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/9.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/10.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/11.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/12.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/13.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/14.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/15.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/16.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/17.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/18.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/19.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/20.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/21.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/22.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/23.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/24.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/25.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/26.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/27.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180627/28.jpg">
+<meta property="article:published_time" content="2018-06-27T09:28:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.091Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="MVC教學">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20180627/1.jpg">
+
+<link rel="canonical" href="https://toyo0103.github.io/2018/06/27/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%918.View(%E4%B8%80)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【MVC教學】8.View(一) | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/06/27/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%918.View(%E4%B8%80)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【MVC教學】8.View(一)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-27 09:28:00" itemprop="dateCreated datePublished" datetime="2018-06-27T09:28:00+00:00">2018-06-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%B8%E7%BF%92MVC/" itemprop="url" rel="index"><span itemprop="name">學習MVC</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/06/27/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%918.View(%E4%B8%80)/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/27/【MVC教學】8.View(一)/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="note info">
+            <p>Demo範例 ：<a target="_blank" rel="noopener" href="https://github.com/toyo0103/HelloDotNetMVC">Git位置</a></p>
+          </div>
+
+<h1 id="目標"><a href="#目標" class="headerlink" title="#目標"></a>#目標</h1><p>將網路上下載來的免費漂亮版型套進專案中，從實作中瞭解如何<strong>套版</strong>跟應用.Net提供的一些API方法，過程中或許會有許多小地方不懂，例如Html結構，View Render的機制等等，沒關係，這會在後續的篇章中慢慢補足，而此篇主要是希望讓讀者知道套版原理，並享受網頁隨著套版變漂亮的過程。</p>
+<div class="note info">
+            <p>在Google搜尋中輸入free template download可以找到一大堆免費授權的版型，而這次從這個<a target="_blank" rel="noopener" href="https://templated.co/">TEMPLATED</a>挑了一個喜歡的，有興趣可以先看一下該版型的<a target="_blank" rel="noopener" href="https://templated.co/hielo">Live Demo</a></p>
+          </div>
+
+<p><img src="/images/20180627/1.jpg" alt="/images/20180627/1.jpg"></p>
+<p>如果不方便從網路下載也無妨，我已經將下載好且解壓的版本放到Git的專案之中，如果要練習可以直接從裡面取得Source Code</p>
+<p><img src="/images/20180627/2.jpg" alt="/images/20180627/2.jpg"></p>
+<h1 id="實作"><a href="#實作" class="headerlink" title="#實作"></a>#實作</h1><h2 id="套版前準備"><a href="#套版前準備" class="headerlink" title="套版前準備"></a>套版前準備</h2><h3 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h3><p>通常我會用Chrome瀏覽器來輔助套版的工作，所以以下的操作都是針對Chrome撰寫，不過現在各家瀏覽器其實都大同小異了，只要有相對應的功能即可。</p>
+<div class="note info">
+            <p><a target="_blank" rel="noopener" href="https://www.google.com.tw/chrome/index.html">Chrome下載</a></p>
+          </div>
+
+
+
+<h3 id="Web-Server-For-Chrome-非必要"><a href="#Web-Server-For-Chrome-非必要" class="headerlink" title="Web Server For Chrome(非必要)"></a>Web Server For Chrome(非必要)</h3><p>為了方便瀏覽下載的版型，可以安裝Web Server For Chrome這個套件</p>
+<p><img src="/images/20180627/3.jpg" alt="/images/20180627/3.jpg"></p>
+<p>安裝完後應該會在Chrome的<strong>應用程式</strong>中看到Web Server</p>
+<p><img src="/images/20180627/4.jpg" alt="/images/20180627/4.jpg"></p>
+<p>打開它並把資料夾選到版型的根目錄</p>
+<p><img src="/images/20180627/5.jpg" alt="/images/20180627/5.jpg"></p>
+<p><img src="/images/20180627/6.jpg" alt="/images/20180627/6.jpg"></p>
+<p>點擊**Web Server URL(s)**，應該就可以看到網站出現了</p>
+<p><img src="/images/20180627/7.jpg" alt="/images/20180627/7.jpg"></p>
+<p><img src="/images/20180627/8.jpg" alt="/images/20180627/8.jpg"></p>
+<h2 id="首頁套版"><a href="#首頁套版" class="headerlink" title="首頁套版"></a>首頁套版</h2><p>從Visual Studio中開啟Index.html</p>
+<p><img src="/images/20180627/9.jpg" alt="/images/20180627/9.jpg"></p>
+<p><img src="/images/20180627/10.jpg" alt="/images/20180627/10.jpg"></p>
+<p>將<strong>所有內容</strong>複製貼到我們的/Home/Index.cshtml之中</p>
+<p><img src="/images/20180627/11.jpg" alt="/images/20180627/11.jpg"></p>
+<p>這時候會發現第一個錯誤</p>
+<p><img src="/images/20180627/12.jpg" alt="/images/20180627/12.jpg"></p>
+<h3 id="跳脫字元"><a href="#跳脫字元" class="headerlink" title="跳脫字元"></a>跳脫字元</h3><p>原因是.Net MVC預設用的套版語法是Razor，而**@<strong>是它的保留字，所以要用跳脫字元來解決，只要將*@*templatedco變成</strong>@@templatedco**，它在顯示網頁的時候就會印出我們想要的@templatedco了</p>
+<p><img src="/images/20180627/13.jpg" alt="/images/20180627/13.jpg"></p>
+<p>執行網站看首頁結果會發現，它怪怪的…</p>
+<p><img src="/images/20180627/14.jpg" alt="/images/20180627/14.jpg"></p>
+<h3 id="Layout"><a href="#Layout" class="headerlink" title="Layout"></a>Layout</h3><p>首先網頁最上面那排黑黑的Header，明明我們版型的Header沒這塊，它是從哪邊長出來的?</p>
+<p>這邊就要瞭解<strong>Layout</strong>是什麼</p>
+<p><img src="/images/20180627/15.jpg" alt="/images/20180627/15.jpg"></p>
+<p>很多網頁都會有一個特性，那就是不管切換到哪個頁面都會有共用的區塊，以Sony頁面為例</p>
+<p><strong>PlayStation頁面</strong></p>
+<p><img src="/images/20180627/16.jpg" alt="/images/20180627/16.jpg"></p>
+<p><strong>消費性電子&gt;電視頁面</strong></p>
+<p><img src="/images/20180627/17.jpg" alt="/images/20180627/17.jpg"></p>
+<p>共通點就是Header不管到哪一頁都不會換</p>
+<p><img src="/images/20180627/18.jpg" alt="/images/20180627/18.jpg"></p>
+<p>而如果每頁都要重新把Header套版一次會衍伸一些問題</p>
+<ul>
+<li><strong>重工</strong> : 有一百頁就要把一樣的內容貼一百次</li>
+<li><strong>維護困難</strong> : 如果想在Header多一顆按鈕，就要打開一百個頁面調整一百次</li>
+</ul>
+<p>所以實務上會透過Layout來解決這問題，將全站幾乎都會共用的部分抽出來當Layout，而會變動的部分當作<strong>Body</strong>。</p>
+<p>所以套用了新的版型還會跑出Header，那是因為Layout裡面有這個區塊</p>
+<p><img src="/images/20180627/19.jpg" alt="/images/20180627/19.jpg"></p>
+<p>依照剛剛說的，我們把共用的區塊抽到Layout裡面去放</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">HTML</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">    Hielo by TEMPLATED</span></span><br><span class="line"><span class="comment">    templated.co @@templatedco</span></span><br><span class="line"><span class="comment">    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hielo by TEMPLATED<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;assets/css/main.css&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        ....</span><br><span class="line">	<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>Layout調整成</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">HTML</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">    Hielo by TEMPLATED</span></span><br><span class="line"><span class="comment">    templated.co @@templatedco</span></span><br><span class="line"><span class="comment">    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hielo by TEMPLATED<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;assets/css/main.css&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    @RenderBody()</span><br><span class="line"></span><br><span class="line">    @RenderSection(&quot;scripts&quot;, required: false)</span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">        @<span class="keyword">if</span> (TempData[<span class="string">&quot;Message&quot;</span>] != <span class="literal">null</span>)</span></span><br><span class="line">        &#123;</span><br><span class="line"><span class="handlebars"><span class="xml">            <span class="tag">&lt;<span class="name">text</span>&gt;</span>alert(&#x27;@TempData[&quot;Message&quot;]&#x27;)<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span></span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>Index調整成</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    ViewBag.Title = &quot;Home Page&quot;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Header --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">header</span> <span class="attr">id</span>=<span class="string">&quot;header&quot;</span> <span class="attr">class</span>=<span class="string">&quot;alt&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;logo&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;index.html&quot;</span>&gt;</span>Hielo <span class="tag">&lt;<span class="name">span</span>&gt;</span>by TEMPLATED<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#menu&quot;</span>&gt;</span>Menu<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Nav --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">nav</span> <span class="attr">id</span>=<span class="string">&quot;menu&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;links&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;index.html&quot;</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;generic.html&quot;</span>&gt;</span>Generic<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;elements.html&quot;</span>&gt;</span>Elements<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">nav</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Banner --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">class</span>=<span class="string">&quot;banner full&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/slide01.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;inner&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>A free responsive web site template by <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;https://templated.co&quot;</span>&gt;</span>TEMPLATED<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hielo<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/slide02.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;inner&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>Lorem ipsum dolor sit amet nullam feugiat<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Magna etiam<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/slide03.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;inner&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>Sed cursus aliuam veroeros lorem ipsum nullam<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Tempus dolor<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/slide04.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;inner&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>Adipiscing lorem ipsum feugiat sed phasellus consequat<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Etiam feugiat<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">article</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/slide05.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;inner&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>Ipsum dolor sed magna veroeros lorem ipsum<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Lorem adipiscing<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">article</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- One --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">id</span>=<span class="string">&quot;one&quot;</span> <span class="attr">class</span>=<span class="string">&quot;wrapper style2&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;inner&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;grid-style&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;image fit&quot;</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/pic02.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">header</span> <span class="attr">class</span>=<span class="string">&quot;align-center&quot;</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">p</span>&gt;</span>maecenas sapien feugiat ex purus<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Lorem ipsum dolor<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">p</span>&gt;</span> Cras aliquet urna ut sapien tincidunt, quis malesuada elit facilisis. Vestibulum sit amet tortor velit. Nam elementum nibh a libero pharetra elementum. Maecenas feugiat ex purus, quis volutpat lacus placerat malesuada.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">footer</span> <span class="attr">class</span>=<span class="string">&quot;align-center&quot;</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;button alt&quot;</span>&gt;</span>Learn More<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;image fit&quot;</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/pic03.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;content&quot;</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">header</span> <span class="attr">class</span>=<span class="string">&quot;align-center&quot;</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">p</span>&gt;</span>mattis elementum sapien pretium tellus<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Vestibulum sit amet<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">p</span>&gt;</span> Cras aliquet urna ut sapien tincidunt, quis malesuada elit facilisis. Vestibulum sit amet tortor velit. Nam elementum nibh a libero pharetra elementum. Maecenas feugiat ex purus, quis volutpat lacus placerat malesuada.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">footer</span> <span class="attr">class</span>=<span class="string">&quot;align-center&quot;</span>&gt;</span></span><br><span class="line">                            <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;button alt&quot;</span>&gt;</span>Learn More<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Two --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">id</span>=<span class="string">&quot;two&quot;</span> <span class="attr">class</span>=<span class="string">&quot;wrapper style3&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;inner&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">header</span> <span class="attr">class</span>=<span class="string">&quot;align-center&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">p</span>&gt;</span>Nam vel ante sit amet libero scelerisque facilisis eleifend vitae urna<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Morbi maximus justo<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Three --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">section</span> <span class="attr">id</span>=<span class="string">&quot;three&quot;</span> <span class="attr">class</span>=<span class="string">&quot;wrapper style2&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;inner&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">header</span> <span class="attr">class</span>=<span class="string">&quot;align-center&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">&quot;special&quot;</span>&gt;</span>Nam vel ante sit amet libero scelerisque facilisis eleifend vitae urna<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Morbi maximus justo<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;gallery&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;image fit&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/pic01.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;image fit&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/pic02.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;image fit&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/pic03.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;image fit&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/pic04.jpg&quot;</span> <span class="attr">alt</span>=<span class="string">&quot;&quot;</span> /&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">section</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Footer --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">footer</span> <span class="attr">id</span>=<span class="string">&quot;footer&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span> <span class="attr">class</span>=<span class="string">&quot;icons&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;icon fa-twitter&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;label&quot;</span>&gt;</span>Twitter<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;icon fa-facebook&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;label&quot;</span>&gt;</span>Facebook<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;icon fa-instagram&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;label&quot;</span>&gt;</span>Instagram<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">class</span>=<span class="string">&quot;icon fa-envelope-o&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">&quot;label&quot;</span>&gt;</span>Email<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;copyright&quot;</span>&gt;</span></span><br><span class="line">        <span class="symbol">&amp;copy;</span> Untitled. All rights reserved.</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">footer</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Scripts --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;assets/js/jquery.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;assets/js/jquery.scrollex.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;assets/js/skel.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;assets/js/util.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;assets/js/main.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="RenderBody"><a href="#RenderBody" class="headerlink" title="@RenderBody()"></a>@RenderBody()</h4><p>Layout中間有一行@RenderBody()這是Razor提供的方法，意思是所有套用這個Layout的頁面，它的內容會取代@RenderBody()。</p>
+<p>假設我們的Index內容為</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>I&#x27;m Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>那套上Layout後產生給使用者看到的完整Html就會是這樣</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">HTML</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">    Hielo by TEMPLATED</span></span><br><span class="line"><span class="comment">    templated.co @@templatedco</span></span><br><span class="line"><span class="comment">    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hielo by TEMPLATED<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;assets/css/main.css&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>I&#x27;m Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    .....</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="RenderSection"><a href="#RenderSection" class="headerlink" title="@RenderSection()"></a>@RenderSection()</h4><p>實務上會希望Javascript或是CSS在特定的地方載入，如果只是單純放在Index中將會變成這樣</p>
+<p><strong>Index</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>I&#x27;m Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;assets/js/jquery.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>結果</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">HTML</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">    Hielo by TEMPLATED</span></span><br><span class="line"><span class="comment">    templated.co @@templatedco</span></span><br><span class="line"><span class="comment">    Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)</span></span><br><span class="line"><span class="comment">--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hielo by TEMPLATED<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;assets/css/main.css&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>I&#x27;m Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;assets/js/jquery.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    ....</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>此時就可以透過在Layout中挖**@RenderSection()**區塊來解決</p>
+<p><strong>Layout</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">HTML</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    ....</span><br><span class="line">    @RenderSection(&quot;css&quot;, required: false)</span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    @RenderBody()</span><br><span class="line"></span><br><span class="line">    @RenderSection(&quot;scripts&quot;, required: false)</span><br><span class="line">    ....</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Index</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@section scripts&#123;</span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;assets/js/jquery.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">&#125;</span><br><span class="line">@section css&#123;</span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;assets/css/main.css&quot;</span> /&gt;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>I&#x27;m Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>結果</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">HTML</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    ....</span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;assets/css/main.css&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>I&#x27;m Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;assets/js/jquery.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    ....</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<div class="note info">
+            <p>@RenderSection(“scripts”, <strong>required: false</strong>)</p><p>required參數意義為 </p><p><strong>True</strong> :套用這個Layout的子版面一定要寫@section scripts{ }這個區段</p><p><strong>False</strong> :套用這個Layout的子版面可以沒有@section scripts{ }區段</p>
+          </div>
+
+
+
+<h3 id="ViewStart"><a href="#ViewStart" class="headerlink" title="_ViewStart"></a>_ViewStart</h3><p>檢視Index頁面，為何它知道要套用Layout呢?其實這寫在_ViewStart.cshtml之中</p>
+<p><img src="/images/20180627/20.jpg" alt="/images/20180627/20.jpg"></p>
+<p><strong>_ViewStart.cshtml</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    Layout = &quot;~/Views/Shared/_Layout.cshtml&quot;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>所有頁面如果沒有特別指定Layout的情況下，預設套用這個設定。</p>
+<p>但這不意謂著不能自行修改，假設所有專案有兩三個頁面要套用_Layout2.cshtml，那我們可以在<strong>各自的頁面中</strong>指定Layout，而指定的Layout優先於預設。</p>
+<p><strong>Index</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@&#123;</span><br><span class="line">    Layout = &quot;~/Views/Shared/_Layout2.cshtml&quot;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>I&#x27;m Index<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="載入CSS、Javascript"><a href="#載入CSS、Javascript" class="headerlink" title="載入CSS、Javascript"></a>載入CSS、Javascript</h3><p>重新調整Layout與Index內容後，頁面依然沒有正常顯示</p>
+<p><img src="/images/20180627/21.jpg" alt="/images/20180627/21.jpg"></p>
+<p>在Chrome按下<strong>F12</strong>點擊右上角的錯誤可以得知是因為沒有載入CSS與Javascript</p>
+<p><img src="/images/20180627/22.jpg" alt="/images/20180627/22.jpg"></p>
+<p><strong>將Javascript與CSS移到專案之中</strong></p>
+<p><img src="/images/20180627/23.jpg" alt="/images/20180627/23.jpg"></p>
+<p><img src="/images/20180627/24.jpg" alt="/images/20180627/24.jpg"></p>
+<p>同時我們也刪除掉原本在專案內的Javascript與CSS</p>
+<p><strong>修改Index中Javascript的位置</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">....</span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- Scripts --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;~/assets/js/jquery.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;~/assets/js/jquery.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;~/assets/js/jquery.scrollex.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;~/assets/js/skel.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;~/assets/js/util.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;~/assets/js/main.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>修改_Layout中CSS的位置</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Hielo by TEMPLATED<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">&quot;~/assets/css/main.css&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<div class="note info">
+            <p>~/assets/css/main.css</p><p>~/assets/js/main.js</p><p>前面的 <strong>~</strong> 符號表示從根目錄開始算起</p>
+          </div>
+
+
+
+<p><strong>再次執行專案</strong></p>
+<p>發生錯誤，原因是BundleConfig的地方有抓原本放Javascript的資料夾但被我們砍掉了，Bundle基本上目前我們很少用到所以先暫時不理它，把內容清空不影響結果</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BundleConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 如需統合的詳細資訊，請瀏覽 https://go.microsoft.com/fwlink/?LinkId=301862</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RegisterBundles</span>(<span class="params">BundleCollection bundles</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>執行起來後</p>
+<p><img src="/images/20180627/25.jpg" alt="/images/20180627/25.jpg"></p>
+<p>看起來正常許多但圖片還是沒有出來，將圖片移入</p>
+<p><img src="/images/20180627/26.jpg" alt="/images/20180627/26.jpg"></p>
+<p><img src="/images/20180627/27.jpg" alt="/images/20180627/27.jpg"></p>
+<h1 id="小結"><a href="#小結" class="headerlink" title="#小結"></a>#小結</h1><p><img src="/images/20180627/28.jpg" alt="/images/20180627/28.jpg"></p>
+<p>已經成功將首頁移入專案之中，下一篇將來客製化將之前完成的登入頁面也套進這個漂亮的版型之中，中間將會碰到更多套版的Razor API與一些小技巧。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MVC%E6%95%99%E5%AD%B8/" rel="tag"># MVC教學</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/06/19/%E3%80%90LeetCode%E3%80%91Poor%20Pigs/" rel="prev" title="【LeetCode】Poor Pigs">
+      <i class="fa fa-chevron-left"></i> 【LeetCode】Poor Pigs
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/06/27/%E3%80%90LeetCode%E3%80%91Fraction%20to%20Recurring%20Decimal/" rel="next" title="【LeetCode】Fraction to Recurring Decimal">
+      【LeetCode】Fraction to Recurring Decimal <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%AE%E6%A8%99"><span class="nav-number">1.</span> <span class="nav-text">#目標</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">#實作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A5%97%E7%89%88%E5%89%8D%E6%BA%96%E5%82%99"><span class="nav-number">2.1.</span> <span class="nav-text">套版前準備</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Chrome"><span class="nav-number">2.1.1.</span> <span class="nav-text">Chrome</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-Server-For-Chrome-%E9%9D%9E%E5%BF%85%E8%A6%81"><span class="nav-number">2.1.2.</span> <span class="nav-text">Web Server For Chrome(非必要)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A6%96%E9%A0%81%E5%A5%97%E7%89%88"><span class="nav-number">2.2.</span> <span class="nav-text">首頁套版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%B3%E8%84%AB%E5%AD%97%E5%85%83"><span class="nav-number">2.2.1.</span> <span class="nav-text">跳脫字元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Layout"><span class="nav-number">2.2.2.</span> <span class="nav-text">Layout</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RenderBody"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">@RenderBody()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RenderSection"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">@RenderSection()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ViewStart"><span class="nav-number">2.2.3.</span> <span class="nav-text">_ViewStart</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BC%89%E5%85%A5CSS%E3%80%81Javascript"><span class="nav-number">2.2.4.</span> <span class="nav-text">載入CSS、Javascript</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%8F%E7%B5%90"><span class="nav-number">3.</span> <span class="nav-text">#小結</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2018/06/27/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%918.View(%E4%B8%80)/";
+    this.page.identifier = "2018/06/27/【MVC教學】8.View(一)/";
+    this.page.title = "【MVC教學】8.View(一)";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

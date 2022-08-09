@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Demo範例 ： Git位置             前面幾篇解說了Route設定，讓我們的程式能順利找到對應的Controller來執行，那今天要來談談Controller幫我們做些什麼？我們通常會在Controller這層就將使用者的參數驗證完畢，並且依據傳入的參數，找到對應的商業邏輯去執行，並且回傳結果給使用者知道，已註冊頁面作為實際應用來解說。  接著我們來實作上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【MVC教學】5.Controller簡介">
+<meta property="og:url" content="https://toyo0103.github.io/2018/04/25/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%915.Controller%E7%B0%A1%E4%BB%8B/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="Demo範例 ： Git位置             前面幾篇解說了Route設定，讓我們的程式能順利找到對應的Controller來執行，那今天要來談談Controller幫我們做些什麼？我們通常會在Controller這層就將使用者的參數驗證完畢，並且依據傳入的參數，找到對應的商業邏輯去執行，並且回傳結果給使用者知道，已註冊頁面作為實際應用來解說。  接著我們來實作上">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://4.bp.blogspot.com/-1s0A__te0ws/WuCCI7_4QvI/AAAAAAAAIq0/qwTcF7tfpGAajtSMNZ8FPKhw0q7ImxPrgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.26.31.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-y9ZNRe-qPbw/WuCDIfd8kUI/AAAAAAAAIq8/KA_bBs97zp8l7YrYxSwSNRqS14cqyA9KwCLcBGAs/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.30.36.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-qEISXaQUqlA/WuCFCh80daI/AAAAAAAAIrQ/k2MbagqBBpk_iw-y7YRUKoTOwjjeWnazwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.37.38.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-x2w81z28D6c/WuCFRqP49VI/AAAAAAAAIrU/c--eosiD0rU7Y_7j1c1ZZY3-k7YUGbeIQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.40.03.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-RrarAQWIu6c/WuCFl5E-wvI/AAAAAAAAIrg/b6Lj5N-NGaU5dSZ3zM165O1zvvpzvA_gwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.41.30.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-j3xcFnMknHg/WuCF98nE2SI/AAAAAAAAIro/HOo9hoZwb6wAUQOJBcIRTqAeXTMSv8vXwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.42.21.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-SED-4nfjecw/WuCNG2uok7I/AAAAAAAAIr4/nOzZXjfM_FETp1KLNMU6-aLcf20L-IKCgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.13.28.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-Ci1v26GtXFs/WuCODEjjM2I/AAAAAAAAIsI/EzpX1P_LRGU278UAsSeZb6S4BBTo-FZOQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.16.53.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-mB5dxE3pyMQ/WuCOPhH0dhI/AAAAAAAAIsM/SZiLCNuxCWoI78quWen_W5o97Dy_4qUlACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.18.20.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-mBcGm-zF5Ac/WuCPANF6GMI/AAAAAAAAIsc/-GE55rw9U1Q2cnTS8lL8ou0jXsAecxLzgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.21.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-pBkzKrxXseo/WuCPK5DBR6I/AAAAAAAAIsg/hpxvNjOdxQAczfyTuTyNsAC4OnRP7jYfwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.35.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-H9l67uz1TCk/WuCUxsRdhXI/AAAAAAAAIs4/SvdmC3Fc8nkKSVrlqhA6zSGoLOwfsvVkQCLcBGAs/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.45.44.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-ozg16dsOSrE/WuCd9w_QvKI/AAAAAAAAItw/vCUtqPBHZHwgPF4bVbw47tKhBfhEPIkNACLcBGAs/s400/14.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-E1x50TUS8NQ/WuCXYxIgwPI/AAAAAAAAItI/aLOGjZ82wJ0Pjy-OxOBEdaa6kPXFmN9DQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.57.06.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-OFHFUMFcMwE/WuCX5I_64XI/AAAAAAAAItQ/FGMQUMK-RD4bq8lkfPJBI5aLPd_n2l2dgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.20.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-XWHUszO3mxw/WuCX9g656vI/AAAAAAAAItU/DyrM8bb1848t9nO4xT8Pn4OgFGzhEEw2gCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.36.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-68Q1RXjX860/WuCZYQn2b7I/AAAAAAAAItk/MkjLnK3AXeIj_LtiX_SUBJRJZUMpBzghwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258811.05.55.png">
+<meta property="article:published_time" content="2018-04-25T23:08:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.090Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="MVC教學">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://4.bp.blogspot.com/-1s0A__te0ws/WuCCI7_4QvI/AAAAAAAAIq0/qwTcF7tfpGAajtSMNZ8FPKhw0q7ImxPrgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.26.31.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2018/04/25/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%915.Controller%E7%B0%A1%E4%BB%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【MVC教學】5.Controller簡介 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/04/25/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%915.Controller%E7%B0%A1%E4%BB%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【MVC教學】5.Controller簡介
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-25 23:08:00" itemprop="dateCreated datePublished" datetime="2018-04-25T23:08:00+00:00">2018-04-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%B8%E7%BF%92MVC/" itemprop="url" rel="index"><span itemprop="name">學習MVC</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/04/25/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%915.Controller%E7%B0%A1%E4%BB%8B/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/04/25/【MVC教學】5.Controller簡介/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="note info">
+            <p>Demo範例 ： <a target="_blank" rel="noopener" href="https://github.com/toyo0103/HelloDotNetMVC">Git位置</a></p>
+          </div>
+
+<p>前面幾篇解說了Route設定，讓我們的程式能順利找到對應的Controller來執行，那今天要來談談Controller幫我們做些什麼？<br>我們通常會在Controller這層就將使用者的參數<strong>驗證</strong>完畢，並且依據傳入的參數，找到對應的商業邏輯去執行，並且回傳結果給使用者知道，已註冊頁面作為實際應用來解說。</p>
+<p><a target="_blank" rel="noopener" href="https://4.bp.blogspot.com/-1s0A__te0ws/WuCCI7_4QvI/AAAAAAAAIq0/qwTcF7tfpGAajtSMNZ8FPKhw0q7ImxPrgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.26.31.png"><img src="https://4.bp.blogspot.com/-1s0A__te0ws/WuCCI7_4QvI/AAAAAAAAIq0/qwTcF7tfpGAajtSMNZ8FPKhw0q7ImxPrgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.26.31.png"></a></p>
+<p>接著我們來實作上述的內容，但因為只是MVC初學，所以我們還不加入分層、資料庫溝通之類比較深的內容，只專注在Controller怎麼做。</p>
+<p>&nbsp;</p>
+<h1 id="建立Controller"><a href="#建立Controller" class="headerlink" title="建立Controller"></a>建立Controller</h1><p>&nbsp;<br>我們先建立一個UserController，專門處理User相關的服務跟邏輯</p>
+<p><a target="_blank" rel="noopener" href="https://2.bp.blogspot.com/-y9ZNRe-qPbw/WuCDIfd8kUI/AAAAAAAAIq8/KA_bBs97zp8l7YrYxSwSNRqS14cqyA9KwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.30.36.png"><img src="https://2.bp.blogspot.com/-y9ZNRe-qPbw/WuCDIfd8kUI/AAAAAAAAIq8/KA_bBs97zp8l7YrYxSwSNRqS14cqyA9KwCLcBGAs/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.30.36.png"></a></p>
+<p>接著寫一個SignUp的Action，這邊有看到我們掛HttpGet的Attribute，只是指定呼叫動詞必須是Get的方式才會執行到這個Action</p>
+<div class="note info">
+            <p>如果不知道Http動詞的話可以參考 : <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Methods">HTTP請求方法</a></p>
+          </div>
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-KA_M1a5AopU/WuCDeRZvUuI/AAAAAAAAIrI/C66BwZf0wvw7Z2PDngjof-IgAzSwUE3bwCEwYBhgL/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.32.27.png)](https://1.bp.blogspot.com/-KA_M1a5AopU/WuCDeRZvUuI/AAAAAAAAIrI/C66BwZf0wvw7Z2PDngjof-IgAzSwUE3bwCEwYBhgL/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.32.27.png)</div>
+
+<p>&nbsp;</p>
+<h1 id="建立View"><a href="#建立View" class="headerlink" title="建立View"></a>建立View</h1><p>&nbsp;<br>而這個Action沒有任何內容，只有回傳一個View而已，接著我們來實作出回傳的頁面，在這個Action中點擊右鍵 &gt; 新增檢視</p>
+<p><a target="_blank" rel="noopener" href="https://3.bp.blogspot.com/-qEISXaQUqlA/WuCFCh80daI/AAAAAAAAIrQ/k2MbagqBBpk_iw-y7YRUKoTOwjjeWnazwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.37.38.png"><img src="https://3.bp.blogspot.com/-qEISXaQUqlA/WuCFCh80daI/AAAAAAAAIrQ/k2MbagqBBpk_iw-y7YRUKoTOwjjeWnazwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.37.38.png"></a><br><a target="_blank" rel="noopener" href="https://1.bp.blogspot.com/-x2w81z28D6c/WuCFRqP49VI/AAAAAAAAIrU/c--eosiD0rU7Y_7j1c1ZZY3-k7YUGbeIQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.40.03.png"><img src="https://1.bp.blogspot.com/-x2w81z28D6c/WuCFRqP49VI/AAAAAAAAIrU/c--eosiD0rU7Y_7j1c1ZZY3-k7YUGbeIQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.40.03.png"></a><br><a target="_blank" rel="noopener" href="https://3.bp.blogspot.com/-RrarAQWIu6c/WuCFl5E-wvI/AAAAAAAAIrg/b6Lj5N-NGaU5dSZ3zM165O1zvvpzvA_gwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.41.30.png"><img src="https://3.bp.blogspot.com/-RrarAQWIu6c/WuCFl5E-wvI/AAAAAAAAIrg/b6Lj5N-NGaU5dSZ3zM165O1zvvpzvA_gwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.41.30.png"></a><br><a target="_blank" rel="noopener" href="https://4.bp.blogspot.com/-j3xcFnMknHg/WuCF98nE2SI/AAAAAAAAIro/HOo9hoZwb6wAUQOJBcIRTqAeXTMSv8vXwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.42.21.png"><img src="https://4.bp.blogspot.com/-j3xcFnMknHg/WuCF98nE2SI/AAAAAAAAIro/HOo9hoZwb6wAUQOJBcIRTqAeXTMSv8vXwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%25889.42.21.png"></a></p>
+<p>接著直接執行，應該就能看到我們剛剛做出來的SignUp頁面</p>
+<p><a target="_blank" rel="noopener" href="https://3.bp.blogspot.com/-SED-4nfjecw/WuCNG2uok7I/AAAAAAAAIr4/nOzZXjfM_FETp1KLNMU6-aLcf20L-IKCgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.13.28.png"><img src="https://3.bp.blogspot.com/-SED-4nfjecw/WuCNG2uok7I/AAAAAAAAIr4/nOzZXjfM_FETp1KLNMU6-aLcf20L-IKCgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.13.28.png"></a><br>而這邊網址是 /user/signup，我覺得不夠直覺，所以到RouteConfig改一下<br><a target="_blank" rel="noopener" href="https://3.bp.blogspot.com/-Ci1v26GtXFs/WuCODEjjM2I/AAAAAAAAIsI/EzpX1P_LRGU278UAsSeZb6S4BBTo-FZOQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.16.53.png"><img src="https://3.bp.blogspot.com/-Ci1v26GtXFs/WuCODEjjM2I/AAAAAAAAIsI/EzpX1P_LRGU278UAsSeZb6S4BBTo-FZOQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.16.53.png"></a><br><a target="_blank" rel="noopener" href="https://3.bp.blogspot.com/-mB5dxE3pyMQ/WuCOPhH0dhI/AAAAAAAAIsM/SZiLCNuxCWoI78quWen_W5o97Dy_4qUlACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.18.20.png"><img src="https://3.bp.blogspot.com/-mB5dxE3pyMQ/WuCOPhH0dhI/AAAAAAAAIsM/SZiLCNuxCWoI78quWen_W5o97Dy_4qUlACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.18.20.png"></a></p>
+<p>接著把頁面簡單做起來</p>
+<p><a target="_blank" rel="noopener" href="https://2.bp.blogspot.com/-mBcGm-zF5Ac/WuCPANF6GMI/AAAAAAAAIsc/-GE55rw9U1Q2cnTS8lL8ou0jXsAecxLzgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.21.png"><img src="https://2.bp.blogspot.com/-mBcGm-zF5Ac/WuCPANF6GMI/AAAAAAAAIsc/-GE55rw9U1Q2cnTS8lL8ou0jXsAecxLzgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.21.png"></a><br><a target="_blank" rel="noopener" href="https://4.bp.blogspot.com/-pBkzKrxXseo/WuCPK5DBR6I/AAAAAAAAIsg/hpxvNjOdxQAczfyTuTyNsAC4OnRP7jYfwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.35.png"><img src="https://4.bp.blogspot.com/-pBkzKrxXseo/WuCPK5DBR6I/AAAAAAAAIsg/hpxvNjOdxQAczfyTuTyNsAC4OnRP7jYfwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.21.35.png"></a><br>寫一個Action來接收傳過來的資料</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpPost</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> ActionResult <span class="title">SignUp</span>(<span class="params"><span class="built_in">string</span> account,<span class="built_in">string</span> password</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">bool</span> Result = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">//帳號密碼都不能為空值</span></span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrWhiteSpace(account) &amp;amp;&amp;amp;</span><br><span class="line">        !<span class="built_in">string</span>.IsNullOrWhiteSpace(password))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//帳號必須要有@字元</span></span><br><span class="line">        <span class="comment">//密碼必須大於六個字元</span></span><br><span class="line">        <span class="keyword">if</span> (account.Contains(<span class="string">&quot;@&quot;</span>) &amp;amp;&amp;amp; password.Length &amp;gt; <span class="number">6</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//我們判斷是否有註冊過的帳號,因為還沒有連結資料庫</span></span><br><span class="line">            <span class="comment">//所以先假定steven@mymail.com被註冊過</span></span><br><span class="line">            <span class="keyword">if</span> (account != <span class="string">&quot;steven@mymail.com&quot;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                TempData[<span class="string">&quot;Message&quot;</span>] = <span class="string">&quot;註冊成功!!&quot;</span>;</span><br><span class="line">                Result = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                TempData[<span class="string">&quot;Message&quot;</span>] = <span class="string">&quot;帳號已經存在&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            TempData[<span class="string">&quot;Message&quot;</span>] = <span class="string">&quot;帳號密碼不符合格式&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        TempData[<span class="string">&quot;Message&quot;</span>] = <span class="string">&quot;帳號密碼不能為空值&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (Result)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//註冊成功,導到首頁 </span></span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">&quot;index&quot;</span>, <span class="string">&quot;home&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> RedirectToAction(<span class="string">&quot;signup&quot;</span>, <span class="string">&quot;user&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這邊注意到我們的Attribute就下了HttpPost，表示只有Post可以呼叫到這個Action，而我們在Form那邊也設定了方法用Post</p>
+<p><a target="_blank" rel="noopener" href="https://2.bp.blogspot.com/-H9l67uz1TCk/WuCUxsRdhXI/AAAAAAAAIs4/SvdmC3Fc8nkKSVrlqhA6zSGoLOwfsvVkQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.45.44.png"><img src="https://2.bp.blogspot.com/-H9l67uz1TCk/WuCUxsRdhXI/AAAAAAAAIs4/SvdmC3Fc8nkKSVrlqhA6zSGoLOwfsvVkQCLcBGAs/s320/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.45.44.png"></a><br>接著你可能會注意到裡面有用到TempData，通常TempData是用來跨Action傳遞資料用的，底層其實是將資料存在Session之中，而且你只要取用過一次裡面的值就會被清掉。 而因為我們這個Action只是在處理註冊的相關邏輯，執行完後可以看到最後回傳的都是RedirectToAction，也就是導到我們指定的Action去回傳頁面，所以會跨兩個Action以上，存在TempData是個簡單的處理方式。</p>
+<p>接著執行看看你會發現，好像一切有照著我們的邏輯在執行，但唯獨訊息不會顯示出來，因為我們雖然將TempData之中，卻沒有寫顯示訊息的那一段，通常這一段邏輯我們會放在共用的_Layout裡面。</p>
+<p><a target="_blank" rel="noopener" href="https://1.bp.blogspot.com/-ozg16dsOSrE/WuCd9w_QvKI/AAAAAAAAItw/vCUtqPBHZHwgPF4bVbw47tKhBfhEPIkNACLcBGAs/s1600/14.png"><img src="https://1.bp.blogspot.com/-ozg16dsOSrE/WuCd9w_QvKI/AAAAAAAAItw/vCUtqPBHZHwgPF4bVbw47tKhBfhEPIkNACLcBGAs/s400/14.png"></a></p>
+<p><a target="_blank" rel="noopener" href="https://2.bp.blogspot.com/-E1x50TUS8NQ/WuCXYxIgwPI/AAAAAAAAItI/aLOGjZ82wJ0Pjy-OxOBEdaa6kPXFmN9DQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.57.06.png"><img src="https://2.bp.blogspot.com/-E1x50TUS8NQ/WuCXYxIgwPI/AAAAAAAAItI/aLOGjZ82wJ0Pjy-OxOBEdaa6kPXFmN9DQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.57.06.png"></a><br>因為還沒解說View的關係，這邊就先照著寫，之後會解說到。再次執行就會發現訊息會正確S顯示出來了。</p>
+<p><a target="_blank" rel="noopener" href="https://1.bp.blogspot.com/-OFHFUMFcMwE/WuCX5I_64XI/AAAAAAAAItQ/FGMQUMK-RD4bq8lkfPJBI5aLPd_n2l2dgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.20.png"><img src="https://1.bp.blogspot.com/-OFHFUMFcMwE/WuCX5I_64XI/AAAAAAAAItQ/FGMQUMK-RD4bq8lkfPJBI5aLPd_n2l2dgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.20.png"></a><br><a target="_blank" rel="noopener" href="https://2.bp.blogspot.com/-XWHUszO3mxw/WuCX9g656vI/AAAAAAAAItU/DyrM8bb1848t9nO4xT8Pn4OgFGzhEEw2gCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.36.png"><img src="https://2.bp.blogspot.com/-XWHUszO3mxw/WuCX9g656vI/AAAAAAAAItU/DyrM8bb1848t9nO4xT8Pn4OgFGzhEEw2gCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258810.59.36.png"></a></p>
+<p>上述的Controller撰寫方式，就是通常我們在Controller做的工作，驗證參數 、 依據使用者輸入的值執行對應的邏輯 、最後回傳結果。但你應該也會發現，整個Action邏輯裡面光是驗證參數就佔了大半的篇幅，這往往會讓程式碼複雜度提高，閱讀變得困難，這部分我們會在下一篇講解該如何把這類的邏輯分隔出去，讓程式碼更好維護美觀一些。另外Action其實還可以回傳很多種結果，前面範例用到了</p>
+<div class="note info">
+            <p>View ： 回傳頁面<br>RedirectToAction ：回傳導頁結果</p>
+          </div>
+
+<p>底層還支援了一些回傳方式，靈活應用就可以達成大部分的功能了。詳細參考：&nbsp;<a target="_blank" rel="noopener" href="https://msdn.microsoft.com/zh-tw/library/dd410269(v=vs.98).aspx">ＭＳＤＮ</a></p>
+<p><a target="_blank" rel="noopener" href="https://2.bp.blogspot.com/-68Q1RXjX860/WuCZYQn2b7I/AAAAAAAAItk/MkjLnK3AXeIj_LtiX_SUBJRJZUMpBzghwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258811.05.55.png"><img src="https://2.bp.blogspot.com/-68Q1RXjX860/WuCZYQn2b7I/AAAAAAAAItk/MkjLnK3AXeIj_LtiX_SUBJRJZUMpBzghwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-25%2B%25E4%25B8%258B%25E5%258D%258811.05.55.png"></a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MVC%E6%95%99%E5%AD%B8/" rel="tag"># MVC教學</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/25/%E9%9B%9C%E6%B9%8A%E8%A1%A8-Hash-Table/" rel="prev" title="雜湊表(Hash Table)">
+      <i class="fa fa-chevron-left"></i> 雜湊表(Hash Table)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/05/07/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%916.%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8-%E9%80%8F%E9%81%8EFluentValidation/" rel="next" title="【MVC教學】6.驗證參數- 透過FluentValidation">
+      【MVC教學】6.驗證參數- 透過FluentValidation <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8BController"><span class="nav-number">1.</span> <span class="nav-text">建立Controller</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8BView"><span class="nav-number">2.</span> <span class="nav-text">建立View</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2018/04/25/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%915.Controller%E7%B0%A1%E4%BB%8B/";
+    this.page.identifier = "2018/04/25/【MVC教學】5.Controller簡介/";
+    this.page.title = "【MVC教學】5.Controller簡介";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

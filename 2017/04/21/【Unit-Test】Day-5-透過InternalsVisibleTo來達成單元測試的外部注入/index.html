@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Demo檔案 : Git傳送門請參照UnitTest_Day5的Branch            延續昨日的進度，我們將呼叫API的RestSharp獨立出來，並且用依賴介面及外部注入的方式將IRestSharp注入到PTX來達成隔離，並且做到可測試性。  但面臨令一個問題，如果今天開發的是共用套件類的專案，這樣變成要使用物件都必須知道該用什麼東西注入才可使用，這往往會">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Unit Test】Day 5 - 透過InternalsVisibleTo來達成單元測試的外部注入">
+<meta property="og:url" content="https://toyo0103.github.io/2017/04/21/%E3%80%90Unit-Test%E3%80%91Day-5-%E9%80%8F%E9%81%8EInternalsVisibleTo%E4%BE%86%E9%81%94%E6%88%90%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6%E7%9A%84%E5%A4%96%E9%83%A8%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="Demo檔案 : Git傳送門請參照UnitTest_Day5的Branch            延續昨日的進度，我們將呼叫API的RestSharp獨立出來，並且用依賴介面及外部注入的方式將IRestSharp注入到PTX來達成隔離，並且做到可測試性。  但面臨令一個問題，如果今天開發的是共用套件類的專案，這樣變成要使用物件都必須知道該用什麼東西注入才可使用，這往往會">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://2.bp.blogspot.com/-HjInxsBTGiI/WPmXSYDpTRI/AAAAAAAAIKw/KgSB2yeC2T48twP-CxCExImX9ijhXqHxwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.23.02.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-8W6FoK7MRiA/WPmcVCDx-VI/AAAAAAAAILA/qpjugEjgNw06nPLvv6RqLB28XqGRWW78ACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.32.57.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-gPv3l1uHmls/WPmehkxafVI/AAAAAAAAILQ/iR_X30LEPAcPwhxGNHDSUrjTx_AGPJ7rQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.53.09.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-432-uYA3xzA/WPmi7ubMQPI/AAAAAAAAILc/lRWIC9z0Rl4J-gDK4S3FqFH-IFAOb4dMQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.12.43.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-xJUoNFOIdrs/WPmkLQsBL2I/AAAAAAAAILk/ZZ0cCPNog9QCsdYvinuDtv5sdIQmojNJQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.17.36.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-IZGTMVt3-Lo/WPmkhpuNB7I/AAAAAAAAILo/uiMhb0tvoP8qSxl8ql46g_fS4VsrTxBRACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.19.05.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-HfxlXJV0Eqw/WPml-pvikQI/AAAAAAAAIL0/VeJoBU8c2XEOV2StCNpE-njJpvnWsE6nQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.25.13.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-8jsc7ogPU80/WPmmNjXGWVI/AAAAAAAAIL4/pKT3iPG1rIYC5c4-5yLrzjrACSJzaxeJQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.26.18.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-FJOWCQNSfqE/WPmnDZpn4dI/AAAAAAAAIMA/OnLezxrmtFcC-FrJT-E3FO1gyQlcgbNnACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.29.57.png">
+<meta property="article:published_time" content="2017-04-21T14:34:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.094Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="Unit Test">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://2.bp.blogspot.com/-HjInxsBTGiI/WPmXSYDpTRI/AAAAAAAAIKw/KgSB2yeC2T48twP-CxCExImX9ijhXqHxwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.23.02.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2017/04/21/%E3%80%90Unit-Test%E3%80%91Day-5-%E9%80%8F%E9%81%8EInternalsVisibleTo%E4%BE%86%E9%81%94%E6%88%90%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6%E7%9A%84%E5%A4%96%E9%83%A8%E6%B3%A8%E5%85%A5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【Unit Test】Day 5 - 透過InternalsVisibleTo來達成單元測試的外部注入 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/21/%E3%80%90Unit-Test%E3%80%91Day-5-%E9%80%8F%E9%81%8EInternalsVisibleTo%E4%BE%86%E9%81%94%E6%88%90%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6%E7%9A%84%E5%A4%96%E9%83%A8%E6%B3%A8%E5%85%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Unit Test】Day 5 - 透過InternalsVisibleTo來達成單元測試的外部注入
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-04-21 14:34:00" itemprop="dateCreated datePublished" datetime="2017-04-21T14:34:00+00:00">2017-04-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%B8%E7%BF%92%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/" itemprop="url" rel="index"><span itemprop="name">學習單元測試</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/04/21/%E3%80%90Unit-Test%E3%80%91Day-5-%E9%80%8F%E9%81%8EInternalsVisibleTo%E4%BE%86%E9%81%94%E6%88%90%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6%E7%9A%84%E5%A4%96%E9%83%A8%E6%B3%A8%E5%85%A5/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/21/【Unit-Test】Day-5-透過InternalsVisibleTo來達成單元測試的外部注入/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="note info">
+            <p>Demo檔案 : <a target="_blank" rel="noopener" href="https://github.com/toyo0103/UnitTest_Day3/tree/UnitTest_Day5">Git傳送門</a><br>請參照UnitTest_Day5的Branch</p>
+          </div>
+<p>延續昨日的進度，我們將呼叫API的RestSharp獨立出來，並且用依賴介面及外部注入的方式將IRestSharp注入到PTX來達成隔離，並且做到可測試性。</p>
+<p><img src="https://2.bp.blogspot.com/-HjInxsBTGiI/WPmXSYDpTRI/AAAAAAAAIKw/KgSB2yeC2T48twP-CxCExImX9ijhXqHxwCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.23.02.png"></p>
+<p>但面臨令一個問題，如果今天開發的是共用套件類的專案，這樣變成要使用物件都必須知道該用什麼東西注入才可使用，這往往會造成使用者困擾，封裝性也不佳，因外部注入的IRestSharp是每個人都可以另外實作的。 甚至更深一層去想，究竟IRestSharp是否需要用Public讓外部使用者都知道有這個東西呢？ 是不是反而因為要達到可測試性而讓封裝這件事做得更差？</p>
+<p><strong>來看看另一種方式</strong></p>
+<p>假設我認為使用這個套件的人只要簡單的建立PTX後即可使用，至於內部如何呼叫API的實作使用者並不需要關心，那麼我們先將IRestSharp從建構子拿掉吧，並且做一個專門產生IRestSharp實體的Factory來滿足需求。</p>
+<p>撰寫IRestSharpFactory<br><img src="https://4.bp.blogspot.com/-8W6FoK7MRiA/WPmcVCDx-VI/AAAAAAAAILA/qpjugEjgNw06nPLvv6RqLB28XqGRWW78ACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.32.57.png"></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 製作IRestSharp的工廠</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">IRestSharpFactory</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//這邊特別注意存取修飾子是用Internal</span></span><br><span class="line">        <span class="comment">//原因是我並不希望專案之外的人使用且知道有這東西</span></span><br><span class="line">        <span class="comment">//而internal剛好能滿足這需求</span></span><br><span class="line">        <span class="function"><span class="keyword">internal</span> <span class="keyword">static</span> IRestSharp <span class="title">Generate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//產生實體</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MyRestSharp();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>接著修改原本的PTX.cs</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTX</span></span><br><span class="line">    &#123;</span><br><span class="line">        IRestSharp _MyRestSharp</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//這邊改成用工廠建立MyRestSharp實體</span></span><br><span class="line">                <span class="keyword">return</span> IRestSharpFactory.Generate();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Construct</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">PTX</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//建構子參數移除</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        以下省略.....</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這邊馬上面臨到一個問題，那我們怎麼Mock IRestSharp，昨天是放在建構子中並透過Nsubstitute來Mock</p>
+<p><img src="https://1.bp.blogspot.com/-gPv3l1uHmls/WPmehkxafVI/AAAAAAAAILQ/iR_X30LEPAcPwhxGNHDSUrjTx_AGPJ7rQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25881.53.09.png"></p>
+<p>封裝性變好了，但也變得難以介入模擬外部行為</p>
+<p><strong>從IRestSharpFactory著手吧！！</strong></p>
+<div class="note info">
+            <p>想辦法讓<strong>IRestSharpFactory</strong>可以讓我們注入Mock的假物件</p>
+          </div>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 製作IRestSharp的工廠</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">IRestSharpFactory</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 此屬性只供UnitTest注入</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">internal</span> <span class="keyword">static</span> IRestSharp _IRestSharpForUnitTest;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">internal</span> <span class="keyword">static</span> IRestSharp <span class="title">Generate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//如果這個值不為Null,則表示單元測試所注入,直接回傳</span></span><br><span class="line">            <span class="keyword">if</span> (_IRestSharpForUnitTest != <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> _IRestSharpForUnitTest;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//產生實體</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> MyRestSharp();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這邊開了一個_IRestSharpForUnitTest屬性，讓外部能夠注入它，接著在Generate的方法中判斷，如果當_IRestSharpForUnitTest不為Null時，直接回傳（通常會特別在這個屬性寫上說明僅供單元測試使用，正常Production Code禁止使用！！）</p>
+<p><strong>想辦法在單元測試中注入_IRestSharpForUnitTest</strong><br>你可能會發現在單元測試中看不到IRestSharpFactory….</p>
+<p><img src="https://1.bp.blogspot.com/-432-uYA3xzA/WPmi7ubMQPI/AAAAAAAAILc/lRWIC9z0Rl4J-gDK4S3FqFH-IFAOb4dMQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.12.43.png"></p>
+<p>原因是我們宣告成Internal，如果要能在專案之外看到就只能開成Public了，但回到最一開始討論的，不就是為了封裝才把他宣告成Internal嗎？如果又改回Public那我們這段工不就白費了，還好還有別的方法可以達成。</p>
+<p><strong>告訴UnitTestDay3這個專案，除了它自己之外，還有誰能看到它宣告成Internal的類別與屬性方法</strong><br>**<br><strong>讓我們先打開</strong>UnitTestDay3**專案的AssemblyInfo</p>
+<p><img src="https://4.bp.blogspot.com/-xJUoNFOIdrs/WPmkLQsBL2I/AAAAAAAAILk/ZZ0cCPNog9QCsdYvinuDtv5sdIQmojNJQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.17.36.png"></p>
+<p>寫下這行</p>
+<p><img src="https://1.bp.blogspot.com/-IZGTMVt3-Lo/WPmkhpuNB7I/AAAAAAAAILo/uiMhb0tvoP8qSxl8ql46g_fS4VsrTxBRACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.19.05.png"></p>
+<p>InternalsVisibleTo這邊是要填AssemblyName，透過這個Attribute告訴<strong>UnitTestDay3</strong>這個專案還有誰能看到它內部的Internal。<br>而AssemblyName怎麼看呢？在專案上右鍵 &gt; 屬性</p>
+<p><img src="https://4.bp.blogspot.com/-HfxlXJV0Eqw/WPml-pvikQI/AAAAAAAAIL0/VeJoBU8c2XEOV2StCNpE-njJpvnWsE6nQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.25.13.png"></p>
+<p><img src="https://3.bp.blogspot.com/-8jsc7ogPU80/WPmmNjXGWVI/AAAAAAAAIL4/pKT3iPG1rIYC5c4-5yLrzjrACSJzaxeJQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.26.18.png"></p>
+<p>如果你有很多單元測試專案需要能看到，InternalsVisibleTo是可以很多組的。</p>
+<p>接著在單元測試中就可以看到啦</p>
+<p><img src="https://1.bp.blogspot.com/-FJOWCQNSfqE/WPmnDZpn4dI/AAAAAAAAIMA/OnLezxrmtFcC-FrJT-E3FO1gyQlcgbNnACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-21%2B%25E4%25B8%258B%25E5%258D%25882.29.57.png"></p>
+<p>這樣就達成我們想封裝起來的需求，卻也能讓單元測試進行注入，那今天就談到這吧！！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unit-Test/" rel="tag"># Unit Test</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/20/%E3%80%90Unit-Test%E3%80%91Day-4-Mock/" rel="prev" title="【Unit Test】Day 4 - Mock">
+      <i class="fa fa-chevron-left"></i> 【Unit Test】Day 4 - Mock
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/24/%E3%80%90Unit-Test%E3%80%91Day-6-%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6%E5%88%9D%E5%A7%8B%E5%8C%96%E8%88%87%E6%B8%85%E9%99%A4/" rel="next" title="【Unit Test】Day 6 - 單元測試初始化與清除">
+      【Unit Test】Day 6 - 單元測試初始化與清除 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2017/04/21/%E3%80%90Unit-Test%E3%80%91Day-5-%E9%80%8F%E9%81%8EInternalsVisibleTo%E4%BE%86%E9%81%94%E6%88%90%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6%E7%9A%84%E5%A4%96%E9%83%A8%E6%B3%A8%E5%85%A5/";
+    this.page.identifier = "2017/04/21/【Unit-Test】Day-5-透過InternalsVisibleTo來達成單元測試的外部注入/";
+    this.page.title = "【Unit Test】Day 5 - 透過InternalsVisibleTo來達成單元測試的外部注入";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

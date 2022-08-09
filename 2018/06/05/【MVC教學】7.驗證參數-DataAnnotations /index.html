@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Demo範例 ：Git位置             #什麼是DataAnnotationsDataAnnotations是.Net Framework 3.5之後提供的一個命名空間，裡面包含了一些基本的驗證Attribute，同時也提供客製化的方法，希望開發人員能透過簡單的加上Attribute即達到驗證的效果。 12345678public class UserSign">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【MVC教學】7.驗證參數-DataAnnotations">
+<meta property="og:url" content="https://toyo0103.github.io/2018/06/05/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%917.%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8-DataAnnotations%20/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="Demo範例 ：Git位置             #什麼是DataAnnotationsDataAnnotations是.Net Framework 3.5之後提供的一個命名空間，裡面包含了一些基本的驗證Attribute，同時也提供客製化的方法，希望開發人員能透過簡單的加上Attribute即達到驗證的效果。 12345678public class UserSign">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180615/1.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180615/2.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180615/3.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180615/4.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180615/5.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180615/6.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180615/7.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180615/8.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180615/9.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180615/10.png">
+<meta property="article:published_time" content="2018-06-05T11:40:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.091Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="MVC教學">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20180615/1.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2018/06/05/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%917.%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8-DataAnnotations%20/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【MVC教學】7.驗證參數-DataAnnotations | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/06/05/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%917.%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8-DataAnnotations%20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【MVC教學】7.驗證參數-DataAnnotations
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-05 11:40:00" itemprop="dateCreated datePublished" datetime="2018-06-05T11:40:00+00:00">2018-06-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%B8%E7%BF%92MVC/" itemprop="url" rel="index"><span itemprop="name">學習MVC</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/06/05/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%917.%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8-DataAnnotations%20/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/05/【MVC教學】7.驗證參數-DataAnnotations /" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="note info">
+            <p>Demo範例 ：<a target="_blank" rel="noopener" href="https://github.com/toyo0103/HelloDotNetMVC">Git位置</a></p>
+          </div>
+
+<h1 id="什麼是DataAnnotations"><a href="#什麼是DataAnnotations" class="headerlink" title="#什麼是DataAnnotations"></a>#什麼是DataAnnotations</h1><p>DataAnnotations是.Net Framework 3.5之後提供的一個命名空間，裡面包含了一些基本的驗證Attribute，同時也提供客製化的方法，希望開發人員能透過簡單的加上Attribute即達到驗證的效果。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UserSignUpParameter</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">Required</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span>  Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="如何使用"><a href="#如何使用" class="headerlink" title="#如何使用"></a>#如何使用</h1><p>我們透過修改先前的範例，嘗試將<strong>UserSignUpParameter</strong>的驗證從FluentValidation改成用MVC預設提供的DataAnnotations來達成，從修改中學習他是如何運作的。</p>
+<p><strong>重新審視一下需求</strong></p>
+<div class="note info">
+            <p><strong>帳號</strong></p><ul><li>必填</li><li>必須包含@</li></ul><p><strong>密碼</strong></p><ul><li>必填</li><li>不得小於6個字元</li></ul>
+          </div>
+
+
+
+
+
+<h2 id="RequiredAttribute"><a href="#RequiredAttribute" class="headerlink" title="RequiredAttribute"></a>RequiredAttribute</h2><p>RequiredAttribute為DataAnnotations預設提供的驗證方式，目標是驗證該欄位是否為Null或Empty</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// 摘要:</span></span><br><span class="line"><span class="comment">//     指定資料欄位值為必要。</span></span><br><span class="line">[<span class="meta">AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RequiredAttribute</span> : <span class="title">ValidationAttribute</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">    <span class="comment">// 摘要:</span></span><br><span class="line">    <span class="comment">//     初始化 System.ComponentModel.DataAnnotations.RequiredAttribute 類別的新執行個體。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RequiredAttribute</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">    <span class="comment">// 摘要:</span></span><br><span class="line">    <span class="comment">//     取得或設定值，指出是否允許空字串。</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// 傳回:</span></span><br><span class="line">    <span class="comment">//     true 如果允許空字串。否則， false。 預設值是 false。</span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">bool</span> AllowEmptyStrings &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">    <span class="comment">// 摘要:</span></span><br><span class="line">    <span class="comment">//     檢查必要的資料欄位的值不是空的。</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// 參數:</span></span><br><span class="line">    <span class="comment">//   value:</span></span><br><span class="line">    <span class="comment">//     要驗證的資料欄位值。</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// 傳回:</span></span><br><span class="line">    <span class="comment">//     true 如果驗證成功。否則， false。</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// 例外狀況:</span></span><br><span class="line">    <span class="comment">//   T:System.ComponentModel.DataAnnotations.ValidationException:</span></span><br><span class="line">    <span class="comment">//     資料欄位值為 null。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">IsValid</span>(<span class="params"><span class="built_in">object</span> <span class="keyword">value</span></span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>從上述的程式碼可以看出它有提供<strong>AllowEmptyStrings</strong>的屬性可以設定，意義如同字面意思，可以<strong>EmptyString</strong>。</p>
+<h3 id="AllowEmptyStrings"><a href="#AllowEmptyStrings" class="headerlink" title="AllowEmptyStrings"></a>AllowEmptyStrings</h3><p>我們先將Account掛上Required，並且指定屬性AllowEmptyStrings為True，執行看看</p>
+<div class="note info">
+            <p>繼承自Attribute的類別，在掛Attribute時可以省略後綴詞，所以可以看到程式碼只寫Required而不是RequiredAttribute</p>
+          </div>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Parameter UserSignUp</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UserSignUpParameter</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">Required(AllowEmptyStrings =true)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span>  Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 密碼</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Password &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>當Account傳入為Null時</p>
+<p><img src="/images/20180615/1.png" alt="/images/20180615/1.png"></p>
+<p>ModelState.IsValidate為False，在Values.Errors底下可以找到錯誤訊息<strong>Account 欄位是必要項。</strong></p>
+<p><img src="/images/20180615/2.png" alt="/images/20180615/2.png"></p>
+<p>接著改傳入<strong>空格</strong></p>
+<p><img src="/images/20180615/3.png" alt="/images/20180615/3.png"></p>
+<p>通過驗證</p>
+<p><img src="/images/20180615/4.png" alt="/images/20180615/4.png"></p>
+<h3 id="ErrorMessage"><a href="#ErrorMessage" class="headerlink" title="ErrorMessage"></a>ErrorMessage</h3><p>如果想修改錯誤的回傳訊息時，可以透過ErrorMessage來處理</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">Required(ErrorMessage = <span class="meta-string">&quot;帳號為必填欄位&quot;</span>)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">string</span>  Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>或是</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">Required(ErrorMessage = <span class="meta-string">&quot;&#123;0&#125;為必填欄位&quot;</span>)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">string</span>  Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>{0}的位置系統會自動帶入欄位名稱</p>
+<p><img src="/images/20180615/5.png" alt="/images/20180615/5.png"></p>
+<p>介紹完RequiredAttribute的基本用法後，目前程式碼如下</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Parameter UserSignUp</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">UserSignUpParameter</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">Required(ErrorMessage = <span class="meta-string">&quot;&#123;0&#125;為必填欄位&quot;</span>)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span>  Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 密碼.</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">Required(ErrorMessage = <span class="meta-string">&quot;&#123;0&#125;為必填欄位&quot;</span>)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Password &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="MinLengthAttribute"><a href="#MinLengthAttribute" class="headerlink" title="MinLengthAttribute"></a>MinLengthAttribute</h2><p>MinLengthAttribute是用來檢查屬性的最小字數，與MaxLengthAttribute為剛好相反的一組</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line">    <span class="comment">// 摘要:</span></span><br><span class="line">    <span class="comment">//     指定屬性中所允許之陣列或字串資料的最大長度。</span></span><br><span class="line">    [<span class="meta">AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MaxLengthAttribute</span> : <span class="title">ValidationAttribute</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 摘要:</span></span><br><span class="line">        <span class="comment">//     初始化 System.ComponentModel.DataAnnotations.MaxLengthAttribute 類別的新執行個體。</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MaxLengthAttribute</span>(<span class="params"></span>)</span>;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 摘要:</span></span><br><span class="line">        <span class="comment">//     初始化的新執行個體 System.ComponentModel.DataAnnotations.MaxLengthAttribute 類別根據 length</span></span><br><span class="line">        <span class="comment">//     參數。</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 參數:</span></span><br><span class="line">        <span class="comment">//   length:</span></span><br><span class="line">        <span class="comment">//     陣列或字串資料的最大容許長度。</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MaxLengthAttribute</span>(<span class="params"><span class="built_in">int</span> length</span>)</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 摘要:</span></span><br><span class="line">        <span class="comment">//     取得陣列或字串資料所容許的最大長度。</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 傳回:</span></span><br><span class="line">        <span class="comment">//     陣列或字串資料的最大容許長度。</span></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">int</span> Length &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 摘要:</span></span><br><span class="line">        <span class="comment">//     將格式套用到指定的錯誤訊息</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 參數:</span></span><br><span class="line">        <span class="comment">//   name:</span></span><br><span class="line">        <span class="comment">//     要包含在格式化字串中的名稱。</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 傳回:</span></span><br><span class="line">        <span class="comment">//     描述可接受之最大長度的當地語系化字串。</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">string</span> <span class="title">FormatErrorMessage</span>(<span class="params"><span class="built_in">string</span> name</span>)</span>;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 摘要:</span></span><br><span class="line">        <span class="comment">//     判斷指定的物件是否有效</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 參數:</span></span><br><span class="line">        <span class="comment">//   value:</span></span><br><span class="line">        <span class="comment">//     要驗證的物件。</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 傳回:</span></span><br><span class="line">        <span class="comment">//     如果此值為 null 或是小於或等於指定的最大長度，則為 true，否則為 false。</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// 例外狀況:</span></span><br><span class="line">        <span class="comment">//   T:System.InvalidOperationException:</span></span><br><span class="line">        <span class="comment">//     長度為零或小於 –1。</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">IsValid</span>(<span class="params"><span class="built_in">object</span> <span class="keyword">value</span></span>)</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>密碼<strong>最少應為6個字元</strong>設定方式，當然它同時也提供修改ErrorMessage的方法</p>
+<p>{0}的位置系統會自動帶入欄位名稱</p>
+<p>{1}的位置系統會帶入所設定的最小字元數字</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 密碼.</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span>    </span></span><br><span class="line">[<span class="meta">MinLength(6, ErrorMessage = <span class="meta-string">&quot;&#123;0&#125;不得低於&#123;1&#125;個字元&quot;</span>)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">string</span> Password &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20180615/6.png" alt="/images/20180615/6.png"></p>
+<p><img src="/images/20180615/7.png" alt="/images/20180615/7.png"></p>
+<h2 id="RegularExpression"><a href="#RegularExpression" class="headerlink" title="RegularExpression"></a>RegularExpression</h2><p>Account還有一個需求是必須包含@字元，這時候可以透過預設提供的RegularExpression來達成需求</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line">   <span class="comment">// 摘要:</span></span><br><span class="line">   <span class="comment">//     指定 ASP.NET 動態資料的資料欄位值必須符合指定的規則運算式。</span></span><br><span class="line">   [<span class="meta">AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)</span>]</span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RegularExpressionAttribute</span> : <span class="title">ValidationAttribute</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 摘要:</span></span><br><span class="line">       <span class="comment">//     初始化 System.ComponentModel.DataAnnotations.RegularExpressionAttribute 類別的新執行個體。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 參數:</span></span><br><span class="line">       <span class="comment">//   pattern:</span></span><br><span class="line">       <span class="comment">//     用來驗證資料欄位值的規則運算式。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 例外狀況:</span></span><br><span class="line">       <span class="comment">//   T:System.ArgumentNullException:</span></span><br><span class="line">       <span class="comment">//     pattern 為 null。</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="title">RegularExpressionAttribute</span>(<span class="params"><span class="built_in">string</span> pattern</span>)</span>;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 摘要:</span></span><br><span class="line">       <span class="comment">//     取得規則運算式模式。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 傳回:</span></span><br><span class="line">       <span class="comment">//     要比對模式。</span></span><br><span class="line">       <span class="keyword">public</span> <span class="built_in">string</span> Pattern &#123; <span class="keyword">get</span>; &#125;</span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 摘要:</span></span><br><span class="line">       <span class="comment">//     取得或設定執行單一比對作業，直到作業逾時之前的時間 (以毫秒為單位)。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 傳回:</span></span><br><span class="line">       <span class="comment">//     執行單一比對作業的時間 (以毫秒為單位)。</span></span><br><span class="line">       <span class="keyword">public</span> <span class="built_in">int</span> MatchTimeoutInMilliseconds &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 摘要:</span></span><br><span class="line">       <span class="comment">//     格式化要顯示在規則運算式驗證失敗時的錯誤訊息。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 參數:</span></span><br><span class="line">       <span class="comment">//   name:</span></span><br><span class="line">       <span class="comment">//     造成驗證失敗的欄位名稱。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 傳回:</span></span><br><span class="line">       <span class="comment">//     格式化的錯誤訊息。</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">string</span> <span class="title">FormatErrorMessage</span>(<span class="params"><span class="built_in">string</span> name</span>)</span>;</span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 摘要:</span></span><br><span class="line">       <span class="comment">//     會檢查使用者輸入的值是否符合規則運算式模式。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 參數:</span></span><br><span class="line">       <span class="comment">//   value:</span></span><br><span class="line">       <span class="comment">//     要驗證的資料欄位值。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 傳回:</span></span><br><span class="line">       <span class="comment">//     true 如果驗證成功。否則， false。</span></span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       <span class="comment">// 例外狀況:</span></span><br><span class="line">       <span class="comment">//   T:System.ComponentModel.DataAnnotations.ValidationException:</span></span><br><span class="line">       <span class="comment">//     資料欄位值不符合規則運算式模式。</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">IsValid</span>(<span class="params"><span class="built_in">object</span> <span class="keyword">value</span></span>)</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以透過寫正規表示法的方式來驗證想驗證的屬性，一樣有ErrorMessage可供使用</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">[<span class="meta">RegularExpression(<span class="meta-string">&quot;[@]+&quot;</span>,ErrorMessage =<span class="meta-string">&quot;&#123;0&#125;必須包含@字元&quot;</span>)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">string</span> Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20180615/8.png" alt="/images/20180615/8.png"></p>
+<p><img src="/images/20180615/9.png" alt="/images/20180615/9.png"></p>
+<h2 id="其它Attribute"><a href="#其它Attribute" class="headerlink" title="其它Attribute"></a>其它Attribute</h2><p>DataAnnotations還有提供一些預設的Attribute可以使用，篇幅有限就不一一介紹，有興趣的可以參考以下文章</p>
+<div class="note info">
+            <p><a target="_blank" rel="noopener" href="http://dotnetmentors.com/mvc/how-to-validate-mvc-model-using-dataannotation-attributes.aspx">How To Validate MVC Model Using DataAnnotation Attribute</a></p><p><a target="_blank" rel="noopener" href="https://msdn.microsoft.com/zh-tw/library/system.componentmodel.dataannotations.validationattribute(v=vs.110).aspx">MSDN - ValidationAttribute 類別</a></p>
+          </div>
+
+
+
+
+
+<h1 id="客製"><a href="#客製" class="headerlink" title="#客製"></a>#客製</h1><p>如果碰到一個驗證需要在多個地方使用，且預設沒有提供的話，這時候就可以透過自製驗證Attribute來解決，我們以**字元需包含@**為例</p>
+<h2 id="繼承ValidationAttribute"><a href="#繼承ValidationAttribute" class="headerlink" title="繼承ValidationAttribute"></a>繼承ValidationAttribute</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">MouseCharactersAttribute</span>: <span class="title">ValidationAttribute</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> Returns true if ... is valid.</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;value&quot;&gt;</span>要驗證之物件的值。<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span></span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;see langword=&quot;true&quot; /&gt;</span> 指定的值是否有效。否則， <span class="doctag">&lt;see langword=&quot;false&quot; /&gt;</span>。</span></span><br><span class="line">       <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">IsValid</span>(<span class="params"><span class="built_in">object</span> <span class="keyword">value</span></span>)</span></span><br><span class="line"><span class="function"></span>       &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">base</span>.IsValid(<span class="keyword">value</span>);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Override-IsValid-Method"><a href="#Override-IsValid-Method" class="headerlink" title="Override IsValid Method"></a>Override IsValid Method</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">IsValid</span>(<span class="params"><span class="built_in">object</span> <span class="keyword">value</span></span>)</span></span><br><span class="line"><span class="function"></span>   &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">value</span> == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;   </span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> stringValue = <span class="keyword">value</span> <span class="keyword">as</span> <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> stringValue.Contains(<span class="string">&quot;@&quot;</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>將原本的<strong>RegularExpression</strong>改成我們客製的<strong>MouseCharacters</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">  <span class="comment"><span class="doctag">///</span> 帳號</span></span><br><span class="line">  <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">  [<span class="meta">MouseCharacters(ErrorMessage =<span class="meta-string">&quot;&#123;0&#125;必須包含@字元&quot;</span>)</span>]</span><br><span class="line">  <span class="keyword">public</span> <span class="built_in">string</span> Account &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>實測會發現結果是一樣的</p>
+<p><img src="/images/20180615/10.png" alt="/images/20180615/10.png"></p>
+<h1 id="比較FluentValidation"><a href="#比較FluentValidation" class="headerlink" title="#比較FluentValidation"></a>#比較FluentValidation</h1><p>DataAnnotations其實使用起來相當方便，且只要知道如何客製ValidationAttribute基本上大部分情境都能解決，加上套用Attribute的方式算是相當親民的寫法。</p>
+<p>但我本身基於單一職責的原則下，還是喜歡將驗證邏輯等方法分離到不同的Class管理，而這也正是FluentValidation套件的特性，不過這是見仁見智，就像大部分Pattern一樣，永遠不會有最好的解法，只要能花最小的成本解決需求，同時盡量不犧牲維護及擴充性，那就稱得上是好方法了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MVC%E6%95%99%E5%AD%B8/" rel="tag"># MVC教學</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/06/04/%E3%80%90%E6%BC%94%E7%AE%97%E6%B3%95%E3%80%91Counting%20Sort/" rel="prev" title="【演算法】Counting Sort">
+      <i class="fa fa-chevron-left"></i> 【演算法】Counting Sort
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/06/05/%E3%80%90LeetCode%E3%80%91Add%20Two%20Numbers/" rel="next" title="【LeetCode】Add Two Numbers">
+      【LeetCode】Add Two Numbers <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AFDataAnnotations"><span class="nav-number">1.</span> <span class="nav-text">#什麼是DataAnnotations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">#如何使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RequiredAttribute"><span class="nav-number">2.1.</span> <span class="nav-text">RequiredAttribute</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AllowEmptyStrings"><span class="nav-number">2.1.1.</span> <span class="nav-text">AllowEmptyStrings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ErrorMessage"><span class="nav-number">2.1.2.</span> <span class="nav-text">ErrorMessage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MinLengthAttribute"><span class="nav-number">2.2.</span> <span class="nav-text">MinLengthAttribute</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RegularExpression"><span class="nav-number">2.3.</span> <span class="nav-text">RegularExpression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E5%AE%83Attribute"><span class="nav-number">2.4.</span> <span class="nav-text">其它Attribute</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%A2%E8%A3%BD"><span class="nav-number">3.</span> <span class="nav-text">#客製</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B9%BC%E6%89%BFValidationAttribute"><span class="nav-number">3.1.</span> <span class="nav-text">繼承ValidationAttribute</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Override-IsValid-Method"><span class="nav-number">3.2.</span> <span class="nav-text">Override IsValid Method</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%AF%94%E8%BC%83FluentValidation"><span class="nav-number">4.</span> <span class="nav-text">#比較FluentValidation</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2018/06/05/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%917.%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8-DataAnnotations%20/";
+    this.page.identifier = "2018/06/05/【MVC教學】7.驗證參數-DataAnnotations /";
+    this.page.title = "【MVC教學】7.驗證參數-DataAnnotations";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

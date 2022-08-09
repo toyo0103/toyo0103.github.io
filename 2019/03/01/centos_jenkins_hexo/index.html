@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="這個部落格是用 hexo 來製作的，優點是可以用 Markdown 寫法，且很多套件支援,讓我這個美感小白痴也可以輕鬆弄出富有質感的部落格(自己說)。 但也因為這樣,每次寫完文章都需要下 command 來編譯部落格、發佈到 Github ，讓我覺得不夠自動化 12$ hexo g $ hexo deploy  剛好最近在玩 AWS ，就想說來弄一台 t2.small Centos 機器來做 C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jenkins,GitHub自動化部署Hexo">
+<meta property="og:url" content="https://toyo0103.github.io/2019/03/01/centos_jenkins_hexo/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="這個部落格是用 hexo 來製作的，優點是可以用 Markdown 寫法，且很多套件支援,讓我這個美感小白痴也可以輕鬆弄出富有質感的部落格(自己說)。 但也因為這樣,每次寫完文章都需要下 command 來編譯部落格、發佈到 Github ，讓我覺得不夠自動化 12$ hexo g $ hexo deploy  剛好最近在玩 AWS ，就想說來弄一台 t2.small Centos 機器來做 C">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/0.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/1.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/2.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/3.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/4.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/5.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/6.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/7.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/8.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/9.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/10.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/11.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/12.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/13.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/14.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/15.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/16.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/17.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/18.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/19.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/20.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/21.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/22.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/23.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/24.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/25.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/26.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190301/27.png">
+<meta property="article:published_time" content="2019-03-01T07:38:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.080Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="centos">
+<meta property="article:tag" content="jenkins">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20190301/0.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2019/03/01/centos_jenkins_hexo/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Jenkins,GitHub自動化部署Hexo | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/03/01/centos_jenkins_hexo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Jenkins,GitHub自動化部署Hexo
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-01 07:38:00" itemprop="dateCreated datePublished" datetime="2019-03-01T07:38:00+00:00">2019-03-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/03/01/centos_jenkins_hexo/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/01/centos_jenkins_hexo/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/20190301/0.png" alt="/images/20190301/0.png"></p>
+<p>這個部落格是用 <a target="_blank" rel="noopener" href="https://hexo.io/zh-tw/index.html">hexo</a> 來製作的，優點是可以用 Markdown 寫法，且很多套件支援,讓我這個美感小白痴也可以輕鬆弄出富有質感的部落格(自己說)。</p>
+<p>但也因為這樣,每次寫完文章都需要下 command 來編譯部落格、發佈到 Github ，讓我覺得不夠自動化</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo g</span> </span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo deploy</span></span><br></pre></td></tr></table></figure>
+
+<p>剛好最近在玩 AWS ，就想說來弄一台 t2.small Centos 機器來做 CI 機器好了</p>
+<p><img src="/images/20190301/1.png" alt="/images/20190301/1.png"></p>
+<br>
+
+<h1 id="AWS-EC2"><a href="#AWS-EC2" class="headerlink" title="AWS EC2"></a>AWS EC2</h1><br>
+
+<h2 id="Launch-Instance"><a href="#Launch-Instance" class="headerlink" title="Launch Instance"></a>Launch Instance</h2><p>AMI ： CentOS 7 </p>
+<p><img src="/images/20190301/2.png" alt="/images/20190301/2.png"></p>
+<p>Type ： t2.small </p>
+<p><img src="/images/20190301/3.png" alt="/images/20190301/3.png"></p>
+<p>原本用 t2.micro ，但經過測試在 Jenkins 執行 Job 的時候常常因為記憶體不足就當掉了，改 t2.small 後穩定許多</p>
+<p>因為我之前已經有其他台 EC2 ，所以這邊我選擇用已經產過的 ssh key 來當作連線這台機器的 Key</p>
+<p><img src="/images/20190301/4.png" alt="/images/20190301/4.png"> </p>
+<br>
+
+<h2 id="Security-Group"><a href="#Security-Group" class="headerlink" title="Security Group"></a>Security Group</h2><p>SSH 連線需要開 22 Port，先確認一下 Security Group 有開啟</p>
+<p><img src="/images/20190301/5.png" alt="/images/20190301/5.png"> </p>
+<p>用剛剛產出的 pem 檔連線到機器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ssh -i ~/.ssh/&#123;yourSSH.pem&#125; centos@&#123;yourEc2IP&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果登入成功應該會看到這樣</p>
+<p><img src="/images/20190301/6.png" alt="/images/20190301/6.png"> </p>
+<p>如果遇到 Permission denied ，你需要先調整剛剛下載下來的 pem 檔的權限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> chmod 400 yourSSH.pem</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@<br>@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @<br>@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@<br>Permissions 0644 for ‘amazonec2.pem’ are too open.<br>It is recommended that your private key files are NOT accessible by others.<br>This private key will be ignored.<br>bad permissions: ignore key: amazonec2.pem<br>Permission denied (publickey).</p>
+</blockquote>
+<div class="note info">
+            <p>參考文章</p><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/8193768/trying-to-ssh-into-an-amazon-ec2-instance-permission-error">Trying to SSH into an Amazon Ec2 instance - permission error</a></p><p><a target="_blank" rel="noopener" href="http://linux.vbird.org/linux_basic/0210filepermission.php#chmod">鳥哥的 Linux 私房菜</a></p>
+          </div>
+
+<br>
+
+<h1 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h1><br>
+
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><div class="note info">
+            <p>參考文章</p><p><a target="_blank" rel="noopener" href="https://linuxize.com/post/how-to-install-jenkins-on-centos-7/#adjust-the-firewall">How To Install Jenkins on CentOS 7</a></p>
+          </div>
+
+<blockquote>
+<p>基本上我完全是按照上面的文章教學一步一步完成的，在 Linux 還不是很熟的情況下，這邊只記下流水帳，詳細建議參考上述文章。</p>
+</blockquote>
+<ol>
+<li><p>Install the OpenJDK 8 package</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install java-1.8.0-openjdk-devel</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Import the GPG key </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl --silent --location http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo | sudo tee /etc/yum.repos.d/jenkins.repo</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Add the Jenkins repository to your system</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Install Jenkins</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install jenkins</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Start the Jenkins service</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo systemctl start jenkins</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Check Jenkins Status</p>
+</li>
+</ol>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> systemctl status jenkins</span></span><br></pre></td></tr></table></figure>
+
+<p>  <img src="/images/20190301/7.png" alt="/images/20190301/7.png"></p>
+<ol start="7">
+<li><p>Enable the Jenkins service to start on system boot</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo systemctl <span class="built_in">enable</span> jenkins</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<br>
+
+<h2 id="設定"><a href="#設定" class="headerlink" title="設定"></a>設定</h2><p>這時候透過瀏覽器連線 Jenkins，應該會得到 Timeout 的回應</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">網址：http:&#x2F;&#x2F;yourEc2PublicIP:8080</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20190301/8.png" alt="/images/20190301/8.png"></p>
+<p>原因是機器的 Security Group 並沒有開放 80 Port 可以連進來，所以需要設定一下</p>
+<p><img src="/images/20190301/9.png" alt="/images/20190301/9.png"></p>
+<p>再次連線應該就可以看到設定畫面了</p>
+<p><img src="/images/20190301/10.png" alt="/images/20190301/10.png"></p>
+<br>
+
+<p>第一次設定需要透過機器取得密碼</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo cat /var/lib/jenkins/secrets/initialAdminPassword</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20190301/11.png" alt="/images/20190301/11.png"></p>
+<p>將這段密碼貼上去後就可以進入下一步</p>
+<p><img src="/images/20190301/12.png" alt="/images/20190301/12.png"></p>
+<p>選擇 Install Suggested plugins</p>
+<p><img src="/images/20190301/13.png" alt="/images/20190301/13.png"></p>
+<p>設定 Admin User</p>
+<p><img src="/images/20190301/14.png" alt="/images/20190301/14.png"></p>
+<p><img src="/images/20190301/15.png" alt="/images/20190301/15.png"></p>
+<h1 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h1><br>
+
+<h2 id="安裝-Nodejs-、-NPM"><a href="#安裝-Nodejs-、-NPM" class="headerlink" title="安裝 Nodejs 、 NPM"></a>安裝 Nodejs 、 NPM</h2><p>為了能在 Jenkins Build Hexo ，必須先安裝好 NodeJs 並安裝 Hexo</p>
+<div class="note info">
+            <p>參考文章</p><p><a target="_blank" rel="noopener" href="https://linuxize.com/post/how-to-install-node-js-on-centos-7/">How to install Node.js and npm on CentOS 7</a></p>
+          </div>
+
+<blockquote>
+<p>這邊一樣只節錄流水帳，詳細說明建議參考原文</p>
+</blockquote>
+<ol>
+<li><p>Add NodeSource yum repository</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl -sL https://rpm.nodesource.com/setup_10.x | sudo bash -</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Install NodeJs and NPM</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install nodejs</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Check</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> node --version</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm --version</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<br>
+
+<h2 id="Install-Git"><a href="#Install-Git" class="headerlink" title="Install Git"></a>Install Git</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install git</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> git --version</span></span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h2 id="Build-Hexo"><a href="#Build-Hexo" class="headerlink" title="Build Hexo"></a>Build Hexo</h2><p>因為我原本就已經有 Hexo Blog Repository，所以我該先讓 Jenkins 機器能夠從 pull blog source</p>
+<ol>
+<li><p>建立 ssh key</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ssh-keygen</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20190301/16.png" alt="/images/20190301/16.png"></p>
+</li>
+<li><p>Add this ssh public key to github </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat ~/.ssh/id_rsa.pub</span></span><br></pre></td></tr></table></figure>
+
+<p>將這整段 Public Key 加到 Github </p>
+<p><img src="/images/20190301/17.png" alt="/images/20190301/17.png"></p>
+<p><img src="/images/20190301/18.png" alt="/images/20190301/18.png"></p>
+</li>
+<li><p>Install Hexo</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo npm install hexo-cli -g</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Test git clone and hexo build</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> git <span class="built_in">clone</span> git@github.com:yourRepository/yourRepository.github.io.source.git</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> yourRepository</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm install</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo g</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo server</span></span><br></pre></td></tr></table></figure>
+
+<p>如果到這邊都正常，基本上 Jenkins 機器已經有能力幫你 Build Hexo了</p>
+</li>
+</ol>
+<br>
+
+<h1 id="Create-Jenkins-Job"><a href="#Create-Jenkins-Job" class="headerlink" title="Create Jenkins Job"></a>Create Jenkins Job</h1><ol>
+<li><p>新增作業</p>
+<p><img src="/images/20190301/19.png" alt="/images/20190301/19.png"></p>
+</li>
+<li><p>原始碼管理</p>
+<p><img src="/images/20190301/20.png" alt="/images/20190301/20.png"></p>
+</li>
+<li><p>設置 Credentials（點選 Add &gt; Jenkins） </p>
+<p>將 Private Key 貼進去</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cat ~/.ssh/id_rsa</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20190301/21.png" alt="/images/20190301/21.png"></p>
+<p>連線就正常了</p>
+<p><img src="/images/20190301/22.png" alt="/images/20190301/22.png"></p>
+</li>
+<li><p>建置觸發程序</p>
+<p><img src="/images/20190301/23.png" alt="/images/20190301/23.png"></p>
+</li>
+<li><p>建置</p>
+<p><img src="/images/20190301/24.png" alt="/images/20190301/24.png"></p>
+</li>
+</ol>
+<br>
+
+<h1 id="Github-Webhook"><a href="#Github-Webhook" class="headerlink" title="Github Webhook"></a>Github Webhook</h1><p>這邊是要設定，當 Github 發現 Repository 被更新時，主動打個 Request 觸發剛剛建立好的 Jenkins</p>
+<ol>
+<li><p>先進到 Your Repository &gt; Settings &gt; Webhooks</p>
+<p><img src="/images/20190301/25.png" alt="/images/20190301/25.png"></p>
+</li>
+<li><p>Add Webhooks</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;yourEc2PublicIP:8080&#x2F;github-webhook&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>請特別注意！！ github-webhook/ 後面這個斜線一定要，不然會 302 錯誤</p>
+<p><img src="/images/20190301/26.png" alt="/images/20190301/26.png"></p>
+</li>
+</ol>
+<h1 id="錯誤排除"><a href="#錯誤排除" class="headerlink" title="錯誤排除"></a>錯誤排除</h1><p>看似一切美好又順利的把 Webhooks 接了起來，但觸發 Jenkins 後發現以下錯誤</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">INFO  Deploying: git</span><br><span class="line">Permission denied (publickey).</span><br><span class="line">fatal: Could not read from remote repository.</span><br></pre></td></tr></table></figure>
+
+<p>為什麼 ？ 剛剛不是遠端登進去都試過跟 Git 之前的操作沒問題嗎？</p>
+<p>原來是因為剛剛的 SSH Key 是建立在 centos 這個登入帳號底下，Jenkins 是透過自己的帳號權限在執行，所以我們必須將剛剛的SSH Key 搬過去給你，並賦予它權限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cp ~/.ssh/id_rsa.pub /var/lib/jenkins/.ssh/</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cp ~/.ssh/id_rsa /var/lib/jenkins/.ssh/</span></span><br></pre></td></tr></table></figure>
+
+<p>移過去後還需要將檔案擁有者改成 Jenkins，或是你可以針對 Jenkins 這跟帳號設定檔案權限，我這邊選擇直接把擁有者改成 Jenkins</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo chown jenkins /var/lib/jenkins/.ssh/id_rsa.pub</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> sudo chown jenkins /var/lib/jenkins/.ssh/id_rsa</span></span><br></pre></td></tr></table></figure>
+
+<p>確認權限都正確就大功告成啦！！</p>
+<p><img src="/images/20190301/27.png" alt="/images/20190301/27.png"></p>
+<br>
+
+<p>現在你看到的這篇，就是透過 Jenkins 自動建置部署上來的</p>
+<br>
+
+
+
+<div class="note info">
+            <p>參考文章</p><p><a target="_blank" rel="noopener" href="https://www.mkshell.com/using-github-and-jenkins-deploy-hexo/">[小题大做] Github + Jenkins 实现自动化部署 hexo 博客静态文件</a></p>
+          </div>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/centos/" rel="tag"># centos</a>
+              <a href="/tags/jenkins/" rel="tag"># jenkins</a>
+              <a href="/tags/hexo/" rel="tag"># hexo</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/02/22/docker_debug_skill/" rel="prev" title="【Docker】偵錯技巧">
+      <i class="fa fa-chevron-left"></i> 【Docker】偵錯技巧
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/15/yield_return_2/" rel="next" title="【C#】Yield Return (二)">
+      【C#】Yield Return (二) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AWS-EC2"><span class="nav-number">1.</span> <span class="nav-text">AWS EC2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Launch-Instance"><span class="nav-number">1.1.</span> <span class="nav-text">Launch Instance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Security-Group"><span class="nav-number">1.2.</span> <span class="nav-text">Security Group</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jenkins"><span class="nav-number">2.</span> <span class="nav-text">Jenkins</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D"><span class="nav-number">2.1.</span> <span class="nav-text">安裝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%AD%E5%AE%9A"><span class="nav-number">2.2.</span> <span class="nav-text">設定</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hexo"><span class="nav-number">3.</span> <span class="nav-text">Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D-Nodejs-%E3%80%81-NPM"><span class="nav-number">3.1.</span> <span class="nav-text">安裝 Nodejs 、 NPM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-Git"><span class="nav-number">3.2.</span> <span class="nav-text">Install Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Build-Hexo"><span class="nav-number">3.3.</span> <span class="nav-text">Build Hexo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Create-Jenkins-Job"><span class="nav-number">4.</span> <span class="nav-text">Create Jenkins Job</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Github-Webhook"><span class="nav-number">5.</span> <span class="nav-text">Github Webhook</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%8C%AF%E8%AA%A4%E6%8E%92%E9%99%A4"><span class="nav-number">6.</span> <span class="nav-text">錯誤排除</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2019/03/01/centos_jenkins_hexo/";
+    this.page.identifier = "2019/03/01/centos_jenkins_hexo/";
+    this.page.title = "Jenkins,GitHub自動化部署Hexo";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="地圖資訊是手機很大量運用的資訊之一,接下來是來整理關於目前學到的MapKit View地圖的運用    首先先拉一個新的ViewController,並將MapKit View拉近去  接著在ViewController建立參數與MapKit View做對應,這邊需要注意的地方是用Map元件需要import MapKit&#96;&#96;&#96;swiftimport UIKitimport MapKitclass">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[swift] IOS地圖運用 (1) 取得目前座標位置">
+<meta property="og:url" content="https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-1-%E5%8F%96%E5%BE%97%E7%9B%AE%E5%89%8D%E5%BA%A7%E6%A8%99%E4%BD%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="地圖資訊是手機很大量運用的資訊之一,接下來是來整理關於目前學到的MapKit View地圖的運用    首先先拉一個新的ViewController,並將MapKit View拉近去  接著在ViewController建立參數與MapKit View做對應,這邊需要注意的地方是用Map元件需要import MapKit&#96;&#96;&#96;swiftimport UIKitimport MapKitclass">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://1.bp.blogspot.com/-E-lEkbuEGuw/VPUcOLnXUCI/AAAAAAAAEak/lUCmZ1i9-RA/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8810.27.49.png">
+<meta property="og:image" content="http://4.bp.blogspot.com/-83KznhU8x60/VPUmGa8My2I/AAAAAAAAEbQ/KcQPz9Qjhrk/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.28.png">
+<meta property="og:image" content="http://3.bp.blogspot.com/-QvR128Ffqwk/VPUmImiWVqI/AAAAAAAAEbY/JihYA7S-IiI/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.40.png">
+<meta property="og:image" content="http://3.bp.blogspot.com/-k22IlXdhDv4/VPUnkb4FXnI/AAAAAAAAEbk/0zrmSaQchns/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.15.45.png">
+<meta property="og:image" content="http://4.bp.blogspot.com/-pgo8PxqY7R8/VPUn0drmU1I/AAAAAAAAEbs/3WRtslmNJTM/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.17.10.png">
+<meta property="article:published_time" content="2015-03-03T10:23:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.082Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="ios">
+<meta property="article:tag" content="swift">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://1.bp.blogspot.com/-E-lEkbuEGuw/VPUcOLnXUCI/AAAAAAAAEak/lUCmZ1i9-RA/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8810.27.49.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-1-%E5%8F%96%E5%BE%97%E7%9B%AE%E5%89%8D%E5%BA%A7%E6%A8%99%E4%BD%8D%E7%BD%AE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>[swift] IOS地圖運用 (1) 取得目前座標位置 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-1-%E5%8F%96%E5%BE%97%E7%9B%AE%E5%89%8D%E5%BA%A7%E6%A8%99%E4%BD%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [swift] IOS地圖運用 (1) 取得目前座標位置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-03 10:23:00" itemprop="dateCreated datePublished" datetime="2015-03-03T10:23:00+00:00">2015-03-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-1-%E5%8F%96%E5%BE%97%E7%9B%AE%E5%89%8D%E5%BA%A7%E6%A8%99%E4%BD%8D%E7%BD%AE/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-1-取得目前座標位置/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>地圖資訊是手機很大量運用的資訊之一,接下來是來整理關於目前學到的MapKit View地圖的運用</p>
+<ul>
+<li><p>  首先先拉一個新的ViewController,並將MapKit View拉近去<br><a target="_blank" rel="noopener" href="http://1.bp.blogspot.com/-E-lEkbuEGuw/VPUcOLnXUCI/AAAAAAAAEak/lUCmZ1i9-RA/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8810.27.49.png"><img src="http://1.bp.blogspot.com/-E-lEkbuEGuw/VPUcOLnXUCI/AAAAAAAAEak/lUCmZ1i9-RA/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8810.27.49.png"></a></p>
+</li>
+<li><p>接著在ViewController建立參數與MapKit View做對應,這邊需要注意的地方是用Map元件需要<strong>import MapKit</strong>```swift<br>import UIKit<br>import MapKit<br>class MapViewController: UIViewController {</p>
+<pre><code>  @IBOutlet weak var uimap: MKMapView!//地圖元件
+</code></pre>
+<p>  override func viewDidLoad() {</p>
+<pre><code>  super.viewDidLoad()
+</code></pre>
+<p>  }</p>
+<pre><code>  override func didReceiveMemoryWarning() &#123;
+  super.didReceiveMemoryWarning()
+  // Dispose of any resources that can be recreated.
+</code></pre>
+<p>  }<br>}</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   取得座標資訊是由一個叫要做CLLocationManager來控制的,又IOS8取得座標資訊必須先取得使用者的授權才可以,所以必須到Info.plist新增NSLocationAlwaysUsageDescription或NSLocationWhenInUseUsageDescription兩種鍵值,而前者表示不管ＡＰＰ在前景或背景執行都會持續取得座標資訊,而後者只有在需要時才會去取座標定位資訊,而這兩個鍵值分別對應到CLLocationManager的requestAlwaysAuthorization和requestWhenInUseAuthorization,這邊的範例已NSLocationWhenInUseUsageDescription為例 &#96;&#96;&#96;swift</span><br><span class="line">import UIKit</span><br><span class="line">import CoreLocation</span><br><span class="line">import MapKit</span><br><span class="line">class MapViewController: UIViewController,CLLocationManagerDelegate &#123;</span><br><span class="line"></span><br><span class="line">        @IBOutlet weak var uimap: MKMapView!&#x2F;&#x2F;地圖元件</span><br><span class="line">    var location : CLLocationManager!; &#x2F;&#x2F;座標管理元件</span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        super.viewDidLoad();</span><br><span class="line"></span><br><span class="line">            location &#x3D; CLLocationManager();</span><br><span class="line">        location.delegate &#x3D; self;</span><br><span class="line">        &#x2F;&#x2F;詢問使用者是否同意給APP定位功能</span><br><span class="line">        location.requestWhenInUseAuthorization();</span><br><span class="line">        &#x2F;&#x2F;開始接收目前位置資訊</span><br><span class="line">        location.startUpdatingLocation();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        override func viewDidDisappear(animated: Bool) &#123;</span><br><span class="line">        &#x2F;&#x2F;因為ＧＰＳ功能很耗電,所以被敬執行時關閉定位功能</span><br><span class="line">        location.stopUpdatingLocation();</span><br><span class="line">    &#125;</span><br><span class="line">    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) &#123;</span><br><span class="line">        &#x2F;&#x2F;取得目前的座標位置</span><br><span class="line">        let c &#x3D; locations[0] as CLLocation;</span><br><span class="line">        &#x2F;&#x2F;c.coordinate.latitude 目前緯度</span><br><span class="line">        &#x2F;&#x2F;c.coordinate.longitude 目前經度</span><br><span class="line">        let nowLocation &#x3D; CLLocationCoordinate2D(latitude: c.coordinate.latitude, longitude: c.coordinate.longitude);</span><br><span class="line">        &#x2F;&#x2F;將map中心點定在目前所在的位置</span><br><span class="line">        &#x2F;&#x2F;span是地圖zoom in, zoom out的級距</span><br><span class="line">        let _span:MKCoordinateSpan &#x3D; MKCoordinateSpan(latitudeDelta: 0.0005, longitudeDelta: 0.0005);</span><br><span class="line">        self.uimap.setRegion(MKCoordinateRegion(center: nowLocation, span: _span), animated: true);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>接著別忘了去Info.plist新增NSLocationWhenInUsageDescription</p>
+<pre><code>[![](http://2.bp.blogspot.com/-FwRtS6qlxv0/VPUmFe5sNwI/AAAAAAAAEbI/ZBcSw4FmZKY/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.09.07.png)](http://2.bp.blogspot.com/-FwRtS6qlxv0/VPUmFe5sNwI/AAAAAAAAEbI/ZBcSw4FmZKY/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.09.07.png)
+</code></pre>
+<ul>
+<li><p>接著執行看看！！</p>
+<p>  詢問是否授權取得座標資訊<br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-83KznhU8x60/VPUmGa8My2I/AAAAAAAAEbQ/KcQPz9Qjhrk/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.28.png"><img src="http://4.bp.blogspot.com/-83KznhU8x60/VPUmGa8My2I/AAAAAAAAEbQ/KcQPz9Qjhrk/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.28.png"></a><br>地圖中心點移到你目前的位置摟~<a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-QvR128Ffqwk/VPUmImiWVqI/AAAAAAAAEbY/JihYA7S-IiI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.40.png"><img src="http://3.bp.blogspot.com/-QvR128Ffqwk/VPUmImiWVqI/AAAAAAAAEbY/JihYA7S-IiI/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.40.png"></a></p>
+</li>
+<li><p>順帶一提,如果需要把使用者的位置座標顯示出來,在mapkit view設定檔將User Location打勾即可！！<a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-k22IlXdhDv4/VPUnkb4FXnI/AAAAAAAAEbk/0zrmSaQchns/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.15.45.png"><img src="http://3.bp.blogspot.com/-k22IlXdhDv4/VPUnkb4FXnI/AAAAAAAAEbk/0zrmSaQchns/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.15.45.png"></a></p>
+<p>  <a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-pgo8PxqY7R8/VPUn0drmU1I/AAAAAAAAEbs/3WRtslmNJTM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.17.10.png"><img src="http://4.bp.blogspot.com/-pgo8PxqY7R8/VPUn0drmU1I/AAAAAAAAEbs/3WRtslmNJTM/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.17.10.png"></a></p>
+</li>
+<li><p>  如果你有實際run過這段程式應該會發現你滑動map時,它會一直彈回你目前所在的位置,原因是我們沒有指定移動多少距離才會更新座標位置,所以didUpdateLocations會一直被呼叫,也就一直被彈回你的所在位置摟,告訴app移動多少距離再更新座標資訊即可 ```swift<br>location.distanceFilter = CLLocationDistance(10); //表示移動10公尺再更新座標資訊</p>
+</li>
+</ul>
+<pre><code>
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ios/" rel="tag"># ios</a>
+              <a href="/tags/swift/" rel="tag"># swift</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/03/03/swift-Navigation-Controller-2-%E5%82%B3%E9%81%9E%E5%8F%83%E6%95%B8/" rel="prev" title="[swift]Navigation Controller  (2) 傳遞參數">
+      <i class="fa fa-chevron-left"></i> [swift]Navigation Controller  (2) 傳遞參數
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-2-%E5%9C%A8%E5%9C%B0%E5%9C%96%E9%87%98%E4%B8%8A%E5%A4%A7%E9%A0%AD%E9%87%9D/" rel="next" title="[swift] IOS地圖運用 (2) 在地圖釘上大頭針">
+      [swift] IOS地圖運用 (2) 在地圖釘上大頭針 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-1-%E5%8F%96%E5%BE%97%E7%9B%AE%E5%89%8D%E5%BA%A7%E6%A8%99%E4%BD%8D%E7%BD%AE/";
+    this.page.identifier = "2015/03/03/swift-IOS地圖運用-1-取得目前座標位置/";
+    this.page.title = "[swift] IOS地圖運用 (1) 取得目前座標位置";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="#什麼是Code Snippet從字面來看是程式碼片段，如果已經寫程式一段時間應該都有用到過，例如在Visual Studio打上Switch後按兩下Tab自動產生的程式碼就是Code Snippet功能做出來的。   所以將常常重複寫的程式碼做成Code Snippet是一件很方便的事情 #如何自訂因為寫單元測試常常需要寫3A原則,所以把它做成Code Snippet就可以重用。 1234567">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【生產力】Code Snippet">
+<meta property="og:url" content="https://toyo0103.github.io/2018/07/11/%E3%80%90%E7%94%9F%E7%94%A2%E5%8A%9B%E3%80%91Code%20Snippet/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="#什麼是Code Snippet從字面來看是程式碼片段，如果已經寫程式一段時間應該都有用到過，例如在Visual Studio打上Switch後按兩下Tab自動產生的程式碼就是Code Snippet功能做出來的。   所以將常常重複寫的程式碼做成Code Snippet是一件很方便的事情 #如何自訂因為寫單元測試常常需要寫3A原則,所以把它做成Code Snippet就可以重用。 1234567">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180711/1.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180711/2.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180711/3.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180711/4.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180711/5.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180711/6.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180711/7.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180711/8.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180711/9.jpg">
+<meta property="article:published_time" content="2018-07-11T10:03:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.096Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="生產力">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20180711/1.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2018/07/11/%E3%80%90%E7%94%9F%E7%94%A2%E5%8A%9B%E3%80%91Code%20Snippet/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【生產力】Code Snippet | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/07/11/%E3%80%90%E7%94%9F%E7%94%A2%E5%8A%9B%E3%80%91Code%20Snippet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【生產力】Code Snippet
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-11 10:03:00" itemprop="dateCreated datePublished" datetime="2018-07-11T10:03:00+00:00">2018-07-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/07/11/%E3%80%90%E7%94%9F%E7%94%A2%E5%8A%9B%E3%80%91Code%20Snippet/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/07/11/【生產力】Code Snippet/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="什麼是Code-Snippet"><a href="#什麼是Code-Snippet" class="headerlink" title="#什麼是Code Snippet"></a>#什麼是Code Snippet</h1><p>從字面來看是程式碼片段，如果已經寫程式一段時間應該都有用到過，例如在Visual Studio打上Switch後按兩下Tab自動產生的程式碼就是Code Snippet功能做出來的。</p>
+<p><img src="/images/20180711/1.png" alt="/images/20180711/1.png"></p>
+<p><img src="/images/20180711/2.jpg" alt="/images/20180711/2.jpg"></p>
+<p>所以將常常重複寫的程式碼做成Code Snippet是一件很方便的事情</p>
+<h1 id="如何自訂"><a href="#如何自訂" class="headerlink" title="#如何自訂"></a>#如何自訂</h1><p>因為寫單元測試常常需要寫3A原則,所以把它做成Code Snippet就可以重用。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span>/ arrange</span></span><br><span class="line"><span class="keyword">var</span> sut = GetSystemUnderTest();</span><br><span class="line"><span class="keyword">var</span> expected = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span>/ act</span></span><br><span class="line"><span class="keyword">var</span> actual = sut.DoSomething();</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span>/ assert</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="建立3A-Pattern-snippet的檔案"><a href="#建立3A-Pattern-snippet的檔案" class="headerlink" title="建立3A Pattern.snippet的檔案"></a>建立3A Pattern.snippet的檔案</h2><p>打開一個記事本命名成3A Pattern，然後副檔名儲存成.snippet</p>
+<p><img src="/images/20180711/3.jpg"></p>
+<h2 id="撰寫內容"><a href="#撰寫內容" class="headerlink" title="撰寫內容"></a>撰寫內容</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">CodeSnippets</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">CodeSnippet</span> <span class="attr">Format</span>=<span class="string">&quot;1.0.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Header</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">SnippetTypes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">SnippetType</span>&gt;</span>Expansion<span class="tag">&lt;/<span class="name">SnippetType</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">SnippetType</span>&gt;</span>SurroundsWith<span class="tag">&lt;/<span class="name">SnippetType</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">SnippetTypes</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Title</span>&gt;</span>你的Code Snippet名稱<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Author</span>&gt;</span>Steven<span class="tag">&lt;/<span class="name">Author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Description</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">Description</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">HelpUrl</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">HelpUrl</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Shortcut</span>&gt;</span>你想要呼叫時的代碼<span class="tag">&lt;/<span class="name">Shortcut</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Snippet</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Declarations</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Literal</span> <span class="attr">Editable</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ID</span>&gt;</span>變數ID<span class="tag">&lt;/<span class="name">ID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ToolTip</span>&gt;</span>變數描述<span class="tag">&lt;/<span class="name">ToolTip</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Default</span>&gt;</span>預設值<span class="tag">&lt;/<span class="name">Default</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Function</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">Function</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Literal</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">Declarations</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Code</span> <span class="attr">Language</span>=<span class="string">&quot;csharp&quot;</span> <span class="attr">Delimiter</span>=<span class="string">&quot;$&quot;</span>&gt;</span>&lt;![CDATA[</span><br><span class="line">		......</span><br><span class="line">         放入程式碼的地方        </span><br><span class="line">		......</span><br><span class="line">        ]]&gt;<span class="tag">&lt;/<span class="name">Code</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Snippet</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">CodeSnippet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">CodeSnippets</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>依據上面的Template,將3A Pattern Code Snippet改成</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">CodeSnippets</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">CodeSnippet</span> <span class="attr">Format</span>=<span class="string">&quot;1.0.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Header</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">SnippetTypes</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">SnippetType</span>&gt;</span>Expansion<span class="tag">&lt;/<span class="name">SnippetType</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">SnippetType</span>&gt;</span>SurroundsWith<span class="tag">&lt;/<span class="name">SnippetType</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">SnippetTypes</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Title</span>&gt;</span>3A Pattern<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Author</span>&gt;</span>Steven<span class="tag">&lt;/<span class="name">Author</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Description</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">Description</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">HelpUrl</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">HelpUrl</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Shortcut</span>&gt;</span>aaa<span class="tag">&lt;/<span class="name">Shortcut</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Header</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Snippet</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Declarations</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Literal</span> <span class="attr">Editable</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ID</span>&gt;</span>expected<span class="tag">&lt;/<span class="name">ID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ToolTip</span>&gt;</span>expected<span class="tag">&lt;/<span class="name">ToolTip</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Default</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Default</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Function</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">Function</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Literal</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Literal</span> <span class="attr">Editable</span>=<span class="string">&quot;true&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ID</span>&gt;</span>DoSomthing<span class="tag">&lt;/<span class="name">ID</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">ToolTip</span>&gt;</span>DoSomthing<span class="tag">&lt;/<span class="name">ToolTip</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Default</span>&gt;</span>DoSomething()<span class="tag">&lt;/<span class="name">Default</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Function</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">Function</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Literal</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">Declarations</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Code</span> <span class="attr">Language</span>=<span class="string">&quot;csharp&quot;</span> <span class="attr">Delimiter</span>=<span class="string">&quot;$&quot;</span>&gt;</span>&lt;![CDATA[</span><br><span class="line">        //// arrange</span><br><span class="line">        var sut = GetSystemUnderTest();</span><br><span class="line">        var expected = $expected$;</span><br><span class="line">        </span><br><span class="line">        //// act</span><br><span class="line">        var actual = sut.$DoSomthing$;</span><br><span class="line">        </span><br><span class="line">        //// assert</span><br><span class="line">        ]]&gt;<span class="tag">&lt;/<span class="name">Code</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Snippet</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">CodeSnippet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">CodeSnippets</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>$變數$</strong> , 兩個前字號中間的就是變數ID,在Snippet &gt; Declarations &gt;  Literal 設定變數相關值</p>
+<h1 id="匯入Visual-Studio"><a href="#匯入Visual-Studio" class="headerlink" title="#匯入Visual Studio"></a>#匯入Visual Studio</h1><p>最後一步就是匯入Visual Studio中,點擊<strong>工具</strong> &gt; <strong>程式碼片段管理員</strong></p>
+<p><img src="/images/20180711/4.jpg" alt="/images/20180711/4.jpg"></p>
+<p>點擊<strong>匯入</strong>，選擇剛剛的3A Pattern.snippet檔案</p>
+<p><img src="/images/20180711/5.jpg" alt="/images/20180711/5.jpg"></p>
+<p>匯入到<strong>My Code Snippets</strong> &gt; <strong>完成</strong> ，就可以看到3A Pattern了</p>
+<p><img src="/images/20180711/6.jpg" alt="/images/20180711/6.jpg"></p>
+<p><img src="/images/20180711/7.jpg" alt="/images/20180711/7.jpg"></p>
+<h1 id="結果"><a href="#結果" class="headerlink" title="#結果"></a>#結果</h1><p>在程式碼中打aaa加兩次Tab就會呼叫出我們設定的Code Snippet</p>
+<p><img src="/images/20180711/8.jpg" alt="/images/20180711/8.jpg"></p>
+<p><img src="/images/20180711/9.jpg" alt="/images/20180711/9.jpg"></p>
+<div class="note info">
+            <p><strong>參考文章</strong></p><p><a target="_blank" rel="noopener" href="https://msdn.microsoft.com/zh-tw/library/ms165394.aspx">逐步解說：建立程式碼片段</a></p>
+          </div>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%94%9F%E7%94%A2%E5%8A%9B/" rel="tag"># 生產力</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/06/27/%E3%80%90LeetCode%E3%80%91Fraction%20to%20Recurring%20Decimal/" rel="prev" title="【LeetCode】Fraction to Recurring Decimal">
+      <i class="fa fa-chevron-left"></i> 【LeetCode】Fraction to Recurring Decimal
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/07/12/%E3%80%90Autofac%E3%80%91%E7%94%9F%E5%91%BD%E9%80%B1%E6%9C%9F/" rel="next" title="【Autofac】生命週期">
+      【Autofac】生命週期 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AFCode-Snippet"><span class="nav-number">1.</span> <span class="nav-text">#什麼是Code Snippet</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%87%AA%E8%A8%82"><span class="nav-number">2.</span> <span class="nav-text">#如何自訂</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B3A-Pattern-snippet%E7%9A%84%E6%AA%94%E6%A1%88"><span class="nav-number">2.1.</span> <span class="nav-text">建立3A Pattern.snippet的檔案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%92%B0%E5%AF%AB%E5%85%A7%E5%AE%B9"><span class="nav-number">2.2.</span> <span class="nav-text">撰寫內容</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8C%AF%E5%85%A5Visual-Studio"><span class="nav-number">3.</span> <span class="nav-text">#匯入Visual Studio</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B5%90%E6%9E%9C"><span class="nav-number">4.</span> <span class="nav-text">#結果</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2018/07/11/%E3%80%90%E7%94%9F%E7%94%A2%E5%8A%9B%E3%80%91Code%20Snippet/";
+    this.page.identifier = "2018/07/11/【生產力】Code Snippet/";
+    this.page.title = "【生產力】Code Snippet";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

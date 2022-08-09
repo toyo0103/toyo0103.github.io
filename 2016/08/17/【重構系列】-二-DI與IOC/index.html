@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="SourceCode :&amp;nbsp;https:&#x2F;&#x2F;github.com&#x2F;toyo0103&#x2F;Demo_EditTemplate_1 依據前一篇延續，接著我們把焦點放在Application與Service之間的狀況 [![](https:&#x2F;&#x2F;3.bp.blogspot.com&#x2F;-urWNSzGdlp8&#x2F;V7O6-tD1woI&#x2F;AAAAAAAAH6w&#x2F;z2GwsqBn9hANkslSqNpALNAu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【重構系列】(二) DI與IOC">
+<meta property="og:url" content="https://toyo0103.github.io/2016/08/17/%E3%80%90%E9%87%8D%E6%A7%8B%E7%B3%BB%E5%88%97%E3%80%91-%E4%BA%8C-DI%E8%88%87IOC/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="SourceCode :&amp;nbsp;https:&#x2F;&#x2F;github.com&#x2F;toyo0103&#x2F;Demo_EditTemplate_1 依據前一篇延續，接著我們把焦點放在Application與Service之間的狀況 [![](https:&#x2F;&#x2F;3.bp.blogspot.com&#x2F;-urWNSzGdlp8&#x2F;V7O6-tD1woI&#x2F;AAAAAAAAH6w&#x2F;z2GwsqBn9hANkslSqNpALNAu">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-08-17T16:36:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.097Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="Refactor">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://toyo0103.github.io/2016/08/17/%E3%80%90%E9%87%8D%E6%A7%8B%E7%B3%BB%E5%88%97%E3%80%91-%E4%BA%8C-DI%E8%88%87IOC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【重構系列】(二) DI與IOC | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/08/17/%E3%80%90%E9%87%8D%E6%A7%8B%E7%B3%BB%E5%88%97%E3%80%91-%E4%BA%8C-DI%E8%88%87IOC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【重構系列】(二) DI與IOC
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-08-17 16:36:00" itemprop="dateCreated datePublished" datetime="2016-08-17T16:36:00+00:00">2016-08-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/08/17/%E3%80%90%E9%87%8D%E6%A7%8B%E7%B3%BB%E5%88%97%E3%80%91-%E4%BA%8C-DI%E8%88%87IOC/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/17/【重構系列】-二-DI與IOC/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>SourceCode :&nbsp;<a target="_blank" rel="noopener" href="https://github.com/toyo0103/Demo_EditTemplate_1">https://github.com/toyo0103/Demo_EditTemplate_1</a></p>
+<p>依據前一篇延續，接著我們把焦點放在Application與Service之間的狀況</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-urWNSzGdlp8/V7O6-tD1woI/AAAAAAAAH6w/z2GwsqBn9hANkslSqNpALNAuRiBIuuI4ACLcB/s400/1.png)](https://3.bp.blogspot.com/-urWNSzGdlp8/V7O6-tD1woI/AAAAAAAAH6w/z2GwsqBn9hANkslSqNpALNAuRiBIuuI4ACLcB/s1600/1.png)</div>
+前一篇有提到程式應該要面對**抽象**避免高耦合的情況發生，改一髮進而動全身，所以有用**介面**的方式去處理
+
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-O7kXIwvgtDk/V7O7kOH1D0I/AAAAAAAAH60/M49OysRZ7R4LxOLv4UNE9WJVLBBpsICJwCLcB/s400/1.png)](https://3.bp.blogspot.com/-O7kXIwvgtDk/V7O7kOH1D0I/AAAAAAAAH60/M49OysRZ7R4LxOLv4UNE9WJVLBBpsICJwCLcB/s1600/1.png)</div>
+
+<p>然而來看看目前實際的程式狀況 : <strong>直接耦合</strong></p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-csgLbuLY5Dw/V7O9BEEADYI/AAAAAAAAH7A/n6mzb9hYUiksdAHYuQmBXuH6aPO0Sk8-wCLcB/s400/1.png)](https://4.bp.blogspot.com/-csgLbuLY5Dw/V7O9BEEADYI/AAAAAAAAH7A/n6mzb9hYUiksdAHYuQmBXuH6aPO0Sk8-wCLcB/s1600/1.png)</div>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-LkVwTAXMQHc/V7O9TcpERgI/AAAAAAAAH7I/18cwMlw6YtQxVKhppexI25lzS--gxIIagCLcB/s400/1.png)](https://2.bp.blogspot.com/-LkVwTAXMQHc/V7O9TcpERgI/AAAAAAAAH7I/18cwMlw6YtQxVKhppexI25lzS--gxIIagCLcB/s1600/1.png)</div>
+
+<p>這邊會談到兩個用來解開這種狀況的觀念</p>
+<ul>
+<li>  <strong><span style="color: red;">依賴注入</span></strong>(Dependency Injection)簡稱DI</li>
+<li>  **<span style="color: red;">控制反轉(</span>**Inversion Of Control)簡稱IOC</li>
+</ul>
+<p>先看看Google怎麼解釋<br><span style="color: #222222; font-family: &quot;arial&quot; , sans-serif;"><span style="background-color: #cccccc; line-height: 19.2px;"><strong>控制反轉（Inversion of Control，縮寫為IoC），是面向對象編程中的一種設計原則，可以用來減低計算機代碼之間的耦合度。其中最常見的方式叫做依賴注入（Dependency Injection，簡稱DI）</strong></span></span></p>
+<p>不知道看完有沒有懂的感覺XD，明明都是中文看完卻很想說「先生(小姐)可以講中文嗎?」。<br>撇開這些專業的術語不看，我們直接開始重構來體會這兩個概念</p>
+<span style="color: #444444;">
+</span><span style="color: #444444; font-size: x-large;">一、重構開始</span>
+
+<p><span style="font-size: large;"><strong>抽取介面</strong></span><br>避免直接耦合的第一步，抽取介面來隔離實體，既然這邊實際耦合了<strong>POIService</strong>，那我們就為它抽取出Interface <span style="color: #bf9000;">IPOIService</span></p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-LrWsJfLH2vU/V7PAEPoqZKI/AAAAAAAAH7Y/VCUD_9YVxnEPfAzFCKpQvHY3jQRkMBD9ACLcB/s1600/1.png)](https://3.bp.blogspot.com/-LrWsJfLH2vU/V7PAEPoqZKI/AAAAAAAAH7Y/VCUD_9YVxnEPfAzFCKpQvHY3jQRkMBD9ACLcB/s1600/1.png)</div>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IPOIService</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 取得屬於頻道的POI資料</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;channelID&quot;&gt;</span>The channel identifier.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>List&amp;lt;POI&amp;gt;.<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function">List&lt;POI&gt; <span class="title">Get</span>(<span class="params"><span class="built_in">string</span> channelID</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>將<strong>POIService</strong>掛上<span style="color: #bf9000;">IPOIService</span><br><span style="color: #bf9000;"><br></span></p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-YS5Dd3-SnX4/V7PA1QAh0ZI/AAAAAAAAH7g/Av6PbiG5yYgct0SYM1kP_n8mTQTLy0N2ACLcB/s400/1.png)](https://2.bp.blogspot.com/-YS5Dd3-SnX4/V7PA1QAh0ZI/AAAAAAAAH7g/Av6PbiG5yYgct0SYM1kP_n8mTQTLy0N2ACLcB/s1600/1.png)</div><span style="color: #bf9000;">
+</span><span style="color: #bf9000;">
+</span>**讓Application依賴介面**
+
+<p>上一篇遇到這種狀況時，我們會做一個Factory來產生實體，並且封裝在Service層。這次我們不這麼做，改成用依賴注入(DI)的方式來實作，將<span style="color: #bf9000;">IPOIService</span>改成用建構子帶入</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HomeController</span> : <span class="title">Controller</span></span><br><span class="line">    &#123;</span><br><span class="line">        IPOIService _POIService;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">HomeController</span>(<span class="params">IPOIService poiService</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//POIService改成依賴介面IPOIService</span></span><br><span class="line">            <span class="comment">//並且實體是由外部來決定，也就是所謂的依賴注入DI</span></span><br><span class="line">            _POIService = poiService;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> ActionResult <span class="title">Index</span>(<span class="params"><span class="built_in">string</span> id</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//依賴外部注入的IPOIService介面</span></span><br><span class="line">            <span class="keyword">var</span> POIs = _POIService.Get(id);</span><br><span class="line">            <span class="keyword">return</span> Json(POIs,JsonRequestBehavior.AllowGet);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>這邊用的<span style="color: #bf9000;">IPOIService</span>是由外部注入的，實體已經不由<strong>HomeController <strong>內部來決定了(不New實體了)，也就是上面所提到的</strong>DI 依賴注入</strong>(<em>要用的實體由建構子注入</em>)，<strong>IOC控制反轉</strong>(<em>實體已經由內部控制改由外部控制了</em>)</p>
+<p>接下來面臨的問題是，雖然我們讓實體改成用外部注入的方式，但HomeController在建立的時候是由系統去產生的，它怎麼知道<span style="color: #bf9000;">IPOIService</span>的實體是要注入誰，所以現在執行程式會看到以下結果</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-0ijdWklCbSk/V7QYVfZnz_I/AAAAAAAAH7w/Bj3Sa8cECEcTJNOsObhzWMd6vMjwUJIggCLcB/s1600/1.png)](https://4.bp.blogspot.com/-0ijdWklCbSk/V7QYVfZnz_I/AAAAAAAAH7w/Bj3Sa8cECEcTJNOsObhzWMd6vMjwUJIggCLcB/s1600/1.png)</div>
+
+<p>這時候就要介紹<strong>Unity</strong>這個套件來幫我們解決這個問題了</p>
+<p>**</p>
+<hr>
+<p>**<strong>何謂Unity</strong></p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-PEXphTQycyE/V7QY_Y7zGoI/AAAAAAAAH70/n8FT2stz8PQnOEXWrUSl95ilLNBrmTz1gCLcB/s400/MSUNITY.jpg)](https://1.bp.blogspot.com/-PEXphTQycyE/V7QY_Y7zGoI/AAAAAAAAH70/n8FT2stz8PQnOEXWrUSl95ilLNBrmTz1gCLcB/s1600/MSUNITY.jpg)</div>MSDN上的Unity套件介紹 : [https://msdn.microsoft.com/en-us/library/ff647202.aspx](https://msdn.microsoft.com/en-us/library/ff647202.aspx)
+**
+**<span style="font-size: large;">其實這個套件說穿了就是在Application啟動時，註冊每個Interface對應的實體是誰，當碰到要注入這個Interface時，Unity就會去找找看你有沒有跟它說對應的實體，如果有，它就把實體產生出來幫你帶入。</span>那就一步一步做做看邊體會它的意思
+<span style="font-size: large;">
+</span>
+<span style="font-size: large;">
+</span><span style="font-size: large;">**1.安裝Unity套件&nbsp;**</span>
+<span style="font-size: large;">
+</span>請在Application專案透過Nuget搜尋Unity安裝**Unity.Mvc**
+<div class="separator" style="clear: both; text-align: center;">
+</div><div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-HhIfl_RkSKA/V7QbZyR_3SI/AAAAAAAAH8M/C4VxtKVrLdUkdbq6eGIXxg0bH9m_A6DpACLcB/s640/1.png)](https://2.bp.blogspot.com/-HhIfl_RkSKA/V7QbZyR_3SI/AAAAAAAAH8M/C4VxtKVrLdUkdbq6eGIXxg0bH9m_A6DpACLcB/s1600/1.png)</div>
+**
+****<b style="font-size: medium;">2.註冊Interface應該對應的實體**</b>
+**<b style="font-size: medium;">
+**</b>這時候打開App_Start資料夾應該會看到多了一個檔案**UnityConfig.cs**
+
+<div class="separator" style="clear: both; font-weight: bold; text-align: center;">[![](https://2.bp.blogspot.com/-MCmsg-5dEEY/V7Qb_xiRLFI/AAAAAAAAH8U/3JMMEHww4joUlfQI3HjpW0abcn343O9KwCLcB/s320/1.png)](https://2.bp.blogspot.com/-MCmsg-5dEEY/V7Qb_xiRLFI/AAAAAAAAH8U/3JMMEHww4joUlfQI3HjpW0abcn343O9KwCLcB/s1600/1.png)</div><div class="separator" style="clear: both; font-weight: bold; text-align: center;">
+</div><div class="separator" style="clear: both; text-align: left;">
+</div><div class="separator" style="clear: both; text-align: left;">打開它會看到以下Code跟註解，教你怎麼使用它</div><div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-B5FxVSeEW9Q/V7QcPsxDVeI/AAAAAAAAH8Y/lsWGO864ftoAVFsUH3nmO9mB4LL0lOAZwCLcB/s640/1.png)](https://2.bp.blogspot.com/-B5FxVSeEW9Q/V7QcPsxDVeI/AAAAAAAAH8Y/lsWGO864ftoAVFsUH3nmO9mB4LL0lOAZwCLcB/s1600/1.png)</div><div class="separator" style="clear: both; text-align: left;">
+</div><div class="separator" style="clear: both; text-align: left;">
+</div><div class="separator" style="clear: both; text-align: left;">
+</div><div class="separator" style="clear: both; text-align: left;">請將**RegisterTypes**&nbsp;改成以下</div><div class="separator" style="clear: both; text-align: left;">
+</div><div class="separator" style="clear: both; text-align: left;">
+</div>```csharp
+/// <summary>Registers the type mappings with the Unity container.</summary>
+        /// <param name="container">The unity container to configure.</param>
+        /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
+        /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
+        public static void RegisterTypes(IUnityContainer container)
+        {
+
+<pre><code>        //TransientLifetimeManager為這個實體的創建生命週期
+        //表示執行程式時，每次碰到IPOIService都會去new 一個新的POIService
+        //Unity有許多生命週期可以使用，可以參考官方的文件
+        //例如PerResolveLifetimeManager就是本次Request只有New一次實體，如果同個Request碰到多次
+        //都還是會返回第一次New的實體，直到Reqeust結束才會被消滅掉,Singleton的概念
+        container.RegisterType&lt;IPOIService, POIService&gt;(new TransientLifetimeManager());
+    &#125;
+</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">關於Unity創建實體的生命週期請參考官方文件 :&amp;nbsp;[https:&#x2F;&#x2F;msdn.microsoft.com&#x2F;en-us&#x2F;library&#x2F;ff660872(v&#x3D;pandp.20).aspx](https:&#x2F;&#x2F;msdn.microsoft.com&#x2F;en-us&#x2F;library&#x2F;ff660872(v&#x3D;pandp.20).aspx)</span><br><span class="line"></span><br><span class="line">註冊好後接著執行看看，會發現程式又活過來了，不會再出現剛剛的錯誤頁面，因為程式已經知道該Interface對應的實體是誰，當由外部注入時，Unity會自己去幫你控制實體的產生並且注入</span><br><span class="line"></span><br><span class="line">&lt;div class&#x3D;&quot;separator&quot; style&#x3D;&quot;clear: both; text-align: center;&quot;&gt;[![](https:&#x2F;&#x2F;4.bp.blogspot.com&#x2F;-QgBTpClZA_g&#x2F;V7QgW_P_VNI&#x2F;AAAAAAAAH8o&#x2F;EBBv1BKh0pIIbOKaZoPRQB4Gt-dmnLcmgCLcB&#x2F;s640&#x2F;1.png)](https:&#x2F;&#x2F;4.bp.blogspot.com&#x2F;-QgBTpClZA_g&#x2F;V7QgW_P_VNI&#x2F;AAAAAAAAH8o&#x2F;EBBv1BKh0pIIbOKaZoPRQB4Gt-dmnLcmgCLcB&#x2F;s1600&#x2F;1.png)&lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">透過這個重構的實例，我們可以從裡面瞭解到何謂**DI**與**IOC**的概念，但可能會想說，那這樣的好處是什麼? 直接New錯了嗎?</span><br><span class="line"></span><br><span class="line">回到前一篇提到的，如果直接New的話也就是高耦合的狀況，如果今天面對的實體改動時，很難避免耦合的地方不會跟著變動，所以我們**依賴抽象**(Interface)，用了Unity後其實又牽扯到一個大重點&quot;**職責分離**&quot;。</span><br><span class="line"></span><br><span class="line">以後如果有Interface與實體的對應關係，直接就會想到要去**UnityConfig.cs**來改，所有的註冊表在這邊統一管理而且一目了然，如果哪天主管跟你說**POIService**它不喜歡，要重新寫個**NewPOIService**，那我們是不是直接把**NewPOIService實作**&lt;span style&#x3D;&quot;color: #bf9000;&quot;&gt;IPOIService&lt;&#x2F;span&gt;後，然後打開**UnityConfig.cs**改成這樣即可</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;csharp</span><br><span class="line">container.RegisterType&lt;IPOIService, NewPOIService&gt;(new TransientLifetimeManager());</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>其他地方連動都不用動，就已經直接將對應的實體給換掉了!!! 統一管理之外，也能達到最小更動原則。</p>
+<p>這次的重構就先到這邊~</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+              <a href="/tags/Refactor/" rel="tag"># Refactor</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/08/16/%E3%80%90%E9%87%8D%E6%A7%8B%E7%B3%BB%E5%88%97%E3%80%91-%E4%B8%80-%E5%A4%9A%E5%9E%8B/" rel="prev" title="【重構系列】(一) 多型">
+      <i class="fa fa-chevron-left"></i> 【重構系列】(一) 多型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/08/18/%E3%80%90%E9%87%8D%E6%A7%8B%E7%B3%BB%E5%88%97%E3%80%91-%E4%B8%89-%E5%96%AE%E4%B8%80%E8%81%B7%E8%B2%AC%E5%8E%9F%E5%89%87-Single-Responsibility-Principle-SRP/" rel="next" title="【重構系列】(三) 單一職責原則(Single Responsibility Principle , SRP)">
+      【重構系列】(三) 單一職責原則(Single Responsibility Principle , SRP) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2016/08/17/%E3%80%90%E9%87%8D%E6%A7%8B%E7%B3%BB%E5%88%97%E3%80%91-%E4%BA%8C-DI%E8%88%87IOC/";
+    this.page.identifier = "2016/08/17/【重構系列】-二-DI與IOC/";
+    this.page.title = "【重構系列】(二) DI與IOC";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="程式隨筆">
+<meta property="og:url" content="https://toyo0103.github.io/page/13/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Toyo">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://toyo0103.github.io/page/13/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
+
+  <title>程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/13/swift-CoreData-2-%E6%96%B0%E5%A2%9E-%E5%88%AA%E9%99%A4CoreData%E8%B3%87%E6%96%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/13/swift-CoreData-2-%E6%96%B0%E5%A2%9E-%E5%88%AA%E9%99%A4CoreData%E8%B3%87%E6%96%99/" class="post-title-link" itemprop="url">[swift]  CoreData (2) 新增,刪除CoreData資料</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-13 18:20:00" itemprop="dateCreated datePublished" datetime="2015-03-13T18:20:00+00:00">2015-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/13/swift-CoreData-2-%E6%96%B0%E5%A2%9E-%E5%88%AA%E9%99%A4CoreData%E8%B3%87%E6%96%99/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/13/swift-CoreData-2-新增-刪除CoreData資料/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>這邊做個簡單的介面,讓TableView的資料來自資料庫,並能把資料存到資料庫裡面<br><a target="_blank" rel="noopener" href="http://1.bp.blogspot.com/-Uz3JfDAuaic/VQKFrHxDa-I/AAAAAAAAEkg/2DXXn3_CA6o/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8B%E5%8D%882.35.33.png"><img src="http://1.bp.blogspot.com/-Uz3JfDAuaic/VQKFrHxDa-I/AAAAAAAAEkg/2DXXn3_CA6o/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8B%E5%8D%882.35.33.png"></a> </p>
+<ul>
+<li><p>首先先把TableView的資料來源設定成來自資料庫,完整程式碼如下,這樣就已經把Table的datasource friends來源改成SQLite了 ```swift<br>import UIKit<br>import CoreData<br>class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSource, NSFetchedResultsControllerDelegate{<br>  @IBOutlet weak var tableview: UITableView!<br>  var friends : [Friend] = []<br>  var fetchRequestController:NSFetchedResultsController!<br>  override func viewDidLoad() {</p>
+<pre><code>  super.viewDidLoad()
+  //讀取Friend的Entity
+  var fetchRequest = NSFetchRequest(entityName: &quot;Friend&quot;)
+  //排序方式用name這個欄位
+  let sortDescriptor = NSSortDescriptor(key: &quot;name&quot;, ascending: true)
+  fetchRequest.sortDescriptors = [sortDescriptor]
+  if let managedObjectContext = (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext&#123;
+      fetchRequestController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+      //delegate設定為自己時,當新增修改刪除SQLite的資料時會呼叫以下事件
+      //controllerWillChangeContent()
+      //controller(_:didChangeObject:atIndexPath:forChangeType:newIndexPath:)
+      //controllerDidChangeContent(_:)
+      fetchRequestController.delegate = self
+      var e:NSError?
+      var result = fetchRequestController.performFetch(&amp;e)
+      friends = fetchRequestController.fetchedObjects as [Friend]
+      if result != true&#123;
+           println(e?.localizedDescription)
+      &#125;
+  &#125;
+</code></pre>
+<p>  }</p>
+<pre><code>  override func didReceiveMemoryWarning() &#123;
+  super.didReceiveMemoryWarning()
+  // Dispose of any resources that can be recreated.
+</code></pre>
+<p>  }</p>
+<pre><code>  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -&gt; UITableViewCell &#123;
+  let identifier = &quot;cell&quot;
+  var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as customCell
+  cell.nameLabel.text = friends[indexPath.row].name
+  cell.telLabel.text = friends[indexPath.row].tel.stringValue
+  cell.picImageView.image = UIImage(data: friends[indexPath.row].picture)
+  cell.marryLabel.text = friends[indexPath.row].marry.boolValue ? &quot;YES&quot; : &quot;NO&quot;
+  return cell
+</code></pre>
+<p>  }</p>
+<pre><code>  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int &#123;
+  return friends.count
+</code></pre>
+<p>  }<br>}</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   接著寫按下save後的事件將檔案能寫到資料庫中,在這之前先處理Yes and no的按鈕和載入圖片按鈕</span><br><span class="line">Yes and No按鈕 &#96;&#96;&#96;swift</span><br><span class="line">@IBOutlet weak var YesButton: UIButton!</span><br><span class="line">    @IBOutlet weak var NoButton: UIButton!</span><br><span class="line"></span><br><span class="line">        @IBAction func MarryButtonClick(sender: AnyObject) &#123;</span><br><span class="line">        YesButton.backgroundColor &#x3D; (sender as UIButton &#x3D;&#x3D; YesButton) ? UIColor.redColor() : UIColor.lightGrayColor()</span><br><span class="line">        NoButton.backgroundColor &#x3D; (sender as UIButton &#x3D;&#x3D; NoButton) ? UIColor.redColor() : UIColor.lightGrayColor()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<p>實作載入圖片的按鈕,需要讓viewController實作UIImagePickerControllerDelegate和UINavigationControllerDelegate</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span> , <span class="title">UITableViewDelegate</span> , <span class="title">UITableViewDataSource</span>, <span class="title">NSFetchedResultsControllerDelegate</span> , <span class="title">UIImagePickerControllerDelegate</span>,<span class="title">UINavigationControllerDelegate</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>selectPicture的按鈕 ```swift<br>@IBAction func SelectPictureClick(sender: AnyObject) {<br>        let imagePicker = UIImagePickerController()<br>        imagePicker.allowsEditing = false<br>        imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary<br>        imagePicker.delegate = self<br>        //顯示挑選圖片的視窗<br>        self.presentViewController(imagePicker, animated: true, completion: nil)<br>    }<br>    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {<br>        PicImageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage<br>        PicImageView.contentMode = UIViewContentMode.ScaleAspectFill<br>        PicImageView.clipsToBounds = true<br>        //關閉挑選圖片的視窗<br>        dismissViewControllerAnimated(true, completion: nil)<br>    }</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">接著執行看看應該結果[![](http:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-2NW3TefbDxE&#x2F;VQK1HNE_8rI&#x2F;AAAAAAAAEkw&#x2F;l2v6Div6BYA&#x2F;s400&#x2F;test.gif)](http:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-2NW3TefbDxE&#x2F;VQK1HNE_8rI&#x2F;AAAAAAAAEkw&#x2F;l2v6Div6BYA&#x2F;s1600&#x2F;test.gif)</span><br><span class="line">*   接著把Save按鈕按下後存到SQLite的事件寫好 &#96;&#96;&#96;swift</span><br><span class="line">@IBAction func SaveClick(sender: AnyObject) &#123;</span><br><span class="line">        if let manageObjectContext &#x3D; (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext&#123;</span><br><span class="line">            var friend &#x3D; NSEntityDescription.insertNewObjectForEntityForName(&quot;Friend&quot;, inManagedObjectContext: manageObjectContext) as Friend</span><br><span class="line">            friend.name &#x3D; NameTextField.text</span><br><span class="line">            friend.tel &#x3D; TelTextField.text.toInt()</span><br><span class="line">            friend.marry &#x3D; (YesButton.backgroundColor &#x3D;&#x3D; UIColor.redColor()) ? true : false</span><br><span class="line">            friend.picture &#x3D; UIImagePNGRepresentation(PicImageView.image)</span><br><span class="line">            var e:NSError?</span><br><span class="line">            if manageObjectContext.save(&amp;e) !&#x3D; true&#123;</span><br><span class="line">                println(&quot;error: \(e?.localizedDescription)&quot;)</span><br><span class="line">                return</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>接著執行看看會發現按了儲存按鈕後雖然存進資料庫了,但沒有讓TableView馬上連動顯示,必須重新開APP才會顯示在table上*   還記得之前有繼承NSFetchedResultsControllerDelegate嗎?這時候派上用場了,補上幾個事件讓他可以跟TableView連動吧 ```swift<br>//資料庫準備更新了<br>    func controllerWillChangeContent(controller: NSFetchedResultsController) {<br>        tableview.beginUpdates()<br>    }<br>    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {<br>        switch type{<br>        case .Insert:<br>            tableview.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Fade)<br>        case .Delete:<br>            tableview.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)<br>        case .Update:<br>            tableview.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)<br>        default:<br>            tableview.reloadData()<br>        }<br>        friends = controller.fetchedObjects as [Friend]<br>    }<br>    func controllerDidChangeContent(controller: NSFetchedResultsController) {<br>        tableview.endUpdates()<br>    }</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">接著再執行看看應該就可以看到他會馬上顯示了*   最後來個刪除吧！！這邊只舉例刪除該如何做,就不加到例子當中了 &#96;&#96;&#96;swift</span><br><span class="line">if let manageObjectContext &#x3D; (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext&#123;</span><br><span class="line">            &#x2F;&#x2F;簡單說就是挑出那個想刪除的物件</span><br><span class="line">            var friendToDelete &#x3D; self.fetchRequestController.objectAtIndexPath(NSIndexPath(index: 0)) as Friend</span><br><span class="line">            &#x2F;&#x2F;呼叫刪除方法把它丟進去</span><br><span class="line">            manageObjectContext.deleteObject(friendToDelete)</span><br><span class="line">            var e:NSError?</span><br><span class="line">            &#x2F;&#x2F;儲存</span><br><span class="line">            if manageObjectContext.save(&amp;e) !&#x3D; true&#123;</span><br><span class="line">                println(&quot;error: \(e?.localizedDescription)&quot;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>基本上有操作過.NET Entity物件的話,這邊的概念幾乎都雷同,最後補上完整的程式碼 ```swift<br>import UIKit<br>import CoreData<br>class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSource, UINavigationControllerDelegate ,NSFetchedResultsControllerDelegate , UIImagePickerControllerDelegate{<br>  @IBOutlet weak var tableview: UITableView!<br>  var friends : [Friend] = []<br>  var fetchRequestController:NSFetchedResultsController!<br>  @IBOutlet weak var NameTextField: UITextField!<br>  @IBOutlet weak var TelTextField: UITextField!<br>  @IBOutlet weak var PicImageView: UIImageView!<br>  @IBOutlet weak var YesButton: UIButton!<br>  @IBOutlet weak var NoButton: UIButton!<br>  override func viewDidLoad() {</p>
+<pre><code>  super.viewDidLoad()
+  //讀取Friend的Entity
+  var fetchRequest = NSFetchRequest(entityName: &quot;Friend&quot;)
+  //排序方式用name這個欄位
+  let sortDescriptor = NSSortDescriptor(key: &quot;name&quot;, ascending: true)
+  fetchRequest.sortDescriptors = [sortDescriptor]
+  if let managedObjectContext = (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext&#123;
+      fetchRequestController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+      //delegate設定為自己時,當新增修改刪除SQLite的資料時會呼叫以下事件
+      //controllerWillChangeContent()
+      //controller(_:didChangeObject:atIndexPath:forChangeType:newIndexPath:)
+      //controllerDidChangeContent(_:)
+      fetchRequestController.delegate = self
+      var e:NSError?
+      var result = fetchRequestController.performFetch(&amp;e)
+      friends = fetchRequestController.fetchedObjects as [Friend]
+      if result != true&#123;
+           println(e?.localizedDescription)
+      &#125;
+  &#125;
+</code></pre>
+<p>  }</p>
+<pre><code>  override func didReceiveMemoryWarning() &#123;
+  super.didReceiveMemoryWarning()
+  // Dispose of any resources that can be recreated.
+</code></pre>
+<p>  }</p>
+<pre><code>  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -&gt; UITableViewCell &#123;
+  let identifier = &quot;cell&quot;
+  var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as customCell
+  cell.nameLabel.text = friends[indexPath.row].name
+  cell.telLabel.text = friends[indexPath.row].tel.stringValue
+  cell.picImageView.image = UIImage(data: friends[indexPath.row].picture)
+  cell.marryLabel.text = friends[indexPath.row].marry.boolValue ? &quot;YES&quot; : &quot;NO&quot;
+  return cell
+</code></pre>
+<p>  }</p>
+<pre><code>  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int &#123;
+  return friends.count
+</code></pre>
+<p>  }<br>  @IBAction func MarryButtonClick(sender: AnyObject) {</p>
+<pre><code>  YesButton.backgroundColor = (sender as UIButton == YesButton) ? UIColor.redColor() : UIColor.lightGrayColor()
+  NoButton.backgroundColor = (sender as UIButton == NoButton) ? UIColor.redColor() : UIColor.lightGrayColor()
+</code></pre>
+<p>  }<br>  @IBAction func SelectPictureClick(sender: AnyObject) {</p>
+<pre><code>  let imagePicker = UIImagePickerController()
+  imagePicker.allowsEditing = false
+  imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+  imagePicker.delegate = self
+  //顯示挑選圖片的視窗
+  self.presentViewController(imagePicker, animated: true, completion: nil)
+</code></pre>
+<p>  }<br>  func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {</p>
+<pre><code>  PicImageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+  PicImageView.contentMode = UIViewContentMode.ScaleAspectFill
+  PicImageView.clipsToBounds = true
+  //關閉挑選圖片的視窗
+  dismissViewControllerAnimated(true, completion: nil)
+</code></pre>
+<p>  }<br>  @IBAction func SaveClick(sender: AnyObject) {</p>
+<pre><code>  if let manageObjectContext = (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext&#123;
+      var friend = NSEntityDescription.insertNewObjectForEntityForName(&quot;Friend&quot;, inManagedObjectContext: manageObjectContext) as Friend
+      friend.name = NameTextField.text
+      friend.tel = TelTextField.text.toInt()
+      friend.marry = (YesButton.backgroundColor == UIColor.redColor()) ? true : false
+      friend.picture = UIImagePNGRepresentation(PicImageView.image)
+      var e:NSError?
+      if manageObjectContext.save(&amp;e) != true&#123;
+          println(&quot;error: \(e?.localizedDescription)&quot;)
+          return
+      &#125;
+  &#125;
+</code></pre>
+<p>  }<br>  //資料庫準備更新了<br>  func controllerWillChangeContent(controller: NSFetchedResultsController) {</p>
+<pre><code>  tableview.beginUpdates()
+</code></pre>
+<p>  }<br>  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {</p>
+<pre><code>  switch type&#123;
+  case .Insert:
+      tableview.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
+  case .Delete:
+      tableview.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
+  case .Update:
+      tableview.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
+  default:
+      tableview.reloadData()
+  &#125;
+  friends = controller.fetchedObjects as [Friend]
+</code></pre>
+<p>  }<br>  func controllerDidChangeContent(controller: NSFetchedResultsController) {</p>
+<pre><code>  tableview.endUpdates()
+</code></pre>
+<p>  }<br>}</p>
+</li>
+</ul>
+<pre><code>
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/13/swift-CoreData-1-%E5%BB%BA%E7%AB%8BCoreData/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/13/swift-CoreData-1-%E5%BB%BA%E7%AB%8BCoreData/" class="post-title-link" itemprop="url">[swift]  CoreData (1) 建立CoreData</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-13 10:44:00" itemprop="dateCreated datePublished" datetime="2015-03-13T10:44:00+00:00">2015-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/13/swift-CoreData-1-%E5%BB%BA%E7%AB%8BCoreData/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/13/swift-CoreData-1-建立CoreData/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>CoreData是是一種以物件導向方式讓開發者與跟資料庫互動的框架,好處是你不需要懂SQL也能對SQLite做操作</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-cLEXYUQDTJA/VQJMODzIHuI/AAAAAAAAEjg/uDb2WQBOTmA/s1600/S__23961604.jpg)](http://1.bp.blogspot.com/-cLEXYUQDTJA/VQJMODzIHuI/AAAAAAAAEjg/uDb2WQBOTmA/s1600/S__23961604.jpg)[
+](http://1.bp.blogspot.com/-cLEXYUQDTJA/VQJMODzIHuI/AAAAAAAAEjg/uDb2WQBOTmA/s1600/S__23961604.jpg)</div><div style="clear: both;"></div>
+
+<ul>
+<li><p>  接著來筆記如何實作CoreData,首先先建立一個專案並把Use Core Data勾選起來<br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-owBGxoBedgU/VQJObPRud4I/AAAAAAAAEjs/UKixdyBIA_0/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8810.37.24.png"><img src="https://4.bp.blogspot.com/-owBGxoBedgU/VQJObPRud4I/AAAAAAAAEjs/UKixdyBIA_0/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8810.37.24.png"></a></p>
+</li>
+<li><p>接著打開AppDelegate最下面可以看到多了一大堆程式碼 ```js<br>// MARK: - Core Data stack</p>
+<pre><code>  lazy var applicationDocumentsDirectory: NSURL = &#123;
+  // The directory the application uses to store the Core Data store file. This code uses a directory named &quot;tw.com.xxx.Coredata&quot; in the application&#39;s documents Application Support directory.
+  let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
+  return urls[urls.count-1] as NSURL
+</code></pre>
+<p>  }()</p>
+<pre><code>  lazy var managedObjectModel: NSManagedObjectModel = &#123;
+  // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
+  let modelURL = NSBundle.mainBundle().URLForResource(&quot;Coredata&quot;, withExtension: &quot;momd&quot;)!
+  return NSManagedObjectModel(contentsOfURL: modelURL)!
+</code></pre>
+<p>  }()</p>
+<pre><code>  lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = &#123;
+  // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
+  // Create the coordinator and store
+  var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+  let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent(&quot;Coredata.sqlite&quot;)
+  var error: NSError? = nil
+  var failureReason = &quot;There was an error creating or loading the application&#39;s saved data.&quot;
+  if coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil, error: &amp;error) == nil &#123;
+      coordinator = nil
+      // Report any error we got.
+      let dict = NSMutableDictionary()
+      dict[NSLocalizedDescriptionKey] = &quot;Failed to initialize the application&#39;s saved data&quot;
+      dict[NSLocalizedFailureReasonErrorKey] = failureReason
+      dict[NSUnderlyingErrorKey] = error
+      error = NSError(domain: &quot;YOUR_ERROR_DOMAIN&quot;, code: 9999, userInfo: dict)
+      // Replace this with code to handle the error appropriately.
+      // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+      NSLog(&quot;Unresolved error \(error), \(error!.userInfo)&quot;)
+      abort()
+  &#125;
+  return coordinator
+</code></pre>
+<p>  }()</p>
+<pre><code>  lazy var managedObjectContext: NSManagedObjectContext? = &#123;
+  // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
+  let coordinator = self.persistentStoreCoordinator
+  if coordinator == nil &#123;
+      return nil
+  &#125;
+  var managedObjectContext = NSManagedObjectContext()
+  managedObjectContext.persistentStoreCoordinator = coordinator
+  return managedObjectContext
+</code></pre>
+<p>  }()</p>
+<pre><code>  // MARK: - Core Data Saving support
+
+  func saveContext () &#123;
+  if let moc = self.managedObjectContext &#123;
+      var error: NSError? = nil
+      if moc.hasChanges &amp;&amp; !moc.save(&amp;error) &#123;
+          // Replace this implementation with code to handle the error appropriately.
+          // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+          NSLog(&quot;Unresolved error \(error), \(error!.userInfo)&quot;)
+          abort()
+      &#125;
+  &#125;
+</code></pre>
+<p>  }</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   接著建立物件託管模型</span><br><span class="line">[![](https:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-KK3Tu_Vazbk&#x2F;VQJTyV8AxfI&#x2F;AAAAAAAAEj8&#x2F;YqCpExRBFF0&#x2F;s400&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8811.02.54.png)](http:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-KK3Tu_Vazbk&#x2F;VQJTyV8AxfI&#x2F;AAAAAAAAEj8&#x2F;YqCpExRBFF0&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8811.02.54.png)</span><br><span class="line">*   接著建立Entities</span><br><span class="line">[![](https:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-D2JtYHHTBxI&#x2F;VQJUguKuVhI&#x2F;AAAAAAAAEkE&#x2F;2vxmi1ktG4U&#x2F;s400&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8811.07.18.png)](http:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-D2JtYHHTBxI&#x2F;VQJUguKuVhI&#x2F;AAAAAAAAEkE&#x2F;2vxmi1ktG4U&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8811.07.18.png)</span><br><span class="line">＊**&lt;span style&#x3D;&quot;color: blue;&quot;&gt;圖片需要用Binary Data來儲存 &lt;&#x2F;span&gt;**</span><br><span class="line">*   接著建立Class來對應Entity &#96;&#96;&#96;js</span><br><span class="line">import Foundation</span><br><span class="line">import CoreData</span><br><span class="line">class Friend:NSManagedObject  &#123;</span><br><span class="line">    @NSManaged var name:String!</span><br><span class="line">    @NSManaged var tel:NSNumber!</span><br><span class="line">    @NSManaged var picture:NSData!</span><br><span class="line">    @NSManaged var marry:NSNumber!</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><span style="color: blue;">＊對應Entity中的Boolean, Integer, Float and Double attributes,都是用NSNumber</span></p>
+<ul>
+<li>  接著設定Entity與Class的對應關係,如圖：<br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-A0tdcw2Qows/VQJY1R04ztI/AAAAAAAAEkQ/EyxFjlRa7YY/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8811.25.50.png"><img src="https://4.bp.blogspot.com/-A0tdcw2Qows/VQJY1R04ztI/AAAAAAAAEkQ/EyxFjlRa7YY/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8A%E5%8D%8811.25.50.png"></a><br>這樣託管物件的建立就已經完成了,下一篇介紹如何叫用</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/12/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-6-%E9%80%8F%E9%81%8ECLGeocoder%E8%BD%89%E6%8F%9B%E7%B6%93%E7%B7%AF%E5%BA%A6%E8%88%87%E5%9C%B0%E5%9D%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/12/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-6-%E9%80%8F%E9%81%8ECLGeocoder%E8%BD%89%E6%8F%9B%E7%B6%93%E7%B7%AF%E5%BA%A6%E8%88%87%E5%9C%B0%E5%9D%80/" class="post-title-link" itemprop="url">[swift]  IOS地圖運用 (6) 透過CLGeocoder轉換經緯度與地址</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-12 11:03:00" itemprop="dateCreated datePublished" datetime="2015-03-12T11:03:00+00:00">2015-03-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/12/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-6-%E9%80%8F%E9%81%8ECLGeocoder%E8%BD%89%E6%8F%9B%E7%B6%93%E7%B7%AF%E5%BA%A6%E8%88%87%E5%9C%B0%E5%9D%80/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/12/swift-IOS地圖運用-6-透過CLGeocoder轉換經緯度與地址/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>IOS提供CLGeocoder將地址轉成經緯度,或是把經緯度轉換成地址,詳細語法如下 </p>
+<ul>
+<li>  記得先Import MapKit</li>
+<li>地址轉經緯度(geocodeAddressString) ```swift<br>let geoCoder = CLGeocoder()<br>geoCoder.geocodeAddressString(“這邊帶入地址”, completionHandler: {<br> (placemarks:[AnyObject]!,error:NSError!) -&gt; Void in<br> if error != nil{<pre><code>println(error)
+return
+</code></pre>
+ }<br> if placemarks != nil &amp;&amp; placemarks.count &gt; 0{<pre><code>let placemark = placemarks[0] as CLPlacemark
+//placemark.location.coordinate 取得經緯度的參數   &#125;
+</code></pre>
+})</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   經緯度轉地址的方法 &#96;&#96;&#96;swift</span><br><span class="line">let geoCoder &#x3D; CLGeocoder()</span><br><span class="line">geoCoder.reverseGeocodeLocation(CLLocation(latitude: 25.024839 , longitude: 121.549170), completionHandler: &#123;</span><br><span class="line">   (placemarks:[AnyObject]!,error:NSError!) -&gt; Void in</span><br><span class="line">   if error !&#x3D; nil&#123;</span><br><span class="line">      println(error)</span><br><span class="line">      return</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">       &#x2F;&#x2F;name         街道地址</span><br><span class="line">   &#x2F;&#x2F;country      國家</span><br><span class="line">   &#x2F;&#x2F;province     省</span><br><span class="line">   &#x2F;&#x2F;locality     市</span><br><span class="line">   &#x2F;&#x2F;sublocality  縣.區</span><br><span class="line">   &#x2F;&#x2F;route        街道、路</span><br><span class="line">   &#x2F;&#x2F;streetNumber 門牌號碼</span><br><span class="line">   &#x2F;&#x2F;postalCode   郵遞區號</span><br><span class="line">   if placemarks !&#x3D; nil &amp;&amp; placemarks.count &gt; 0&#123;</span><br><span class="line">      let placemark &#x3D; placemarks[0] as CLPlacemark</span><br><span class="line">      &#x2F;&#x2F;這邊拼湊轉回來的地址</span><br><span class="line">      &#x2F;&#x2F;placemark.name</span><br><span class="line">   &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/11/swift-%E8%A3%BD%E4%BD%9C%E5%8B%95%E7%95%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/11/swift-%E8%A3%BD%E4%BD%9C%E5%8B%95%E7%95%AB/" class="post-title-link" itemprop="url">[swift] 製作動畫</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-11 17:33:00" itemprop="dateCreated datePublished" datetime="2015-03-11T17:33:00+00:00">2015-03-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/11/swift-%E8%A3%BD%E4%BD%9C%E5%8B%95%E7%95%AB/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/11/swift-製作動畫/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>目標結果如圖<br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-fKXQDTPrOC8/VQALsuP92ZI/AAAAAAAAEjA/RTTpI5_XcNo/s1600/test.gif"><img src="http://4.bp.blogspot.com/-fKXQDTPrOC8/VQALsuP92ZI/AAAAAAAAEjA/RTTpI5_XcNo/s400/test.gif"></a> </p>
+<ul>
+<li>  首先先把最後所有按鈕要放的位置擺好<a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-dYH-zlfMbWQ/VQAMMcsEqkI/AAAAAAAAEjI/lr2ibFIk0ho/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8B%E5%8D%885.33.36.png"><img src="http://2.bp.blogspot.com/-dYH-zlfMbWQ/VQAMMcsEqkI/AAAAAAAAEjI/lr2ibFIk0ho/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8B%E5%8D%885.33.36.png"></a></li>
+<li>把每個按鈕跟ViewController做對應 ```swift<br>@IBOutlet weak var backgroundImageView: UIImageView!<br>  @IBOutlet weak var fbButton: UIButton!<br>  @IBOutlet weak var twitterButton: UIButton!<br>  @IBOutlet weak var messageButton: UIButton!<br>  @IBOutlet weak var mailButton: UIButton!</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   接著用CGAffineTransformMakeTranslation的方式將所有按鈕移到動畫的起始位置,</span><br><span class="line">這邊解釋一下程式中那些數字怎麼決定的,CGAffineTransformMakeTranslation需要給定x y值,如果(0, -300)表示x軸不動,Y軸比原本你在StoryBoard放的位置還要**&lt;span style&#x3D;&quot;color: red;&quot;&gt;往上&lt;&#x2F;span&gt;**移300個點的位置,反之(0, 300)則表示比原本擺放的位置**&lt;span style&#x3D;&quot;color: red;&quot;&gt;往下&lt;&#x2F;span&gt;**移動300點 &#96;&#96;&#96;swift</span><br><span class="line">override func viewDidLoad() &#123;</span><br><span class="line">        super.viewDidLoad()</span><br><span class="line">        self.fbButton.transform &#x3D; CGAffineTransformMakeTranslation(0, -300)</span><br><span class="line">        self.messageButton.transform &#x3D; CGAffineTransformMakeTranslation(0, -364)</span><br><span class="line">        self.mailButton.transform &#x3D; CGAffineTransformMakeTranslation(0, 300)</span><br><span class="line">        self.twitterButton.transform &#x3D; CGAffineTransformMakeTranslation(0, 364)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>接著大家測試一下程式,應該會發現東西的確是跑出螢幕了,接著在viewDidAppear補上以下程式碼就大功告成了！！ ```swift<br>override func viewDidAppear(animated: Bool) {</p>
+<pre><code>  super.viewDidAppear(animated)
+
+      //動畫,分成兩個區塊是因為有快有慢,差別在於delay多久再發動,usingSpringWithDamping是彈跳的反作用力,越小越劇烈
+  UIView.animateWithDuration(0.9, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: nil, animations: &#123;
+      //跑回原來的點
+      let translate = CGAffineTransformMakeTranslation(0, 0)
+      self.messageButton.transform = translate
+      self.twitterButton.transform = translate
+  &#125;, completion: nil)
+  UIView.animateWithDuration(0.9, delay: 0.1, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5, options: nil, animations: &#123;
+      let translate = CGAffineTransformMakeTranslation(0, 0)
+      self.fbButton.transform = translate
+      self.mailButton.transform = translate
+  &#125;, completion: nil)
+</code></pre>
+<p>  }</p>
+</li>
+</ul>
+<pre><code>
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/11/swift-%E5%B0%87%E5%9C%96%E7%89%87%E5%81%9A%E5%87%BA%E9%9C%A7%E5%8C%96%E6%95%88%E6%9E%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/11/swift-%E5%B0%87%E5%9C%96%E7%89%87%E5%81%9A%E5%87%BA%E9%9C%A7%E5%8C%96%E6%95%88%E6%9E%9C/" class="post-title-link" itemprop="url">[swift] 將圖片做出霧化效果</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-11 11:18:00" itemprop="dateCreated datePublished" datetime="2015-03-11T11:18:00+00:00">2015-03-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/11/swift-%E5%B0%87%E5%9C%96%E7%89%87%E5%81%9A%E5%87%BA%E9%9C%A7%E5%8C%96%E6%95%88%E6%9E%9C/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/11/swift-將圖片做出霧化效果/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>以下範例是參考做成的筆記:<a target="_blank" rel="noopener" href="http://www.books.com.tw/products/0010661108">養成iOS8 App程式設計實力的25堂課：最新Swift開發教學</a></p>
+<ul>
+<li>  IOS8有提供將圖片霧化的效果,如果我們將一張圖片擺進都不調整的情況下看到的結果如下<br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-ELOEk0kal00/VP-zHXMlSfI/AAAAAAAAEiY/D7KPBndpUuw/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.13.13.png"><img src="http://4.bp.blogspot.com/-ELOEk0kal00/VP-zHXMlSfI/AAAAAAAAEiY/D7KPBndpUuw/s320/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.13.13.png"></a></li>
+<li>  <div style="clear:both"></div>如果我們想把它變成這樣呢?
+[![](http://4.bp.blogspot.com/-qGCntfEZsMQ/VP-ziaQFhLI/AAAAAAAAEig/GI3S3yTBTK0/s320/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.16.07.png)](http://4.bp.blogspot.com/-qGCntfEZsMQ/VP-ziaQFhLI/AAAAAAAAEig/GI3S3yTBTK0/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.16.07.png)[![](http://1.bp.blogspot.com/-inhOmUeMfVU/VP-ztGG_pxI/AAAAAAAAEio/djWTqz97y0I/s320/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.16.51.png)](http://1.bp.blogspot.com/-inhOmUeMfVU/VP-ztGG_pxI/AAAAAAAAEio/djWTqz97y0I/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.16.51.png)[![](http://3.bp.blogspot.com/-NJzO9xqbdbg/VP-z3nspMII/AAAAAAAAEiw/Ud6fxww0IgI/s320/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.17.30.png)](http://3.bp.blogspot.com/-NJzO9xqbdbg/VP-z3nspMII/AAAAAAAAEiw/Ud6fxww0IgI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-11%2B%E4%B8%8A%E5%8D%8811.17.30.png)</li>
+<li><div style="clear:both"></div>程式碼撰寫如下: ```swift
+@IBOutlet weak var backgroundImageView: UIImageView!//背景圖    override func viewDidLoad() {
+      super.viewDidLoad()
+      //.Dark等於圖1
+      //.ExtraLight等於圖2
+      //.Light等於圖3
+      var blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+      var blurEffectView = UIVisualEffectView(effect: blurEffect)
+      blurEffectView.frame = view.bounds
+      backgroundImageView.addSubview(blurEffectView)
+  }</li>
+</ul>
+<pre><code>
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/10/swift-%E8%A3%BD%E4%BD%9CIOS-Table-5-UITableViewRowAction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/10/swift-%E8%A3%BD%E4%BD%9CIOS-Table-5-UITableViewRowAction/" class="post-title-link" itemprop="url">[swift] 製作IOS Table (5) UITableViewRowAction</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-10 14:33:00" itemprop="dateCreated datePublished" datetime="2015-03-10T14:33:00+00:00">2015-03-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/10/swift-%E8%A3%BD%E4%BD%9CIOS-Table-5-UITableViewRowAction/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/10/swift-製作IOS-Table-5-UITableViewRowAction/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>開始之前想推薦這本書:<a target="_blank" rel="noopener" href="http://www.books.com.tw/products/0010661108">養成iOS8 App程式設計實力的25堂課：最新Swift開發教學</a>,只能說看了對於初學者的我來說受益良多,而且對於IOS很多觀念也更加清楚了</p>
+<ul>
+<li>  這邊要實作的功能如下圖<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-G5AuWE3jWkc/VP6PU-K4I5I/AAAAAAAAEh4/toN1sTUBTeA/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-10%2B%E4%B8%8B%E5%8D%882.29.02.png"><img src="http://2.bp.blogspot.com/-G5AuWE3jWkc/VP6PU-K4I5I/AAAAAAAAEh4/toN1sTUBTeA/s320/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-10%2B%E4%B8%8B%E5%8D%882.29.02.png"></a></li>
+<li>  IOS8的TableView當中,有個可以往左滑可以選擇更多動作的功能,Apple官方有提供相對應的事件可以實作它</li>
+<li>  首先先Override TableView commitEditingStyle這個事件,什麼都先不要做就執行看看 ```swift<br>func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {<br>}</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">立馬預設的Delete按鈕就跑出來了</span><br><span class="line">[![](http:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-maAldiH9hOE&#x2F;VP6RASa2iQI&#x2F;AAAAAAAAEiE&#x2F;3px4PGz4sWU&#x2F;s400&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-10%2B%E4%B8%8B%E5%8D%882.36.30.png)](http:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-maAldiH9hOE&#x2F;VP6RASa2iQI&#x2F;AAAAAAAAEiE&#x2F;3px4PGz4sWU&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-10%2B%E4%B8%8B%E5%8D%882.36.30.png)</span><br><span class="line">*   接著補上以下code,再實際執行看看就可以發現該列可以刪除了 &#96;&#96;&#96;swift</span><br><span class="line">func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) &#123;</span><br><span class="line">        if editingStyle &#x3D;&#x3D; UITableViewCellEditingStyle.Delete&#123;</span><br><span class="line">            &#x2F;&#x2F;將TableView的DataSource刪除</span><br><span class="line">            self.restaurantArray.removeAtIndex(indexPath.row)</span><br><span class="line">            &#x2F;&#x2F;將TableView該列刪除</span><br><span class="line">            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>但如果要客製更多按鈕呢？接下來改寫 editActionsForRowAtIndexPath這個事件,但需要特別注意的是如果我們新增了editActionsForRowAtIndexPath這個事件,則IOS就不會預設幫我們增加Delete的按鈕,所以Delete的按鈕也得自己做瞜～</p>
+<p>  先把commitEditingStyle恢復成空值,只讓IOS知道我們要左滑出現功能列就好 ```swift<br>func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {</p>
+<pre><code>//把剛剛寫的都刪光光
+</code></pre>
+<p> }</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">接著改寫editActionsForRowAtIndexPath &#96;&#96;&#96;swift</span><br><span class="line">func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -&gt; [AnyObject]? &#123;</span><br><span class="line">        var shareAction &#x3D; UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: &quot;Share&quot;, handler: nil)</span><br><span class="line">        &#x2F;&#x2F;delete按鈕自己做        var deleteAction &#x3D; UITableViewRowAction(style: UITableViewRowActionStyle.Default, title: &quot;Delete&quot;, handler: &#123;</span><br><span class="line">            (action:UITableViewRowAction! , indexPath:NSIndexPath!) -&gt; Void in</span><br><span class="line">            self.restaurantArray.removeAtIndex(indexPath.row)</span><br><span class="line">            self.restaurantTable.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">            return [deleteAction,shareAction]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>執行看看就可以看到多出了一過按鈕了,如果想改變按鈕的顏色可以這樣寫 ```swift<br>shareAction.backgroundColor = UIColor(red: 255/255, green: 166/255, blue: 51/255, alpha: 1)</p>
+<p>```</p>
+<ul>
+<li>  最後就可以得出圖1的結果啦!!!!</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/09/swift-UIAlertController/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/09/swift-UIAlertController/" class="post-title-link" itemprop="url">[swift] UIAlertController</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-09 15:44:00" itemprop="dateCreated datePublished" datetime="2015-03-09T15:44:00+00:00">2015-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/09/swift-UIAlertController/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/09/swift-UIAlertController/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><p>APP常常有一種狀況是當使用者按下某個選項時,從下面滑出更多的選項讓它做進一步動作,例如在iphone的照片點選垃圾桶時</p>
+<p>  <a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-3nruP8qpby4/VP1MZiLDRrI/AAAAAAAAEhQ/AjByBZQXUfs/s1600/IMG_2020.PNG"><img src="http://2.bp.blogspot.com/-3nruP8qpby4/VP1MZiLDRrI/AAAAAAAAEhQ/AjByBZQXUfs/s400/IMG_2020.PNG"></a></p>
+</li>
+<li><p>在IOS 8中多了一個UIAlertController的類別來取代UIAlerView,實際作法如下<br>首先將程式碼加到viewDidAppear,否則無法顯示效果,原因請看IOS生命週期的說明<a target="_blank" rel="noopener" href="http://stablekernel.com/blog/uiviewcontroller-best-practices-viewwillappear-or-viewdidload/">點我 </a>```swift<br>override func viewDidAppear(animated: Bool) {</p>
+<pre><code>  //建立UIAlertController
+  let quetion = UIAlertController(title: nil, message: &quot;What Do u want?&quot;, preferredStyle: .ActionSheet);
+  //新增選項
+  let callaction = UIAlertAction(title: &quot;call xxx&quot;, style: .Default , handler:nil);
+  //把選項加到UIAlertController
+  quetion.addAction(callaction);
+  //Show
+  self.presentViewController(quetion, animated: true, completion: nil);
+</code></pre>
+<p>  }</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">執行看到的結果如下圖</span><br><span class="line">[![](http:&#x2F;&#x2F;3.bp.blogspot.com&#x2F;-FSopEARqG_0&#x2F;VP1Oau8suBI&#x2F;AAAAAAAAEhc&#x2F;v6cpxkt6bWc&#x2F;s400&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8B%E5%8D%883.39.39.png)](http:&#x2F;&#x2F;3.bp.blogspot.com&#x2F;-FSopEARqG_0&#x2F;VP1Oau8suBI&#x2F;AAAAAAAAEhc&#x2F;v6cpxkt6bWc&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8B%E5%8D%883.39.39.png)</span><br><span class="line">*   如果將ActionSheet改成Alert,則結果 &#96;&#96;&#96;swift</span><br><span class="line">let quetion &#x3D; UIAlertController(title: nil, message: &quot;What Do u want?&quot;, preferredStyle: .Alert);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-Tn1snLcsaxI/VP1PGsV8gtI/AAAAAAAAEhk/r84kalhfkHw/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8B%E5%8D%883.43.05.png"><img src="http://2.bp.blogspot.com/-Tn1snLcsaxI/VP1PGsV8gtI/AAAAAAAAEhk/r84kalhfkHw/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8B%E5%8D%883.43.05.png"></a></p>
+<ul>
+<li>如果更進階一些,在選擇選項後有些回應時<br>我們拉一個label到ViewController裡面來,並且在按下call xxx選項時,把label的字樣給改變 ```swift<br>class AlertViewController: UIViewController {<br>  @IBOutlet weak var showaction: UILabel!<br>  override func viewDidLoad() {<pre><code>  super.viewDidLoad();
+</code></pre>
+  }<br>  override func viewDidAppear(animated: Bool) {<pre><code>  let quetion = UIAlertController(title: nil, message: &quot;What Do u want?&quot;, preferredStyle: .Alert);
+  let callaction = UIAlertAction(title: &quot;call xxx&quot;,style: .Default, handler:&#123;
+      (action:UIAlertAction!) -&gt; Void in
+      self.showaction.text = &quot;Do call xxx&quot;;
+  &#125;);
+  quetion.addAction(callaction);
+  self.presentViewController(quetion, animated: true, completion: nil);
+</code></pre>
+  }<br>}</li>
+</ul>
+<p>```<br>執行看看吧！！</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/09/swift-String-To-MD5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/09/swift-String-To-MD5/" class="post-title-link" itemprop="url">[swift] String To MD5</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-09 10:20:00" itemprop="dateCreated datePublished" datetime="2015-03-09T10:20:00+00:00">2015-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/09/swift-String-To-MD5/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/09/swift-String-To-MD5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>  我將這個Function寫在extension裡面,首先Swift要能用MD5的function必須先建立header檔並掛上(header檔如何建立請看<a target="_blank" rel="noopener" href="http://toyo0103.blogspot.tw/2015/03/swift-network-3.html">這篇</a>) ```swift<br>#import &lt;CommonCrypto/CommonCrypto.h&gt;</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   然後 &#96;&#96;&#96;swift</span><br><span class="line">func md5() -&gt; String! &#123;</span><br><span class="line">        let str &#x3D; self.cStringUsingEncoding(NSUTF8StringEncoding)</span><br><span class="line">        let strLen &#x3D; CUnsignedInt(self.lengthOfBytesUsingEncoding(NSUTF8StringEncoding))</span><br><span class="line">        let digestLen &#x3D; Int(CC_MD5_DIGEST_LENGTH)</span><br><span class="line">        let result &#x3D; UnsafeMutablePointer&lt;CUnsignedChar&gt;.alloc(digestLen)</span><br><span class="line">        CC_MD5(str!, strLen, result)</span><br><span class="line">        var hash &#x3D; NSMutableString()</span><br><span class="line">        for i in 0..&lt;digestLen &#123;</span><br><span class="line">            hash.appendFormat(&quot;%02x&quot;, result[i])</span><br><span class="line">        &#125;</span><br><span class="line">        result.destroy()</span><br><span class="line">        return String(format: hash)&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/09/swift-Extension/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/09/swift-Extension/" class="post-title-link" itemprop="url">[swift] Extension</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-09 09:58:00" itemprop="dateCreated datePublished" datetime="2015-03-09T09:58:00+00:00">2015-03-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/09/swift-Extension/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/09/swift-Extension/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Swift這個語法常常會遇到參數型態間的轉換,寫慣了C#,常常遇到什麼參數轉換就會想要.toString() .toInt()阿之類的,偏偏Swift沒有這些function不打緊,還每種型態的變數互轉常常方式不一樣….搞得我每次遇到都要查一下到底這次又該用哪個function來轉換好,最後索性就把這些整理起來做成Extension,以後就跟C#一樣to啥to啥的就好.</p>
+<ul>
+<li>  那接下來就來介紹怎麼擴充Swift的function語法</li>
+<li>extension是關鍵字,擴充String類別型態的function ```swift<br>extension String{<br>  func toDoublue() -&gt; Double{<pre><code>  return (self as NSString).doubleValue;
+</code></pre>
+  }<br>}</li>
+</ul>
+<p>```</p>
+<ul>
+<li>  結果<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-ScO8IMg64Mc/VPz-IPzpfGI/AAAAAAAAEg8/PUHhR5dzQrc/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8A%E5%8D%889.57.22.png"><img src="http://2.bp.blogspot.com/-ScO8IMg64Mc/VPz-IPzpfGI/AAAAAAAAEg8/PUHhR5dzQrc/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8A%E5%8D%889.57.22.png"></a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/07/SQL-2008-R2-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87%E7%89%88%E5%AE%89%E8%A3%9D%E5%95%8F%E9%A1%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/07/SQL-2008-R2-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87%E7%89%88%E5%AE%89%E8%A3%9D%E5%95%8F%E9%A1%8C/" class="post-title-link" itemprop="url">[SQL] 2008 R2 繁體中文版安裝問題</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-07 12:24:00" itemprop="dateCreated datePublished" datetime="2015-03-07T12:24:00+00:00">2015-03-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/07/SQL-2008-R2-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87%E7%89%88%E5%AE%89%E8%A3%9D%E5%95%8F%E9%A1%8C/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/07/SQL-2008-R2-繁體中文版安裝問題/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>如果你作業系統是從英文版安裝與語系版本成為中文版的話,安裝SQL繁體中文版應該會遇到不明的錯誤而停止,上網找了一下資料發現這篇:<br><a target="_blank" rel="noopener" href="http://www.dotblogs.com.tw/hunterpo/archive/2010/07/14/16555.aspx">解決 Windows 7 線上更新語言包後安裝 SQL Server 2008 R2 繁體中文版失敗的問題</a></p>
+<p>原因是從英文版透過語系包轉成的中文版的作業系統,他是香港繁體中文版,在安裝SQL時預設會去抓3076_ZHH_LP這個資料夾,但繁體中文版的SQL Server的資料夾為1028_CHT_LP。</p>
+<p>所以解決方法就是,把全部的光碟內容複製下來,並且將1028_CHT_LP複製一份並且改名為3076_ZHH_LP,用這個資料夾安裝就可以順利完成了</p>
+<div class="separator" style="clear: both; text-align: center;">[![](http://1.bp.blogspot.com/-ygIcfJtBNic/VPp9GMAHE0I/AAAAAAAAEgk/oi6kUT_rkfc/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png)](http://1.bp.blogspot.com/-ygIcfJtBNic/VPp9GMAHE0I/AAAAAAAAEgk/oi6kUT_rkfc/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png)</div>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+</body>
+</html>

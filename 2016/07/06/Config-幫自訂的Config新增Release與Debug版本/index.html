@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一般開發的時候通常會有測試機、正式機、或是Release前的機器…等，而在發佈到每台機器都要去做調整Config確實是很惱人的事情，感覺一個分神可能就會把測試機的連線貼到正式機之類的，這可能就是一場大災難。還好Visual Studio很貼心的為WebConfig分出了Release版本跟Debug版本，並依據發佈時你所選擇的組態檔，去做對應的修改。(註:如果需要更多版本，請到建置&amp;nbsp;&amp;g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[Config] 幫自訂的Config新增Release與Debug版本">
+<meta property="og:url" content="https://toyo0103.github.io/2016/07/06/Config-%E5%B9%AB%E8%87%AA%E8%A8%82%E7%9A%84Config%E6%96%B0%E5%A2%9ERelease%E8%88%87Debug%E7%89%88%E6%9C%AC/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="一般開發的時候通常會有測試機、正式機、或是Release前的機器…等，而在發佈到每台機器都要去做調整Config確實是很惱人的事情，感覺一個分神可能就會把測試機的連線貼到正式機之類的，這可能就是一場大災難。還好Visual Studio很貼心的為WebConfig分出了Release版本跟Debug版本，並依據發佈時你所選擇的組態檔，去做對應的修改。(註:如果需要更多版本，請到建置&amp;nbsp;&amp;g">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-07-06T12:05:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.077Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="Config">
+<meta property="article:tag" content="webconfig">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://toyo0103.github.io/2016/07/06/Config-%E5%B9%AB%E8%87%AA%E8%A8%82%E7%9A%84Config%E6%96%B0%E5%A2%9ERelease%E8%88%87Debug%E7%89%88%E6%9C%AC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>[Config] 幫自訂的Config新增Release與Debug版本 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/07/06/Config-%E5%B9%AB%E8%87%AA%E8%A8%82%E7%9A%84Config%E6%96%B0%E5%A2%9ERelease%E8%88%87Debug%E7%89%88%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [Config] 幫自訂的Config新增Release與Debug版本
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-07-06 12:05:00" itemprop="dateCreated datePublished" datetime="2016-07-06T12:05:00+00:00">2016-07-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/07/06/Config-%E5%B9%AB%E8%87%AA%E8%A8%82%E7%9A%84Config%E6%96%B0%E5%A2%9ERelease%E8%88%87Debug%E7%89%88%E6%9C%AC/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/06/Config-幫自訂的Config新增Release與Debug版本/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><span style="font-family: Verdana, sans-serif;">一般開發的時候通常會有測試機、正式機、或是Release前的機器…等，而在發佈到每台機器都要去做調整Config確實是很惱人的事情，感覺一個分神可能就會把測試機的連線貼到正式機之類的，這可能就是一場大災難。</span><br><span style="font-family: Verdana, sans-serif;"><br></span><span style="font-family: Verdana, sans-serif;"><br></span><span style="font-family: Verdana, sans-serif;">還好Visual Studio很貼心的為WebConfig分出了Release版本跟Debug版本，並依據發佈時你所選擇的組態檔，去做對應的修改。(註:如果需要更多版本，請到<strong>建置</strong>&nbsp;&gt;&nbsp;<strong>組態管理員</strong>去新增)。</span></p>
+<div><span style="font-family: Verdana, sans-serif;">
+</span></div><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[<span style="font-family: Verdana, sans-serif;">![](https://1.bp.blogspot.com/-bTABzkFPg84/V3yBI-o1a3I/AAAAAAAAHwE/Acz2x_EWkJMhQ6HTDpAVi3SuhLeuPiVCACLcB/s320/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</span>](https://1.bp.blogspot.com/-bTABzkFPg84/V3yBI-o1a3I/AAAAAAAAHwE/Acz2x_EWkJMhQ6HTDpAVi3SuhLeuPiVCACLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</td></tr><tr><td class="tr-caption" style="text-align: center;"><span style="font-size: small; text-align: start;"><span style="font-family: Verdana, sans-serif;">Release版本跟Debug版本</span></span></td></tr></tbody></table><span style="font-family: Verdana, sans-serif;">
+</span><span style="font-family: Verdana, sans-serif;">
+</span><span style="font-family: Verdana, sans-serif;">之前有寫篇文章[【擴充WebConfig】](http://toyo0103.blogspot.tw/2013/09/webconfigwebconfig.html)有提到如何在專案中加掛Config檔案，讓設定檔能做簡單的歸類整理。</span>
+<span style="font-family: Verdana, sans-serif;">
+</span><span style="font-family: Verdana, sans-serif;">原本以為Visual Studio應該會有相關的功能，可以對這類自訂的Config分割出對應版本，結果東找西找都找不到方法去做對應，原來VS似乎沒有提供這個功能(?)</span>
+<span style="font-family: Verdana, sans-serif;">還好在網路上找到了解決的套件跟方法</span>
+<span style="font-family: Verdana, sans-serif;">[How to add config transformations for a custom config file in Visual Studio?](http://stackoverflow.com/questions/34735132/how-to-add-config-transformations-for-a-custom-config-file-in-visual-studio)</span>
+
+<p>簡單說就是先去下載VS擴充套件(註:目前似乎只支援到VS 2013)<br><a target="_blank" rel="noopener" href="https://visualstudiogallery.msdn.microsoft.com/69023d00-a4f9-4a34-a6cd-7e854ba318b5">SlowCheetah - XML Transforms</a></p>
+<p>安裝完後，用VS 2013開啟專案，並且對著想要分割版本的Config檔案按右鍵，選擇Add Transfom即可</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-rH4cnE-93Gc/V3yDHDPxl2I/AAAAAAAAHwQ/RtNpbTiBOKYsVad-Vjb_McHswPnPJy_pwCLcB/s320/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)](https://4.bp.blogspot.com/-rH4cnE-93Gc/V3yDHDPxl2I/AAAAAAAAHwQ/RtNpbTiBOKYsVad-Vjb_McHswPnPJy_pwCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</div>
+
+<p>搞定!!!! 之後再來寫篇如何透過Release Config檔在發佈時置換屬性值好了~</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Config/" rel="tag"># Config</a>
+              <a href="/tags/webconfig/" rel="tag"># webconfig</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/06/04/%E3%80%90SQL%E3%80%91Group-by-and-Top-1-%E7%94%A8Linq%E5%AF%A6%E5%81%9A/" rel="prev" title="【SQL】Group by and Top 1 (用Linq實做)">
+      <i class="fa fa-chevron-left"></i> 【SQL】Group by and Top 1 (用Linq實做)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/07/29/%E3%80%90Unit-Test%E3%80%91%E9%87%9D%E5%B0%8DRepository%E5%81%9A%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6-%E4%B8%80/" rel="next" title="【Unit Test】針對Repository做單元測試 (一)">
+      【Unit Test】針對Repository做單元測試 (一) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2016/07/06/Config-%E5%B9%AB%E8%87%AA%E8%A8%82%E7%9A%84Config%E6%96%B0%E5%A2%9ERelease%E8%88%87Debug%E7%89%88%E6%9C%AC/";
+    this.page.identifier = "2016/07/06/Config-幫自訂的Config新增Release與Debug版本/";
+    this.page.title = "[Config] 幫自訂的Config新增Release與Debug版本";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

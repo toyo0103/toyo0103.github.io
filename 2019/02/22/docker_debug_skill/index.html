@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="學習 Docker 最先碰到的困擾應該都是究竟該如何偵錯 ，畢竟 Docker Run Container 如果沒有下一些指令，通常都是執行完就砍掉，什麼都沒留下，不像在本機可以透過開發的 IDE、Log … 等手段來 Debug，所以這邊就寫下一些我較常使用的偵錯方式   Run如果 Build Docker Image 時就有指定 CMD 或是 ENTRYPOINT，那 Container">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Docker】偵錯技巧">
+<meta property="og:url" content="https://toyo0103.github.io/2019/02/22/docker_debug_skill/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="學習 Docker 最先碰到的困擾應該都是究竟該如何偵錯 ，畢竟 Docker Run Container 如果沒有下一些指令，通常都是執行完就砍掉，什麼都沒留下，不像在本機可以透過開發的 IDE、Log … 等手段來 Debug，所以這邊就寫下一些我較常使用的偵錯方式   Run如果 Build Docker Image 時就有指定 CMD 或是 ENTRYPOINT，那 Container">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190221/02/1.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190221/02/2.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190221/02/3.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190221/02/4.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190221/02/5.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190221/02/6.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190221/02/7.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190221/02/8.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190221/02/9.png">
+<meta property="article:published_time" content="2019-02-22T16:48:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.080Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="windows container">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20190221/02/1.jpg">
+
+<link rel="canonical" href="https://toyo0103.github.io/2019/02/22/docker_debug_skill/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【Docker】偵錯技巧 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/02/22/docker_debug_skill/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Docker】偵錯技巧
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-02-22 16:48:00" itemprop="dateCreated datePublished" datetime="2019-02-22T16:48:00+00:00">2019-02-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/02/22/docker_debug_skill/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/22/docker_debug_skill/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/20190221/02/1.jpg" alt="/images/20190221/02/1.jpg"></p>
+<p>學習 Docker 最先碰到的困擾應該都是<code>究竟該如何偵錯</code> ，畢竟 Docker Run Container 如果沒有下一些指令，通常都是執行完就砍掉，什麼都沒留下，不像在本機可以透過開發的 IDE、Log … 等手段來 Debug，所以這邊就寫下一些我較常使用的偵錯方式</p>
+<br>
+
+<h1 id="Run"><a href="#Run" class="headerlink" title="Run"></a>Run</h1><p>如果 Build Docker Image 時就有指定 CMD 或是 ENTRYPOINT，那 Container Run 起來後跑完就關掉了，這時候可以透過 Run 的最後一個參數來覆蓋過原本的 CMD 指令。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it mcr.microsoft.com/windows/nanoserver:1809 cmd.exe</span><br></pre></td></tr></table></figure>
+
+<p>這邊的 cmd.exe 就是要覆蓋 Build Image 所指定的指令，讓你可以進入 Container 的 terminal 中執行你想做的指令</p>
+<div class="note info">
+            <p><a target="_blank" rel="noopener" href="https://medium.freecodecamp.org/docker-entrypoint-cmd-dockerfile-best-practices-abc591c30e21">Docker ENTRYPOINT &amp; CMD: Dockerfile best practices</a></p>
+          </div>
+
+<br>
+
+<h1 id="Volume"><a href="#Volume" class="headerlink" title="Volume"></a>Volume</h1><p>因為 Container 每次執行都是全新的，所以導致 Log 不易保留，但我們可以 Volume 的方式將 Host Folder 與 Container 內的 Log Folder Mount ，這樣就可以將 Container 內的 Log File 寫出來，達到持久化的效果。</p>
+<p><img src="/images/20190221/02/2.png" alt="/images/20190221/02/2.png"></p>
+<p>(圖片來源 : <a target="_blank" rel="noopener" href="https://docs.docker.com/storage/volumes/">Docker Docs</a> )</p>
+<p>接著用簡單的範例來展示一下 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it mcr.microsoft.com/windows/nanoserver:1809 cmd.exe</span><br></pre></td></tr></table></figure>
+
+<p>進到 Container 後，隨便寫個檔案</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir <span class="built_in">log</span></span><br><span class="line">$ <span class="built_in">cd</span> <span class="built_in">log</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;hi&quot;</span> &gt;&gt; test.txt</span><br><span class="line">$ dir</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20190221/02/3.png" alt="/images/20190221/02/3.png"></p>
+<p>可以看到在 Container 內的確長出了 C:\log 資料夾，並且裡面有個 test.txt 的檔案，檔案裡面寫著 “hi”。但這時候你在 host 機器應該找不到對應的檔案，因為 Container 是彼此獨立且隔離的。</p>
+<p>這時候離開 Container 再重啟一次，會發現剛剛 log 的 Folder 已經消失，因為這個 Container 是全新的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">exit</span></span><br><span class="line">$ docker run -it mcr.microsoft.com/windows/nanoserver:1809 cmd.exe</span><br><span class="line">$ dir</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20190221/02/4.png" alt="/images/20190221/02/4.png"></p>
+<br >
+
+<p><a target="_blank" rel="noopener" href="https://docs.docker.com/storage/volumes/">Volume</a> 使用方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v HostFolderPath:ContainerFolderPath </span><br></pre></td></tr></table></figure>
+
+<p>加上 Volume 參數再重新執行一次剛剛的步驟</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it -v c:\files:c:\<span class="built_in">log</span> mcr.microsoft.com/windows/nanoserver:1809 cmd.exe</span><br></pre></td></tr></table></figure>
+
+<p>將 Host 機器的 <code>c:\files</code> Folder Mount 到 Container 內的 <code>c:\log</code> 資料夾，所以在 Container 內新增檔案寫 Log 也會同時寫出來</p>
+<p><img src="/images/20190221/02/5.png" alt="/images/20190221/02/5.png"></p>
+<p>這邊應該會注意到，因為 Volume 了 Container 內原本不存在的 log 資料夾，所以一進去的時候它就長出來了，並不需要特別另外建立。</p>
+<br>
+
+<h1 id="EXEC"><a href="#EXEC" class="headerlink" title="EXEC"></a>EXEC</h1><p>有時候 Container 內執行的是常駐程式，它可能會持續執行直到任務完成，如果又沒有將 Log 寫出來的必要，其實很難知道它目前的狀況為何，這時候 <a target="_blank" rel="noopener" href="https://docs.docker.com/engine/reference/commandline/exec/">EXEC</a> 就派上用場了，它可以讓你進入一個正在執行中的 Container 中。</p>
+<p>一樣用個簡單的範例來演練一下</p>
+<p>先 Run 一個 Container 起來，並且一樣寫一個 log 下來</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -it mcr.microsoft.com/windows/nanoserver:1809 cmd.exe</span><br><span class="line">$ mkdir <span class="built_in">log</span></span><br><span class="line">$ <span class="built_in">cd</span> <span class="built_in">log</span></span><br><span class="line">$ <span class="built_in">echo</span> <span class="string">&quot;hi&quot;</span> &gt;&gt; test.txt</span><br><span class="line">$ dir</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20190221/02/6.png" alt="/images/20190221/02/6.png"></p>
+<p>這時候開另一個 terminal，先查詢剛剛的 Container ID</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker ps</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20190221/02/7.png" alt="/images/20190221/02/7.png"></p>
+<p>透過 EXEC 指定要執行哪個 Container</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker <span class="built_in">exec</span> -it d24e6db4de85 cmd.exe</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20190221/02/8.png" alt="/images/20190221/02/8.png"></p>
+<p>可以看到一進去就已經有剛剛我們寫下的 test.txt，表示這是同一個 Container，或是可以透過 hostname 來做驗證，可以得到相同的 ID</p>
+<p><img src="/images/20190221/02/9.png" alt="/images/20190221/02/9.png"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+              <a href="/tags/windows-container/" rel="tag"># windows container</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/02/21/dockerforwindows_vs_dockeronwindowserver/" rel="prev" title="【Docker】Docker for Windows 和 Docker on Windows Server 一樣嗎?">
+      <i class="fa fa-chevron-left"></i> 【Docker】Docker for Windows 和 Docker on Windows Server 一樣嗎?
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/01/centos_jenkins_hexo/" rel="next" title="Jenkins,GitHub自動化部署Hexo">
+      Jenkins,GitHub自動化部署Hexo <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Run"><span class="nav-number">1.</span> <span class="nav-text">Run</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Volume"><span class="nav-number">2.</span> <span class="nav-text">Volume</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#EXEC"><span class="nav-number">3.</span> <span class="nav-text">EXEC</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2019/02/22/docker_debug_skill/";
+    this.page.identifier = "2019/02/22/docker_debug_skill/";
+    this.page.title = "【Docker】偵錯技巧";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

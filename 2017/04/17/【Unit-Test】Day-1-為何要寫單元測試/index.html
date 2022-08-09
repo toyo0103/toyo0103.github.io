@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Demo檔案 : Git傳送門            算一算開始寫單元測試也快兩年了，很感謝當時能有機會得到前輩的指導並接觸到這個技術，在實際運用到開發上面時，也真正的感受到它的好，為了將單元測試這好東西分享給更多人知道，所以有了寫這系列文章的想法。 這系列文章是希望在讀者讀完後，能讓你從一位不會寫單元測試的開發者，粗略的搞懂單元測試為何、如何撰寫、並且能透過實作中體會到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Unit Test】Day 1 - 為何要寫單元測試">
+<meta property="og:url" content="https://toyo0103.github.io/2017/04/17/%E3%80%90Unit-Test%E3%80%91Day-1-%E7%82%BA%E4%BD%95%E8%A6%81%E5%AF%AB%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="Demo檔案 : Git傳送門            算一算開始寫單元測試也快兩年了，很感謝當時能有機會得到前輩的指導並接觸到這個技術，在實際運用到開發上面時，也真正的感受到它的好，為了將單元測試這好東西分享給更多人知道，所以有了寫這系列文章的想法。 這系列文章是希望在讀者讀完後，能讓你從一位不會寫單元測試的開發者，粗略的搞懂單元測試為何、如何撰寫、並且能透過實作中體會到">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://2.bp.blogspot.com/-VWE1ZTU6uKI/WPRM9LqlYgI/AAAAAAAAIGc/F2gVhAE0QQEBLjrFwBHlc6AKJsJBoqxBACLcB/s320/GoodCheapFast_MissingCloud_O%255B1%255D.gif">
+<meta property="og:image" content="https://4.bp.blogspot.com/-LYJzaBr-6qU/WPReTQlg_EI/AAAAAAAAIGs/JdQPXNcMt2s0xnjtr0iRh1sp4lf6wJBIQCLcB/s1600/Image%2B2.jpg">
+<meta property="og:image" content="https://4.bp.blogspot.com/-pl7THbVdv5Q/WPRl5WWW7cI/AAAAAAAAIG8/iTQ4_sz0Fosq4W8Ecx3h91bG4MstQKutgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25882.50.45.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-LM9F1XlZwb4/WPRmLeGDlYI/AAAAAAAAIHA/3yZqleBgG6gO4V_w3HogGIU5fT-b6gydQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25882.52.06.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-zM7aFE7GH3Y/WPRmlQOhxaI/AAAAAAAAIHE/qkSV7SacRQcPC6LrXIfxXSa5fMoxKMgzACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25882.53.38.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-QgRTYArFcLg/WPRpcgKZECI/AAAAAAAAIHQ/1IQu0Kv4A8oH3gUolF7t2Ztf8iDe6e5FACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.04.21.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-FRy0jhit7No/WPRq_jFpwqI/AAAAAAAAIHc/y44CWdcjDrcJQDxL7R_IKJu2toEwKfXnACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.12.47.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-ONucqHcnfT8/WPRtaLBmZyI/AAAAAAAAIHo/uo-JgM5v1vAAkpq_vhK0zdcGEA3nrq2KACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.23.01.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-4utjp7_INMM/WPRuZ_dtOGI/AAAAAAAAIH0/UD48Au_NHgMZuOiSgIV4CcDf-GhIzRb1gCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.26.26.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-jPiCnkysVEA/WPRuZ6HDvaI/AAAAAAAAIHw/3kcZvX35-BECFdVE-PJWHIDJSCQt_RdUQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.26.40.png">
+<meta property="article:published_time" content="2017-04-17T11:55:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.093Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="Unit Test">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://2.bp.blogspot.com/-VWE1ZTU6uKI/WPRM9LqlYgI/AAAAAAAAIGc/F2gVhAE0QQEBLjrFwBHlc6AKJsJBoqxBACLcB/s320/GoodCheapFast_MissingCloud_O%255B1%255D.gif">
+
+<link rel="canonical" href="https://toyo0103.github.io/2017/04/17/%E3%80%90Unit-Test%E3%80%91Day-1-%E7%82%BA%E4%BD%95%E8%A6%81%E5%AF%AB%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【Unit Test】Day 1 - 為何要寫單元測試 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/17/%E3%80%90Unit-Test%E3%80%91Day-1-%E7%82%BA%E4%BD%95%E8%A6%81%E5%AF%AB%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Unit Test】Day 1 - 為何要寫單元測試
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-04-17 11:55:00" itemprop="dateCreated datePublished" datetime="2017-04-17T11:55:00+00:00">2017-04-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%B8%E7%BF%92%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/" itemprop="url" rel="index"><span itemprop="name">學習單元測試</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/04/17/%E3%80%90Unit-Test%E3%80%91Day-1-%E7%82%BA%E4%BD%95%E8%A6%81%E5%AF%AB%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/17/【Unit-Test】Day-1-為何要寫單元測試/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="note info">
+            <p>Demo檔案 : <a target="_blank" rel="noopener" href="https://github.com/toyo0103/UnitTest_Day1">Git傳送門</a></p>
+          </div>
+<p>算一算開始寫單元測試也快兩年了，很感謝當時能有機會得到前輩的指導並接觸到這個技術，在實際運用到開發上面時，也真正的感受到它的好，為了將單元測試這好東西分享給更多人知道，所以有了寫這系列文章的想法。</p>
+<p>這系列文章是希望在讀者讀完後，能讓你從一位不會寫單元測試的開發者，粗略的搞懂單元測試為何、如何撰寫、並且能透過實作中體會到它如何幫助專案更加穩固。</p>
+<div class="note info">
+            <p>我不是什麼技術大牛，如果發現文章有疏漏的地方，還請不吝指正指導。 感謝!!</p>
+          </div>
+
+
+<h3 id="為何我要寫單元測試"><a href="#為何我要寫單元測試" class="headerlink" title="為何我要寫單元測試"></a>為何我要寫單元測試</h3><p>不知你可曾遇過這樣的狀況….</p>
+<h4 id="情境一"><a href="#情境一" class="headerlink" title="情境一 :"></a>情境一 :</h4><p>接手了一個很舊的系統維護，關於規格與文件皆已不可考，連開發過的工程師們都已離職不幹了，現在PM跟你說他想改一個功能，並拍拍你肩說「這個很簡單，一下下就好」。而你卻不知道該從何下手….<br>_<br>_<em>單元測試能幫你做什麼?</em></p>
+<div class="note info">
+            <p>優良的單元測試就像活著的規格書，不僅能幫助你了解那些不是你負責的功能，更是能夠執行的規格書</p>
+          </div>
+
+
+<h4 id="情境二"><a href="#情境二" class="headerlink" title="情境二:"></a>情境二:</h4><div>是否曾經改發生過改好新功能，但舊功能就壞掉，修好舊功能，新功能又壞掉了呢?&nbsp; 假設下圖就是你的功能，而你希望它三個能同時選取時....
+
+<p><img src="https://2.bp.blogspot.com/-VWE1ZTU6uKI/WPRM9LqlYgI/AAAAAAAAIGc/F2gVhAE0QQEBLjrFwBHlc6AKJsJBoqxBACLcB/s320/GoodCheapFast_MissingCloud_O%255B1%255D.gif"></p>
+<p><em>單元測試能幫你做什麼?</em></p>
+<div class="note info">
+            <p>它能告訴你目前的程式，是否執行都符合當時所要求的規格與產出結果，如果舊規格舊方法沒有改的情況下，單元測試壞了，那就表示你這次的改動絕對有影響到它，趕緊去修好它吧!!</p>
+          </div>
+
+
+<h4 id="情境三"><a href="#情境三" class="headerlink" title="情境三 :"></a>情境三 :</h4><div>一個你覺得很簡單的功能，直到你上線才發現原來功能是錯的無法正常執行，偵錯下去才發現，天殺的，原來是自己觀念上錯誤或不熟悉。例如Double&nbsp;a&nbsp; = 1.1加上Double b&nbsp;=&nbsp;1.2，而你以為它的結果會是2.3....&nbsp; </div>_
+__單元測試能幫你做什麼?_
+<div class="note info">
+            <p>它能即時的驗證你的想法，而不是到上線時才賭人品，尤其是那些你覺得理所當然會對的功能中，魔鬼往往藏在細節裡</p>
+          </div>
+
+<p>在你還沒寫單元測試之前，上述狀況是否都似曾相識呢?如果你想解決這些問題，那麼開始寫單元測試將是可以大幅度降低這些錯誤的有效方法，而且你一定會愛上它。</p>
+<h3 id="該如何開始寫單元測試"><a href="#該如何開始寫單元測試" class="headerlink" title="該如何開始寫單元測試"></a>該如何開始寫單元測試</h3><p>接著我們就來用實際案例重現上面提到了一些問題，並且透過撰寫單元測試來看看它如何幫我們避免這些狀況。</p>
+<p><strong>首先準備一個類別庫專案</strong><br><img src="https://4.bp.blogspot.com/-LYJzaBr-6qU/WPReTQlg_EI/AAAAAAAAIGs/JdQPXNcMt2s0xnjtr0iRh1sp4lf6wJBIQCLcB/s1600/Image%2B2.jpg"><br>**<br>****寫下一段簡單的程式，而這段程式很簡單，就只是把基數加上2回傳回去即可 **<br>**<br>**</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EasyMethod</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">private</span> <span class="built_in">int</span> BaseNumber = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">Method1</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>   &#123;</span><br><span class="line">      <span class="keyword">return</span> BaseNumber + <span class="number">2</span>;</span><br><span class="line">   &#125;   </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>而這段程式真的非常簡單，簡單到你一看就覺得它回傳是7，不過沒關係我們繼續完成單元測試，看它能幫助我們什麼</p>
+<p><strong>接著建立單元測試專案</strong></p>
+<div>在Method1的的方案下右鍵 &gt; 建立單元測試 
+<div class="note info">
+            <p>如果你是用VS2017，可能會發現沒有建立單元測試這個選項，請將VS更新到最新版就有了</p>
+          </div>
+
+<p><img src="https://4.bp.blogspot.com/-pl7THbVdv5Q/WPRl5WWW7cI/AAAAAAAAIG8/iTQ4_sz0Fosq4W8Ecx3h91bG4MstQKutgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25882.50.45.png"></p>
+<p><img src="https://3.bp.blogspot.com/-LM9F1XlZwb4/WPRmLeGDlYI/AAAAAAAAIHA/3yZqleBgG6gO4V_w3HogGIU5fT-b6gydQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25882.52.06.png"></p>
+<p>接著就會看到單元測試專案已經幫你建立完成</p>
+<p><img src="https://4.bp.blogspot.com/-zM7aFE7GH3Y/WPRmlQOhxaI/AAAAAAAAIHE/qkSV7SacRQcPC6LrXIfxXSa5fMoxKMgzACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25882.53.38.png"></p>
+<p>讓我們來寫下第一個完整的單元測試，將那個自動建立的單元測試改成</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> Method1Test_呼叫時應回傳結果為<span class="number">7</span>()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> EasyMethod();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Method1();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(expected, actual);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>稍微檢視一下這個單元測試能帶給我們什麼？首先從標題上我們可以知道這個方法的目的跟應得到的結果，接著我們可以從單元測試的程式碼中看出這個方法該如何使用。</p>
+<p>接著我們在測試總管中執行單元測試，知道目前這個方法符合我們需求跟得到預期的結果</p>
+<p><img src="https://1.bp.blogspot.com/-QgRTYArFcLg/WPRpcgKZECI/AAAAAAAAIHQ/1IQu0Kv4A8oH3gUolF7t2Ztf8iDe6e5FACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.04.21.png"></p>
+<p><strong>當我們面臨需求的更改…..</strong><br>接著我們知道日常狀況是，需求總是一直的在擴充及變動，所以我們有了一個新需求</p>
+<div class="note info">
+            <p>我希望能有個新的方法，並且呼叫它時能回傳給我10這個答案，而且因應業務需求，基數需要改變成2</p>
+          </div>
+
+<p>OK!!一切聽起來都不是太難，那就讓我們直接動手下去做吧<br>首先我先將基數改成2，並且新增一個<strong>Method2</strong>的方法，並且讓他加上基數後得到10這個結果回傳。</p>
+<p><img src="https://2.bp.blogspot.com/-FRy0jhit7No/WPRq_jFpwqI/AAAAAAAAIHc/y44CWdcjDrcJQDxL7R_IKJu2toEwKfXnACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.12.47.png"></p>
+<p>老方法，在Method2那邊按下右鍵 &gt; 建立單元測試，並寫上新的方法的單元測試</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">UnitTestDay1.Tests</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">TestClass()</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">EasyMethodTests</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> Method1Test_呼叫時應回傳結果為<span class="number">7</span>()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> EasyMethod();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Method1();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(expected, actual);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> Method2Test_呼叫時應回傳結果為<span class="number">10</span>()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> EasyMethod();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Method2();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(expected, actual);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>一切完美直到你執行單元測試時你會發現，原本的Method1壞掉啦！！</p>
+<p><img src="https://1.bp.blogspot.com/-ONucqHcnfT8/WPRtaLBmZyI/AAAAAAAAIHo/uo-JgM5v1vAAkpq_vhK0zdcGEA3nrq2KACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.23.01.png"><br>原來因為我們更改了基數所以造成了Method1回傳時不符合當時所制定的規格，這時候我們如果確定原需求沒有變動的情況下，那就是去修改原本的方法讓它能通過單元測試。這樣新舊需求就都確保正確的情況下更正完成了。</p>
+<p><img src="https://2.bp.blogspot.com/-4utjp7_INMM/WPRuZ_dtOGI/AAAAAAAAIH0/UD48Au_NHgMZuOiSgIV4CcDf-GhIzRb1gCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.26.26.png"></p>
+<p><img src="https://3.bp.blogspot.com/-jPiCnkysVEA/WPRuZ6HDvaI/AAAAAAAAIHw/3kcZvX35-BECFdVE-PJWHIDJSCQt_RdUQCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-17%2B%25E4%25B8%258B%25E5%258D%25883.26.40.png"></p>
+<h3 id="今日小結"><a href="#今日小結" class="headerlink" title="今日小結"></a>今日小結</h3><p>從這個範例中我們可以整理出一些單元測試所能帶來的好處。</p>
+<p>首先，因為在撰寫程式時，我們會在當下寫上單元測試，並且讓它通過，日後不管任何原因它壞掉了，我們都能從標題中或是案例來知道當時的需求與狀況，形成上面提到的所謂活著可執行的規格書，（當然前提是你的標題跟內容要寫得乾淨易懂，否則維護單元測試可能又是另一場災難），即便規格書遺失或是人員異動，對於程式本身的維護都有一定品質的保障。</p>
+<p>接著是需求異動，雖然這個範例舉例的有點極端，但我只是想表達一種狀況，常常我們在改動共用方法或是核心功能時，往往不知道這樣改可能會造成哪邊的錯誤，甚至是編譯執行都是正常，但其實違反了當時所定義的程式或商業邏輯，而這往往是要上線的時候才會發現，但從這案例中，基數被改變時，雖然把Mehod2順利地完成的，但我們卻忽略了Method1可能導致它變動進而產生錯誤，有了單元測試或是整合測試，這樣的狀況可以有效地減少跟被控管（特別強調：非百分之百！！所以整合測試跟單元測試都一樣很重要，如果可以，兩個都做會是最好的選擇）</p>
+<p>好的，希望第一篇文章可以淺顯易懂的讓大家感受單元測試的好處！！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unit-Test/" rel="tag"># Unit Test</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/03/29/%E3%80%90FluentValidation%E3%80%91%E8%88%87MVC-5%E7%B6%81%E5%AE%9AModel-Validation/" rel="prev" title="【FluentValidation】與MVC 5綁定Model Validation">
+      <i class="fa fa-chevron-left"></i> 【FluentValidation】與MVC 5綁定Model Validation
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/18/%E3%80%90Unit-Test%E3%80%91Day-2-%E5%A6%82%E4%BD%95%E5%AF%AB%E4%B8%80%E5%80%8B%E5%A5%BD%E7%9A%84%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/" rel="next" title="【Unit Test】Day 2 - 如何寫一個好的單元測試">
+      【Unit Test】Day 2 - 如何寫一個好的單元測試 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%BA%E4%BD%95%E6%88%91%E8%A6%81%E5%AF%AB%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6"><span class="nav-number">1.</span> <span class="nav-text">為何我要寫單元測試</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%83%85%E5%A2%83%E4%B8%80"><span class="nav-number">1.1.</span> <span class="nav-text">情境一 :</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%83%85%E5%A2%83%E4%BA%8C"><span class="nav-number">1.2.</span> <span class="nav-text">情境二:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%83%85%E5%A2%83%E4%B8%89"><span class="nav-number">1.3.</span> <span class="nav-text">情境三 :</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A9%B2%E5%A6%82%E4%BD%95%E9%96%8B%E5%A7%8B%E5%AF%AB%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6"><span class="nav-number">2.</span> <span class="nav-text">該如何開始寫單元測試</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8A%E6%97%A5%E5%B0%8F%E7%B5%90"><span class="nav-number">3.</span> <span class="nav-text">今日小結</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2017/04/17/%E3%80%90Unit-Test%E3%80%91Day-1-%E7%82%BA%E4%BD%95%E8%A6%81%E5%AF%AB%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/";
+    this.page.identifier = "2017/04/17/【Unit-Test】Day-1-為何要寫單元測試/";
+    this.page.title = "【Unit Test】Day 1 - 為何要寫單元測試";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

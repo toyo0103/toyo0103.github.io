@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="繼續接續上一篇,我們來把大頭針改成自己想要的樣子吧,已這張圖為例  從上面那張圖可以看出來需要畫一個長方形,長方形裡面有一個title與圓形Icon,還需要一個倒三角形把它組回去,所以先來把這些元素準備一下吧首先先建立一個Class繼承MKAnnotationView &#96;&#96;&#96;swiftimport Foundationimport MapKitpublic class MyAnnotation :">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[swift] IOS地圖運用 (3) 客製Annotation View">
+<meta property="og:url" content="https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-3-%E5%AE%A2%E8%A3%BDAnnotation-View/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="繼續接續上一篇,我們來把大頭針改成自己想要的樣子吧,已這張圖為例  從上面那張圖可以看出來需要畫一個長方形,長方形裡面有一個title與圓形Icon,還需要一個倒三角形把它組回去,所以先來把這些元素準備一下吧首先先建立一個Class繼承MKAnnotationView &#96;&#96;&#96;swiftimport Foundationimport MapKitpublic class MyAnnotation :">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://3.bp.blogspot.com/-4mt5Vk9Y36A/VPVgIcev6II/AAAAAAAAEcc/DaA8w4qoIvs/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.17.25.png">
+<meta property="og:image" content="http://4.bp.blogspot.com/-1SWxrDjmc4c/VPVr5NKYmcI/AAAAAAAAEc4/VFG_Zo4MqHE/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.07.30.png">
+<meta property="article:published_time" content="2015-03-03T14:47:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.082Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="ios">
+<meta property="article:tag" content="swift">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://3.bp.blogspot.com/-4mt5Vk9Y36A/VPVgIcev6II/AAAAAAAAEcc/DaA8w4qoIvs/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.17.25.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-3-%E5%AE%A2%E8%A3%BDAnnotation-View/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>[swift] IOS地圖運用 (3) 客製Annotation View | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-3-%E5%AE%A2%E8%A3%BDAnnotation-View/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [swift] IOS地圖運用 (3) 客製Annotation View
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-03 14:47:00" itemprop="dateCreated datePublished" datetime="2015-03-03T14:47:00+00:00">2015-03-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-3-%E5%AE%A2%E8%A3%BDAnnotation-View/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-3-客製Annotation-View/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>繼續接續上一篇,我們來把大頭針改成自己想要的樣子吧,已這張圖為例<br><a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-4mt5Vk9Y36A/VPVgIcev6II/AAAAAAAAEcc/DaA8w4qoIvs/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.17.25.png"><img src="http://3.bp.blogspot.com/-4mt5Vk9Y36A/VPVgIcev6II/AAAAAAAAEcc/DaA8w4qoIvs/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.17.25.png"></a></p>
+<ul>
+<li><p>從上面那張圖可以看出來需要畫一個長方形,長方形裡面有一個title與圓形Icon,還需要一個倒三角形把它組回去,所以先來把這些元素準備一下吧<br>首先先建立一個Class繼承MKAnnotationView ```swift<br>import Foundation<br>import MapKit<br>public class MyAnnotation : MKAnnotationView  {<br>  var rectangoView:UIView!; //長方形<br>  var lblTitle:UILabel!;//Title<br>  var lblIcon:UILabel!;//圓形icon<br>  var circleView:UIView!; //原型view<br>  var triangle:UIView!; //三角形<br>  public override init(annotation: MKAnnotation!, reuseIdentifier: String!) {</p>
+<pre><code>  super.init(annotation: annotation, reuseIdentifier: reuseIdentifier);
+</code></pre>
+<p>  }</p>
+<pre><code>  public required init(coder aDecoder: NSCoder) &#123;
+  super.init(coder: aDecoder);
+</code></pre>
+<p>  }<br>}</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   接著把每個圖形間的關係組合起來,例如圓形跟title都在大大的長方形裡面,所以先將他們add到rectangoView裡面 &#96;&#96;&#96;swift</span><br><span class="line">import Foundation</span><br><span class="line">import MapKit</span><br><span class="line">public class MyAnnotation : MKAnnotationView  &#123;</span><br><span class="line">    var rectangoView:UIView!; &#x2F;&#x2F;長方形</span><br><span class="line">    var lblTitle:UILabel!;&#x2F;&#x2F;Title</span><br><span class="line">    var lblIcon:UILabel!;&#x2F;&#x2F;圓形icon</span><br><span class="line">    var circleView:UIView!; &#x2F;&#x2F;原型view</span><br><span class="line">    var triangle:UIView!; &#x2F;&#x2F;三角形</span><br><span class="line">    var DrawView:UIView!;&#x2F;&#x2F;整個客製座標的畫布</span><br><span class="line">    public override init!(annotation: MKAnnotation!, reuseIdentifier: String!) &#123;</span><br><span class="line">        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier);</span><br><span class="line">        &#x2F;&#x2F;先把每個圖層間的關係建立好,例如圓形跟title都在大大的長方形裡面,所以先add進去</span><br><span class="line">        lblTitle &#x3D; UILabel();</span><br><span class="line">        lblIcon &#x3D; UILabel();</span><br><span class="line">        rectangoView &#x3D; UIView();</span><br><span class="line">        circleView &#x3D; UIView();</span><br><span class="line"></span><br><span class="line">            circleView.addSubview(lblIcon);</span><br><span class="line">        rectangoView.addSubview(lblTitle)</span><br><span class="line">        rectangoView.addSubview(circleView);</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;畫出三角形遮罩</span><br><span class="line">        &#x2F;&#x2F;原理：將遮罩蓋到長方形上面,他會將不再這個框框範圍內的都過濾掉,就可以跑出三角形了</span><br><span class="line">        let path:UIBezierPath &#x3D; UIBezierPath ();</span><br><span class="line">        path.moveToPoint(CGPoint(x: 0, y: 0));</span><br><span class="line">        path.addLineToPoint(CGPoint(x: 10, y: 10));</span><br><span class="line">        path.addLineToPoint(CGPoint(x: 20, y: 0));</span><br><span class="line">        path.addLineToPoint(CGPoint(x: 0, y: 0));</span><br><span class="line"></span><br><span class="line">            let masklayer:CAShapeLayer &#x3D; CAShapeLayer ();&#x2F;&#x2F;遮罩</span><br><span class="line">        masklayer.path &#x3D; path.CGPath;</span><br><span class="line">        &#x2F;&#x2F;遮罩遮出三角型</span><br><span class="line">        triangle &#x3D; UIView(frame: CGRect(x: 22, y: 28, width: 20, height: 20));</span><br><span class="line">        triangle.layer.mask &#x3D; masklayer;</span><br><span class="line">        DrawView &#x3D; UIView();</span><br><span class="line">        DrawView.addSubview(rectangoView);</span><br><span class="line">        DrawView.addSubview(triangle);</span><br><span class="line">        self.addSubview(DrawView);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        public required init(coder aDecoder: NSCoder) &#123;</span><br><span class="line">        super.init(coder: aDecoder);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>接著在MyAnnotation寫一個function來詳細畫這個View的內容 ```swift<br>public func DrawCustomerView() {<pre><code>  //Title
+  lblTitle.text = &quot;5200萬&quot;;
+  lblTitle.textColor = UIColor.whiteColor();
+  lblTitle.font = UIFont.systemFontOfSize(12);
+  lblTitle.sizeToFit();
+  //大大的長方形
+  rectangoView.frame = CGRect(x: 0, y: 0, width: lblTitle.frame.width + 30, height: 28);//整體
+  rectangoView.backgroundColor =  UIColor(red: 0.208, green:0.596 , blue: 0.859, alpha: 1);
+  rectangoView.layer.cornerRadius = 3;//設定圓角
+  //“icon”圓型小字
+  lblIcon.font = UIFont.systemFontOfSize(11);
+  lblIcon.font = UIFont.boldSystemFontOfSize(14);
+  lblIcon.text = &quot;成&quot;;
+  lblIcon.textColor = rectangoView.backgroundColor;
+  lblIcon.sizeToFit();
+  lblIcon.center = CGPoint (x: 10, y: 10);
+  //圓形
+  circleView.frame = CGRect(x: 2, y: 4, width: 20, height: 20);//圓形標籤
+  circleView.backgroundColor = UIColor.whiteColor();
+  circleView.layer.cornerRadius = 10;
+  circleView.alpha = 1;
+  //畫三角形
+  triangle.backgroundColor =  UIColor(red: 0.208, green:0.596 , blue: 0.859, alpha: 1);
+  //rectangoView.Transform 旋轉
+  DrawView.frame = CGRect(x: 0, y: 0, width:triangle.frame.width,height: 48);
+</code></pre>
+  }</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   接下來修改view controller的viewForAnnotation事件如下 &#96;&#96;&#96;swift</span><br><span class="line">func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -&gt; MKAnnotationView! &#123;</span><br><span class="line">        var ann : MyAnnotation? &#x3D; mapView.dequeueReusableAnnotationViewWithIdentifier(&quot;CustomerPoint&quot;) as? MyAnnotation;</span><br><span class="line">        if(ann &#x3D;&#x3D; nil)&#123;</span><br><span class="line">            ann &#x3D; MyAnnotation(annotation: annotation, reuseIdentifier: &quot;CustomerPoint&quot;);</span><br><span class="line">            ann?.canShowCallout &#x3D; true;</span><br><span class="line">        &#125;</span><br><span class="line">        ann?.DrawCustomerView();</span><br><span class="line">        ann?.annotation &#x3D; annotation;</span><br><span class="line">        return ann;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>立馬執行看看,你會發現發生錯誤在MyAnnotation class,而且錯誤訊息寫得不清不楚的,這是第一個地雷,雖然繼承MKAnnotationView沒有要求一定要實作init(frame: CGRect),但不做會壞掉喔,那到底幹麻不列為required阿！！！所以乖乖補上到MyAnnotation就正常摟 ```swift<br>override init(frame: CGRect) {<pre><code>  super.init(frame: frame);
+</code></pre>
+  }</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   這時候會發現畫面長這樣...</span><br><span class="line">[![](http:&#x2F;&#x2F;4.bp.blogspot.com&#x2F;-OGPbgnJnyH0&#x2F;VPVpfcMNstI&#x2F;AAAAAAAAEcs&#x2F;NGAf74G1IoU&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.57.37.png)](http:&#x2F;&#x2F;4.bp.blogspot.com&#x2F;-OGPbgnJnyH0&#x2F;VPVpfcMNstI&#x2F;AAAAAAAAEcs&#x2F;NGAf74G1IoU&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.57.37.png)</span><br><span class="line">請在DrawCustomerView這個地方補上下面這段code,讓文字位移後執行看看會變得正常多了 &#96;&#96;&#96;swift</span><br><span class="line">lblTitle.frame.origin.x &#x3D; 24;&#x2F;&#x2F;中心位移</span><br><span class="line">lblTitle.frame.origin.y &#x3D; 7;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>  接下來我們測試一下這個畫出來的點是否跟插大頭針指的位置相同,結果…..歪掉了<br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-1SWxrDjmc4c/VPVr5NKYmcI/AAAAAAAAEc4/VFG_Zo4MqHE/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.07.30.png"><img src="http://4.bp.blogspot.com/-1SWxrDjmc4c/VPVr5NKYmcI/AAAAAAAAEc4/VFG_Zo4MqHE/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.07.30.png"></a></li>
+<li>但我們可以看出來他是在針頭的地方開始畫,所以來做點加工吧,在DrawCustomerView()最後面加上下面的code讓整個View位移來符合需求 ```swift<br>self.frame = CGRect(x: 0, y: 0, width: rectangoView.frame.width, height: rectangoView.frame.height);<pre><code>  self.centerOffset = CGPoint(x: 0, y: -21);
+</code></pre>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">我們再看看...</span><br><span class="line">[![](http:&#x2F;&#x2F;3.bp.blogspot.com&#x2F;-mPNj85zu_a8&#x2F;VPVsk5Xv-9I&#x2F;AAAAAAAAEdA&#x2F;faM54vpHC28&#x2F;s400&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.10.45.png)](http:&#x2F;&#x2F;3.bp.blogspot.com&#x2F;-mPNj85zu_a8&#x2F;VPVsk5Xv-9I&#x2F;AAAAAAAAEdA&#x2F;faM54vpHC28&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.10.45.png)</span><br><span class="line">*   看起來一切正常了,把一些測試的程式碼拿掉後完整如下</span><br><span class="line">view controller &#96;&#96;&#96;swift</span><br><span class="line">import UIKit</span><br><span class="line">import CoreLocation</span><br><span class="line">import MapKit</span><br><span class="line">class MapViewController: UIViewController,CLLocationManagerDelegate , MKMapViewDelegate&#123;</span><br><span class="line"></span><br><span class="line">        @IBOutlet weak var uimap: MKMapView!&#x2F;&#x2F;地圖元件</span><br><span class="line">    var location : CLLocationManager!; &#x2F;&#x2F;座標管理元件</span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        super.viewDidLoad();</span><br><span class="line"></span><br><span class="line">            location &#x3D; CLLocationManager();</span><br><span class="line">        location.delegate &#x3D; self;</span><br><span class="line">        &#x2F;&#x2F;詢問使用者是否同意給APP定位功能</span><br><span class="line">        location.requestWhenInUseAuthorization();</span><br><span class="line">        &#x2F;&#x2F;開始接收目前位置資訊</span><br><span class="line">        location.startUpdatingLocation();</span><br><span class="line">        location.distanceFilter &#x3D; CLLocationDistance(10); &#x2F;&#x2F;表示移動10公尺再更新座標資訊</span><br><span class="line">        uimap.delegate &#x3D; self;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        override func viewDidDisappear(animated: Bool) &#123;</span><br><span class="line">        &#x2F;&#x2F;因為ＧＰＳ功能很耗電,所以被敬執行時關閉定位功能</span><br><span class="line">        location.stopUpdatingLocation();</span><br><span class="line">    &#125;</span><br><span class="line">    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) &#123;</span><br><span class="line">        &#x2F;&#x2F;取得目前的座標位置</span><br><span class="line">        let c &#x3D; locations[0] as CLLocation;</span><br><span class="line">        let nowLocation &#x3D; CLLocationCoordinate2D(latitude: c.coordinate.latitude, longitude: c.coordinate.longitude);</span><br><span class="line">        &#x2F;&#x2F;將map中心點定在目前所在的位置</span><br><span class="line">        &#x2F;&#x2F;span是地圖zoom in, zoom out的級距</span><br><span class="line">        let _span:MKCoordinateSpan &#x3D; MKCoordinateSpan(latitudeDelta: 0.0005, longitudeDelta: 0.0005);</span><br><span class="line">        self.uimap.setRegion(MKCoordinateRegion(center: nowLocation, span: _span), animated: true);</span><br><span class="line">        &#x2F;&#x2F;加入座標</span><br><span class="line">        addPointAnnotation(c.coordinate.latitude, longitude: c.coordinate.longitude);</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;新增座標</span><br><span class="line">    private func addPointAnnotation(latitude:CLLocationDegrees , longitude:CLLocationDegrees)&#123;</span><br><span class="line">        &#x2F;&#x2F;大頭針</span><br><span class="line">        var point:MKPointAnnotation &#x3D; MKPointAnnotation();</span><br><span class="line">        &#x2F;&#x2F;設定大頭針的座標位置</span><br><span class="line">        point.coordinate &#x3D; CLLocationCoordinate2D(latitude: latitude, longitude: longitude);</span><br><span class="line">        uimap.addAnnotation(point);</span><br><span class="line">    &#125;</span><br><span class="line">    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -&gt; MKAnnotationView! &#123;</span><br><span class="line">        var ann : MyAnnotation? &#x3D; mapView.dequeueReusableAnnotationViewWithIdentifier(&quot;CustomerPoint&quot;) as? MyAnnotation;</span><br><span class="line">        if(ann &#x3D;&#x3D; nil)&#123;</span><br><span class="line">            ann &#x3D; MyAnnotation(annotation: annotation, reuseIdentifier: &quot;CustomerPoint&quot;);</span><br><span class="line">            ann?.canShowCallout &#x3D; true;</span><br><span class="line">        &#125;</span><br><span class="line">        ann?.DrawCustomerView();</span><br><span class="line">        ann?.annotation &#x3D; annotation;</span><br><span class="line">        return ann;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>MyAnnotation Class完整如下</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"><span class="keyword">import</span> MapKit</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAnnotation</span> : <span class="title">MKAnnotationView</span>  </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> rectangoView:<span class="type">UIView</span>!; <span class="comment">//長方形</span></span><br><span class="line">    <span class="keyword">var</span> lblTitle:<span class="type">UILabel</span>!;<span class="comment">//Title</span></span><br><span class="line">    <span class="keyword">var</span> lblIcon:<span class="type">UILabel</span>!;<span class="comment">//圓形icon</span></span><br><span class="line">    <span class="keyword">var</span> circleView:<span class="type">UIView</span>!; <span class="comment">//原型view</span></span><br><span class="line">    <span class="keyword">var</span> triangle:<span class="type">UIView</span>!; <span class="comment">//三角形</span></span><br><span class="line">    <span class="keyword">var</span> <span class="type">DrawView</span>:<span class="type">UIView</span>!;<span class="comment">//整個客製座標的畫布</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">init</span>(<span class="params">annotation</span>: <span class="type">MKAnnotation</span>!, <span class="params">reuseIdentifier</span>: <span class="type">String</span>!)</span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(annotation: annotation, reuseIdentifier: reuseIdentifier);</span><br><span class="line">        <span class="comment">//先把每個圖層間的關係建立好,例如圓形跟title都在大大的長方形裡面,所以先add進去</span></span><br><span class="line">        lblTitle <span class="operator">=</span> <span class="type">UILabel</span>();</span><br><span class="line">        lblIcon <span class="operator">=</span> <span class="type">UILabel</span>();</span><br><span class="line">        rectangoView <span class="operator">=</span> <span class="type">UIView</span>();</span><br><span class="line">        circleView <span class="operator">=</span> <span class="type">UIView</span>();</span><br><span class="line"></span><br><span class="line">            circleView.addSubview(lblIcon);</span><br><span class="line">        rectangoView.addSubview(lblTitle)</span><br><span class="line">        rectangoView.addSubview(circleView);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//畫出三角形遮罩</span></span><br><span class="line">        <span class="comment">//原理：將遮罩蓋到長方形上面,他會將不再這個框框範圍內的都過濾掉,就可以跑出三角形了</span></span><br><span class="line">        <span class="keyword">let</span> path:<span class="type">UIBezierPath</span> <span class="operator">=</span> <span class="type">UIBezierPath</span> ();</span><br><span class="line">        path.moveToPoint(<span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="number">0</span>));</span><br><span class="line">        path.addLineToPoint(<span class="type">CGPoint</span>(x: <span class="number">10</span>, y: <span class="number">10</span>));</span><br><span class="line">        path.addLineToPoint(<span class="type">CGPoint</span>(x: <span class="number">20</span>, y: <span class="number">0</span>));</span><br><span class="line">        path.addLineToPoint(<span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> masklayer:<span class="type">CAShapeLayer</span> <span class="operator">=</span> <span class="type">CAShapeLayer</span> ();<span class="comment">//遮罩</span></span><br><span class="line">        masklayer.path <span class="operator">=</span> path.<span class="type">CGPath</span>;</span><br><span class="line">        <span class="comment">//遮罩遮出三角型</span></span><br><span class="line">        triangle <span class="operator">=</span> <span class="type">UIView</span>(frame: <span class="type">CGRect</span>(x: <span class="number">22</span>, y: <span class="number">28</span>, width: <span class="number">20</span>, height: <span class="number">20</span>));</span><br><span class="line">        triangle.layer.mask <span class="operator">=</span> masklayer;</span><br><span class="line">        <span class="type">DrawView</span> <span class="operator">=</span> <span class="type">UIView</span>();</span><br><span class="line">        <span class="type">DrawView</span>.addSubview(rectangoView);</span><br><span class="line">        <span class="type">DrawView</span>.addSubview(triangle);</span><br><span class="line">        <span class="keyword">self</span>.addSubview(<span class="type">DrawView</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">required</span>  <span class="function"><span class="keyword">init</span>(<span class="params">coder</span> <span class="params">aDecoder</span>: <span class="type">NSCoder</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(coder: aDecoder);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">init</span>(<span class="params">frame</span>: <span class="type">CGRect</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(frame: frame);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">DrawCustomerView</span>()</span> &#123;</span><br><span class="line">        <span class="comment">//Title</span></span><br><span class="line">        lblTitle.text <span class="operator">=</span> <span class="string">&quot;5200萬&quot;</span>;</span><br><span class="line">        lblTitle.textColor <span class="operator">=</span> <span class="type">UIColor</span>.whiteColor();</span><br><span class="line">        lblTitle.font <span class="operator">=</span> <span class="type">UIFont</span>.systemFontOfSize(<span class="number">12</span>);</span><br><span class="line">        lblTitle.frame.origin.x <span class="operator">=</span> <span class="number">24</span>;<span class="comment">//中心位移</span></span><br><span class="line">        lblTitle.frame.origin.y <span class="operator">=</span> <span class="number">7</span>;</span><br><span class="line">        lblTitle.sizeToFit();</span><br><span class="line">        <span class="comment">//大大的長方形</span></span><br><span class="line">        rectangoView.frame <span class="operator">=</span> <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: lblTitle.frame.width <span class="operator">+</span> <span class="number">30</span>, height: <span class="number">28</span>);<span class="comment">//整體</span></span><br><span class="line">        rectangoView.backgroundColor <span class="operator">=</span>  <span class="type">UIColor</span>(red: <span class="number">0.208</span>, green:<span class="number">0.596</span> , blue: <span class="number">0.859</span>, alpha: <span class="number">1</span>);</span><br><span class="line">        rectangoView.layer.cornerRadius <span class="operator">=</span> <span class="number">3</span>;<span class="comment">//設定圓角</span></span><br><span class="line">        <span class="comment">//“icon”圓型小字</span></span><br><span class="line">        lblIcon.font <span class="operator">=</span> <span class="type">UIFont</span>.systemFontOfSize(<span class="number">11</span>);</span><br><span class="line">        lblIcon.font <span class="operator">=</span> <span class="type">UIFont</span>.boldSystemFontOfSize(<span class="number">14</span>);</span><br><span class="line">        lblIcon.text <span class="operator">=</span> <span class="string">&quot;成&quot;</span>;</span><br><span class="line">        lblIcon.textColor <span class="operator">=</span> rectangoView.backgroundColor;</span><br><span class="line">        lblIcon.sizeToFit();</span><br><span class="line">        lblIcon.center <span class="operator">=</span> <span class="type">CGPoint</span> (x: <span class="number">10</span>, y: <span class="number">10</span>);</span><br><span class="line">        <span class="comment">//圓形</span></span><br><span class="line">        circleView.frame <span class="operator">=</span> <span class="type">CGRect</span>(x: <span class="number">2</span>, y: <span class="number">4</span>, width: <span class="number">20</span>, height: <span class="number">20</span>);<span class="comment">//圓形標籤</span></span><br><span class="line">        circleView.backgroundColor <span class="operator">=</span> <span class="type">UIColor</span>.whiteColor();</span><br><span class="line">        circleView.layer.cornerRadius <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">        circleView.alpha <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//畫三角形</span></span><br><span class="line">        triangle.backgroundColor <span class="operator">=</span>  <span class="type">UIColor</span>(red: <span class="number">0.208</span>, green:<span class="number">0.596</span> , blue: <span class="number">0.859</span>, alpha: <span class="number">1</span>);</span><br><span class="line">        <span class="comment">//rectangoView.Transform 旋轉</span></span><br><span class="line">        <span class="type">DrawView</span>.frame <span class="operator">=</span> <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width:triangle.frame.width,height: <span class="number">48</span>);</span><br><span class="line">        <span class="keyword">self</span>.frame <span class="operator">=</span> <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: rectangoView.frame.width, height: rectangoView.frame.height);</span><br><span class="line">        <span class="keyword">self</span>.centerOffset <span class="operator">=</span> <span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="operator">-</span><span class="number">21</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ios/" rel="tag"># ios</a>
+              <a href="/tags/swift/" rel="tag"># swift</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-2-%E5%9C%A8%E5%9C%B0%E5%9C%96%E9%87%98%E4%B8%8A%E5%A4%A7%E9%A0%AD%E9%87%9D/" rel="prev" title="[swift] IOS地圖運用 (2) 在地圖釘上大頭針">
+      <i class="fa fa-chevron-left"></i> [swift] IOS地圖運用 (2) 在地圖釘上大頭針
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-4-%E5%A6%82%E4%BD%95%E5%8D%80%E5%88%86%E6%98%AFUser-Location%E8%88%87Annotation/" rel="next" title="[swift] IOS地圖運用 (4) 如何區分是User Location與Annotation">
+      [swift] IOS地圖運用 (4) 如何區分是User Location與Annotation <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-3-%E5%AE%A2%E8%A3%BDAnnotation-View/";
+    this.page.identifier = "2015/03/03/swift-IOS地圖運用-3-客製Annotation-View/";
+    this.page.title = "[swift] IOS地圖運用 (3) 客製Annotation View";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

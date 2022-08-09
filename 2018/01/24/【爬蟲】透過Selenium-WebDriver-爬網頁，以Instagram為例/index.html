@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="常常因為資料分析的需求，會有需要爬網頁資料的時候，而以往爬網頁不外乎將Html拉回來後，依據Tag去拆解資訊。 但現今的網站很大部分都是前端透過API拉版面，以Instagram來說，如果直接透過網址將Html拉回來，會只得到空空的外殼而已，什麼都找不到。 這時候就需要模擬瀏覽器行為來讓Javascript運作，甚至操作瀏覽器去點擊特定按鈕。 [![](https:&#x2F;&#x2F;2.bp.blogspot.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【爬蟲】透過Selenium WebDriver 爬網頁，以Instagram為例">
+<meta property="og:url" content="https://toyo0103.github.io/2018/01/24/%E3%80%90%E7%88%AC%E8%9F%B2%E3%80%91%E9%80%8F%E9%81%8ESelenium-WebDriver-%E7%88%AC%E7%B6%B2%E9%A0%81%EF%BC%8C%E4%BB%A5Instagram%E7%82%BA%E4%BE%8B/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="常常因為資料分析的需求，會有需要爬網頁資料的時候，而以往爬網頁不外乎將Html拉回來後，依據Tag去拆解資訊。 但現今的網站很大部分都是前端透過API拉版面，以Instagram來說，如果直接透過網址將Html拉回來，會只得到空空的外殼而已，什麼都找不到。 這時候就需要模擬瀏覽器行為來讓Javascript運作，甚至操作瀏覽器去點擊特定按鈕。 [![](https:&#x2F;&#x2F;2.bp.blogspot.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-01-24T13:49:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.096Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="Selenium">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://toyo0103.github.io/2018/01/24/%E3%80%90%E7%88%AC%E8%9F%B2%E3%80%91%E9%80%8F%E9%81%8ESelenium-WebDriver-%E7%88%AC%E7%B6%B2%E9%A0%81%EF%BC%8C%E4%BB%A5Instagram%E7%82%BA%E4%BE%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【爬蟲】透過Selenium WebDriver 爬網頁，以Instagram為例 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/24/%E3%80%90%E7%88%AC%E8%9F%B2%E3%80%91%E9%80%8F%E9%81%8ESelenium-WebDriver-%E7%88%AC%E7%B6%B2%E9%A0%81%EF%BC%8C%E4%BB%A5Instagram%E7%82%BA%E4%BE%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【爬蟲】透過Selenium WebDriver 爬網頁，以Instagram為例
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-01-24 13:49:00" itemprop="dateCreated datePublished" datetime="2018-01-24T13:49:00+00:00">2018-01-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/01/24/%E3%80%90%E7%88%AC%E8%9F%B2%E3%80%91%E9%80%8F%E9%81%8ESelenium-WebDriver-%E7%88%AC%E7%B6%B2%E9%A0%81%EF%BC%8C%E4%BB%A5Instagram%E7%82%BA%E4%BE%8B/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/24/【爬蟲】透過Selenium-WebDriver-爬網頁，以Instagram為例/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>常常因為資料分析的需求，會有需要爬網頁資料的時候，而以往爬網頁不外乎將Html拉回來後，依據Tag去拆解資訊。 但現今的網站很大部分都是前端透過API拉版面，以Instagram來說，如果直接透過網址將Html拉回來，會只得到空空的外殼而已，什麼都找不到。 這時候就需要模擬瀏覽器行為來讓Javascript運作，甚至操作瀏覽器去點擊特定按鈕。</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://2.bp.blogspot.com/-6yR04AI5phg/Wmf7S3BE3TI/AAAAAAAAITs/gELt5or7tQkL60jmDRYwb1-YGuNU8cKggCLcBGAs/s400/1.png)](https://2.bp.blogspot.com/-6yR04AI5phg/Wmf7S3BE3TI/AAAAAAAAITs/gELt5or7tQkL60jmDRYwb1-YGuNU8cKggCLcBGAs/s1600/1.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">Instagram拉回來的網頁就只有一個空殼而已....</td></tr></tbody></table>
+透過Selenium.WebDriver，以及Seleium.WebDriver.ChromeDriver套件，可以寫程式操作Chrome的操作行為
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-DkheSsyDReI/Wmf8FTKy0VI/AAAAAAAAIT0/raZdEEh40xgGJQbTFwhZ2A3aQbOOh4VWACLcBGAs/s640/1.png)](https://1.bp.blogspot.com/-DkheSsyDReI/Wmf8FTKy0VI/AAAAAAAAIT0/raZdEEh40xgGJQbTFwhZ2A3aQbOOh4VWACLcBGAs/s1600/1.png)</div><div class="separator" style="clear: both; text-align: center;">
+</div><div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-vnkv6jsDImY/Wmf8OnewkhI/AAAAAAAAIT4/FnlCPUMVsH05noZ1RVbhxFbWqMIYKZJ5gCLcBGAs/s640/1.png)](https://3.bp.blogspot.com/-vnkv6jsDImY/Wmf8OnewkhI/AAAAAAAAIT4/FnlCPUMVsH05noZ1RVbhxFbWqMIYKZJ5gCLcBGAs/s1600/1.png)</div>
+
+<p>接著來一步一步分析如何透過它來爬網頁</p>
+<p>開啟Chrome瀏覽器，並且連到想爬的網頁 : <a target="_blank" rel="noopener" href="https://www.instagram.com/mercci22/">https://www.instagram.com/mercci22/</a> </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (IWebDriver driver = <span class="keyword">new</span> ChromeDriver())</span><br><span class="line">            &#123;</span><br><span class="line"></span><br><span class="line">                driver.Navigate().GoToUrl(<span class="string">&quot;https://www.instagram.com/mercci22/&quot;</span>);            </span><br><span class="line">            &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>接著分析目標網頁，會發現所有PO文資料都放在一個Div且Class為_cmdpi裡面</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-sbreT5cUils/Wmf99JegYUI/AAAAAAAAIUI/oIXZxzMGX7c9LU4uVQ9H0BSJUI67UgdGwCLcBGAs/s640/1.png)](https://1.bp.blogspot.com/-sbreT5cUils/Wmf99JegYUI/AAAAAAAAIUI/oIXZxzMGX7c9LU4uVQ9H0BSJUI67UgdGwCLcBGAs/s1600/1.png)</div>
+
+<p>往下找出每一行、每一格，在div[class=’_cmdpi’]底下會有div[class=’_70iju’]每一行</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-yluY12_h7T0/Wmf_JJsdiBI/AAAAAAAAIUQ/zLIRDslBbZQEYGRvu0qXp4JoSdObu-lPwCLcBGAs/s640/1.png)](https://4.bp.blogspot.com/-yluY12_h7T0/Wmf_JJsdiBI/AAAAAAAAIUQ/zLIRDslBbZQEYGRvu0qXp4JoSdObu-lPwCLcBGAs/s1600/1.png)</div>
+
+<p>而每一行裡面又有三個Div代表每一格</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-jnEHEexjkeM/Wmf_roHtA4I/AAAAAAAAIUY/4t6RR_UwEP8-1I7EipD7guWU4Ddyk3d5QCLcBGAs/s640/1.png)](https://4.bp.blogspot.com/-jnEHEexjkeM/Wmf_roHtA4I/AAAAAAAAIUY/4t6RR_UwEP8-1I7EipD7guWU4Ddyk3d5QCLcBGAs/s1600/1.png)</div>
+
+<p>所以就來透過套件的API找出每一行，並點擊每一格吧 </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (IWebDriver driver = <span class="keyword">new</span> ChromeDriver())</span><br><span class="line">            &#123;</span><br><span class="line">                driver.Navigate().GoToUrl(<span class="string">&quot;https://www.instagram.com/mercci22/&quot;</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//找到Post的Container</span></span><br><span class="line">                <span class="keyword">var</span> PostContainerElement = driver.FindElement(By.ClassName(<span class="string">&quot;_cmdpi&quot;</span>));</span><br><span class="line">                <span class="comment">//每一行</span></span><br><span class="line">                <span class="keyword">var</span> Rows = PostContainerElement.FindElements(By.ClassName(<span class="string">&quot;_70iju&quot;</span>));</span><br><span class="line">                <span class="keyword">foreach</span> (<span class="keyword">var</span> row <span class="keyword">in</span> Rows)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Boxs = row.FindElements(By.XPath(<span class="string">&quot;div&quot;</span>));</span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> box <span class="keyword">in</span> Boxs)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">//點擊每一格讓它展開Dialog</span></span><br><span class="line">                        box.Click();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+
+<p>這時候如果你執行程式，應該會看到它開啟Chrome並且連到網址然後點擊每一格打開視窗</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-UIjpEynpLcA/WmgBKT9R10I/AAAAAAAAIUk/WA64zbd-g-YoQdf33ZVlrfVbXDLsYJkhACLcBGAs/s640/1.png)](https://3.bp.blogspot.com/-UIjpEynpLcA/WmgBKT9R10I/AAAAAAAAIUk/WA64zbd-g-YoQdf33ZVlrfVbXDLsYJkhACLcBGAs/s1600/1.png)</div>
+
+<p>接著來分析彈跳出來的視窗，會發現當視窗開啟時，網頁會出現以下Div[role=’dialog’]這個元素，關閉後就會移除</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-clgYAUdg4y0/WmgBoMCshoI/AAAAAAAAIUo/E3NwCF5n5i8Cpilg7m-OChlEQEgGHOGAwCLcBGAs/s640/1.png)](https://4.bp.blogspot.com/-clgYAUdg4y0/WmgBoMCshoI/AAAAAAAAIUo/E3NwCF5n5i8Cpilg7m-OChlEQEgGHOGAwCLcBGAs/s1600/1.png)</div>
+
+<p>所以我們要想辦法拿到這個Div Dialog，才有辦法擷取Po文的文案、日期、圖片，找到Dialog後，後面就重複上述步驟分析Tag，會發現</p>
+<p><strong>圖片</strong> : 放在Div[class=’_4rbun’]底下的Img Tag<br><strong>文案&nbsp;</strong>: 放在Img Tag的Alt裡面<br><strong>時間</strong> : 放在Article &gt; div &gt; div &gt; a &gt; time這個Tag裡面</p>
+<p>所以目前程式如下</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (IWebDriver driver = <span class="keyword">new</span> ChromeDriver())</span><br><span class="line">            &#123;</span><br><span class="line">                driver.Navigate().GoToUrl(<span class="string">&quot;https://www.instagram.com/mercci22/&quot;</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">//找到Post的Container</span></span><br><span class="line">                <span class="keyword">var</span> PostContainerElement = driver.FindElement(By.ClassName(<span class="string">&quot;_cmdpi&quot;</span>));</span><br><span class="line">                <span class="comment">//每一行</span></span><br><span class="line">                <span class="keyword">var</span> Rows = PostContainerElement.FindElements(By.ClassName(<span class="string">&quot;_70iju&quot;</span>));</span><br><span class="line">                <span class="keyword">foreach</span> (<span class="keyword">var</span> row <span class="keyword">in</span> Rows)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Boxs = row.FindElements(By.XPath(<span class="string">&quot;div&quot;</span>));</span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> box <span class="keyword">in</span> Boxs)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">//點擊每一格讓它展開Dialog</span></span><br><span class="line">                        box.Click();</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//取得Dialog底下的Article元素</span></span><br><span class="line">                        <span class="keyword">var</span> article = driver.FindElement(By.XPath(<span class="string">&quot;//div[@role=&#x27;dialog&#x27;]/div/div/article&quot;</span>));</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//如果Dialog裡面放的是影片，則_4rbun會不存在</span></span><br><span class="line">                        <span class="keyword">if</span> (article.FindElements(By.ClassName(<span class="string">&quot;_4rbun&quot;</span>)).Count == <span class="number">0</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="comment">//跳過這則，這次目標只抓出圖片</span></span><br><span class="line">                            <span class="keyword">continue</span>;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//第一張圖</span></span><br><span class="line">                        <span class="keyword">var</span> ImgContainer = article.FindElement(By.ClassName(<span class="string">&quot;_4rbun&quot;</span>));</span><br><span class="line">                        <span class="keyword">var</span> Img = ImgContainer.FindElement(By.TagName(<span class="string">&quot;img&quot;</span>));                       </span><br><span class="line">                        <span class="keyword">var</span> Date = article.FindElement(By.XPath(<span class="string">&quot;div/div/a/time&quot;</span>));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這時候執行的時候可能會發生Exception，原因嘗試取得Dialog底下的Artilce，但Dialog點擊後產生會有時間差導致</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-TUSU5eY99xU/WmgWjs_9uBI/AAAAAAAAIVE/QnOtvHvoW38zNLWZQ7m6NpICJluVxyc2QCLcBGAs/s640/1.png)](https://4.bp.blogspot.com/-TUSU5eY99xU/WmgWjs_9uBI/AAAAAAAAIVE/QnOtvHvoW38zNLWZQ7m6NpICJluVxyc2QCLcBGAs/s1600/1.png)</div>
+
+<p>優化這段程式，加上Wait的限制，而Selenium提供兩種Wait的方式</p>
+<div class="note info">
+            <p>implicitly Wait: 預設等待，當元件暫時找不到時，會嘗試等待，直到timeout時間到。<br>Explicit Wait: 針對特別元件等待。</p><p>參考文件:<br><a target="_blank" rel="noopener" href="http://selenium-python.readthedocs.io/waits.html">Selenium 5. Waits 官方文件</a></p>
+          </div>
+
+<p>我們這邊加上第一種預設等待 </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(<span class="number">2</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>讀取每個Element時，如果暫時不存在兩秒後TimeOut，之後再執行看看，會發現跑到第二次box.Click()的時候跳Exception。</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-y0clUXejLl4/WmgZwH5ZmeI/AAAAAAAAIVQ/bDTSCWKn9jkNDem1AxJ-TAQPwPQpW-7hACLcBGAs/s640/1.png)](https://4.bp.blogspot.com/-y0clUXejLl4/WmgZwH5ZmeI/AAAAAAAAIVQ/bDTSCWKn9jkNDem1AxJ-TAQPwPQpW-7hACLcBGAs/s1600/1.png)</div>
+
+<p>原因是當我們打開Dialog時，如果爬完不點擊關閉視窗，會點不到第二隔的元素</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://1.bp.blogspot.com/-gPgFjISg5XI/WmgaJ1qWtUI/AAAAAAAAIVU/ii1yaeglfDgqvpH05tnhPa8Soxe3OszjACLcBGAs/s640/1.png)](https://1.bp.blogspot.com/-gPgFjISg5XI/WmgaJ1qWtUI/AAAAAAAAIVU/ii1yaeglfDgqvpH05tnhPa8Soxe3OszjACLcBGAs/s1600/1.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">蓋住了第二格元素，所以要執行關閉視窗按鈕</td></tr></tbody></table>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (IWebDriver driver = <span class="keyword">new</span> ChromeDriver())</span><br><span class="line">            &#123;</span><br><span class="line">                driver.Navigate().GoToUrl(<span class="string">&quot;https://www.instagram.com/mercci22/&quot;</span>);</span><br><span class="line">                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(<span class="number">2</span>);</span><br><span class="line">                <span class="comment">//找到Post的Container</span></span><br><span class="line">                <span class="keyword">var</span> PostContainerElement = driver.FindElement(By.ClassName(<span class="string">&quot;_cmdpi&quot;</span>));</span><br><span class="line">                <span class="comment">//每一行</span></span><br><span class="line">                <span class="keyword">var</span> Rows = PostContainerElement.FindElements(By.ClassName(<span class="string">&quot;_70iju&quot;</span>));</span><br><span class="line">                <span class="keyword">foreach</span> (<span class="keyword">var</span> row <span class="keyword">in</span> Rows)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Boxs = row.FindElements(By.XPath(<span class="string">&quot;div&quot;</span>));</span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> box <span class="keyword">in</span> Boxs)</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">//點擊每一格讓它展開Dialog</span></span><br><span class="line">                        box.Click();</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//取得Dialog底下的Article元素</span></span><br><span class="line">                        <span class="keyword">var</span> article = driver.FindElement(By.XPath(<span class="string">&quot;//div[@role=&#x27;dialog&#x27;]/div/div/article&quot;</span>));</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//如果Dialog裡面放的是影片，則_4rbun會不存在</span></span><br><span class="line">                        <span class="keyword">if</span> (article.FindElements(By.ClassName(<span class="string">&quot;_4rbun&quot;</span>)).Count == <span class="number">0</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="comment">//關閉Dialog</span></span><br><span class="line">                            driver.FindElement(By.ClassName(<span class="string">&quot;_dcj9f&quot;</span>)).Click();</span><br><span class="line">                            <span class="comment">//跳過這則，這次目標只抓出圖片</span></span><br><span class="line">                            <span class="keyword">continue</span>;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//第一張圖</span></span><br><span class="line">                        <span class="keyword">var</span> ImgContainer = article.FindElement(By.ClassName(<span class="string">&quot;_4rbun&quot;</span>));</span><br><span class="line">                        <span class="keyword">var</span> Img = ImgContainer.FindElement(By.TagName(<span class="string">&quot;img&quot;</span>));</span><br><span class="line">                        <span class="keyword">var</span> Date = article.FindElement(By.XPath(<span class="string">&quot;div/div/a/time&quot;</span>));</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//關閉Dialog</span></span><br><span class="line">                        driver.FindElement(By.ClassName(<span class="string">&quot;_dcj9f&quot;</span>)).Click();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>這樣就可以順利地走完每一格，並且把圖片、文案、時間資料都讀出來了</p>
+<p>**<br>**</p>
+<h4 id="多圖片的情境"><a href="#多圖片的情境" class="headerlink" title="多圖片的情境"></a><strong>多圖片的情境</strong></h4><p>加下來是應用的第二部分，Instagram是可以分享多圖片的，而多張圖片是在點擊向右按鈕後，才會動態透過JS撈出來</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-S8AFeQpjcHk/WmgbnCX9SgI/AAAAAAAAIVk/2jcAH-RsJ4cg7IN6X2_UwCWVmbNX1BJeACLcBGAs/s400/1.png)](https://4.bp.blogspot.com/-S8AFeQpjcHk/WmgbnCX9SgI/AAAAAAAAIVk/2jcAH-RsJ4cg7IN6X2_UwCWVmbNX1BJeACLcBGAs/s1600/1.png)</div>
+所以必須寫程式判斷是否有這個按鈕，如果有，表示有多張圖片，要求Driver去點擊那個按鈕，並且撈取Img的Src路徑
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一張圖</span></span><br><span class="line">                        <span class="keyword">var</span> ImgContainer = article.FindElement(By.ClassName(<span class="string">&quot;_4rbun&quot;</span>));</span><br><span class="line">                        <span class="keyword">var</span> Img = ImgContainer.FindElement(By.TagName(<span class="string">&quot;img&quot;</span>));</span><br><span class="line">                        <span class="comment">//存放Image的Src List</span></span><br><span class="line">                        List&lt;<span class="built_in">string</span>&gt; ImgUrls = <span class="keyword">new</span> List&lt;<span class="built_in">string</span>&gt; &#123; Img.GetAttribute(<span class="string">&quot;src&quot;</span>) &#125;;</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//如果有第二張圖以上,則會出現a[class=&#x27;&#x27;_8kphn _by8kl coreSpriteRightChevron&#x27;]</span></span><br><span class="line">                        <span class="comment">//直到不再出現表示最後一張圖到了</span></span><br><span class="line">                        <span class="keyword">while</span> (article.FindElements(By.CssSelector(<span class="string">&quot;a[class=&#x27;_8kphn _by8kl coreSpriteRightChevron&#x27;]&quot;</span>)).Count &gt; <span class="number">0</span>)</span><br><span class="line">                        &#123;</span><br><span class="line">                            <span class="comment">//點擊按鈕</span></span><br><span class="line">                            <span class="keyword">var</span> nextBtn = article.FindElement(By.CssSelector(<span class="string">&quot;a[class=&#x27;_8kphn _by8kl coreSpriteRightChevron&#x27;]&quot;</span>));</span><br><span class="line">                            nextBtn.Click();</span><br><span class="line"></span><br><span class="line">                            <span class="comment">//因為Instagram是透過同一個Img Tag動態去換Src，因為程式點擊下一張按鈕太快</span></span><br><span class="line">                            <span class="comment">//會導致有Img Tag存在，但Src還來不及換，導致抓到空白的Src</span></span><br><span class="line">                            <span class="comment">//所以不是元素沒出現的問題，只好要求Thread換下一張圖時先暫停0.5秒再抓</span></span><br><span class="line">                            Thread.Sleep(<span class="number">500</span>);</span><br><span class="line"></span><br><span class="line">                            Img = ImgContainer.FindElement(By.TagName(<span class="string">&quot;img&quot;</span>));</span><br><span class="line">                            ImgUrls.Add(Img.GetAttribute(<span class="string">&quot;src&quot;</span>));</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這樣就能順利拿到多張圖的路徑了</p>
+<h4 id="讀取第二頁的情境"><a href="#讀取第二頁的情境" class="headerlink" title="讀取第二頁的情境"></a>讀取第二頁的情境</h4><div>Instagram是滑鼠移到最下方才會動態載入第二頁，所以需要能控制視窗移到最下方來觸發它</div>```csharp
+IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            //如果爬完第一頁還沒爬完，則執行JS讓視窗滾到最下方，觸發讀取第二頁
+            js.ExecuteScript("window.scrollTo(0,1000000)");
+
+<p>```</p>
+<p>目前綜合以上所提的應用，應該已經能完全將Instagram的網站資料爬回來，只能說Selenium真的是一個強大的東西阿!!</p>
+<p>參考文章:<br><a target="_blank" rel="noopener" href="http://www.hosp.ncku.edu.tw/mis/48-netdisk/57-xml-xpath.html">XML XPath的選擇節點語法</a><br><a target="_blank" rel="noopener" href="http://www.seleniumhq.org/docs/">Selenium Documentation</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Selenium/" rel="tag"># Selenium</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/01/17/%E3%80%90RazorEngine%E3%80%91%E5%A5%97%E5%AF%84%E4%BF%A1%E3%80%81%E7%BD%90%E9%A0%AD%E8%A8%8A%E6%81%AF%E5%85%A7%E5%AE%B9%E7%9A%84%E5%A5%BD%E5%B9%AB%E6%89%8B/" rel="prev" title="【RazorEngine】套寄信、罐頭訊息內容的好幫手">
+      <i class="fa fa-chevron-left"></i> 【RazorEngine】套寄信、罐頭訊息內容的好幫手
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/01/25/%E3%80%90CI-CD%E3%80%911-%E5%A6%82%E4%BD%95%E9%80%8F%E9%81%8EVSTS%E4%BE%86%E9%81%94%E6%88%90CI%E7%9A%84%E7%9B%AE%E6%A8%99/" rel="next" title="【CI/CD】1. 如何透過VSTS來達成CI的目標">
+      【CI/CD】1. 如何透過VSTS來達成CI的目標 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E5%9C%96%E7%89%87%E7%9A%84%E6%83%85%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">多圖片的情境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%80%E5%8F%96%E7%AC%AC%E4%BA%8C%E9%A0%81%E7%9A%84%E6%83%85%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">讀取第二頁的情境</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2018/01/24/%E3%80%90%E7%88%AC%E8%9F%B2%E3%80%91%E9%80%8F%E9%81%8ESelenium-WebDriver-%E7%88%AC%E7%B6%B2%E9%A0%81%EF%BC%8C%E4%BB%A5Instagram%E7%82%BA%E4%BE%8B/";
+    this.page.identifier = "2018/01/24/【爬蟲】透過Selenium-WebDriver-爬網頁，以Instagram為例/";
+    this.page.title = "【爬蟲】透過Selenium WebDriver 爬網頁，以Instagram為例";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

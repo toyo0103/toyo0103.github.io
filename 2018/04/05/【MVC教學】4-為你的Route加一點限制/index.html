@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="上一篇寫了Route比對的邏輯，這次來點更進階的應用，讓我們幫Route比對加上一些些限制。 假設今天About的頁面，他是依據網址帶入的 ID取得對應的會員資料，回傳結果，而ID必定為數字，如果不是數字就不要進到程式碼，直接擋掉該如何做？ 123&#x2F;&#x2F;我們希望的網址，最後的ID一定要為數字&#x2F;home&#x2F;about&#x2F;1  加上Constraints限制，而限制的方法用正規表示法來表達，以上述的只能為數">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【MVC教學】4. 為你的Route加一點限制">
+<meta property="og:url" content="https://toyo0103.github.io/2018/04/05/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%914-%E7%82%BA%E4%BD%A0%E7%9A%84Route%E5%8A%A0%E4%B8%80%E9%BB%9E%E9%99%90%E5%88%B6/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="上一篇寫了Route比對的邏輯，這次來點更進階的應用，讓我們幫Route比對加上一些些限制。 假設今天About的頁面，他是依據網址帶入的 ID取得對應的會員資料，回傳結果，而ID必定為數字，如果不是數字就不要進到程式碼，直接擋掉該如何做？ 123&#x2F;&#x2F;我們希望的網址，最後的ID一定要為數字&#x2F;home&#x2F;about&#x2F;1  加上Constraints限制，而限制的方法用正規表示法來表達，以上述的只能為數">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-04-05T00:14:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.090Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="MVC教學">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://toyo0103.github.io/2018/04/05/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%914-%E7%82%BA%E4%BD%A0%E7%9A%84Route%E5%8A%A0%E4%B8%80%E9%BB%9E%E9%99%90%E5%88%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【MVC教學】4. 為你的Route加一點限制 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/04/05/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%914-%E7%82%BA%E4%BD%A0%E7%9A%84Route%E5%8A%A0%E4%B8%80%E9%BB%9E%E9%99%90%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【MVC教學】4. 為你的Route加一點限制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-04-05 00:14:00" itemprop="dateCreated datePublished" datetime="2018-04-05T00:14:00+00:00">2018-04-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%B8%E7%BF%92MVC/" itemprop="url" rel="index"><span itemprop="name">學習MVC</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/04/05/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%914-%E7%82%BA%E4%BD%A0%E7%9A%84Route%E5%8A%A0%E4%B8%80%E9%BB%9E%E9%99%90%E5%88%B6/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/04/05/【MVC教學】4-為你的Route加一點限制/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>上一篇寫了Route比對的邏輯，這次來點更進階的應用，讓我們幫Route比對加上一些些限制。</p>
+<p>假設今天About的頁面，他是依據網址帶入的 ID取得對應的會員資料，回傳結果，而ID必定為<strong>數字，如果不是數字就不要進到程式碼，直接擋掉該如何做？</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//我們希望的網址，最後的ID一定要為數字</span></span><br><span class="line">/home/about/<span class="number">1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>加上Constraints限制，而限制的方法用正規表示法來表達，以上述的只能為數字為例</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-DDzFIwOxsvQ/WsTtsAb1bgI/AAAAAAAAInA/pJdFwqPGRdIZ6LKQ-EgiXc2xem8FcQ4QACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.22.03.png)](https://1.bp.blogspot.com/-DDzFIwOxsvQ/WsTtsAb1bgI/AAAAAAAAInA/pJdFwqPGRdIZ6LKQ-EgiXc2xem8FcQ4QACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.22.03.png)</div>
+constraints的部分，我們把ID限制在只能出現數字，（如果對於正規表示法不熟悉的話，推薦可以翻翻這本書，就算記不起來拿來當工具書也很實用&nbsp;[<span style="color: #454545; font-family: &quot;.PingFang TC&quot;;">處理大數據的必備美工刀</span><span style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal;"> - </span><span style="color: #454545; font-family: &quot;.PingFang TC&quot;;">全支援中文的正規表示法精解</span>](https://www.tenlong.com.tw/products/9789863759539)）
+
+<p>接著執行網站試試看 /home/about/123</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-5v8kKEHK7oQ/WsTve5DgK7I/AAAAAAAAInM/qCpoatJcmjED_wL1aP5zPUEnHuiVDzA1QCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.29.45.png)](https://2.bp.blogspot.com/-5v8kKEHK7oQ/WsTve5DgK7I/AAAAAAAAInM/qCpoatJcmjED_wL1aP5zPUEnHuiVDzA1QCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.29.45.png)</div>
+看起來沒問題，接著我們執行/home/about/Steven，這邊請記得把Default那組Route註解起來，如果還記得上篇Route比對方法的話，這組雖然會因為Steven不是數字而被About那組Route擋掉，但依然符合Default的萬用Route比對規則，而正確執行，為了測試請先註解掉Default那組。
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-97qSMhzIPOE/WsTwIiBOlMI/AAAAAAAAInU/Xb90Cy9gzJYsGtOuzXkPSL6bWfQszpr1ACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.32.39.png)](https://3.bp.blogspot.com/-97qSMhzIPOE/WsTwIiBOlMI/AAAAAAAAInU/Xb90Cy9gzJYsGtOuzXkPSL6bWfQszpr1ACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.32.39.png)</div>
+
+<p>如我們預期的，因為Steven不是數字的原因而被擋掉了，Constraints算是一個可以把Route用得更靈活的技巧，雖然需要懂的正規表示法，但我覺得這兩項學習投資很划算，正規表示法到很多地方都很萬用。</p>
+<h3 id="自訂更複雜的Constraints"><a href="#自訂更複雜的Constraints" class="headerlink" title="自訂更複雜的Constraints"></a>自訂更複雜的Constraints</h3><div>我們再來出個更刁的要求，假設你老闆就叫Steven，而且他不希望跟別人一樣，每個人都是打ID查資料顯示太一般，他偏偏要只有輸入Steven也要能進到About頁時該怎麼辦？</div><div>
+</div><div>
+</div><div>當然也可以用正規表示法硬做，但可能會讓Constraint寫得很醜難維護，所以這次改用實作IRouteConstraint的方式來完成這個需求</div><div>
+</div><div>
+</div><div>建立一個StevenBossConstraint的Class</div><div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-lzkbxUNTjPs/WsTyHmO8DrI/AAAAAAAAInk/Z69_UKTgzw4Yiduel0QPOKVnIq9uNLP1ACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.39.46.png)](https://1.bp.blogspot.com/-lzkbxUNTjPs/WsTyHmO8DrI/AAAAAAAAInk/Z69_UKTgzw4Yiduel0QPOKVnIq9uNLP1ACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.39.46.png)</div><div>
+</div>
+實作以下內容
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-mCMOFMxoiQs/WsT0UDLnh5I/AAAAAAAAIn0/w7PzqK5RsyEabGIx9azbwzT2CZj6VlN6gCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.48.47.png)](https://3.bp.blogspot.com/-mCMOFMxoiQs/WsT0UDLnh5I/AAAAAAAAIn0/w7PzqK5RsyEabGIx9azbwzT2CZj6VlN6gCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.48.47.png)</div>
+
+<p>將原本設定ID的Constrainte改成我們寫的StevenBossConstraint</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-SXNFt3bhpRE/WsT1HLb4yzI/AAAAAAAAIn8/x04sB1B-ymwBSfdvYbCOrn4EcNjTaoFAwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.51.38.png)](https://3.bp.blogspot.com/-SXNFt3bhpRE/WsT1HLb4yzI/AAAAAAAAIn8/x04sB1B-ymwBSfdvYbCOrn4EcNjTaoFAwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.51.38.png)</div>
+
+<p>執行後就會發現，數字跟Steven都可以通過Route的檢查，但你打Tom或是Tim之類的其他非數字參數，都會被擋掉</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-QOP-fMjmh1M/WsT1zhvaGSI/AAAAAAAAIoM/8GxzEl2aKKY0V2sSKZEo9zXqNg2qI7KJQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.56.40.png)](https://2.bp.blogspot.com/-QOP-fMjmh1M/WsT1zhvaGSI/AAAAAAAAIoM/8GxzEl2aKKY0V2sSKZEo9zXqNg2qI7KJQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.56.40.png)</div>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-dV8vMrVM9rQ/WsT1z2-D7uI/AAAAAAAAIoQ/TJAfdgiSc_cu36opnnSktdBx9eULS0tXwCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.56.29.png)](https://2.bp.blogspot.com/-dV8vMrVM9rQ/WsT1z2-D7uI/AAAAAAAAIoQ/TJAfdgiSc_cu36opnnSktdBx9eULS0tXwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.56.29.png)</div>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-rAGzQD3L_c8/WsT1zmOtcFI/AAAAAAAAIoI/O7utdb1IfIUkMAK013X5TQwoo-QOvQ-pACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.56.47.png)](https://3.bp.blogspot.com/-rAGzQD3L_c8/WsT1zmOtcFI/AAAAAAAAIoI/O7utdb1IfIUkMAK013X5TQwoo-QOvQ-pACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-04%2B%25E4%25B8%258B%25E5%258D%258811.56.47.png)</div>
+
+<h4 id="透過小工具來幫助偵錯Route設定"><a href="#透過小工具來幫助偵錯Route設定" class="headerlink" title="透過小工具來幫助偵錯Route設定"></a>透過小工具來幫助偵錯Route設定</h4><div>可以透過Nuget來安裝Route Debugger工具，他們告訴我們目前網頁之所以能夠顯示，是因為走了哪一條Route規則，這在初期我對這些設定還不熟悉時幫助非常的大</div><div>
+</div><div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-OF3Lz23taZc/WsT2n5WMicI/AAAAAAAAIoc/yvgdxPJ_Dj84sOOWiZaf5KDe4m47nuFOQCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-05%2B%25E4%25B8%258A%25E5%258D%258812.00.15.png)](https://1.bp.blogspot.com/-OF3Lz23taZc/WsT2n5WMicI/AAAAAAAAIoc/yvgdxPJ_Dj84sOOWiZaf5KDe4m47nuFOQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-05%2B%25E4%25B8%258A%25E5%258D%258812.00.15.png)</div><div>
+</div><div>
+</div><div>
+</div><div>安裝這組套件</div><div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-MY03_784a74/WsT5eh-6T7I/AAAAAAAAIoo/fgvoj60WvfARLWeyjMfRHi_9onyYPdCmACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-05%2B%25E4%25B8%258A%25E5%258D%258812.10.10.png)](https://2.bp.blogspot.com/-MY03_784a74/WsT5eh-6T7I/AAAAAAAAIoo/fgvoj60WvfARLWeyjMfRHi_9onyYPdCmACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-05%2B%25E4%25B8%258A%25E5%258D%258812.10.10.png)</div>
+
+<p>接著重新執行網站就可在看到詳細解說</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-_GBLWNdFSoA/WsT51ZoPPkI/AAAAAAAAIos/A4wI4Ml7U9U1QjmMwGcIPe0LQCpVbra2QCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-05%2B%25E4%25B8%258A%25E5%258D%258812.13.24.png)](https://1.bp.blogspot.com/-_GBLWNdFSoA/WsT51ZoPPkI/AAAAAAAAIos/A4wI4Ml7U9U1QjmMwGcIPe0LQCpVbra2QCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-04-05%2B%25E4%25B8%258A%25E5%258D%258812.13.24.png)</div>
+
+<p>相信剛開始要改Route的使用者來說，會是相當有幫助的工具喔！！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MVC%E6%95%99%E5%AD%B8/" rel="tag"># MVC教學</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/03/17/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%913-Route-%E4%B8%80/" rel="prev" title="【MVC教學】3. Route(一)">
+      <i class="fa fa-chevron-left"></i> 【MVC教學】3. Route(一)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/25/%E9%9B%9C%E6%B9%8A%E8%A1%A8-Hash-Table/" rel="next" title="雜湊表(Hash Table)">
+      雜湊表(Hash Table) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E8%A8%82%E6%9B%B4%E8%A4%87%E9%9B%9C%E7%9A%84Constraints"><span class="nav-number">1.</span> <span class="nav-text">自訂更複雜的Constraints</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%8F%E9%81%8E%E5%B0%8F%E5%B7%A5%E5%85%B7%E4%BE%86%E5%B9%AB%E5%8A%A9%E5%81%B5%E9%8C%AFRoute%E8%A8%AD%E5%AE%9A"><span class="nav-number">1.1.</span> <span class="nav-text">透過小工具來幫助偵錯Route設定</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2018/04/05/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%914-%E7%82%BA%E4%BD%A0%E7%9A%84Route%E5%8A%A0%E4%B8%80%E9%BB%9E%E9%99%90%E5%88%B6/";
+    this.page.identifier = "2018/04/05/【MVC教學】4-為你的Route加一點限制/";
+    this.page.title = "【MVC教學】4. 為你的Route加一點限制";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

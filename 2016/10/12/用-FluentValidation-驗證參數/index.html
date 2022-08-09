@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="FluentValidation是個很不錯的套件，且擴充性也高，解決了一些以前常常要寫很多遍的驗證邏輯。  以前常常驗證參數時都會有很多的If..Else，搞得程式碼很長很醜之外，閱讀性不佳。自從公司同事推薦了這個套件後，用了兩三個專案發現程式碼變得簡潔易懂之外，寫了一些擴充方法也可以重複使用，不像以前常常重複造輪子 1234567891011121314151617181920212223242">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用 FluentValidation 驗證參數">
+<meta property="og:url" content="https://toyo0103.github.io/2016/10/12/%E7%94%A8-FluentValidation-%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="FluentValidation是個很不錯的套件，且擴充性也高，解決了一些以前常常要寫很多遍的驗證邏輯。  以前常常驗證參數時都會有很多的If..Else，搞得程式碼很長很醜之外，閱讀性不佳。自從公司同事推薦了這個套件後，用了兩三個專案發現程式碼變得簡潔易懂之外，寫了一些擴充方法也可以重複使用，不像以前常常重複造輪子 1234567891011121314151617181920212223242">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://2.bp.blogspot.com/-7V1LvfPGBlQ/V_3PMBxBPFI/AAAAAAAAH-Y/24jx-pArEUk_I3Gp2_SJwVOzy7CQ8asYgCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png">
+<meta property="article:published_time" content="2016-10-12T15:12:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.098Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="FluentValidation">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://2.bp.blogspot.com/-7V1LvfPGBlQ/V_3PMBxBPFI/AAAAAAAAH-Y/24jx-pArEUk_I3Gp2_SJwVOzy7CQ8asYgCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2016/10/12/%E7%94%A8-FluentValidation-%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>用 FluentValidation 驗證參數 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/10/12/%E7%94%A8-FluentValidation-%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          用 FluentValidation 驗證參數
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-10-12 15:12:00" itemprop="dateCreated datePublished" datetime="2016-10-12T15:12:00+00:00">2016-10-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/10/12/%E7%94%A8-FluentValidation-%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/12/用-FluentValidation-驗證參數/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>FluentValidation是個很不錯的套件，且擴充性也高，解決了一些以前常常要寫很多遍的驗證邏輯。 <a target="_blank" rel="noopener" href="https://2.bp.blogspot.com/-7V1LvfPGBlQ/V_3PMBxBPFI/AAAAAAAAH-Y/24jx-pArEUk_I3Gp2_SJwVOzy7CQ8asYgCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png"><img src="https://2.bp.blogspot.com/-7V1LvfPGBlQ/V_3PMBxBPFI/AAAAAAAAH-Y/24jx-pArEUk_I3Gp2_SJwVOzy7CQ8asYgCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png"></a></p>
+<p>以前常常驗證參數時都會有很多的If..Else，搞得程式碼很長很醜之外，閱讀性不佳。自從公司同事推薦了這個套件後，用了兩三個專案發現程式碼變得簡潔易懂之外，寫了一些擴充方法也可以重複使用，不像以前常常重複造輪子</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Main</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">var</span> Parameter = <span class="keyword">new</span> APIInputParameter </span><br><span class="line"> &#123;</span><br><span class="line">  ID = <span class="string">&quot;123&quot;</span>,</span><br><span class="line">  Name = <span class="string">&quot;Toyo&quot;</span></span><br><span class="line"> &#125;;</span><br><span class="line"></span><br><span class="line"> Guid _ID;</span><br><span class="line"> <span class="comment">//驗證邏輯</span></span><br><span class="line"> <span class="keyword">if</span> (<span class="built_in">string</span>.IsNullOrWhiteSpace(Parameter.ID) ||</span><br><span class="line">           !Guid.TryParse(Parameter.ID,<span class="keyword">out</span> _ID) ||</span><br><span class="line">     <span class="built_in">string</span>.IsNullOrWhiteSpace(Parameter.Name) )</span><br><span class="line"> &#123;</span><br><span class="line">  <span class="string">&quot;參數錯誤&quot;</span>.Dump();</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="string">&quot;參數正確&quot;</span>.Dump();</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">APIInputParameter</span> </span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment">//此參數應該為Guid，但為了能Log下來所以接的時候要先接成String</span></span><br><span class="line"> <span class="comment">//否則輸入端不是傳入GUID就記錄不到了</span></span><br><span class="line"> <span class="keyword">public</span> <span class="built_in">string</span> ID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> <span class="keyword">public</span> <span class="built_in">string</span> Name &#123;<span class="keyword">get</span>;<span class="keyword">set</span>;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>上面的範例是以前的寫法，常常欄位多，各個欄位又有不同的要求時，總是把驗證的邏輯寫得又臭又長。</p>
+<p>加上公司要求所有輸入輸出的欄位都要被Log下來，所以基本上參數都要是String型別，否則如果ID寫成GUID，因為傳入的時候不是GUID會接不到，自然無法被Log到，但也因此衍生了驗證的複雜度提高的問題。</p>
+<p>想想如果各個參數錯誤要回傳的訊息會不同時，又該寫的多複雜才做得到呢……</p>
+<p>那讓來看看如何透FluentValidation 驗證參數，</p>
+<ol>
+<li> 首先先把驗證邏輯寫成一個Class<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">APIInputParameterValidator</span> : <span class="title">AbstractValidator</span>&lt;<span class="title">APIInputParameter</span>&gt;&#123;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">APIInputParameterValidator</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span> &#123;</span><br><span class="line">  <span class="comment">//ID - 必填，應為GUID</span></span><br><span class="line">  <span class="keyword">this</span>.RuleFor(x =&gt; x.ID)</span><br><span class="line">     .NotEmpty()</span><br><span class="line">     .WithErrorCode(<span class="string">&quot;X400&quot;</span>)</span><br><span class="line">     .WithMessage(<span class="string">&quot;ID不得為空字串&quot;</span>)</span><br><span class="line">     .NotNull()</span><br><span class="line">     .WithErrorCode(<span class="string">&quot;X400&quot;</span>)</span><br><span class="line">     .WithMessage(<span class="string">&quot;ID不得為Null&quot;</span>);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">this</span>.RuleFor(x =&gt; x.Name)</span><br><span class="line">   .NotEmpty()</span><br><span class="line">   .WithErrorCode(<span class="string">&quot;X401&quot;</span>)</span><br><span class="line">   .WithMessage(<span class="string">&quot;Name不得為空字串&quot;</span>)</span><br><span class="line">   .NotNull()</span><br><span class="line">   .WithErrorCode(<span class="string">&quot;X401&quot;</span>)</span><br><span class="line">   .WithMessage(<span class="string">&quot;Name不得為Null&quot;</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<ol start="2">
+<li>自己寫一個HasError的Extension```csharp<br>/// <summary><br>/// FluentValidation 自訂驗證擴充方法.<br>/// </summary><br>public static class FluentValidationExtensions<br>{<br>/// <summary><br>/// 驗證結果是否有 Error.<br>/// </summary><br>/// <param name="validationFailure"></param><br>/// <returns></returns><br>public static bool HasError(this ValidationFailure validationFailure)<br>{<br>return validationFailure != null &amp;&amp;<br> !string.IsNullOrWhiteSpace(validationFailure.ErrorMessage);<br>}<br>}</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">3.  驗證的地方改成如下 &#96;&#96;&#96;csharp</span><br><span class="line">var Parameter &#x3D; new APIInputParameter &#123;</span><br><span class="line">  ID &#x3D; &quot;123&quot;,</span><br><span class="line">  Name &#x3D; &quot;Toyo&quot;</span><br><span class="line"> &#125;;</span><br><span class="line"> &#x2F;&#x2F; 檢查輸入參數</span><br><span class="line"> var validator &#x3D; new APIInputParameterValidator();</span><br><span class="line"></span><br><span class="line">     var error &#x3D; validator.Validate(Parameter).Errors.FirstOrDefault();</span><br><span class="line"> if (error.HasError())</span><br><span class="line"> &#123;</span><br><span class="line">   string.Format(&quot;&#123;0&#125;-&#123;1&#125;&quot;,error.ErrorCode,error.ErrorMessage).Dump();</span><br><span class="line"> &#125;</span><br><span class="line"> else</span><br><span class="line"> &#123;</span><br><span class="line">   &quot;驗證成功&quot;.Dump();</span><br><span class="line"> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>這樣只要有參數帶入錯誤，他就會依照你要求的帶回ErrorCode跟ErrorMessage，那可能各位會發現，阿驗證是否為GUID的地方怎麼不見了?? 因為套件並沒有提供，所以這邊要自己擴充</p>
+<ol>
+<li><p>先寫一個驗證String是否為Guid的方法 ```csharp<br>/// <summary><br> /// 驗證是否為GUID<br> /// </summary><br> /// <seealso cref="FluentValidation.Validators.PropertyValidator" /><br> public class GUIDValidator : PropertyValidator<br> {</p>
+<pre><code> /// &lt;summary&gt;
+ /// 是否允許字串參數為空白.
+ /// &lt;/summary&gt;
+ /// &lt;value&gt;&lt;c&gt;true&lt;/c&gt; if [allow empty]; otherwise, &lt;c&gt;false&lt;/c&gt;.&lt;/value&gt;
+ private bool AllowEmpty &#123; get; set; &#125;
+
+     /// &lt;summary&gt;
+ /// Initializes a new instance of the &lt;see cref=&quot;GUIDValidator&quot;/&gt; class.
+ /// &lt;/summary&gt;
+ /// &lt;param name=&quot;allowEmpty&quot;&gt;if set to &lt;c&gt;true&lt;/c&gt; [allow empty].&lt;/param&gt;
+ public GUIDValidator(
+     bool allowEmpty = false) : base(&quot;傳入參數錯誤。&quot;)
+ &#123;
+     this.AllowEmpty = allowEmpty;
+ &#125;
+
+     /// &lt;summary&gt;
+ /// Returns true if ... is valid.
+ /// &lt;/summary&gt;
+ /// &lt;param name=&quot;context&quot;&gt;The context.&lt;/param&gt;
+ /// &lt;returns&gt;
+ ///   &lt;c&gt;true&lt;/c&gt; if the specified context is valid; otherwise, &lt;c&gt;false&lt;/c&gt;.
+ /// &lt;/returns&gt;
+ protected override bool IsValid(PropertyValidatorContext context)
+ &#123;
+     var propertyValue = context.PropertyValue as string;
+
+         if (AllowEmpty &amp;&amp;
+         string.IsNullOrWhiteSpace(propertyValue))
+     &#123;
+         return true;
+     &#125;
+
+         Guid guid;
+     return Guid.TryParse(propertyValue, out guid);
+ &#125;
+</code></pre>
+<p> }</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">2.  接著在Extension的地方補上兩個擴充方法，分別是【應該是GUID】、【應該是GUID但允許其為空字串或Null】 &#96;&#96;&#96;csharp</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">&#x2F;&#x2F;&#x2F; FluentValidation 自訂驗證擴充方法.</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">public static class FluentValidationExtensions</span><br><span class="line">&#123;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; 驗證結果是否有 Error.</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;validationFailure&quot;&gt;&lt;&#x2F;param&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;returns&gt;&lt;&#x2F;returns&gt;</span><br><span class="line"> public static bool HasError(this ValidationFailure validationFailure)</span><br><span class="line"> &#123;</span><br><span class="line">  return validationFailure !&#x3D; null &amp;&amp;</span><br><span class="line">    !string.IsNullOrWhiteSpace(validationFailure.ErrorMessage);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">     &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; 應該是 GUID 型別.</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;typeparam name&#x3D;&quot;T&quot;&gt;&lt;&#x2F;typeparam&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;typeparam name&#x3D;&quot;TProperty&quot;&gt;The type of the t property.&lt;&#x2F;typeparam&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;ruleBuilder&quot;&gt;The rule builder.&lt;&#x2F;param&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;returns&gt;IRuleBuilderOptions&lt;T, TProperty&gt;.&lt;&#x2F;returns&gt;</span><br><span class="line"> public static IRuleBuilderOptions&lt;T, TProperty&gt; IsGUID&lt;T, TProperty&gt;(</span><br><span class="line">  this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder)</span><br><span class="line"> &#123;</span><br><span class="line">  return ruleBuilder.SetValidator(new GUIDValidator(allowEmpty: false));</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">     &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; 應該是 GUID 型別, 但允許 String.Empty.</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;typeparam name&#x3D;&quot;T&quot;&gt;&lt;&#x2F;typeparam&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;typeparam name&#x3D;&quot;TProperty&quot;&gt;The type of the t property.&lt;&#x2F;typeparam&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;ruleBuilder&quot;&gt;The rule builder.&lt;&#x2F;param&gt;</span><br><span class="line"> &#x2F;&#x2F;&#x2F; &lt;returns&gt;IRuleBuilderOptions&lt;T, TProperty&gt;.&lt;&#x2F;returns&gt;</span><br><span class="line"> public static IRuleBuilderOptions&lt;T, TProperty&gt; IsGUIDAllowEmpty&lt;T, TProperty&gt;(</span><br><span class="line">  this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder)</span><br><span class="line"> &#123;</span><br><span class="line">  return ruleBuilder.SetValidator(new GUIDValidator(allowEmpty: true));</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li> 接著在原本驗證的地方補上<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ID - 必填，應為GUID</span></span><br><span class="line"><span class="keyword">this</span>.RuleFor(x =&gt; x.ID)</span><br><span class="line">  .NotEmpty()</span><br><span class="line">  .WithErrorCode(<span class="string">&quot;X400&quot;</span>)</span><br><span class="line">  .WithMessage(<span class="string">&quot;ID不得為空字串&quot;</span>)</span><br><span class="line">  .NotNull()</span><br><span class="line">  .WithErrorCode(<span class="string">&quot;X400&quot;</span>)</span><br><span class="line">  .WithMessage(<span class="string">&quot;ID不得為Null&quot;</span>)</span><br><span class="line">  .IsGUID()</span><br><span class="line">  .WithErrorCode(<span class="string">&quot;X400&quot;</span>)</span><br><span class="line">  .WithMessage(<span class="string">&quot;ID應為GUID&quot;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>再執行原本的驗證就會得到錯誤訊息 <strong>X400-ID應為GUID</strong><br>對我來說不止讓程式可讀性增加之外，也讓驗證的地方被分離出來，做到所謂的關注點分離</p>
+<p>以下補上幾個我常常用到的驗證擴充出來的方法供各位參考，再強調一次，因為公司要求輸入輸出都要被Log下來，所以所有參數都是從String出發去驗證</p>
+<ul>
+<li><p><strong><span style="color: #0c343d;">驗證是否為DateTime or TimeStamp</span></strong></p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 驗證是否為DateTime</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;seealso cref=&quot;FluentValidation.Validators.PropertyValidator&quot; /&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DateTimeValidator</span> : <span class="title">PropertyValidator</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 是否允許參數為空白.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;value&gt;</span><span class="doctag">&lt;c&gt;</span>true<span class="doctag">&lt;/c&gt;</span> if [allow empty]; otherwise, <span class="doctag">&lt;c&gt;</span>false<span class="doctag">&lt;/c&gt;</span>.<span class="doctag">&lt;/value&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> <span class="built_in">bool</span> AllowEmpty &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Initializes a new instance of the <span class="doctag">&lt;see cref=&quot;DateTimeValidator&quot;/&gt;</span> class.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;allowEmpty&quot;&gt;</span>if set to <span class="doctag">&lt;c&gt;</span>true<span class="doctag">&lt;/c&gt;</span> [allow empty].<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">DateTimeValidator</span>(<span class="params"><span class="built_in">bool</span> allowEmpty</span>) : <span class="title">base</span>(<span class="params"><span class="string">&quot;型別錯誤&quot;</span></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">this</span>.AllowEmpty = allowEmpty;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Returns true if ... is valid.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;context&quot;&gt;</span>The context.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span>   <span class="doctag">&lt;c&gt;</span>true<span class="doctag">&lt;/c&gt;</span> if the specified context is valid; otherwise, <span class="doctag">&lt;c&gt;</span>false<span class="doctag">&lt;/c&gt;</span>.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">IsValid</span>(<span class="params">PropertyValidatorContext context</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> propertyValue = context.PropertyValue <span class="keyword">as</span> <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">this</span>.AllowEmpty &amp;&amp;</span><br><span class="line">                <span class="built_in">string</span>.IsNullOrWhiteSpace(propertyValue))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                <span class="built_in">int</span> <span class="keyword">value</span>;</span><br><span class="line">            <span class="built_in">bool</span> result = <span class="built_in">int</span>.TryParse(propertyValue, <span class="keyword">out</span> <span class="keyword">value</span>);</span><br><span class="line">            <span class="comment">//TimeStamp</span></span><br><span class="line">            <span class="keyword">if</span> (result &amp;&amp; <span class="keyword">value</span> &gt; <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                DateTime dateTimeValue;</span><br><span class="line">            <span class="keyword">return</span> DateTime.TryParse(propertyValue, <span class="keyword">out</span> dateTimeValue);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>擴充方法</strong>```csharp<br>/// <summary><br>        /// 是 DateTime 型別 or TimeStamp .<br>        /// </summary><br>        /// <typeparam name="T"></typeparam><br>        /// <typeparam name="TProperty">The type of the t property.</typeparam><br>        /// <param name="ruleBuilder">The rule builder.</param><br>        /// <returns>IRuleBuilderOptions&lt;T, TProperty&gt;.</returns><br>        public static IRuleBuilderOptions&lt;T, TProperty&gt; IsDateTimeOrTimeStamp&lt;T, TProperty&gt;(<br>            this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder)<br>        {<br>            return ruleBuilder.SetValidator(new DateTimeValidator(allowEmpty: false));<br>        }</p>
+<pre><code>        /// &lt;summary&gt;
+    /// 是 DateTime 型別 or TimeStamp, 但允許 String.Empty.
+    /// &lt;/summary&gt;
+    /// &lt;typeparam name=&quot;T&quot;&gt;&lt;/typeparam&gt;
+    /// &lt;typeparam name=&quot;TProperty&quot;&gt;The type of the t property.&lt;/typeparam&gt;
+    /// &lt;param name=&quot;ruleBuilder&quot;&gt;The rule builder.&lt;/param&gt;
+    /// &lt;returns&gt;IRuleBuilderOptions&amp;lt;T, TProperty&amp;gt;.&lt;/returns&gt;
+    public static IRuleBuilderOptions&lt;T, TProperty&gt; IsDateTimeOrTimeStampAllowEmpty&lt;T, TProperty&gt;(
+        this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder)
+    &#123;
+        return ruleBuilder.SetValidator(new DateTimeValidator(allowEmpty: true));
+    &#125;
+</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">*   **&lt;span style&#x3D;&quot;color: #073763;&quot;&gt;驗證是否為GUID Array &lt;&#x2F;span&gt;**</span><br><span class="line"></span><br><span class="line">    &#96;&#96;&#96;csharp</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">    &#x2F;&#x2F;&#x2F; 驗證是否為GUID Array</span><br><span class="line">    &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">    public class GUIDArrayValidator : PropertyValidator</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; 是否允許字串參數為空白.</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;value&gt;&lt;c&gt;true&lt;&#x2F;c&gt; if [allow empty]; otherwise, &lt;c&gt;false&lt;&#x2F;c&gt;.&lt;&#x2F;value&gt;</span><br><span class="line">        private bool AllowEmpty &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; Initializes a new instance of the &lt;see cref&#x3D;&quot;GUIDArrayValidator&quot;&#x2F;&gt; class.</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;allowEmpty&quot;&gt;if set to &lt;c&gt;true&lt;&#x2F;c&gt; [allow empty].&lt;&#x2F;param&gt;</span><br><span class="line">        public GUIDArrayValidator(</span><br><span class="line">            bool allowEmpty &#x3D; false) :base(&quot;傳入參數錯誤。&quot;)</span><br><span class="line">        &#123;</span><br><span class="line">            this.AllowEmpty &#x3D; allowEmpty;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; Returns true if ... is valid.</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;context&quot;&gt;The context.&lt;&#x2F;param&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;returns&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F;   &lt;c&gt;true&lt;&#x2F;c&gt; if the specified context is valid; otherwise, &lt;c&gt;false&lt;&#x2F;c&gt;.</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;&#x2F;returns&gt;</span><br><span class="line">        protected override bool IsValid(PropertyValidatorContext context)</span><br><span class="line">        &#123;</span><br><span class="line">            var propertyValue &#x3D; context.PropertyValue as List&lt;string&gt;;</span><br><span class="line">            if (AllowEmpty &amp;&amp;</span><br><span class="line">                (propertyValue &#x3D;&#x3D; null || propertyValue.Count &#x3D;&#x3D; 0))</span><br><span class="line">            &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                if (!AllowEmpty &amp;&amp;</span><br><span class="line">                (propertyValue &#x3D;&#x3D; null || propertyValue.Count &#x3D;&#x3D; 0))</span><br><span class="line">            &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                Guid guid;</span><br><span class="line">            foreach (var item in propertyValue)</span><br><span class="line">            &#123;</span><br><span class="line">                if (!Guid.TryParse(item, out guid))</span><br><span class="line">                &#123;</span><br><span class="line">                    return false;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                return true;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>擴充方法</strong>```csharp<br>/// <summary><br>        /// 是 Guid Array, 但允許空集合.<br>        /// </summary><br>        /// <typeparam name="T"></typeparam><br>        /// <typeparam name="TProperty">The type of the t property.</typeparam><br>        /// <param name="ruleBuilder">The rule builder.</param><br>        /// <returns>IRuleBuilderOptions&lt;T, TProperty&gt;.</returns><br>        public static IRuleBuilderOptions&lt;T, TProperty&gt; IsGUIDArrayAllowEmpty&lt;T, TProperty&gt;(<br>            this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder)<br>        {<br>            return ruleBuilder.SetValidator(new GUIDArrayValidator(allowEmpty: true));<br>        }</p>
+<pre><code>        /// &lt;summary&gt;
+    /// 是 Guid Array.
+    /// &lt;/summary&gt;
+    /// &lt;typeparam name=&quot;T&quot;&gt;&lt;/typeparam&gt;
+    /// &lt;typeparam name=&quot;TProperty&quot;&gt;The type of the t property.&lt;/typeparam&gt;
+    /// &lt;param name=&quot;ruleBuilder&quot;&gt;The rule builder.&lt;/param&gt;
+    /// &lt;returns&gt;IRuleBuilderOptions&amp;lt;T, TProperty&amp;gt;.&lt;/returns&gt;
+    public static IRuleBuilderOptions&lt;T, TProperty&gt; IsGUIDArray&lt;T, TProperty&gt;(
+        this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder)
+    &#123;
+        return ruleBuilder.SetValidator(new GUIDArrayValidator(allowEmpty: false));
+    &#125;
+</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">*   **&lt;span style&#x3D;&quot;color: #073763;&quot;&gt;驗證是否為數字 &lt;&#x2F;span&gt;**</span><br><span class="line"></span><br><span class="line">    &#96;&#96;&#96;csharp</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">    &#x2F;&#x2F;&#x2F; 驗證是否為Integer</span><br><span class="line">    &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">    &#x2F;&#x2F;&#x2F; &lt;seealso cref&#x3D;&quot;FluentValidation.Validators.PropertyValidator&quot; &#x2F;&gt;</span><br><span class="line">    public class IntegerValidator : PropertyValidator</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; 是否允許字串參數為空白.</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;value&gt;&lt;c&gt;true&lt;&#x2F;c&gt; if [allow empty]; otherwise, &lt;c&gt;false&lt;&#x2F;c&gt;.&lt;&#x2F;value&gt;</span><br><span class="line">        private bool AllowEmpty &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; Initializes a new instance of the &lt;see cref&#x3D;&quot;IntegerValidator&quot;&#x2F;&gt; class.</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;allowEmpty&quot;&gt;if set to &lt;c&gt;true&lt;&#x2F;c&gt; [allow empty].&lt;&#x2F;param&gt;</span><br><span class="line">        public IntegerValidator(bool allowEmpty &#x3D; false)</span><br><span class="line">            : base(&quot;型別錯誤&quot;)</span><br><span class="line">        &#123;</span><br><span class="line">            this.AllowEmpty &#x3D; allowEmpty;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; Returns true if ... is valid.</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;context&quot;&gt;The context.&lt;&#x2F;param&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;returns&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F;   &lt;c&gt;true&lt;&#x2F;c&gt; if the specified context is valid; otherwise, &lt;c&gt;false&lt;&#x2F;c&gt;.</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;&#x2F;returns&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;exception cref&#x3D;&quot;NotImplementedException&quot;&gt;&lt;&#x2F;exception&gt;</span><br><span class="line">        protected override bool IsValid(PropertyValidatorContext context)</span><br><span class="line">        &#123;</span><br><span class="line">            var propertyValue &#x3D; context.PropertyValue as string;</span><br><span class="line"></span><br><span class="line">                if (this.AllowEmpty &amp;&amp;</span><br><span class="line">                string.IsNullOrWhiteSpace(propertyValue))</span><br><span class="line">            &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                int value;</span><br><span class="line">            bool result &#x3D; int.TryParse(propertyValue, out value);</span><br><span class="line">            return result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>擴充方法</strong>```csharp<br>/// <summary><br>        /// 是 Integer 型別.<br>        /// </summary><br>        /// <typeparam name="T"></typeparam><br>        /// <typeparam name="TProperty">The type of the t property.</typeparam><br>        /// <param name="ruleBuilder">The rule builder.</param><br>        /// <returns>IRuleBuilderOptions&lt;T, TProperty&gt;.</returns><br>        public static IRuleBuilderOptions&lt;T, TProperty&gt; IsInteger&lt;T, TProperty&gt;(<br>            this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder)<br>        {<br>            return ruleBuilder.SetValidator(new IntegerValidator(allowEmpty: false));<br>        }</p>
+<pre><code>        /// &lt;summary&gt;
+    /// 是 Integer 型別, 但允許 String.Empty.
+    /// &lt;/summary&gt;
+    /// &lt;typeparam name=&quot;T&quot;&gt;&lt;/typeparam&gt;
+    /// &lt;typeparam name=&quot;TProperty&quot;&gt;The type of the t property.&lt;/typeparam&gt;
+    /// &lt;param name=&quot;ruleBuilder&quot;&gt;The rule builder.&lt;/param&gt;
+    /// &lt;returns&gt;IRuleBuilderOptions&amp;lt;T, TProperty&amp;gt;.&lt;/returns&gt;
+    public static IRuleBuilderOptions&lt;T, TProperty&gt; IsIntegerAllowEmpty&lt;T, TProperty&gt;(
+        this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder)
+    &#123;
+        return ruleBuilder.SetValidator(new IntegerValidator(allowEmpty: true));
+    &#125;
+</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">*   **&lt;span style&#x3D;&quot;color: #073763;&quot;&gt;檢查數字是否在要求範圍內 &lt;&#x2F;span&gt;**</span><br><span class="line"></span><br><span class="line">    &#96;&#96;&#96;csharp</span><br><span class="line">&#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">    &#x2F;&#x2F;&#x2F; 驗證數字是否在範圍內</span><br><span class="line">    &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">    &#x2F;&#x2F;&#x2F; &lt;typeparam name&#x3D;&quot;TNumeric&quot;&gt;The type of the numeric.&lt;&#x2F;typeparam&gt;</span><br><span class="line">    &#x2F;&#x2F;&#x2F; &lt;seealso cref&#x3D;&quot;FluentValidation.Validators.PropertyValidator&quot; &#x2F;&gt;</span><br><span class="line">    public class NumericBetweenInValidator&lt;TNumeric&gt; : PropertyValidator</span><br><span class="line">        where TNumeric : IComparable</span><br><span class="line">    &#123;</span><br><span class="line">        private TNumeric compareValueUp;</span><br><span class="line"></span><br><span class="line">            private TNumeric compareValueDown;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; 是否允許字串參數為空白.</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;value&gt;&lt;c&gt;true&lt;&#x2F;c&gt; if [allow empty]; otherwise, &lt;c&gt;false&lt;&#x2F;c&gt;.&lt;&#x2F;value&gt;</span><br><span class="line">        private bool AllowEmpty &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; 轉型是否成功</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">        private bool IsConvertable;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; 是否允許等於輸入的上下閥值值</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">        private bool AllowEquals;</span><br><span class="line"></span><br><span class="line">            public NumericBetweenInValidator(</span><br><span class="line">            string valueUp,</span><br><span class="line">            string valueDown,</span><br><span class="line">            bool allowEquals &#x3D; false,</span><br><span class="line">            bool allowEmpty &#x3D; false) : base(&quot;傳入參數錯誤。&quot;)</span><br><span class="line">        &#123;</span><br><span class="line">            this.compareValueUp &#x3D; ConvertHelper.ToT&lt;TNumeric&gt;(valueUp, out IsConvertable);</span><br><span class="line"></span><br><span class="line">                this.compareValueDown &#x3D; ConvertHelper.ToT&lt;TNumeric&gt;(valueDown, out IsConvertable);</span><br><span class="line"></span><br><span class="line">                this.AllowEquals &#x3D; allowEquals;</span><br><span class="line">            this.AllowEmpty &#x3D; allowEmpty;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            protected override bool IsValid(PropertyValidatorContext context)</span><br><span class="line">        &#123;</span><br><span class="line">            var propertyValue &#x3D; context.PropertyValue as string;</span><br><span class="line"></span><br><span class="line">                if (this.AllowEmpty &amp;&amp;</span><br><span class="line">                string.IsNullOrWhiteSpace(propertyValue))</span><br><span class="line">            &#123;</span><br><span class="line">                return true;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            var value &#x3D; ConvertHelper.ToT&lt;TNumeric&gt;(propertyValue, out IsConvertable);</span><br><span class="line"></span><br><span class="line">                if (!IsConvertable)</span><br><span class="line">            &#123;</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                &#x2F;&#x2F; -1 value &lt; compareValue</span><br><span class="line">            &#x2F;&#x2F; 0  value &#x3D; compareValue</span><br><span class="line">            &#x2F;&#x2F; 1  value &gt; compareValue</span><br><span class="line">            if (AllowEquals)</span><br><span class="line">            &#123;</span><br><span class="line">                return value.CompareTo(compareValueDown) &gt;&#x3D; 0</span><br><span class="line">                       &amp;&amp; value.CompareTo(compareValueUp) &lt;&#x3D; 0;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                return value.CompareTo(compareValueDown) &gt; 0</span><br><span class="line">                   &amp;&amp; value.CompareTo(compareValueUp) &lt; 0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> Class ConvertHelper</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">ConvertHelper</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 轉型成 T.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;typeparam name=&quot;T&quot;&gt;</span><span class="doctag">&lt;/typeparam&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;value&quot;&gt;</span>The value.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;exception cref=&quot;System.ArgumentException&quot;&gt;</span>Convert fail.;Convert<span class="doctag">&lt;/exception&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> T <span class="title">ToT</span>&lt;<span class="title">T</span>&gt;(<span class="params"><span class="built_in">string</span> <span class="keyword">value</span>, <span class="keyword">out</span> <span class="built_in">bool</span> result</span>) <span class="keyword">where</span> T : IComparable</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            result = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">try</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">switch</span> (Type.GetTypeCode(<span class="keyword">typeof</span>(T)))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">case</span> TypeCode.Double:</span><br><span class="line"></span><br><span class="line">                            <span class="built_in">double</span> doubleValue;</span><br><span class="line">                        <span class="keyword">if</span> (<span class="built_in">double</span>.TryParse(<span class="keyword">value</span>, <span class="keyword">out</span> doubleValue))</span><br><span class="line">                        &#123;</span><br><span class="line">                            result = <span class="literal">true</span>;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">return</span> (T)(<span class="built_in">object</span>)Convert.ToDouble(<span class="keyword">value</span>);</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">case</span> TypeCode.Int16:</span><br><span class="line"></span><br><span class="line">                            Int16 int16Value;</span><br><span class="line">                        <span class="keyword">if</span> (Int16.TryParse(<span class="keyword">value</span>, <span class="keyword">out</span> int16Value))</span><br><span class="line">                        &#123;</span><br><span class="line">                            result = <span class="literal">true</span>;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">return</span> (T)(<span class="built_in">object</span>)Convert.ToInt16(<span class="keyword">value</span>);</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">case</span> TypeCode.Int32:</span><br><span class="line"></span><br><span class="line">                            Int32 int32Value;</span><br><span class="line">                        <span class="keyword">if</span> (Int32.TryParse(<span class="keyword">value</span>, <span class="keyword">out</span> int32Value))</span><br><span class="line">                        &#123;</span><br><span class="line">                            result = <span class="literal">true</span>;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">return</span> (T)(<span class="built_in">object</span>)Convert.ToInt32(<span class="keyword">value</span>);</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">case</span> TypeCode.Int64:</span><br><span class="line"></span><br><span class="line">                            Int64 int64Value;</span><br><span class="line">                        <span class="keyword">if</span> (Int64.TryParse(<span class="keyword">value</span>, <span class="keyword">out</span> int64Value))</span><br><span class="line">                        &#123;</span><br><span class="line">                            result = <span class="literal">true</span>;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">return</span> (T)(<span class="built_in">object</span>)Convert.ToInt64(<span class="keyword">value</span>);</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">case</span> TypeCode.Decimal:</span><br><span class="line"></span><br><span class="line">                            <span class="built_in">decimal</span> decimalValue;</span><br><span class="line">                        <span class="keyword">if</span> (<span class="built_in">decimal</span>.TryParse(<span class="keyword">value</span>, <span class="keyword">out</span> decimalValue))</span><br><span class="line">                        &#123;</span><br><span class="line">                            result = <span class="literal">true</span>;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                            <span class="keyword">return</span> (T)(<span class="built_in">object</span>)Convert.ToDecimal(<span class="keyword">value</span>);</span><br><span class="line"></span><br><span class="line">                        <span class="literal">default</span>:</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">default</span>(T);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            catch (Exception ex)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">default</span>(T);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>擴充方法</strong>```csharp<br>/// <summary><br>        /// 符合數字區間,但允許空值.<br>        /// <para>EX : (1 &lt; x &lt; 3) </para><br>        /// </summary><br>        /// <typeparam name="T"></typeparam><br>        /// <typeparam name="TProperty">The type of the property.</typeparam><br>        /// <typeparam name="TNumeric">The type of the numeric.</typeparam><br>        /// <param name="ruleBuilder">The rule builder.</param><br>        /// <param name="upThreshold">Up threshold.</param><br>        /// <param name="downThreshold">Down threshold.</param><br>        /// <returns></returns><br>        public static IRuleBuilderOptions&lt;T, TProperty&gt; IsNumericAllowEmptyOrBetweenOf&lt;T, TProperty, TNumeric&gt;(<br>            this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder,<br>            string upThreshold,<br>            string downThreshold)<br>            where TNumeric : IComparable<br>        {<br>            return ruleBuilder.SetValidator(<br>                new NumericBetweenInValidator<TNumeric>(<br>                    upThreshold,<br>                    downThreshold,<br>                    allowEquals: false,<br>                    allowEmpty: true));<br>        }</p>
+<pre><code>        /// &lt;summary&gt;
+    /// 符合數字區間且允許等於閥值,但允許空值.
+    /// &lt;para&gt;EX : (1 &amp;lt;= x &amp;lt;= 3) &lt;/para&gt;
+    /// &lt;/summary&gt;
+    /// &lt;typeparam name=&quot;T&quot;&gt;&lt;/typeparam&gt;
+    /// &lt;typeparam name=&quot;TProperty&quot;&gt;The type of the property.&lt;/typeparam&gt;
+    /// &lt;typeparam name=&quot;TNumeric&quot;&gt;The type of the numeric.&lt;/typeparam&gt;
+    /// &lt;param name=&quot;ruleBuilder&quot;&gt;The rule builder.&lt;/param&gt;
+    /// &lt;param name=&quot;upThreshold&quot;&gt;Up threshold.&lt;/param&gt;
+    /// &lt;param name=&quot;downThreshold&quot;&gt;Down threshold.&lt;/param&gt;
+    /// &lt;returns&gt;&lt;/returns&gt;
+    public static IRuleBuilderOptions&lt;T, TProperty&gt; IsNumericAllowEmptyOrBetweenOfAllowEquals&lt;T, TProperty, TNumeric&gt;(
+        this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder,
+        string upThreshold,
+        string downThreshold)
+        where TNumeric : IComparable
+    &#123;
+        return ruleBuilder.SetValidator(
+            new NumericBetweenInValidator&lt;TNumeric&gt;(
+                upThreshold,
+                downThreshold,
+                allowEquals: true,
+                allowEmpty: true));
+    &#125;
+
+        /// &lt;summary&gt;
+    /// 符合數字區間.
+    /// &lt;para&gt;EX : (1 &amp;lt; x &amp;lt; 3) &lt;/para&gt;
+    /// &lt;/summary&gt;
+    /// &lt;typeparam name=&quot;T&quot;&gt;&lt;/typeparam&gt;
+    /// &lt;typeparam name=&quot;TProperty&quot;&gt;The type of the property.&lt;/typeparam&gt;
+    /// &lt;typeparam name=&quot;TNumeric&quot;&gt;The type of the numeric.&lt;/typeparam&gt;
+    /// &lt;param name=&quot;ruleBuilder&quot;&gt;The rule builder.&lt;/param&gt;
+    /// &lt;param name=&quot;upThreshold&quot;&gt;Up threshold.&lt;/param&gt;
+    /// &lt;param name=&quot;downThreshold&quot;&gt;Down threshold.&lt;/param&gt;
+    /// &lt;returns&gt;&lt;/returns&gt;
+    public static IRuleBuilderOptions&lt;T, TProperty&gt; IsNumericBetweenOf&lt;T, TProperty, TNumeric&gt;(
+        this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder,
+        string upThreshold,
+        string downThreshold)
+        where TNumeric : IComparable
+    &#123;
+        return ruleBuilder.SetValidator(
+            new NumericBetweenInValidator&lt;TNumeric&gt;(
+                upThreshold,
+                downThreshold,
+                allowEquals: false,
+                allowEmpty: false));
+    &#125;
+
+        /// &lt;summary&gt;
+    /// 符合數字區間且允許等於閥值
+    /// &lt;para&gt;EX : (1 &amp;lt;= x &amp;lt;= 3) &lt;/para&gt;
+    /// &lt;/summary&gt;
+    /// &lt;typeparam name=&quot;T&quot;&gt;&lt;/typeparam&gt;
+    /// &lt;typeparam name=&quot;TProperty&quot;&gt;The type of the property.&lt;/typeparam&gt;
+    /// &lt;typeparam name=&quot;TNumeric&quot;&gt;The type of the numeric.&lt;/typeparam&gt;
+    /// &lt;param name=&quot;ruleBuilder&quot;&gt;The rule builder.&lt;/param&gt;
+    /// &lt;param name=&quot;upThreshold&quot;&gt;Up threshold.&lt;/param&gt;
+    /// &lt;param name=&quot;downThreshold&quot;&gt;Down threshold.&lt;/param&gt;
+    /// &lt;returns&gt;&lt;/returns&gt;
+    public static IRuleBuilderOptions&lt;T, TProperty&gt; IsNumericBetweenOfAllowEquals&lt;T, TProperty, TNumeric&gt;(
+        this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder,
+        string upThreshold,
+        string downThreshold)
+        where TNumeric : IComparable
+    &#123;
+        return ruleBuilder.SetValidator(
+            new NumericBetweenInValidator&lt;TNumeric&gt;(
+                upThreshold,
+                downThreshold,
+                allowEquals: true,
+                allowEmpty: false));
+    &#125;
+</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">使用方法 &#96;&#96;&#96;csharp</span><br><span class="line">&#x2F;&#x2F;OrderBy - 允許空值或(0、1)</span><br><span class="line">this.RuleFor(x &#x3D;&gt; x.OrderBy)</span><br><span class="line">  .NotNumericAllowEmptyOrBetweenOfAllowEquals&lt;GetBuildingDealCaseParameter, string, int&gt;(</span><br><span class="line">  &quot;2&quot;,</span><br><span class="line">  &quot;1&quot;)</span><br><span class="line">  .WithErrorCode(&quot;X400&quot;)</span><br><span class="line">  .WithMessage(&quot;OrderBy應該在1~2之間&quot;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li><p><strong><span style="color: #073763;">驗證是否為數字Array </span></strong></p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 驗證是否為數字 Array</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;seealso cref=&quot;FluentValidation.Validators.PropertyValidator&quot; /&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">NumericArrayValidator</span>&lt;<span class="title">TNumeric</span>&gt; : <span class="title">PropertyValidator</span></span><br><span class="line">        <span class="keyword">where</span> <span class="title">TNumeric</span> : <span class="title">IComparable</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 是否允許Array為Null或空集合.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;value&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span>   <span class="doctag">&lt;c&gt;</span>true<span class="doctag">&lt;/c&gt;</span> if [allow empty]; otherwise, <span class="doctag">&lt;c&gt;</span>false<span class="doctag">&lt;/c&gt;</span>.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/value&gt;</span></span></span><br><span class="line">        <span class="keyword">private</span> <span class="built_in">bool</span> AllowEmpty &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Initializes a new instance of the <span class="doctag">&lt;see cref=&quot;NumericArrayValidator&#123;TNumeric&#125;&quot;/&gt;</span> class.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;allowEmpty&quot;&gt;</span>if set to <span class="doctag">&lt;c&gt;</span>true<span class="doctag">&lt;/c&gt;</span> [allow empty].<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">NumericArrayValidator</span>(<span class="params"><span class="built_in">bool</span> allowEmpty</span>) : <span class="title">base</span>(<span class="params"><span class="string">&quot;型別錯誤&quot;</span></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">this</span>.AllowEmpty = allowEmpty;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Returns true if ... is valid.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;context&quot;&gt;</span>The context.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span>   <span class="doctag">&lt;c&gt;</span>true<span class="doctag">&lt;/c&gt;</span> if the specified context is valid; otherwise, <span class="doctag">&lt;c&gt;</span>false<span class="doctag">&lt;/c&gt;</span>.</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">bool</span> <span class="title">IsValid</span>(<span class="params">PropertyValidatorContext context</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> propertyValue = context.PropertyValue <span class="keyword">as</span> List&lt;<span class="built_in">string</span>&gt;;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (<span class="keyword">this</span>.AllowEmpty &amp;&amp;</span><br><span class="line">                (propertyValue == <span class="literal">null</span> || propertyValue.Count == <span class="number">0</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//不允許空集合或Null</span></span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">this</span>.AllowEmpty &amp;&amp;</span><br><span class="line">                (propertyValue == <span class="literal">null</span> || propertyValue.Count == <span class="number">0</span>))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">bool</span> IsConvertable;</span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> x <span class="keyword">in</span> propertyValue)</span><br><span class="line">            &#123;</span><br><span class="line">                ConvertHelper.ToT&lt;TNumeric&gt;(x, <span class="keyword">out</span> IsConvertable);</span><br><span class="line">                <span class="keyword">if</span> (!IsConvertable)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p><em>擴充方法</em>*```csharp<br>/// <summary></p>
+<pre><code>   /// 是數字 Array,但允許空陣列或Null.
+   /// &lt;/summary&gt;
+   /// &lt;typeparam name=&quot;T&quot;&gt;&lt;/typeparam&gt;
+   /// &lt;typeparam name=&quot;TProperty&quot;&gt;The type of the property.&lt;/typeparam&gt;
+   /// &lt;typeparam name=&quot;TNumeric&quot;&gt;The type of the numeric.&lt;/typeparam&gt;
+   /// &lt;param name=&quot;ruleBuilder&quot;&gt;The rule builder.&lt;/param&gt;
+   /// &lt;returns&gt;&lt;/returns&gt;
+   public static IRuleBuilderOptions&lt;T, TProperty&gt; IsNumericArrayAllowEmpty&lt;T, TProperty, TNumeric&gt;(
+       this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder)
+       where TNumeric : IComparable
+   &#123;
+       return ruleBuilder.SetValidator(
+           new NumericArrayValidator&lt;TNumeric&gt;(allowEmpty: true));
+   &#125;
+
+   /// &lt;summary&gt;
+   /// 是數字 Array.
+   /// &lt;/summary&gt;
+   /// &lt;typeparam name=&quot;T&quot;&gt;&lt;/typeparam&gt;
+   /// &lt;typeparam name=&quot;TProperty&quot;&gt;The type of the property.&lt;/typeparam&gt;
+   /// &lt;typeparam name=&quot;TNumeric&quot;&gt;The type of the numeric.&lt;/typeparam&gt;
+   /// &lt;param name=&quot;ruleBuilder&quot;&gt;The rule builder.&lt;/param&gt;
+   /// &lt;returns&gt;&lt;/returns&gt;
+   public static IRuleBuilderOptions&lt;T, TProperty&gt; IsNumericArray&lt;T, TProperty, TNumeric&gt;(
+       this IRuleBuilder&lt;T, TProperty&gt; ruleBuilder)
+       where TNumeric : IComparable
+   &#123;
+       return ruleBuilder.SetValidator(
+           new NumericArrayValidator&lt;TNumeric&gt;(allowEmpty: false));
+   &#125;
+</code></pre>
+</li>
+</ul>
+<pre><code>
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/FluentValidation/" rel="tag"># FluentValidation</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/09/26/%E3%80%90%E5%9B%9B%E5%85%83%E6%A8%B9%E3%80%91%E9%80%8F%E9%81%8E%E5%9B%9B%E5%85%83%E6%A8%B9%E6%90%9C%E5%B0%8B%E7%AF%84%E5%9C%8D%E5%85%A7%E7%9A%84%E5%BA%A7%E6%A8%99/" rel="prev" title="【四元樹】透過四元樹搜尋範圍內的座標">
+      <i class="fa fa-chevron-left"></i> 【四元樹】透過四元樹搜尋範圍內的座標
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/10/14/%E3%80%90Swagger%E3%80%91%E6%B4%BB%E8%91%97%E7%9A%84API%E8%A6%8F%E6%A0%BC%E6%9B%B8/" rel="next" title="【Swagger】活著的API規格書">
+      【Swagger】活著的API規格書 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2016/10/12/%E7%94%A8-FluentValidation-%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8/";
+    this.page.identifier = "2016/10/12/用-FluentValidation-驗證參數/";
+    this.page.title = "用 FluentValidation 驗證參數";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

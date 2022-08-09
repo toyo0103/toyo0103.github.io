@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="ActionAttribute             環境 : WebAPI 2.2 詳細             在WebAPI中，通常都繪有需要客製化ActionFilter的情況發生  執行順序不固定ActionFilter的執行順序並非在上面的就優先執行，Filter有個FilterScope來表示他屬於何種層級的ActionFilter，執行順序依次是 Global , Control">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【WebAPI】Custom ActionFilter Order">
+<meta property="og:url" content="https://toyo0103.github.io/2015/12/14/%E3%80%90WebAPI%E3%80%91Custom-ActionFilter-Order/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="ActionAttribute             環境 : WebAPI 2.2 詳細             在WebAPI中，通常都繪有需要客製化ActionFilter的情況發生  執行順序不固定ActionFilter的執行順序並非在上面的就優先執行，Filter有個FilterScope來表示他屬於何種層級的ActionFilter，執行順序依次是 Global , Control">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://3.bp.blogspot.com/-tfA3HwTsUBA/VnIwd3pjxiI/AAAAAAAAHrc/qzbMwEmMBb4/s1600/1.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-vZ-NniyEom4/VnIx1sGnvcI/AAAAAAAAHro/-ykVRvzvq3Y/s1600/1.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-LiCgWC_Ob3M/VnIyiMCn0nI/AAAAAAAAHr0/H58PiNpUUvA/s1600/1.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-oCMhVi2M5_w/VnIzKgzvzrI/AAAAAAAAHsA/e9vuB3fiZE4/s1600/1.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-VZm61VIoQZY/VnIzc88dwGI/AAAAAAAAHsM/piz8hD4vdXo/s1600/1.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-ExqARkhthR8/VnI0IaZEwvI/AAAAAAAAHsY/iSNXKBQFZF0/s1600/1.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png">
+<meta property="og:image" content="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png">
+<meta property="article:published_time" content="2015-12-14T10:08:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.095Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="WebAPI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://3.bp.blogspot.com/-tfA3HwTsUBA/VnIwd3pjxiI/AAAAAAAAHrc/qzbMwEmMBb4/s1600/1.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2015/12/14/%E3%80%90WebAPI%E3%80%91Custom-ActionFilter-Order/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【WebAPI】Custom ActionFilter Order | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/12/14/%E3%80%90WebAPI%E3%80%91Custom-ActionFilter-Order/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【WebAPI】Custom ActionFilter Order
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-12-14 10:08:00" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+00:00">2015-12-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/12/14/%E3%80%90WebAPI%E3%80%91Custom-ActionFilter-Order/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/14/【WebAPI】Custom-ActionFilter-Order/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="ActionAttribute"><a href="#ActionAttribute" class="headerlink" title="ActionAttribute"></a>ActionAttribute</h1><div class="note info">
+            <p>環境 : WebAPI 2.2 <a target="_blank" rel="noopener" href="http://www.asp.net/web-api/overview/releases/whats-new-in-aspnet-web-api-22">詳細</a></p>
+          </div>
+
+<p>在WebAPI中，通常都繪有需要客製化ActionFilter的情況發生</p>
+<p><img src="https://3.bp.blogspot.com/-tfA3HwTsUBA/VnIwd3pjxiI/AAAAAAAAHrc/qzbMwEmMBb4/s1600/1.png"></p>
+<h2 id="執行順序不固定"><a href="#執行順序不固定" class="headerlink" title="執行順序不固定"></a>執行順序不固定</h2><p>ActionFilter的執行順序並非在上面的就優先執行，Filter有個FilterScope來表示他屬於何種層級的ActionFilter，執行順序依次是 Global , Controller , Action 。但如果是在同一層級的ActionFilter順序則未必按照固定。 </p>
+<p><img src="https://2.bp.blogspot.com/-vZ-NniyEom4/VnIx1sGnvcI/AAAAAAAAHro/-ykVRvzvq3Y/s1600/1.png" alt="https://2.bp.blogspot.com/-vZ-NniyEom4/VnIx1sGnvcI/AAAAAAAAHro/-ykVRvzvq3Y/s1600/1.png">]</p>
+<h2 id="測試"><a href="#測試" class="headerlink" title="測試"></a>測試</h2><p><img src="https://4.bp.blogspot.com/-LiCgWC_Ob3M/VnIyiMCn0nI/AAAAAAAAHr0/H58PiNpUUvA/s1600/1.png" alt="https://4.bp.blogspot.com/-LiCgWC_Ob3M/VnIyiMCn0nI/AAAAAAAAHr0/H58PiNpUUvA/s1600/1.png"></p>
+<p>裡面全部都一樣繼承ActionFilterAttribute即可</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FourAttribute</span> :<span class="title">ActionFilterAttribute</span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+<p>註冊OneAttribute到Global<br><img src="https://2.bp.blogspot.com/-oCMhVi2M5_w/VnIzKgzvzrI/AAAAAAAAHsA/e9vuB3fiZE4/s1600/1.png" alt="https://2.bp.blogspot.com/-oCMhVi2M5_w/VnIzKgzvzrI/AAAAAAAAHsA/e9vuB3fiZE4/s1600/1.png"></p>
+<p>將其它Attribute分別註冊到Controller與Action<br><img src="https://1.bp.blogspot.com/-VZm61VIoQZY/VnIzc88dwGI/AAAAAAAAHsM/piz8hD4vdXo/s1600/1.png" alt="https://1.bp.blogspot.com/-VZm61VIoQZY/VnIzc88dwGI/AAAAAAAAHsM/piz8hD4vdXo/s1600/1.png"></p>
+<p>在Get中補上以下程式然後執行看看</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">HttpGet</span>]</span><br><span class="line">[<span class="meta">Three</span>]</span><br><span class="line">[<span class="meta">Four</span>]</span><br><span class="line"><span class="keyword">public</span> IEnumerable&lt;Tuple&lt;<span class="built_in">string</span>,<span class="built_in">string</span>&gt;&gt; Get()</span><br><span class="line">&#123;</span><br><span class="line">    IHttpActionSelector actionSelector =</span><br><span class="line">        <span class="keyword">this</span>.Configuration.Services.GetActionSelector();</span><br><span class="line"> </span><br><span class="line">    HttpActionDescriptor actionDescriptor =</span><br><span class="line">        actionSelector.SelectAction(<span class="keyword">this</span>.ControllerContext);</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">foreach</span> (FilterInfo filterInfo <span class="keyword">in</span> actionDescriptor.GetFilterPipeline())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">yield</span> <span class="keyword">return</span> <span class="keyword">new</span> <span class="title">Tuple</span>&lt;<span class="title">string</span>, <span class="title">string</span>&gt;(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">            filterInfo.Instance.GetType(</span>).Name,</span></span><br><span class="line"><span class="function">            filterInfo.Scope.<span class="title">ToString</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        )</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="測試結果"><a href="#測試結果" class="headerlink" title="測試結果"></a>測試結果</h2><p><img src="https://2.bp.blogspot.com/-ExqARkhthR8/VnI0IaZEwvI/AAAAAAAAHsY/iSNXKBQFZF0/s1600/1.png" alt="https://2.bp.blogspot.com/-ExqARkhthR8/VnI0IaZEwvI/AAAAAAAAHsY/iSNXKBQFZF0/s1600/1.png"></p>
+<p>排序依據所對應的層級，雖然這邊排序與我們在程式上的排序相同。但實際上順序同層級的順序未必是由上而下，為了避免這樣的問題，最好的方法就是在ActionFilter加上排序的屬性來解決。</p>
+<h2 id="實作Order屬性"><a href="#實作Order屬性" class="headerlink" title="實作Order屬性"></a>實作Order屬性</h2><h3 id="定義IOrderAttribute"><a href="#定義IOrderAttribute" class="headerlink" title="定義IOrderAttribute"></a>定義IOrderAttribute</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IOrderAttribute</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="built_in">int</span> Order &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">FourAttribute</span> : <span class="title">ActionFilterAttribute</span>, <span class="title">IOrderAttribute</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">public</span> <span class="built_in">int</span> Order &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="實做IComparable介面"><a href="#實做IComparable介面" class="headerlink" title="實做IComparable介面"></a>實做IComparable介面</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomFilterInfo</span> : <span class="title">IComparable</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> IFilter Instance &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> FilterScope Scope &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="comment">//FilterInfo</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CustomFilterInfo</span>(<span class="params">IFilter instance, FilterScope scope</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">this</span>.Instance = instance;</span><br><span class="line">            <span class="keyword">this</span>.Scope = scope;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">CompareTo</span>(<span class="params"><span class="built_in">object</span> obj</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (obj <span class="keyword">is</span> CustomFilterInfo)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> item = obj <span class="keyword">as</span> CustomFilterInfo;</span><br><span class="line"> </span><br><span class="line">                <span class="keyword">if</span> (item.Instance <span class="keyword">is</span> IAttribute)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> attr = item.Instance <span class="keyword">as</span> IAttribute;</span><br><span class="line">                    <span class="keyword">return</span> (<span class="keyword">this</span>.Instance <span class="keyword">as</span> IAttribute).Order.CompareTo(attr.Order);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"> </span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"> </span><br><span class="line">        <span class="function"><span class="keyword">public</span> FilterInfo <span class="title">ConvertToFilterInfo</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> FilterInfo(<span class="keyword">this</span>.Instance, <span class="keyword">this</span>.Scope);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="實做IFilterProvider介面"><a href="#實做IFilterProvider介面" class="headerlink" title="實做IFilterProvider介面"></a>實做IFilterProvider介面</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CustomFilterProvider</span> : <span class="title">IFilterProvider</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IEnumerable&lt;FilterInfo&gt; <span class="title">GetFilters</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">        HttpConfiguration configuration, </span></span></span><br><span class="line"><span class="function"><span class="params">        HttpActionDescriptor actionDescriptor</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        IEnumerable&lt;CustomFilterInfo&gt; customActionFilters =</span><br><span class="line">            actionDescriptor.GetFilters()</span><br><span class="line">                            .Select(i =&gt; <span class="keyword">new</span> CustomFilterInfo(i, FilterScope.Controller));</span><br><span class="line"> </span><br><span class="line">        IEnumerable&lt;CustomFilterInfo&gt; customControllerFilters =</span><br><span class="line">            actionDescriptor.ControllerDescriptor</span><br><span class="line">                            .GetFilters()</span><br><span class="line">                            .Select(i =&gt; <span class="keyword">new</span> CustomFilterInfo(i, FilterScope.Controller));</span><br><span class="line"> </span><br><span class="line">        <span class="keyword">return</span> customControllerFilters.Concat(customActionFilters)</span><br><span class="line">                                      .OrderBy(i =&gt; i)</span><br><span class="line">                                      .Select(i =&gt; i.ConvertToFilterInfo());</span><br><span class="line"> </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Global註冊"><a href="#Global註冊" class="headerlink" title="Global註冊"></a>Global註冊</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Application_Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    AreaRegistration.RegisterAllAreas();</span><br><span class="line">    GlobalConfiguration.Configure(WebApiConfig.Register);</span><br><span class="line">    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);</span><br><span class="line">    GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//註冊Global Attribute</span></span><br><span class="line">    GlobalConfiguration.Configuration.Filters.Add(<span class="keyword">new</span> OneAttribute());</span><br><span class="line"> </span><br><span class="line">     </span><br><span class="line">    <span class="comment">//新增CustomFilterProvider</span></span><br><span class="line">    GlobalConfiguration.Configuration.Services.Add(</span><br><span class="line">        <span class="keyword">typeof</span>(System.Web.Http.Filters.IFilterProvider), <span class="keyword">new</span> CustomFilterProvider());</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">var</span> providers = GlobalConfiguration.Configuration.Services.GetFilterProviders();</span><br><span class="line">    <span class="keyword">var</span> defaultprovider = providers.First(i =&gt; i <span class="keyword">is</span> ActionDescriptorFilterProvider);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">//移除DefaultProvider</span></span><br><span class="line">    GlobalConfiguration.Configuration.Services.Remove(</span><br><span class="line">        <span class="keyword">typeof</span>(System.Web.Http.Filters.IFilterProvider),</span><br><span class="line">        defaultprovider);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="測試-1"><a href="#測試-1" class="headerlink" title="測試"></a>測試</h3><p>將Attibute補上Order再執行看看得到的順序</p>
+<p><img src="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png" alt="https://1.bp.blogspot.com/-UucLgmkDBeE/VnJTKlpyjVI/AAAAAAAAHso/5-37Ww458bE/s1600/1.png"></p>
+<p>可以看到Four排在Three的前面了</p>
+<p><img src="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png" alt="https://4.bp.blogspot.com/-YndO7jfF4M0/VnJTkNiXDzI/AAAAAAAAHs0/S6HXWfK1_ks/s1600/1.png"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/WebAPI/" rel="tag"># WebAPI</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/12/08/AutoMapper%E8%88%87Json-NET-JObject%E5%B0%8D%E6%87%89%E5%95%8F%E9%A1%8C/" rel="prev" title="AutoMapper與Json.NET JObject對應問題">
+      <i class="fa fa-chevron-left"></i> AutoMapper與Json.NET JObject對應問題
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/12/14/%E3%80%90SQL%E3%80%91%E9%81%9E%E8%BF%B4/" rel="next" title="【SQL】遞迴">
+      【SQL】遞迴 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ActionAttribute"><span class="nav-number">1.</span> <span class="nav-text">ActionAttribute</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%B7%E8%A1%8C%E9%A0%86%E5%BA%8F%E4%B8%8D%E5%9B%BA%E5%AE%9A"><span class="nav-number">1.1.</span> <span class="nav-text">執行順序不固定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6"><span class="nav-number">1.2.</span> <span class="nav-text">測試</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6%E7%B5%90%E6%9E%9C"><span class="nav-number">1.3.</span> <span class="nav-text">測試結果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9COrder%E5%B1%AC%E6%80%A7"><span class="nav-number">1.4.</span> <span class="nav-text">實作Order屬性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E7%BE%A9IOrderAttribute"><span class="nav-number">1.4.1.</span> <span class="nav-text">定義IOrderAttribute</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%A6%E5%81%9AIComparable%E4%BB%8B%E9%9D%A2"><span class="nav-number">1.4.2.</span> <span class="nav-text">實做IComparable介面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%A6%E5%81%9AIFilterProvider%E4%BB%8B%E9%9D%A2"><span class="nav-number">1.4.3.</span> <span class="nav-text">實做IFilterProvider介面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Global%E8%A8%BB%E5%86%8A"><span class="nav-number">1.4.4.</span> <span class="nav-text">Global註冊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%AC%E8%A9%A6-1"><span class="nav-number">1.4.5.</span> <span class="nav-text">測試</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2015/12/14/%E3%80%90WebAPI%E3%80%91Custom-ActionFilter-Order/";
+    this.page.identifier = "2015/12/14/【WebAPI】Custom-ActionFilter-Order/";
+    this.page.title = "【WebAPI】Custom ActionFilter Order";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

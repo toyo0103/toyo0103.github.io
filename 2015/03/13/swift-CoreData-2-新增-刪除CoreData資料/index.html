@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="這邊做個簡單的介面,讓TableView的資料來自資料庫,並能把資料存到資料庫裡面   首先先把TableView的資料來源設定成來自資料庫,完整程式碼如下,這樣就已經把Table的datasource friends來源改成SQLite了 &#96;&#96;&#96;swiftimport UIKitimport CoreDataclass ViewController: UIViewController , UIT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[swift]  CoreData (2) 新增,刪除CoreData資料">
+<meta property="og:url" content="https://toyo0103.github.io/2015/03/13/swift-CoreData-2-%E6%96%B0%E5%A2%9E-%E5%88%AA%E9%99%A4CoreData%E8%B3%87%E6%96%99/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="這邊做個簡單的介面,讓TableView的資料來自資料庫,並能把資料存到資料庫裡面   首先先把TableView的資料來源設定成來自資料庫,完整程式碼如下,這樣就已經把Table的datasource friends來源改成SQLite了 &#96;&#96;&#96;swiftimport UIKitimport CoreDataclass ViewController: UIViewController , UIT">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://1.bp.blogspot.com/-Uz3JfDAuaic/VQKFrHxDa-I/AAAAAAAAEkg/2DXXn3_CA6o/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8B%E5%8D%882.35.33.png">
+<meta property="article:published_time" content="2015-03-13T18:20:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.081Z">
+<meta property="article:author" content="Toyo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://1.bp.blogspot.com/-Uz3JfDAuaic/VQKFrHxDa-I/AAAAAAAAEkg/2DXXn3_CA6o/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8B%E5%8D%882.35.33.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2015/03/13/swift-CoreData-2-%E6%96%B0%E5%A2%9E-%E5%88%AA%E9%99%A4CoreData%E8%B3%87%E6%96%99/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>[swift]  CoreData (2) 新增,刪除CoreData資料 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/13/swift-CoreData-2-%E6%96%B0%E5%A2%9E-%E5%88%AA%E9%99%A4CoreData%E8%B3%87%E6%96%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [swift]  CoreData (2) 新增,刪除CoreData資料
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-13 18:20:00" itemprop="dateCreated datePublished" datetime="2015-03-13T18:20:00+00:00">2015-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/13/swift-CoreData-2-%E6%96%B0%E5%A2%9E-%E5%88%AA%E9%99%A4CoreData%E8%B3%87%E6%96%99/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/13/swift-CoreData-2-新增-刪除CoreData資料/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>這邊做個簡單的介面,讓TableView的資料來自資料庫,並能把資料存到資料庫裡面<br><a target="_blank" rel="noopener" href="http://1.bp.blogspot.com/-Uz3JfDAuaic/VQKFrHxDa-I/AAAAAAAAEkg/2DXXn3_CA6o/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8B%E5%8D%882.35.33.png"><img src="http://1.bp.blogspot.com/-Uz3JfDAuaic/VQKFrHxDa-I/AAAAAAAAEkg/2DXXn3_CA6o/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-13%2B%E4%B8%8B%E5%8D%882.35.33.png"></a> </p>
+<ul>
+<li><p>首先先把TableView的資料來源設定成來自資料庫,完整程式碼如下,這樣就已經把Table的datasource friends來源改成SQLite了 ```swift<br>import UIKit<br>import CoreData<br>class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSource, NSFetchedResultsControllerDelegate{<br>  @IBOutlet weak var tableview: UITableView!<br>  var friends : [Friend] = []<br>  var fetchRequestController:NSFetchedResultsController!<br>  override func viewDidLoad() {</p>
+<pre><code>  super.viewDidLoad()
+  //讀取Friend的Entity
+  var fetchRequest = NSFetchRequest(entityName: &quot;Friend&quot;)
+  //排序方式用name這個欄位
+  let sortDescriptor = NSSortDescriptor(key: &quot;name&quot;, ascending: true)
+  fetchRequest.sortDescriptors = [sortDescriptor]
+  if let managedObjectContext = (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext&#123;
+      fetchRequestController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+      //delegate設定為自己時,當新增修改刪除SQLite的資料時會呼叫以下事件
+      //controllerWillChangeContent()
+      //controller(_:didChangeObject:atIndexPath:forChangeType:newIndexPath:)
+      //controllerDidChangeContent(_:)
+      fetchRequestController.delegate = self
+      var e:NSError?
+      var result = fetchRequestController.performFetch(&amp;e)
+      friends = fetchRequestController.fetchedObjects as [Friend]
+      if result != true&#123;
+           println(e?.localizedDescription)
+      &#125;
+  &#125;
+</code></pre>
+<p>  }</p>
+<pre><code>  override func didReceiveMemoryWarning() &#123;
+  super.didReceiveMemoryWarning()
+  // Dispose of any resources that can be recreated.
+</code></pre>
+<p>  }</p>
+<pre><code>  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -&gt; UITableViewCell &#123;
+  let identifier = &quot;cell&quot;
+  var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as customCell
+  cell.nameLabel.text = friends[indexPath.row].name
+  cell.telLabel.text = friends[indexPath.row].tel.stringValue
+  cell.picImageView.image = UIImage(data: friends[indexPath.row].picture)
+  cell.marryLabel.text = friends[indexPath.row].marry.boolValue ? &quot;YES&quot; : &quot;NO&quot;
+  return cell
+</code></pre>
+<p>  }</p>
+<pre><code>  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int &#123;
+  return friends.count
+</code></pre>
+<p>  }<br>}</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   接著寫按下save後的事件將檔案能寫到資料庫中,在這之前先處理Yes and no的按鈕和載入圖片按鈕</span><br><span class="line">Yes and No按鈕 &#96;&#96;&#96;swift</span><br><span class="line">@IBOutlet weak var YesButton: UIButton!</span><br><span class="line">    @IBOutlet weak var NoButton: UIButton!</span><br><span class="line"></span><br><span class="line">        @IBAction func MarryButtonClick(sender: AnyObject) &#123;</span><br><span class="line">        YesButton.backgroundColor &#x3D; (sender as UIButton &#x3D;&#x3D; YesButton) ? UIColor.redColor() : UIColor.lightGrayColor()</span><br><span class="line">        NoButton.backgroundColor &#x3D; (sender as UIButton &#x3D;&#x3D; NoButton) ? UIColor.redColor() : UIColor.lightGrayColor()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<p>實作載入圖片的按鈕,需要讓viewController實作UIImagePickerControllerDelegate和UINavigationControllerDelegate</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span> , <span class="title">UITableViewDelegate</span> , <span class="title">UITableViewDataSource</span>, <span class="title">NSFetchedResultsControllerDelegate</span> , <span class="title">UIImagePickerControllerDelegate</span>,<span class="title">UINavigationControllerDelegate</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>selectPicture的按鈕 ```swift<br>@IBAction func SelectPictureClick(sender: AnyObject) {<br>        let imagePicker = UIImagePickerController()<br>        imagePicker.allowsEditing = false<br>        imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary<br>        imagePicker.delegate = self<br>        //顯示挑選圖片的視窗<br>        self.presentViewController(imagePicker, animated: true, completion: nil)<br>    }<br>    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {<br>        PicImageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage<br>        PicImageView.contentMode = UIViewContentMode.ScaleAspectFill<br>        PicImageView.clipsToBounds = true<br>        //關閉挑選圖片的視窗<br>        dismissViewControllerAnimated(true, completion: nil)<br>    }</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">接著執行看看應該結果[![](http:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-2NW3TefbDxE&#x2F;VQK1HNE_8rI&#x2F;AAAAAAAAEkw&#x2F;l2v6Div6BYA&#x2F;s400&#x2F;test.gif)](http:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-2NW3TefbDxE&#x2F;VQK1HNE_8rI&#x2F;AAAAAAAAEkw&#x2F;l2v6Div6BYA&#x2F;s1600&#x2F;test.gif)</span><br><span class="line">*   接著把Save按鈕按下後存到SQLite的事件寫好 &#96;&#96;&#96;swift</span><br><span class="line">@IBAction func SaveClick(sender: AnyObject) &#123;</span><br><span class="line">        if let manageObjectContext &#x3D; (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext&#123;</span><br><span class="line">            var friend &#x3D; NSEntityDescription.insertNewObjectForEntityForName(&quot;Friend&quot;, inManagedObjectContext: manageObjectContext) as Friend</span><br><span class="line">            friend.name &#x3D; NameTextField.text</span><br><span class="line">            friend.tel &#x3D; TelTextField.text.toInt()</span><br><span class="line">            friend.marry &#x3D; (YesButton.backgroundColor &#x3D;&#x3D; UIColor.redColor()) ? true : false</span><br><span class="line">            friend.picture &#x3D; UIImagePNGRepresentation(PicImageView.image)</span><br><span class="line">            var e:NSError?</span><br><span class="line">            if manageObjectContext.save(&amp;e) !&#x3D; true&#123;</span><br><span class="line">                println(&quot;error: \(e?.localizedDescription)&quot;)</span><br><span class="line">                return</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>接著執行看看會發現按了儲存按鈕後雖然存進資料庫了,但沒有讓TableView馬上連動顯示,必須重新開APP才會顯示在table上*   還記得之前有繼承NSFetchedResultsControllerDelegate嗎?這時候派上用場了,補上幾個事件讓他可以跟TableView連動吧 ```swift<br>//資料庫準備更新了<br>    func controllerWillChangeContent(controller: NSFetchedResultsController) {<br>        tableview.beginUpdates()<br>    }<br>    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {<br>        switch type{<br>        case .Insert:<br>            tableview.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Fade)<br>        case .Delete:<br>            tableview.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)<br>        case .Update:<br>            tableview.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)<br>        default:<br>            tableview.reloadData()<br>        }<br>        friends = controller.fetchedObjects as [Friend]<br>    }<br>    func controllerDidChangeContent(controller: NSFetchedResultsController) {<br>        tableview.endUpdates()<br>    }</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">接著再執行看看應該就可以看到他會馬上顯示了*   最後來個刪除吧！！這邊只舉例刪除該如何做,就不加到例子當中了 &#96;&#96;&#96;swift</span><br><span class="line">if let manageObjectContext &#x3D; (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext&#123;</span><br><span class="line">            &#x2F;&#x2F;簡單說就是挑出那個想刪除的物件</span><br><span class="line">            var friendToDelete &#x3D; self.fetchRequestController.objectAtIndexPath(NSIndexPath(index: 0)) as Friend</span><br><span class="line">            &#x2F;&#x2F;呼叫刪除方法把它丟進去</span><br><span class="line">            manageObjectContext.deleteObject(friendToDelete)</span><br><span class="line">            var e:NSError?</span><br><span class="line">            &#x2F;&#x2F;儲存</span><br><span class="line">            if manageObjectContext.save(&amp;e) !&#x3D; true&#123;</span><br><span class="line">                println(&quot;error: \(e?.localizedDescription)&quot;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>基本上有操作過.NET Entity物件的話,這邊的概念幾乎都雷同,最後補上完整的程式碼 ```swift<br>import UIKit<br>import CoreData<br>class ViewController: UIViewController , UITableViewDelegate , UITableViewDataSource, UINavigationControllerDelegate ,NSFetchedResultsControllerDelegate , UIImagePickerControllerDelegate{<br>  @IBOutlet weak var tableview: UITableView!<br>  var friends : [Friend] = []<br>  var fetchRequestController:NSFetchedResultsController!<br>  @IBOutlet weak var NameTextField: UITextField!<br>  @IBOutlet weak var TelTextField: UITextField!<br>  @IBOutlet weak var PicImageView: UIImageView!<br>  @IBOutlet weak var YesButton: UIButton!<br>  @IBOutlet weak var NoButton: UIButton!<br>  override func viewDidLoad() {</p>
+<pre><code>  super.viewDidLoad()
+  //讀取Friend的Entity
+  var fetchRequest = NSFetchRequest(entityName: &quot;Friend&quot;)
+  //排序方式用name這個欄位
+  let sortDescriptor = NSSortDescriptor(key: &quot;name&quot;, ascending: true)
+  fetchRequest.sortDescriptors = [sortDescriptor]
+  if let managedObjectContext = (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext&#123;
+      fetchRequestController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: nil, cacheName: nil)
+      //delegate設定為自己時,當新增修改刪除SQLite的資料時會呼叫以下事件
+      //controllerWillChangeContent()
+      //controller(_:didChangeObject:atIndexPath:forChangeType:newIndexPath:)
+      //controllerDidChangeContent(_:)
+      fetchRequestController.delegate = self
+      var e:NSError?
+      var result = fetchRequestController.performFetch(&amp;e)
+      friends = fetchRequestController.fetchedObjects as [Friend]
+      if result != true&#123;
+           println(e?.localizedDescription)
+      &#125;
+  &#125;
+</code></pre>
+<p>  }</p>
+<pre><code>  override func didReceiveMemoryWarning() &#123;
+  super.didReceiveMemoryWarning()
+  // Dispose of any resources that can be recreated.
+</code></pre>
+<p>  }</p>
+<pre><code>  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -&gt; UITableViewCell &#123;
+  let identifier = &quot;cell&quot;
+  var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as customCell
+  cell.nameLabel.text = friends[indexPath.row].name
+  cell.telLabel.text = friends[indexPath.row].tel.stringValue
+  cell.picImageView.image = UIImage(data: friends[indexPath.row].picture)
+  cell.marryLabel.text = friends[indexPath.row].marry.boolValue ? &quot;YES&quot; : &quot;NO&quot;
+  return cell
+</code></pre>
+<p>  }</p>
+<pre><code>  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -&gt; Int &#123;
+  return friends.count
+</code></pre>
+<p>  }<br>  @IBAction func MarryButtonClick(sender: AnyObject) {</p>
+<pre><code>  YesButton.backgroundColor = (sender as UIButton == YesButton) ? UIColor.redColor() : UIColor.lightGrayColor()
+  NoButton.backgroundColor = (sender as UIButton == NoButton) ? UIColor.redColor() : UIColor.lightGrayColor()
+</code></pre>
+<p>  }<br>  @IBAction func SelectPictureClick(sender: AnyObject) {</p>
+<pre><code>  let imagePicker = UIImagePickerController()
+  imagePicker.allowsEditing = false
+  imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+  imagePicker.delegate = self
+  //顯示挑選圖片的視窗
+  self.presentViewController(imagePicker, animated: true, completion: nil)
+</code></pre>
+<p>  }<br>  func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {</p>
+<pre><code>  PicImageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+  PicImageView.contentMode = UIViewContentMode.ScaleAspectFill
+  PicImageView.clipsToBounds = true
+  //關閉挑選圖片的視窗
+  dismissViewControllerAnimated(true, completion: nil)
+</code></pre>
+<p>  }<br>  @IBAction func SaveClick(sender: AnyObject) {</p>
+<pre><code>  if let manageObjectContext = (UIApplication.sharedApplication().delegate as AppDelegate).managedObjectContext&#123;
+      var friend = NSEntityDescription.insertNewObjectForEntityForName(&quot;Friend&quot;, inManagedObjectContext: manageObjectContext) as Friend
+      friend.name = NameTextField.text
+      friend.tel = TelTextField.text.toInt()
+      friend.marry = (YesButton.backgroundColor == UIColor.redColor()) ? true : false
+      friend.picture = UIImagePNGRepresentation(PicImageView.image)
+      var e:NSError?
+      if manageObjectContext.save(&amp;e) != true&#123;
+          println(&quot;error: \(e?.localizedDescription)&quot;)
+          return
+      &#125;
+  &#125;
+</code></pre>
+<p>  }<br>  //資料庫準備更新了<br>  func controllerWillChangeContent(controller: NSFetchedResultsController) {</p>
+<pre><code>  tableview.beginUpdates()
+</code></pre>
+<p>  }<br>  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {</p>
+<pre><code>  switch type&#123;
+  case .Insert:
+      tableview.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
+  case .Delete:
+      tableview.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
+  case .Update:
+      tableview.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Fade)
+  default:
+      tableview.reloadData()
+  &#125;
+  friends = controller.fetchedObjects as [Friend]
+</code></pre>
+<p>  }<br>  func controllerDidChangeContent(controller: NSFetchedResultsController) {</p>
+<pre><code>  tableview.endUpdates()
+</code></pre>
+<p>  }<br>}</p>
+</li>
+</ul>
+<pre><code>
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/03/13/swift-CoreData-1-%E5%BB%BA%E7%AB%8BCoreData/" rel="prev" title="[swift]  CoreData (1) 建立CoreData">
+      <i class="fa fa-chevron-left"></i> [swift]  CoreData (1) 建立CoreData
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/06/09/Android-Use-Post-To-Call-API/" rel="next" title="[Android] Use Post To Call API">
+      [Android] Use Post To Call API <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2015/03/13/swift-CoreData-2-%E6%96%B0%E5%A2%9E-%E5%88%AA%E9%99%A4CoreData%E8%B3%87%E6%96%99/";
+    this.page.identifier = "2015/03/13/swift-CoreData-2-新增-刪除CoreData資料/";
+    this.page.title = "[swift]  CoreData (2) 新增,刪除CoreData資料";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

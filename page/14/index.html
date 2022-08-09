@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="程式隨筆">
+<meta property="og:url" content="https://toyo0103.github.io/page/14/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Toyo">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://toyo0103.github.io/page/14/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'en'
+  };
+</script>
+
+  <title>程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/05/swift-NetWork-4-%E8%A7%A3%E6%9E%90Json/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/05/swift-NetWork-4-%E8%A7%A3%E6%9E%90Json/" class="post-title-link" itemprop="url">[swift] NetWork (4) 解析Json</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-05 16:15:00" itemprop="dateCreated datePublished" datetime="2015-03-05T16:15:00+00:00">2015-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/05/swift-NetWork-4-%E8%A7%A3%E6%9E%90Json/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/05/swift-NetWork-4-解析Json/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>先做一個json檔案來模擬接到時怎麼解析 ```csharp<br>{<br>“組織名稱”:”普攏拱團隊”,<br>“組織成員”:[<br>  {“姓名”:”科科人”,”年齡”:11},<br>  {“姓名”:”可可狗”,”年齡”:120}<br>]<br>}</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   在viewDidLoad加上,測試看看！！ &#96;&#96;&#96;swift</span><br><span class="line">&#x2F;&#x2F;將檔案讀出來</span><br><span class="line">        let path &#x3D; NSBundle.mainBundle().pathForResource(&quot;json&quot;, ofType: &quot;txt&quot;);</span><br><span class="line">        var data:NSData &#x3D; NSData(contentsOfFile: path!)!;</span><br><span class="line">        &#x2F;&#x2F;解析Json</span><br><span class="line">        var jsonobj &#x3D; NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as NSDictionary;</span><br><span class="line">        println(jsonobj[&quot;組織名稱&quot;] as String);</span><br><span class="line">        println(&quot;組織成員&quot;);</span><br><span class="line">        var arr &#x3D; jsonobj[&quot;組織成員&quot;] as NSArray;</span><br><span class="line">        for i in (0...arr.count - 1)&#123;</span><br><span class="line">            let mdic &#x3D; arr[i] as NSDictionary;</span><br><span class="line">            println(mdic[&quot;姓名&quot;] as String);</span><br><span class="line">            println(mdic[&quot;年齡&quot;] as Int);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-QRs1yWks6qY/VPgZj3HwGJI/AAAAAAAAEgQ/IXGY0PKyPps/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8B%E5%8D%884.53.19.png"><img src="http://3.bp.blogspot.com/-QRs1yWks6qY/VPgZj3HwGJI/AAAAAAAAEgQ/IXGY0PKyPps/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8B%E5%8D%884.53.19.png"></a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/05/swift-NetWork-3-%E5%88%A4%E6%96%B7%E6%89%8B%E6%A9%9F%E6%98%AF%E5%90%A6%E6%9C%89%E7%B6%B2%E8%B7%AF%E9%80%A3%E7%B7%9A%E5%8F%AF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/05/swift-NetWork-3-%E5%88%A4%E6%96%B7%E6%89%8B%E6%A9%9F%E6%98%AF%E5%90%A6%E6%9C%89%E7%B6%B2%E8%B7%AF%E9%80%A3%E7%B7%9A%E5%8F%AF%E7%94%A8/" class="post-title-link" itemprop="url">[swift] NetWork (3) 判斷手機是否有網路連線可用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-05 11:09:00" itemprop="dateCreated datePublished" datetime="2015-03-05T11:09:00+00:00">2015-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/05/swift-NetWork-3-%E5%88%A4%E6%96%B7%E6%89%8B%E6%A9%9F%E6%98%AF%E5%90%A6%E6%9C%89%E7%B6%B2%E8%B7%AF%E9%80%A3%E7%B7%9A%E5%8F%AF%E7%94%A8/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/05/swift-NetWork-3-判斷手機是否有網路連線可用/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>主要參考兩篇文章做修改:<br><a target="_blank" rel="noopener" href="http://yishenghsu.blogspot.tw/2014/08/detect-internet-status-programmatically.html">Detect Internet status programmatically using Swift and Object-C language</a><br><a target="_blank" rel="noopener" href="https://cg2010studio.wordpress.com/2014/03/25/ios-%E5%8D%B3%E6%99%82%E5%88%A4%E6%96%B7%E7%B6%B2%E8%B7%AF%E9%80%A3%E7%B7%9A%E7%8B%80%E6%85%8B-detect-network-status-on-real-time/">[iOS] 即時判斷網路連線狀態 (Detect Network Status on Real-Time)</a></p>
+<ul>
+<li>  Apple已經用Objective-C寫了判斷網路的套件給大家使用,所以接下來會解說如何用Swift專案載入Objective-C套件</li>
+<li>  先到這邊下載<a target="_blank" rel="noopener" href="https://developer.apple.com/library/ios/samplecode/Reachability/Introduction/Intro.html">Reachability</a><br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-ARSnk1PlmsA/VPfKweUAqBI/AAAAAAAAEek/VmW9EFmlEdI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.16.58.png"><img src="http://4.bp.blogspot.com/-ARSnk1PlmsA/VPfKweUAqBI/AAAAAAAAEek/VmW9EFmlEdI/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.16.58.png"></a></li>
+<li>  接著把Reachability專案中的Reachability.m和Reachability.h抓到專案中<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-tOe02e1PHi8/VPfMqYara3I/AAAAAAAAEew/8lk8Vhb0Ycw/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.24.31.png"><img src="http://2.bp.blogspot.com/-tOe02e1PHi8/VPfMqYara3I/AAAAAAAAEew/8lk8Vhb0Ycw/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.24.31.png"></a></li>
+<li>  在專案中新增Header檔<br><a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-bT6x-uOyL18/VPfM_oRXMjI/AAAAAAAAEe4/tohKrlWN6Wc/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.26.24.png"><img src="http://3.bp.blogspot.com/-bT6x-uOyL18/VPfM_oRXMjI/AAAAAAAAEe4/tohKrlWN6Wc/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.26.24.png"></a><br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-WFeWY0XO3bg/VPfO2ffoduI/AAAAAAAAEfU/j1womd0gVtY/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.33.49.png"><img src="http://4.bp.blogspot.com/-WFeWY0XO3bg/VPfO2ffoduI/AAAAAAAAEfU/j1womd0gVtY/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.33.49.png"></a></li>
+<li>  打開Header檔,把Reachability.h掛進去,這樣以後專案中引用Reachability裡面的class都不再Import了<br><a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-3dpVy1QW-_E/VPfNsxflCYI/AAAAAAAAEfA/aHDQvazuqfs/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.29.30.png"><img src="http://3.bp.blogspot.com/-3dpVy1QW-_E/VPfNsxflCYI/AAAAAAAAEfA/aHDQvazuqfs/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.29.30.png"></a></li>
+<li>  把Header檔加到專案的Build Setting中<br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-9Hr8yXPHenQ/VPfOYYogTeI/AAAAAAAAEfM/rowTL9RSiCI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.31.48.png"><img src="http://4.bp.blogspot.com/-9Hr8yXPHenQ/VPfOYYogTeI/AAAAAAAAEfM/rowTL9RSiCI/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.31.48.png"></a></li>
+<li>  打開Reachability.m找到(void)dealloc改成 ```swift</li>
+</ul>
+<ul>
+<li>(void)dealloc<br>{<br>  [self stopNotifier];<br>  if (_reachabilityRef != NULL)<br>  {<br>CFRelease(_reachabilityRef);<br>  }<br>  [super dealloc];<br>}</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   到專案中的Build Phases,把Reachability.m加上-fno-objc-arc [![](http:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-iCs_Qc3MS_g&#x2F;VPfP4egfeoI&#x2F;AAAAAAAAEfg&#x2F;loz5m7jQjpU&#x2F;s400&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.38.54.png)](http:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-iCs_Qc3MS_g&#x2F;VPfP4egfeoI&#x2F;AAAAAAAAEfg&#x2F;loz5m7jQjpU&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.38.54.png)</span><br><span class="line">*   以上就全部掛載完成了,接著來看看這個套件如何使用,並讓它告知我們網路狀態</span><br><span class="line">打開view controller,新增一個監測網路的變數,並且在viewDidLoad寫下 &#96;&#96;&#96;swift</span><br><span class="line">var internetReachability:Reachability!; &#x2F;&#x2F;網路狀態監控</span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        super.viewDidLoad()</span><br><span class="line">        &#x2F;&#x2F;在通知中心註冊事件,當網路狀態有變動的時候會觸發</span><br><span class="line">        NSNotificationCenter.defaultCenter().addObserverForName(kReachabilityChangedNotification, object: nil, queue: NSOperationQueue.mainQueue()) &#123; (NSNotification) -&gt; Void in</span><br><span class="line">            let networksStatus: NetworkStatus &#x3D; self.internetReachability.currentReachabilityStatus()</span><br><span class="line">            var status: String!</span><br><span class="line">            if networksStatus.value &#x3D;&#x3D; 0 &#123;</span><br><span class="line">                status &#x3D; &quot;Disconnection&quot;</span><br><span class="line">            &#125; else if networksStatus.value &#x3D;&#x3D; 1 &#123;</span><br><span class="line">                status &#x3D; &quot;Connection&quot;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                status &#x3D; &quot;Connection&quot;</span><br><span class="line">            &#125;</span><br><span class="line">            UIAlertView(title: &quot;網路狀態&quot;, message: status, delegate: nil, cancelButtonTitle: &quot;OK&quot;).show();</span><br><span class="line">        &#125;</span><br><span class="line">        self.internetReachability &#x3D; Reachability.reachabilityForInternetConnection();</span><br><span class="line">        &#x2F;&#x2F;開始監控狀況</span><br><span class="line">        self.internetReachability.startNotifier()</span><br><span class="line">   &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在Mac上面執行看看,測試方法就是把mac的wifi連線給關閉,就會看到App跳出提示訊息了<br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-UXJAaO-c6dk/VPfVoHMIjHI/AAAAAAAAEfw/U_lcuavEFlM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.59.07.png"><img src="http://4.bp.blogspot.com/-UXJAaO-c6dk/VPfVoHMIjHI/AAAAAAAAEfw/U_lcuavEFlM/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8A%E5%8D%8811.59.07.png"></a></p>
+<ul>
+<li>接下來把viewDidLoad改成如下,這段是告訴你目前使用的網路是什麼?Wifi or 3G之類的 ```swift<br>override func viewDidLoad() {<pre><code>  super.viewDidLoad()
+  let statusReach: Reachability = Reachability.reachabilityForInternetConnection()
+  let networksStatus: NetworkStatus = statusReach.currentReachabilityStatus()
+  var status: String!
+  if networksStatus.value == 0 &#123;
+      status = &quot;NoReachable&quot;
+  &#125; else if networksStatus.value == 1 &#123;
+      status = &quot;ReachableViaWiFi&quot;
+  &#125; else &#123;
+      status = &quot;ReachableViaWWAN&quot;
+  &#125;
+  UIAlertView(title: &quot;網路狀態&quot;, message: status, delegate: nil, cancelButtonTitle: &quot;OK&quot;).show();
+</code></pre>
+  }</li>
+</ul>
+<p>```<br>執行看看<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-CvlIif9Hk94/VPfvJxCKWfI/AAAAAAAAEgA/KRl1SzUlcXo/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8B%E5%8D%881.52.19.png"><img src="http://2.bp.blogspot.com/-CvlIif9Hk94/VPfvJxCKWfI/AAAAAAAAEgA/KRl1SzUlcXo/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-05%2B%E4%B8%8B%E5%8D%881.52.19.png"></a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/04/swift-NetWork-2-%E9%9D%9E%E5%90%8C%E6%AD%A5%E6%96%B9%E5%BC%8F%E5%8F%96%E5%BE%97API%E8%B3%87%E8%A8%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/04/swift-NetWork-2-%E9%9D%9E%E5%90%8C%E6%AD%A5%E6%96%B9%E5%BC%8F%E5%8F%96%E5%BE%97API%E8%B3%87%E8%A8%8A/" class="post-title-link" itemprop="url">[swift] NetWork (2) 非同步方式取得API資訊</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-04 15:39:00" itemprop="dateCreated datePublished" datetime="2015-03-04T15:39:00+00:00">2015-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/04/swift-NetWork-2-%E9%9D%9E%E5%90%8C%E6%AD%A5%E6%96%B9%E5%BC%8F%E5%8F%96%E5%BE%97API%E8%B3%87%E8%A8%8A/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/04/swift-NetWork-2-非同步方式取得API資訊/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>為了避免撈取API資料太久而讓整個APP卡住,所以建議撈取API資料時都另外開出一個queue來非同步執行 ```swift<br>var url:NSURL = NSURL(string: “<a target="_blank" rel="noopener" href="http://xxx.com.tw/api/getdata&quot;">http://xxx.com.tw/api/getdata&quot;</a>)!;<br>let request:NSMutableURLRequest = NSMutableURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 10);<br>request.HTTPMethod = “POST”;<br>request.HTTPBody = “yourdata”.dataUsingEncoding(NSUTF8StringEncoding);</p>
+<p>//新增一個queue來執行API,避免API撈取資料太久把整個APP卡住<br>let queue :NSOperationQueue = NSOperationQueue();<br>//非同步方式取得資料<br>NSURLConnection.sendAsynchronousRequest(request, queue: queue, completionHandler:{ (response: NSURLResponse!, data: NSData!, error: NSError!) -&gt; Void in<br>   var err:String? = error?.description;<br>   if(data != nil  &amp;&amp; error == nil)<br>   {<br>      let responseString = NSString(data: data, encoding: NSUTF8StringEncoding);<br>      println(“responseString = (responseString)”);<br>   }<br>});</p>
+<pre><code>
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/04/swift-NetWork-1-%E4%BB%A5Get-%E5%92%8C-Post%E6%96%B9%E5%BC%8F%E5%82%B3%E9%80%81%E8%B3%87%E6%96%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/04/swift-NetWork-1-%E4%BB%A5Get-%E5%92%8C-Post%E6%96%B9%E5%BC%8F%E5%82%B3%E9%80%81%E8%B3%87%E6%96%99/" class="post-title-link" itemprop="url">[swift] NetWork (1) 以Get 和 Post方式傳送資料</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-04 11:21:00" itemprop="dateCreated datePublished" datetime="2015-03-04T11:21:00+00:00">2015-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/04/swift-NetWork-1-%E4%BB%A5Get-%E5%92%8C-Post%E6%96%B9%E5%BC%8F%E5%82%B3%E9%80%81%E8%B3%87%E6%96%99/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/04/swift-NetWork-1-以Get-和-Post方式傳送資料/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>用Post方式傳遞資料 </p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url:<span class="type">NSURL</span> <span class="operator">=</span> <span class="type">NSURL</span>(string: <span class="string">&quot;http://xxx.com.tw/api/postdata&quot;</span>)<span class="operator">!</span>;</span><br><span class="line">        <span class="keyword">let</span> request:<span class="type">NSMutableURLRequest</span> <span class="operator">=</span> <span class="type">NSMutableURLRequest</span>(URL: url, cachePolicy: <span class="type">NSURLRequestCachePolicy</span>.<span class="type">ReloadIgnoringLocalCacheData</span>, timeoutInterval: <span class="number">10</span>);</span><br><span class="line">        request.<span class="type">HTTPMethod</span> <span class="operator">=</span> <span class="string">&quot;POST&quot;</span>;</span><br><span class="line">        request.<span class="type">HTTPBody</span> <span class="operator">=</span> <span class="string">&quot;yourPostData&quot;</span>.dataUsingEncoding(<span class="type">NSUTF8StringEncoding</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> task <span class="operator">=</span> <span class="type">NSURLSession</span>.sharedSession().dataTaskWithRequest(request) &#123;</span><br><span class="line">            data, response, error <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> error <span class="operator">!=</span> <span class="literal">nil</span> &#123;</span><br><span class="line">                println(<span class="string">&quot;error=<span class="subst">\(error)</span>&quot;</span>)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            println(<span class="string">&quot;response = <span class="subst">\(response)</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">            <span class="comment">//將收到的資料轉成字串print出來看看</span></span><br><span class="line">            <span class="keyword">let</span> responseString <span class="operator">=</span> <span class="type">NSString</span>(data: data, encoding: <span class="type">NSUTF8StringEncoding</span>)</span><br><span class="line">            println(<span class="string">&quot;responseString = <span class="subst">\(responseString)</span>&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        task.resume();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>用Get方式傳遞資料 ```swift<br>var url:NSURL = NSURL(string: “<a target="_blank" rel="noopener" href="http://xxx.com.tw/api/getdata?id=5008&amp;id=5009&quot;">http://xxx.com.tw/api/getdata?id=5008&amp;id=5009&quot;</a>)!;<br>let request:NSURLRequest = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 10);</p>
+<p>let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { data, response, error in<br>   if error != nil {<br>      println(“error=(error)”)<br>      return<br>   }</p>
+<p>   println(“response = (response)”)</p>
+<p>   let responseString = NSString(data: data, encoding: NSUTF8StringEncoding)<br>   println(“responseString = (responseString)”)<br>}<br>task.resume();</p>
+<p>```</p>
+<p>這邊整理一下從網路上找的NSURLRequestCachePolicy相關資訊,轉載自：<a target="_blank" rel="noopener" href="http://mypaper.pchome.com.tw/reantoilpc/post/1322520632">iOS?存?存</a></p>
+<ul>
+<li>  <span style="color: blue;">ReloadIgnoringCacheData</span>：忽略Cache數據,直接從原始網址下載。</li>
+<li>  <span style="color: blue;">ReloadRevalidatingCacheData</span>：驗證本地的數據和遠端數據是否相同，如果不同則下?遠端?據，否?使用本地數據。*   <span style="color: blue;">ReturnCacheDataDontLoad</span>：只使用cache?據，如果不存在cache，請求失敗；用於?有建立網路連接離線模式；*   <span style="color: blue;">ReturnCacheDataElseLoad：</span>&nbsp;只有在cache中不存在data時才從原始地址下?。*   <span style="color: blue;">UseProtocolCachePolicy</span>： NSURLRequest默認的cache policy，使用Protocol協議定義。*   <span style="color: blue;">ReloadIgnoringLocalAndRemoteCacheData</span>：忽略本地和遠端的緩存數據，直接從原始地址下?，與ReloadIgnoringCacheData類似。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/04/swift-%E7%94%A8Plist%E8%A3%BD%E4%BD%9C%E8%A8%AD%E5%AE%9A%E6%AA%94/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/04/swift-%E7%94%A8Plist%E8%A3%BD%E4%BD%9C%E8%A8%AD%E5%AE%9A%E6%AA%94/" class="post-title-link" itemprop="url">[swift] 用Plist製作設定檔</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-04 09:50:00" itemprop="dateCreated datePublished" datetime="2015-03-04T09:50:00+00:00">2015-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/04/swift-%E7%94%A8Plist%E8%A3%BD%E4%BD%9C%E8%A8%AD%E5%AE%9A%E6%AA%94/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/04/swift-用Plist製作設定檔/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>很多APP都會有一些各人化設定檔,方便下次打開APP可以依照個人的喜好設定做出最適合的調整,接下來就實作如何將個人的設定檔存起來並在下次打開APP時Show出來</p>
+<div>
+
+<ul>
+<li>  首先先拉一個畫面,輸入框,確定按鈕,呈現文字的按鈕,我們的目標是在輸入框輸入的文字會被系統儲存起來,在下次App重開時依然顯示最後設定的文字<br><a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-wUh10dBlcgQ/VPWED2LwhlI/AAAAAAAAEdo/21KMM7HV0wY/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%885.48.44.png"><img src="http://3.bp.blogspot.com/-wUh10dBlcgQ/VPWED2LwhlI/AAAAAAAAEdo/21KMM7HV0wY/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%885.48.44.png"></a></li>
+<li>基本的code如下,只要在輸入框填好後按下確定按鈕就可以更改文字了,但你只要重開APP他就又會回到最原本Button的文字 ```swift<br>import UIKit<br>class plistViewController: UIViewController {<br>  @IBOutlet weak var txtbox: UITextField! //輸入文字框<br>  @IBOutlet weak var btnShowText: UIButton! //show文字的button<br>  @IBOutlet weak var btnSetting: UIButton! //確定按鈕<br>  override func viewDidLoad() {<pre><code>  super.viewDidLoad();
+</code></pre>
+  }<br>  @IBAction func btnSetting_click(sender: AnyObject) {<pre><code>  //將輸入的文字設定給btnShowText
+  btnShowText.setTitle(txtbox.text, forState: UIControlState.Normal);
+</code></pre>
+  }<br>}</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[![](http:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-9CI9oydHno0&#x2F;VPWJqOmri8I&#x2F;AAAAAAAAEd4&#x2F;dbIiK5hekEI&#x2F;s400&#x2F;image.gif)](http:&#x2F;&#x2F;1.bp.blogspot.com&#x2F;-9CI9oydHno0&#x2F;VPWJqOmri8I&#x2F;AAAAAAAAEd4&#x2F;dbIiK5hekEI&#x2F;s1600&#x2F;image.gif)</span><br><span class="line">*   所以我們至少應該先把按鈕的文字改成抓Plist檔的來源,然後按下確定按鈕時將文字先存到plist檔中,但這邊有個觀念需要先釐清,**&lt;span style&#x3D;&quot;color: red;&quot;&gt;基本上IOS APP是SandBox模式&lt;&#x2F;span&gt;**,所以只有特定資料夾內的檔案是可以寫入的,所以在這之前我們必須先新建一個Setting.plist檔案專門放設定值（建議不要用原本預設的info.plist,因為之後會移動這個檔案位置）,然後在APP開啟時檢查這個檔案是否在可讀寫的資料夾之中了,如果沒有則複製一份過去,步驟如下</span><br><span class="line"></span><br><span class="line">    先在Setting.plist新增儲存按鈕文字的欄位</span><br><span class="line">[![](http:&#x2F;&#x2F;3.bp.blogspot.com&#x2F;-OC9a4bKFHCA&#x2F;VPWKf_BN2oI&#x2F;AAAAAAAAEeA&#x2F;L_A21cnwvR4&#x2F;s400&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%886.17.54.png)](http:&#x2F;&#x2F;3.bp.blogspot.com&#x2F;-OC9a4bKFHCA&#x2F;VPWKf_BN2oI&#x2F;AAAAAAAAEeA&#x2F;L_A21cnwvR4&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%886.17.54.png)</span><br><span class="line"></span><br><span class="line">    接著在AppDelegate.swift的didFinishLaunchingWithOptions寫下 &#96;&#96;&#96;swift</span><br><span class="line">func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -&gt; Bool &#123;</span><br><span class="line">        &#x2F;&#x2F; Override point for customization after application launch.</span><br><span class="line">        &#x2F;&#x2F;Setting Plist因為要可以讀寫,所以要移到Documents的folder底下</span><br><span class="line">        let path:String &#x3D; NSBundle.mainBundle().pathForResource(&quot;Setting&quot;, ofType: &quot;plist&quot;)!;</span><br><span class="line">        let destinationPath &#x3D; String(format: &quot;%@&#x2F;Documents&#x2F;Setting.plist&quot;, arguments:[NSHomeDirectory()]);</span><br><span class="line">        var fm: NSFileManager &#x3D; NSFileManager();</span><br><span class="line">        if (!fm.fileExistsAtPath(destinationPath))</span><br><span class="line">        &#123;</span><br><span class="line">            &#x2F;&#x2F;如果在documents資料夾底下找不到該檔案,則複製一份過去</span><br><span class="line">            fm.copyItemAtPath(path, toPath: destinationPath, error: nil);</span><br><span class="line">        &#125;</span><br><span class="line">        return true</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<p>接下來將輸入的文字改存到plist中,然後按鈕文字的來源改成Setting.plist,全部程式碼如下 ```swift<br>import UIKit<br>class plistViewController: UIViewController {<br>    @IBOutlet weak var txtbox: UITextField! //輸入文字框<br>    @IBOutlet weak var btnShowText: UIButton! //show文字的button<br>    @IBOutlet weak var btnSetting: UIButton! //確定按鈕<br>    override func viewDidLoad() {<br>        super.viewDidLoad();<br>        loadBtnText();<br>    }<br>    private func loadBtnText(){<br>        //button預設的字由Setting plist來<br>        btnShowText.setTitle(getSettingValue(), forState: UIControlState.Normal);<br>    }<br>    @IBAction func btnSetting_click(sender: AnyObject) {<br>        //將輸入的文字設定給btnShowText<br>        //btnShowText.setTitle(txtbox.text, forState: UIControlState.Normal);<br>        //修改成將輸入的文字存到Setting.plist後,在由那邊load給button<br>        Set_SettingPlist_Value(txtbox.text);<br>        loadBtnText();<br>    }<br>    //取得Setting.plist裡btnText欄位得值<br>    private func getSettingValue() -&gt; String{<br>        var value:String!;<br>        //取得document folder底下的Setting.plist路徑<br>        let SettingPath = String(format: “%@/Documents/Setting.plist”, arguments:[NSHomeDirectory()]);<br>        var dic:NSMutableDictionary? = NSMutableDictionary(contentsOfFile: SettingPath);<br>        //欄位名稱<br>        if (dic?.objectForKey(“btnText”) != nil){<br>            value = dic!.objectForKey(“btnText”) as String;<br>        }<br>        return value;<br>    }<br>    //把值存到Setting.plist裡面<br>    private func Set_SettingPlist_Value(value:String){<br>        let SettingPath = String(format: “%@/Documents/Setting.plist”, arguments:[NSHomeDirectory()]);<br>        var dic:NSMutableDictionary = NSMutableDictionary(contentsOfFile: SettingPath)!;<br>        if (dic.objectForKey(“btnText”) != nil) {<br>            dic.setValue(value, forKey: “btnText”);<br>            //true表示IOS會先將資料寫入一個輔助檔案中,然後再將這個檔案改為最後真正的目的地,避免出現錯誤<br>            dic.writeToFile(SettingPath, atomically: true);<br>        }<br>    }<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   接下來再試試看程式,你會發現即便把APP關掉,下次進來時button的文字會被記錄下來！！</span><br><span class="line">但這邊必須特別注意一點,隨著App的開發可能會對plist有刪減,重新部署到模擬器上時要記得先把舊的APP刪掉,讓Xode幫你重新安裝,原因是我們在AppDelegate.swift的didFinishLaunchingWithOptions寫了 &#96;&#96;&#96;swift</span><br><span class="line">if (!fm.fileExistsAtPath(destinationPath))</span><br><span class="line">&#123;</span><br><span class="line">   &#x2F;&#x2F;如果在documents資料夾底下找不到該檔案,則複製一份過去</span><br><span class="line">   fm.copyItemAtPath(path, toPath: destinationPath, error: nil);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>也就是說複製過一次後,之後的欄位有增減都無法改到Documents資料夾底下的那份plist了,所以只能刪除重裝！！</div></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-5-%E8%A8%88%E7%AE%97%E9%BB%9E%E8%88%87%E9%BB%9E%E4%B9%8B%E9%96%93%E7%9A%84%E8%B7%9D%E9%9B%A2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-5-%E8%A8%88%E7%AE%97%E9%BB%9E%E8%88%87%E9%BB%9E%E4%B9%8B%E9%96%93%E7%9A%84%E8%B7%9D%E9%9B%A2/" class="post-title-link" itemprop="url">[swift] IOS地圖運用 (5) 計算點與點之間的距離</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-03 17:02:00" itemprop="dateCreated datePublished" datetime="2015-03-03T17:02:00+00:00">2015-03-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-5-%E8%A8%88%E7%AE%97%E9%BB%9E%E8%88%87%E9%BB%9E%E4%B9%8B%E9%96%93%E7%9A%84%E8%B7%9D%E9%9B%A2/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-5-計算點與點之間的距離/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>網路上有找到Google的計算公式,把它翻譯成Swift的語法後如下,回傳單位為**公里 **</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">GetDistance_Google</span>(<span class="params">pointA</span>:<span class="type">CLLocationCoordinate2D</span> , <span class="params">pointB</span>:<span class="type">CLLocationCoordinate2D</span>)</span> -&gt; <span class="type">Double</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">let</span> <span class="type">EARTH_RADIUS</span>:<span class="type">Double</span> <span class="operator">=</span> <span class="number">6378.137</span>;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">let</span> radlng1:<span class="type">Double</span> <span class="operator">=</span> pointA.longitude <span class="operator">*</span> <span class="type">M_PI</span> <span class="operator">/</span> <span class="number">180.0</span>;</span><br><span class="line">   <span class="keyword">let</span> radlng2:<span class="type">Double</span> <span class="operator">=</span> pointB.longitude <span class="operator">*</span> <span class="type">M_PI</span> <span class="operator">/</span> <span class="number">180.0</span>;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">let</span> a:<span class="type">Double</span> <span class="operator">=</span> radlng1 <span class="operator">-</span> radlng2;</span><br><span class="line">   <span class="keyword">let</span> b:<span class="type">Double</span> <span class="operator">=</span> (pointA.latitude <span class="operator">-</span> pointB.latitude) <span class="operator">*</span> <span class="type">M_PI</span> <span class="operator">/</span> <span class="number">180</span>;</span><br><span class="line">   <span class="keyword">var</span> s:<span class="type">Double</span> <span class="operator">=</span> <span class="number">2</span> <span class="operator">*</span> asin(sqrt(pow(sin(a<span class="operator">/</span><span class="number">2</span>), <span class="number">2</span>) <span class="operator">+</span> cos(radlng1) <span class="operator">*</span> cos(radlng2) <span class="operator">*</span> pow(sin(b<span class="operator">/</span><span class="number">2</span>), <span class="number">2</span>)));</span><br><span class="line"></span><br><span class="line">   s <span class="operator">=</span> s <span class="operator">*</span> <span class="type">EARTH_RADIUS</span>;</span><br><span class="line">   s <span class="operator">=</span> (round(s <span class="operator">*</span> <span class="number">10000</span>) <span class="operator">/</span> <span class="number">10000</span>);</span><br><span class="line">   <span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-4-%E5%A6%82%E4%BD%95%E5%8D%80%E5%88%86%E6%98%AFUser-Location%E8%88%87Annotation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-4-%E5%A6%82%E4%BD%95%E5%8D%80%E5%88%86%E6%98%AFUser-Location%E8%88%87Annotation/" class="post-title-link" itemprop="url">[swift] IOS地圖運用 (4) 如何區分是User Location與Annotation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-03 16:15:00" itemprop="dateCreated datePublished" datetime="2015-03-03T16:15:00+00:00">2015-03-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-4-%E5%A6%82%E4%BD%95%E5%8D%80%E5%88%86%E6%98%AFUser-Location%E8%88%87Annotation/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-4-如何區分是User-Location與Annotation/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>  接著上一篇,如果這時候我們再把mapkit view的user location打開來試試看,結果會發現user location的點被吃掉了,原因是我們改寫了viewForAnnotation,所有的點都會變成我們客製座標的樣式<br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-9qviobZt9JE/VPVvfQ0kraI/AAAAAAAAEdM/bYPxX4HccxE/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.23.15.png"><img src="http://4.bp.blogspot.com/-9qviobZt9JE/VPVvfQ0kraI/AAAAAAAAEdM/bYPxX4HccxE/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.23.15.png"></a></li>
+<li>所以我們在viewForAnnotation補上判斷,讓user location不會被改變樣式 ```swift<br>func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -&gt; MKAnnotationView! {<pre><code>  if(annotation is MKUserLocation)&#123;
+      //return nil表示用預設值那個藍色發光圓形圖
+      return nil;
+  &#125;
+  var ann : MyAnnotation? = mapView.dequeueReusableAnnotationViewWithIdentifier(&quot;CustomerPoint&quot;) as? MyAnnotation;
+  if(ann == nil)&#123;
+      ann = MyAnnotation(annotation: annotation, reuseIdentifier: &quot;CustomerPoint&quot;);
+      ann?.canShowCallout = true;
+  &#125;
+  ann?.DrawCustomerView();
+  ann?.annotation = annotation;
+  return ann;
+</code></pre>
+}</li>
+</ul>
+<p>```<br>結果如下,user location又出來摟～<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-qYW44ZGAdl8/VPVxakiXQJI/AAAAAAAAEdY/tD0JfPFvwSM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.31.11.png"><img src="http://2.bp.blogspot.com/-qYW44ZGAdl8/VPVxakiXQJI/AAAAAAAAEdY/tD0JfPFvwSM/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.31.11.png"></a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-3-%E5%AE%A2%E8%A3%BDAnnotation-View/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-3-%E5%AE%A2%E8%A3%BDAnnotation-View/" class="post-title-link" itemprop="url">[swift] IOS地圖運用 (3) 客製Annotation View</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-03 14:47:00" itemprop="dateCreated datePublished" datetime="2015-03-03T14:47:00+00:00">2015-03-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-3-%E5%AE%A2%E8%A3%BDAnnotation-View/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-3-客製Annotation-View/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>繼續接續上一篇,我們來把大頭針改成自己想要的樣子吧,已這張圖為例<br><a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-4mt5Vk9Y36A/VPVgIcev6II/AAAAAAAAEcc/DaA8w4qoIvs/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.17.25.png"><img src="http://3.bp.blogspot.com/-4mt5Vk9Y36A/VPVgIcev6II/AAAAAAAAEcc/DaA8w4qoIvs/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.17.25.png"></a></p>
+<ul>
+<li><p>從上面那張圖可以看出來需要畫一個長方形,長方形裡面有一個title與圓形Icon,還需要一個倒三角形把它組回去,所以先來把這些元素準備一下吧<br>首先先建立一個Class繼承MKAnnotationView ```swift<br>import Foundation<br>import MapKit<br>public class MyAnnotation : MKAnnotationView  {<br>  var rectangoView:UIView!; //長方形<br>  var lblTitle:UILabel!;//Title<br>  var lblIcon:UILabel!;//圓形icon<br>  var circleView:UIView!; //原型view<br>  var triangle:UIView!; //三角形<br>  public override init(annotation: MKAnnotation!, reuseIdentifier: String!) {</p>
+<pre><code>  super.init(annotation: annotation, reuseIdentifier: reuseIdentifier);
+</code></pre>
+<p>  }</p>
+<pre><code>  public required init(coder aDecoder: NSCoder) &#123;
+  super.init(coder: aDecoder);
+</code></pre>
+<p>  }<br>}</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   接著把每個圖形間的關係組合起來,例如圓形跟title都在大大的長方形裡面,所以先將他們add到rectangoView裡面 &#96;&#96;&#96;swift</span><br><span class="line">import Foundation</span><br><span class="line">import MapKit</span><br><span class="line">public class MyAnnotation : MKAnnotationView  &#123;</span><br><span class="line">    var rectangoView:UIView!; &#x2F;&#x2F;長方形</span><br><span class="line">    var lblTitle:UILabel!;&#x2F;&#x2F;Title</span><br><span class="line">    var lblIcon:UILabel!;&#x2F;&#x2F;圓形icon</span><br><span class="line">    var circleView:UIView!; &#x2F;&#x2F;原型view</span><br><span class="line">    var triangle:UIView!; &#x2F;&#x2F;三角形</span><br><span class="line">    var DrawView:UIView!;&#x2F;&#x2F;整個客製座標的畫布</span><br><span class="line">    public override init!(annotation: MKAnnotation!, reuseIdentifier: String!) &#123;</span><br><span class="line">        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier);</span><br><span class="line">        &#x2F;&#x2F;先把每個圖層間的關係建立好,例如圓形跟title都在大大的長方形裡面,所以先add進去</span><br><span class="line">        lblTitle &#x3D; UILabel();</span><br><span class="line">        lblIcon &#x3D; UILabel();</span><br><span class="line">        rectangoView &#x3D; UIView();</span><br><span class="line">        circleView &#x3D; UIView();</span><br><span class="line"></span><br><span class="line">            circleView.addSubview(lblIcon);</span><br><span class="line">        rectangoView.addSubview(lblTitle)</span><br><span class="line">        rectangoView.addSubview(circleView);</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;畫出三角形遮罩</span><br><span class="line">        &#x2F;&#x2F;原理：將遮罩蓋到長方形上面,他會將不再這個框框範圍內的都過濾掉,就可以跑出三角形了</span><br><span class="line">        let path:UIBezierPath &#x3D; UIBezierPath ();</span><br><span class="line">        path.moveToPoint(CGPoint(x: 0, y: 0));</span><br><span class="line">        path.addLineToPoint(CGPoint(x: 10, y: 10));</span><br><span class="line">        path.addLineToPoint(CGPoint(x: 20, y: 0));</span><br><span class="line">        path.addLineToPoint(CGPoint(x: 0, y: 0));</span><br><span class="line"></span><br><span class="line">            let masklayer:CAShapeLayer &#x3D; CAShapeLayer ();&#x2F;&#x2F;遮罩</span><br><span class="line">        masklayer.path &#x3D; path.CGPath;</span><br><span class="line">        &#x2F;&#x2F;遮罩遮出三角型</span><br><span class="line">        triangle &#x3D; UIView(frame: CGRect(x: 22, y: 28, width: 20, height: 20));</span><br><span class="line">        triangle.layer.mask &#x3D; masklayer;</span><br><span class="line">        DrawView &#x3D; UIView();</span><br><span class="line">        DrawView.addSubview(rectangoView);</span><br><span class="line">        DrawView.addSubview(triangle);</span><br><span class="line">        self.addSubview(DrawView);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        public required init(coder aDecoder: NSCoder) &#123;</span><br><span class="line">        super.init(coder: aDecoder);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>接著在MyAnnotation寫一個function來詳細畫這個View的內容 ```swift<br>public func DrawCustomerView() {<pre><code>  //Title
+  lblTitle.text = &quot;5200萬&quot;;
+  lblTitle.textColor = UIColor.whiteColor();
+  lblTitle.font = UIFont.systemFontOfSize(12);
+  lblTitle.sizeToFit();
+  //大大的長方形
+  rectangoView.frame = CGRect(x: 0, y: 0, width: lblTitle.frame.width + 30, height: 28);//整體
+  rectangoView.backgroundColor =  UIColor(red: 0.208, green:0.596 , blue: 0.859, alpha: 1);
+  rectangoView.layer.cornerRadius = 3;//設定圓角
+  //“icon”圓型小字
+  lblIcon.font = UIFont.systemFontOfSize(11);
+  lblIcon.font = UIFont.boldSystemFontOfSize(14);
+  lblIcon.text = &quot;成&quot;;
+  lblIcon.textColor = rectangoView.backgroundColor;
+  lblIcon.sizeToFit();
+  lblIcon.center = CGPoint (x: 10, y: 10);
+  //圓形
+  circleView.frame = CGRect(x: 2, y: 4, width: 20, height: 20);//圓形標籤
+  circleView.backgroundColor = UIColor.whiteColor();
+  circleView.layer.cornerRadius = 10;
+  circleView.alpha = 1;
+  //畫三角形
+  triangle.backgroundColor =  UIColor(red: 0.208, green:0.596 , blue: 0.859, alpha: 1);
+  //rectangoView.Transform 旋轉
+  DrawView.frame = CGRect(x: 0, y: 0, width:triangle.frame.width,height: 48);
+</code></pre>
+  }</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   接下來修改view controller的viewForAnnotation事件如下 &#96;&#96;&#96;swift</span><br><span class="line">func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -&gt; MKAnnotationView! &#123;</span><br><span class="line">        var ann : MyAnnotation? &#x3D; mapView.dequeueReusableAnnotationViewWithIdentifier(&quot;CustomerPoint&quot;) as? MyAnnotation;</span><br><span class="line">        if(ann &#x3D;&#x3D; nil)&#123;</span><br><span class="line">            ann &#x3D; MyAnnotation(annotation: annotation, reuseIdentifier: &quot;CustomerPoint&quot;);</span><br><span class="line">            ann?.canShowCallout &#x3D; true;</span><br><span class="line">        &#125;</span><br><span class="line">        ann?.DrawCustomerView();</span><br><span class="line">        ann?.annotation &#x3D; annotation;</span><br><span class="line">        return ann;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>立馬執行看看,你會發現發生錯誤在MyAnnotation class,而且錯誤訊息寫得不清不楚的,這是第一個地雷,雖然繼承MKAnnotationView沒有要求一定要實作init(frame: CGRect),但不做會壞掉喔,那到底幹麻不列為required阿！！！所以乖乖補上到MyAnnotation就正常摟 ```swift<br>override init(frame: CGRect) {<pre><code>  super.init(frame: frame);
+</code></pre>
+  }</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   這時候會發現畫面長這樣...</span><br><span class="line">[![](http:&#x2F;&#x2F;4.bp.blogspot.com&#x2F;-OGPbgnJnyH0&#x2F;VPVpfcMNstI&#x2F;AAAAAAAAEcs&#x2F;NGAf74G1IoU&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.57.37.png)](http:&#x2F;&#x2F;4.bp.blogspot.com&#x2F;-OGPbgnJnyH0&#x2F;VPVpfcMNstI&#x2F;AAAAAAAAEcs&#x2F;NGAf74G1IoU&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%883.57.37.png)</span><br><span class="line">請在DrawCustomerView這個地方補上下面這段code,讓文字位移後執行看看會變得正常多了 &#96;&#96;&#96;swift</span><br><span class="line">lblTitle.frame.origin.x &#x3D; 24;&#x2F;&#x2F;中心位移</span><br><span class="line">lblTitle.frame.origin.y &#x3D; 7;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>  接下來我們測試一下這個畫出來的點是否跟插大頭針指的位置相同,結果…..歪掉了<br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-1SWxrDjmc4c/VPVr5NKYmcI/AAAAAAAAEc4/VFG_Zo4MqHE/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.07.30.png"><img src="http://4.bp.blogspot.com/-1SWxrDjmc4c/VPVr5NKYmcI/AAAAAAAAEc4/VFG_Zo4MqHE/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.07.30.png"></a></li>
+<li>但我們可以看出來他是在針頭的地方開始畫,所以來做點加工吧,在DrawCustomerView()最後面加上下面的code讓整個View位移來符合需求 ```swift<br>self.frame = CGRect(x: 0, y: 0, width: rectangoView.frame.width, height: rectangoView.frame.height);<pre><code>  self.centerOffset = CGPoint(x: 0, y: -21);
+</code></pre>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">我們再看看...</span><br><span class="line">[![](http:&#x2F;&#x2F;3.bp.blogspot.com&#x2F;-mPNj85zu_a8&#x2F;VPVsk5Xv-9I&#x2F;AAAAAAAAEdA&#x2F;faM54vpHC28&#x2F;s400&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.10.45.png)](http:&#x2F;&#x2F;3.bp.blogspot.com&#x2F;-mPNj85zu_a8&#x2F;VPVsk5Xv-9I&#x2F;AAAAAAAAEdA&#x2F;faM54vpHC28&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%884.10.45.png)</span><br><span class="line">*   看起來一切正常了,把一些測試的程式碼拿掉後完整如下</span><br><span class="line">view controller &#96;&#96;&#96;swift</span><br><span class="line">import UIKit</span><br><span class="line">import CoreLocation</span><br><span class="line">import MapKit</span><br><span class="line">class MapViewController: UIViewController,CLLocationManagerDelegate , MKMapViewDelegate&#123;</span><br><span class="line"></span><br><span class="line">        @IBOutlet weak var uimap: MKMapView!&#x2F;&#x2F;地圖元件</span><br><span class="line">    var location : CLLocationManager!; &#x2F;&#x2F;座標管理元件</span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        super.viewDidLoad();</span><br><span class="line"></span><br><span class="line">            location &#x3D; CLLocationManager();</span><br><span class="line">        location.delegate &#x3D; self;</span><br><span class="line">        &#x2F;&#x2F;詢問使用者是否同意給APP定位功能</span><br><span class="line">        location.requestWhenInUseAuthorization();</span><br><span class="line">        &#x2F;&#x2F;開始接收目前位置資訊</span><br><span class="line">        location.startUpdatingLocation();</span><br><span class="line">        location.distanceFilter &#x3D; CLLocationDistance(10); &#x2F;&#x2F;表示移動10公尺再更新座標資訊</span><br><span class="line">        uimap.delegate &#x3D; self;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        override func viewDidDisappear(animated: Bool) &#123;</span><br><span class="line">        &#x2F;&#x2F;因為ＧＰＳ功能很耗電,所以被敬執行時關閉定位功能</span><br><span class="line">        location.stopUpdatingLocation();</span><br><span class="line">    &#125;</span><br><span class="line">    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) &#123;</span><br><span class="line">        &#x2F;&#x2F;取得目前的座標位置</span><br><span class="line">        let c &#x3D; locations[0] as CLLocation;</span><br><span class="line">        let nowLocation &#x3D; CLLocationCoordinate2D(latitude: c.coordinate.latitude, longitude: c.coordinate.longitude);</span><br><span class="line">        &#x2F;&#x2F;將map中心點定在目前所在的位置</span><br><span class="line">        &#x2F;&#x2F;span是地圖zoom in, zoom out的級距</span><br><span class="line">        let _span:MKCoordinateSpan &#x3D; MKCoordinateSpan(latitudeDelta: 0.0005, longitudeDelta: 0.0005);</span><br><span class="line">        self.uimap.setRegion(MKCoordinateRegion(center: nowLocation, span: _span), animated: true);</span><br><span class="line">        &#x2F;&#x2F;加入座標</span><br><span class="line">        addPointAnnotation(c.coordinate.latitude, longitude: c.coordinate.longitude);</span><br><span class="line">    &#125;</span><br><span class="line">    &#x2F;&#x2F;新增座標</span><br><span class="line">    private func addPointAnnotation(latitude:CLLocationDegrees , longitude:CLLocationDegrees)&#123;</span><br><span class="line">        &#x2F;&#x2F;大頭針</span><br><span class="line">        var point:MKPointAnnotation &#x3D; MKPointAnnotation();</span><br><span class="line">        &#x2F;&#x2F;設定大頭針的座標位置</span><br><span class="line">        point.coordinate &#x3D; CLLocationCoordinate2D(latitude: latitude, longitude: longitude);</span><br><span class="line">        uimap.addAnnotation(point);</span><br><span class="line">    &#125;</span><br><span class="line">    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -&gt; MKAnnotationView! &#123;</span><br><span class="line">        var ann : MyAnnotation? &#x3D; mapView.dequeueReusableAnnotationViewWithIdentifier(&quot;CustomerPoint&quot;) as? MyAnnotation;</span><br><span class="line">        if(ann &#x3D;&#x3D; nil)&#123;</span><br><span class="line">            ann &#x3D; MyAnnotation(annotation: annotation, reuseIdentifier: &quot;CustomerPoint&quot;);</span><br><span class="line">            ann?.canShowCallout &#x3D; true;</span><br><span class="line">        &#125;</span><br><span class="line">        ann?.DrawCustomerView();</span><br><span class="line">        ann?.annotation &#x3D; annotation;</span><br><span class="line">        return ann;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>MyAnnotation Class完整如下</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"><span class="keyword">import</span> MapKit</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyAnnotation</span> : <span class="title">MKAnnotationView</span>  </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> rectangoView:<span class="type">UIView</span>!; <span class="comment">//長方形</span></span><br><span class="line">    <span class="keyword">var</span> lblTitle:<span class="type">UILabel</span>!;<span class="comment">//Title</span></span><br><span class="line">    <span class="keyword">var</span> lblIcon:<span class="type">UILabel</span>!;<span class="comment">//圓形icon</span></span><br><span class="line">    <span class="keyword">var</span> circleView:<span class="type">UIView</span>!; <span class="comment">//原型view</span></span><br><span class="line">    <span class="keyword">var</span> triangle:<span class="type">UIView</span>!; <span class="comment">//三角形</span></span><br><span class="line">    <span class="keyword">var</span> <span class="type">DrawView</span>:<span class="type">UIView</span>!;<span class="comment">//整個客製座標的畫布</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">init</span>(<span class="params">annotation</span>: <span class="type">MKAnnotation</span>!, <span class="params">reuseIdentifier</span>: <span class="type">String</span>!)</span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(annotation: annotation, reuseIdentifier: reuseIdentifier);</span><br><span class="line">        <span class="comment">//先把每個圖層間的關係建立好,例如圓形跟title都在大大的長方形裡面,所以先add進去</span></span><br><span class="line">        lblTitle <span class="operator">=</span> <span class="type">UILabel</span>();</span><br><span class="line">        lblIcon <span class="operator">=</span> <span class="type">UILabel</span>();</span><br><span class="line">        rectangoView <span class="operator">=</span> <span class="type">UIView</span>();</span><br><span class="line">        circleView <span class="operator">=</span> <span class="type">UIView</span>();</span><br><span class="line"></span><br><span class="line">            circleView.addSubview(lblIcon);</span><br><span class="line">        rectangoView.addSubview(lblTitle)</span><br><span class="line">        rectangoView.addSubview(circleView);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//畫出三角形遮罩</span></span><br><span class="line">        <span class="comment">//原理：將遮罩蓋到長方形上面,他會將不再這個框框範圍內的都過濾掉,就可以跑出三角形了</span></span><br><span class="line">        <span class="keyword">let</span> path:<span class="type">UIBezierPath</span> <span class="operator">=</span> <span class="type">UIBezierPath</span> ();</span><br><span class="line">        path.moveToPoint(<span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="number">0</span>));</span><br><span class="line">        path.addLineToPoint(<span class="type">CGPoint</span>(x: <span class="number">10</span>, y: <span class="number">10</span>));</span><br><span class="line">        path.addLineToPoint(<span class="type">CGPoint</span>(x: <span class="number">20</span>, y: <span class="number">0</span>));</span><br><span class="line">        path.addLineToPoint(<span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> masklayer:<span class="type">CAShapeLayer</span> <span class="operator">=</span> <span class="type">CAShapeLayer</span> ();<span class="comment">//遮罩</span></span><br><span class="line">        masklayer.path <span class="operator">=</span> path.<span class="type">CGPath</span>;</span><br><span class="line">        <span class="comment">//遮罩遮出三角型</span></span><br><span class="line">        triangle <span class="operator">=</span> <span class="type">UIView</span>(frame: <span class="type">CGRect</span>(x: <span class="number">22</span>, y: <span class="number">28</span>, width: <span class="number">20</span>, height: <span class="number">20</span>));</span><br><span class="line">        triangle.layer.mask <span class="operator">=</span> masklayer;</span><br><span class="line">        <span class="type">DrawView</span> <span class="operator">=</span> <span class="type">UIView</span>();</span><br><span class="line">        <span class="type">DrawView</span>.addSubview(rectangoView);</span><br><span class="line">        <span class="type">DrawView</span>.addSubview(triangle);</span><br><span class="line">        <span class="keyword">self</span>.addSubview(<span class="type">DrawView</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">required</span>  <span class="function"><span class="keyword">init</span>(<span class="params">coder</span> <span class="params">aDecoder</span>: <span class="type">NSCoder</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(coder: aDecoder);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">init</span>(<span class="params">frame</span>: <span class="type">CGRect</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(frame: frame);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">DrawCustomerView</span>()</span> &#123;</span><br><span class="line">        <span class="comment">//Title</span></span><br><span class="line">        lblTitle.text <span class="operator">=</span> <span class="string">&quot;5200萬&quot;</span>;</span><br><span class="line">        lblTitle.textColor <span class="operator">=</span> <span class="type">UIColor</span>.whiteColor();</span><br><span class="line">        lblTitle.font <span class="operator">=</span> <span class="type">UIFont</span>.systemFontOfSize(<span class="number">12</span>);</span><br><span class="line">        lblTitle.frame.origin.x <span class="operator">=</span> <span class="number">24</span>;<span class="comment">//中心位移</span></span><br><span class="line">        lblTitle.frame.origin.y <span class="operator">=</span> <span class="number">7</span>;</span><br><span class="line">        lblTitle.sizeToFit();</span><br><span class="line">        <span class="comment">//大大的長方形</span></span><br><span class="line">        rectangoView.frame <span class="operator">=</span> <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: lblTitle.frame.width <span class="operator">+</span> <span class="number">30</span>, height: <span class="number">28</span>);<span class="comment">//整體</span></span><br><span class="line">        rectangoView.backgroundColor <span class="operator">=</span>  <span class="type">UIColor</span>(red: <span class="number">0.208</span>, green:<span class="number">0.596</span> , blue: <span class="number">0.859</span>, alpha: <span class="number">1</span>);</span><br><span class="line">        rectangoView.layer.cornerRadius <span class="operator">=</span> <span class="number">3</span>;<span class="comment">//設定圓角</span></span><br><span class="line">        <span class="comment">//“icon”圓型小字</span></span><br><span class="line">        lblIcon.font <span class="operator">=</span> <span class="type">UIFont</span>.systemFontOfSize(<span class="number">11</span>);</span><br><span class="line">        lblIcon.font <span class="operator">=</span> <span class="type">UIFont</span>.boldSystemFontOfSize(<span class="number">14</span>);</span><br><span class="line">        lblIcon.text <span class="operator">=</span> <span class="string">&quot;成&quot;</span>;</span><br><span class="line">        lblIcon.textColor <span class="operator">=</span> rectangoView.backgroundColor;</span><br><span class="line">        lblIcon.sizeToFit();</span><br><span class="line">        lblIcon.center <span class="operator">=</span> <span class="type">CGPoint</span> (x: <span class="number">10</span>, y: <span class="number">10</span>);</span><br><span class="line">        <span class="comment">//圓形</span></span><br><span class="line">        circleView.frame <span class="operator">=</span> <span class="type">CGRect</span>(x: <span class="number">2</span>, y: <span class="number">4</span>, width: <span class="number">20</span>, height: <span class="number">20</span>);<span class="comment">//圓形標籤</span></span><br><span class="line">        circleView.backgroundColor <span class="operator">=</span> <span class="type">UIColor</span>.whiteColor();</span><br><span class="line">        circleView.layer.cornerRadius <span class="operator">=</span> <span class="number">10</span>;</span><br><span class="line">        circleView.alpha <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        <span class="comment">//畫三角形</span></span><br><span class="line">        triangle.backgroundColor <span class="operator">=</span>  <span class="type">UIColor</span>(red: <span class="number">0.208</span>, green:<span class="number">0.596</span> , blue: <span class="number">0.859</span>, alpha: <span class="number">1</span>);</span><br><span class="line">        <span class="comment">//rectangoView.Transform 旋轉</span></span><br><span class="line">        <span class="type">DrawView</span>.frame <span class="operator">=</span> <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width:triangle.frame.width,height: <span class="number">48</span>);</span><br><span class="line">        <span class="keyword">self</span>.frame <span class="operator">=</span> <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: rectangoView.frame.width, height: rectangoView.frame.height);</span><br><span class="line">        <span class="keyword">self</span>.centerOffset <span class="operator">=</span> <span class="type">CGPoint</span>(x: <span class="number">0</span>, y: <span class="operator">-</span><span class="number">21</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-2-%E5%9C%A8%E5%9C%B0%E5%9C%96%E9%87%98%E4%B8%8A%E5%A4%A7%E9%A0%AD%E9%87%9D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-2-%E5%9C%A8%E5%9C%B0%E5%9C%96%E9%87%98%E4%B8%8A%E5%A4%A7%E9%A0%AD%E9%87%9D/" class="post-title-link" itemprop="url">[swift] IOS地圖運用 (2) 在地圖釘上大頭針</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-03 11:30:00" itemprop="dateCreated datePublished" datetime="2015-03-03T11:30:00+00:00">2015-03-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-2-%E5%9C%A8%E5%9C%B0%E5%9C%96%E9%87%98%E4%B8%8A%E5%A4%A7%E9%A0%AD%E9%87%9D/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-2-在地圖釘上大頭針/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>承上一篇的Code我們繼續往下延伸,如何在地圖釘上大頭針呢?<br>首先我們把mapkit view的user location選項關閉,改成自己放上去的大頭針試試看</p>
+<ul>
+<li><p>把程式修改如下,這邊主要著重在<strong>addPointAnnotation</strong>這個function ```swift<br>import UIKit<br>import CoreLocation<br>import MapKit<br>class MapViewController: UIViewController,CLLocationManagerDelegate {</p>
+<pre><code>  @IBOutlet weak var uimap: MKMapView!//地圖元件
+</code></pre>
+<p>  var location : CLLocationManager!; //座標管理元件<br>  override func viewDidLoad() {</p>
+<pre><code>  super.viewDidLoad();
+
+      location = CLLocationManager();
+  location.delegate = self;
+  //詢問使用者是否同意給APP定位功能
+  location.requestWhenInUseAuthorization();
+  //開始接收目前位置資訊
+  location.startUpdatingLocation();
+  location.distanceFilter = CLLocationDistance(10); //表示移動10公尺再更新座標資訊
+</code></pre>
+<p>  }</p>
+<pre><code>  override func viewDidDisappear(animated: Bool) &#123;
+  //因為ＧＰＳ功能很耗電,所以被敬執行時關閉定位功能
+  location.stopUpdatingLocation();
+</code></pre>
+<p>  }<br>  func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {</p>
+<pre><code>  //取得目前的座標位置
+  let c = locations[0] as CLLocation;
+  let nowLocation = CLLocationCoordinate2D(latitude: c.coordinate.latitude, longitude: c.coordinate.longitude);
+  //將map中心點定在目前所在的位置
+  //span是地圖zoom in, zoom out的級距
+  let _span:MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: 0.0005, longitudeDelta: 0.0005);
+  self.uimap.setRegion(MKCoordinateRegion(center: nowLocation, span: _span), animated: true);
+  //加入座標
+  addPointAnnotation(c.coordinate.latitude, longitude: c.coordinate.longitude);
+</code></pre>
+<p>  }<br>  //新增座標<br>  private func addPointAnnotation(latitude:CLLocationDegrees , longitude:CLLocationDegrees){</p>
+<pre><code>  //大頭針
+  var point:MKPointAnnotation = MKPointAnnotation();
+  //設定大頭針的座標位置
+  point.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude);
+  point.title = &quot;I&#39;m here&quot;;
+  point.subtitle = &quot;緯度：\(latitude) 經度:\(longitude)&quot;;
+  uimap.addAnnotation(point);
+</code></pre>
+<p>  }<br>}</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">執行看看成果,點擊大頭貼可以看到剛剛設定的title與subtitle</span><br><span class="line">[![](http:&#x2F;&#x2F;2.bp.blogspot.com&#x2F;-sBszQR-gCvw&#x2F;VPVRTFVx06I&#x2F;AAAAAAAAEb8&#x2F;wR8k2LQSLvI&#x2F;s400&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%882.14.19.png)](http:&#x2F;&#x2F;2.bp.blogspot.com&#x2F;-sBszQR-gCvw&#x2F;VPVRTFVx06I&#x2F;AAAAAAAAEb8&#x2F;wR8k2LQSLvI&#x2F;s1600&#x2F;%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%882.14.19.png)</span><br><span class="line">*   那如果想將大頭針變色呢?</span><br><span class="line">首先先將view controller繼承MKMapViewDelegate,並將mapview kit delegate指定為自己這個veiew controller &#96;&#96;&#96;swift</span><br><span class="line">uimap.delegate &#x3D; self;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>接著override mapview的viewForAnnotation事件 ```swift<br>func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -&gt; MKAnnotationView! {<br> var pointView : MKPinAnnotationView? = mapView.dequeueReusableAnnotationViewWithIdentifier(“CustomerPoint”) as?MKPinAnnotationView;<br> if(pointView == nil){<pre><code>pointView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: &quot;CustomerPoint&quot;);
+//因為已經改寫了Annotation View,所以要將canShowCallout改成true,否則點擊大頭針不會跑出來我們剛剛指定的title跟subtitle
+pointView?.canShowCallout = true;
+</code></pre>
+ }<br> pointView!.pinColor = MKPinAnnotationColor.Green;<br> return pointView;<br>}</li>
+</ul>
+<p>```</p>
+<ul>
+<li>  結果如下<br><a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-o61FEuAowEI/VPVXMMc1FdI/AAAAAAAAEcM/wuAceakTI7w/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%882.39.25.png"><img src="http://3.bp.blogspot.com/-o61FEuAowEI/VPVXMMc1FdI/AAAAAAAAEcM/wuAceakTI7w/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8B%E5%8D%882.39.25.png"></a></li>
+<li>  這邊應該看出來整個Annotation的顯示方式都可以透過viewForAnnotation這個事件來改寫,所以下一篇就來介紹如何客製化Annotation的View</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-1-%E5%8F%96%E5%BE%97%E7%9B%AE%E5%89%8D%E5%BA%A7%E6%A8%99%E4%BD%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-1-%E5%8F%96%E5%BE%97%E7%9B%AE%E5%89%8D%E5%BA%A7%E6%A8%99%E4%BD%8D%E7%BD%AE/" class="post-title-link" itemprop="url">[swift] IOS地圖運用 (1) 取得目前座標位置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-03 10:23:00" itemprop="dateCreated datePublished" datetime="2015-03-03T10:23:00+00:00">2015-03-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-1-%E5%8F%96%E5%BE%97%E7%9B%AE%E5%89%8D%E5%BA%A7%E6%A8%99%E4%BD%8D%E7%BD%AE/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-1-取得目前座標位置/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>地圖資訊是手機很大量運用的資訊之一,接下來是來整理關於目前學到的MapKit View地圖的運用</p>
+<ul>
+<li><p>  首先先拉一個新的ViewController,並將MapKit View拉近去<br><a target="_blank" rel="noopener" href="http://1.bp.blogspot.com/-E-lEkbuEGuw/VPUcOLnXUCI/AAAAAAAAEak/lUCmZ1i9-RA/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8810.27.49.png"><img src="http://1.bp.blogspot.com/-E-lEkbuEGuw/VPUcOLnXUCI/AAAAAAAAEak/lUCmZ1i9-RA/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8810.27.49.png"></a></p>
+</li>
+<li><p>接著在ViewController建立參數與MapKit View做對應,這邊需要注意的地方是用Map元件需要<strong>import MapKit</strong>```swift<br>import UIKit<br>import MapKit<br>class MapViewController: UIViewController {</p>
+<pre><code>  @IBOutlet weak var uimap: MKMapView!//地圖元件
+</code></pre>
+<p>  override func viewDidLoad() {</p>
+<pre><code>  super.viewDidLoad()
+</code></pre>
+<p>  }</p>
+<pre><code>  override func didReceiveMemoryWarning() &#123;
+  super.didReceiveMemoryWarning()
+  // Dispose of any resources that can be recreated.
+</code></pre>
+<p>  }<br>}</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   取得座標資訊是由一個叫要做CLLocationManager來控制的,又IOS8取得座標資訊必須先取得使用者的授權才可以,所以必須到Info.plist新增NSLocationAlwaysUsageDescription或NSLocationWhenInUseUsageDescription兩種鍵值,而前者表示不管ＡＰＰ在前景或背景執行都會持續取得座標資訊,而後者只有在需要時才會去取座標定位資訊,而這兩個鍵值分別對應到CLLocationManager的requestAlwaysAuthorization和requestWhenInUseAuthorization,這邊的範例已NSLocationWhenInUseUsageDescription為例 &#96;&#96;&#96;swift</span><br><span class="line">import UIKit</span><br><span class="line">import CoreLocation</span><br><span class="line">import MapKit</span><br><span class="line">class MapViewController: UIViewController,CLLocationManagerDelegate &#123;</span><br><span class="line"></span><br><span class="line">        @IBOutlet weak var uimap: MKMapView!&#x2F;&#x2F;地圖元件</span><br><span class="line">    var location : CLLocationManager!; &#x2F;&#x2F;座標管理元件</span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        super.viewDidLoad();</span><br><span class="line"></span><br><span class="line">            location &#x3D; CLLocationManager();</span><br><span class="line">        location.delegate &#x3D; self;</span><br><span class="line">        &#x2F;&#x2F;詢問使用者是否同意給APP定位功能</span><br><span class="line">        location.requestWhenInUseAuthorization();</span><br><span class="line">        &#x2F;&#x2F;開始接收目前位置資訊</span><br><span class="line">        location.startUpdatingLocation();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        override func viewDidDisappear(animated: Bool) &#123;</span><br><span class="line">        &#x2F;&#x2F;因為ＧＰＳ功能很耗電,所以被敬執行時關閉定位功能</span><br><span class="line">        location.stopUpdatingLocation();</span><br><span class="line">    &#125;</span><br><span class="line">    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) &#123;</span><br><span class="line">        &#x2F;&#x2F;取得目前的座標位置</span><br><span class="line">        let c &#x3D; locations[0] as CLLocation;</span><br><span class="line">        &#x2F;&#x2F;c.coordinate.latitude 目前緯度</span><br><span class="line">        &#x2F;&#x2F;c.coordinate.longitude 目前經度</span><br><span class="line">        let nowLocation &#x3D; CLLocationCoordinate2D(latitude: c.coordinate.latitude, longitude: c.coordinate.longitude);</span><br><span class="line">        &#x2F;&#x2F;將map中心點定在目前所在的位置</span><br><span class="line">        &#x2F;&#x2F;span是地圖zoom in, zoom out的級距</span><br><span class="line">        let _span:MKCoordinateSpan &#x3D; MKCoordinateSpan(latitudeDelta: 0.0005, longitudeDelta: 0.0005);</span><br><span class="line">        self.uimap.setRegion(MKCoordinateRegion(center: nowLocation, span: _span), animated: true);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>接著別忘了去Info.plist新增NSLocationWhenInUsageDescription</p>
+<pre><code>[![](http://2.bp.blogspot.com/-FwRtS6qlxv0/VPUmFe5sNwI/AAAAAAAAEbI/ZBcSw4FmZKY/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.09.07.png)](http://2.bp.blogspot.com/-FwRtS6qlxv0/VPUmFe5sNwI/AAAAAAAAEbI/ZBcSw4FmZKY/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.09.07.png)
+</code></pre>
+<ul>
+<li><p>接著執行看看！！</p>
+<p>  詢問是否授權取得座標資訊<br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-83KznhU8x60/VPUmGa8My2I/AAAAAAAAEbQ/KcQPz9Qjhrk/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.28.png"><img src="http://4.bp.blogspot.com/-83KznhU8x60/VPUmGa8My2I/AAAAAAAAEbQ/KcQPz9Qjhrk/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.28.png"></a><br>地圖中心點移到你目前的位置摟~<a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-QvR128Ffqwk/VPUmImiWVqI/AAAAAAAAEbY/JihYA7S-IiI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.40.png"><img src="http://3.bp.blogspot.com/-QvR128Ffqwk/VPUmImiWVqI/AAAAAAAAEbY/JihYA7S-IiI/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.40.png"></a></p>
+</li>
+<li><p>順帶一提,如果需要把使用者的位置座標顯示出來,在mapkit view設定檔將User Location打勾即可！！<a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-k22IlXdhDv4/VPUnkb4FXnI/AAAAAAAAEbk/0zrmSaQchns/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.15.45.png"><img src="http://3.bp.blogspot.com/-k22IlXdhDv4/VPUnkb4FXnI/AAAAAAAAEbk/0zrmSaQchns/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.15.45.png"></a></p>
+<p>  <a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-pgo8PxqY7R8/VPUn0drmU1I/AAAAAAAAEbs/3WRtslmNJTM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.17.10.png"><img src="http://4.bp.blogspot.com/-pgo8PxqY7R8/VPUn0drmU1I/AAAAAAAAEbs/3WRtslmNJTM/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.17.10.png"></a></p>
+</li>
+<li><p>  如果你有實際run過這段程式應該會發現你滑動map時,它會一直彈回你目前所在的位置,原因是我們沒有指定移動多少距離才會更新座標位置,所以didUpdateLocations會一直被呼叫,也就一直被彈回你的所在位置摟,告訴app移動多少距離再更新座標資訊即可 ```swift<br>location.distanceFilter = CLLocationDistance(10); //表示移動10公尺再更新座標資訊</p>
+</li>
+</ul>
+<pre><code>
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Demo檔案 : Git傳送門            昨天有提到對於外部有關聯時該如何寫單元測試，例如API就是一個典型的例子，當在沒有網路環境時，對於要拿到API的結果做後續處理，這時候該怎麼辦？今天要來實作並且落實昨天提到的重要特性              單元測試應該是隨時隨地都要能正確執行，只要它本身的邏輯是正確的！！            ****來看看今天的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Unit Test】Day 3 - 專注於邏輯，隔離與外部的關聯">
+<meta property="og:url" content="https://toyo0103.github.io/2017/04/19/%E3%80%90Unit-Test%E3%80%91Day-3-%E5%B0%88%E6%B3%A8%E6%96%BC%E9%82%8F%E8%BC%AF%EF%BC%8C%E9%9A%94%E9%9B%A2%E8%88%87%E5%A4%96%E9%83%A8%E7%9A%84%E9%97%9C%E8%81%AF/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="Demo檔案 : Git傳送門            昨天有提到對於外部有關聯時該如何寫單元測試，例如API就是一個典型的例子，當在沒有網路環境時，對於要拿到API的結果做後續處理，這時候該怎麼辦？今天要來實作並且落實昨天提到的重要特性              單元測試應該是隨時隨地都要能正確執行，只要它本身的邏輯是正確的！！            ****來看看今天的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://4.bp.blogspot.com/-te6lfBR6K44/WPb5BSAp1NI/AAAAAAAAIIE/lRXidmjjdE042MalNHIsNkgtogf_8gz-ACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25881.43.10.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-NABAfYFPjgY/WPcA6MJCu5I/AAAAAAAAIIU/oMdlNWKwh4M7ZJ5vSuL4tkV10WoMUJzpACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.01.34.png">
+<meta property="og:image" content="https://1.bp.blogspot.com/-opEwoBAjHF4/WPcBOB9kjhI/AAAAAAAAIIY/Ke3oAKptN_8zE9TQvYWpVa7rbylKfH_7QCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.18.08.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-OWf1ZOiTZ7E/WPcJ0i-lFFI/AAAAAAAAIIo/sEjugyqLlpQI9lVT6VMi6VbbvBATGEt8QCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.52.18.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-Mte3C3QIeVI/WPcKsy_8lrI/AAAAAAAAIIw/ew6tzFNAUlAP3mb-D-2pCk3mEo9jd23ewCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.58.09.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-yA_Wv9OQc3U/WPcMSNtLG4I/AAAAAAAAII8/3j0wOx6UXeYfc8CC-P_j-H5B3hGPE_wfACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25883.05.31.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-5c0QoB53oMk/WPcSezyN0uI/AAAAAAAAIJM/Q-yAz7HaCEsF9035DvdLbpaAqnPx58YxgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25883.31.18.png">
+<meta property="og:image" content="https://2.bp.blogspot.com/-2F8TjU8dKmg/WPcTQ0NTwpI/AAAAAAAAIJU/aJUEa1WYgp4azwqfmuCQw6CRJAxwvN1DgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25883.35.13.png">
+<meta property="article:published_time" content="2017-04-19T15:59:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.094Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="Unit Test">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://4.bp.blogspot.com/-te6lfBR6K44/WPb5BSAp1NI/AAAAAAAAIIE/lRXidmjjdE042MalNHIsNkgtogf_8gz-ACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25881.43.10.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2017/04/19/%E3%80%90Unit-Test%E3%80%91Day-3-%E5%B0%88%E6%B3%A8%E6%96%BC%E9%82%8F%E8%BC%AF%EF%BC%8C%E9%9A%94%E9%9B%A2%E8%88%87%E5%A4%96%E9%83%A8%E7%9A%84%E9%97%9C%E8%81%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【Unit Test】Day 3 - 專注於邏輯，隔離與外部的關聯 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/19/%E3%80%90Unit-Test%E3%80%91Day-3-%E5%B0%88%E6%B3%A8%E6%96%BC%E9%82%8F%E8%BC%AF%EF%BC%8C%E9%9A%94%E9%9B%A2%E8%88%87%E5%A4%96%E9%83%A8%E7%9A%84%E9%97%9C%E8%81%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Unit Test】Day 3 - 專注於邏輯，隔離與外部的關聯
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-04-19 15:59:00" itemprop="dateCreated datePublished" datetime="2017-04-19T15:59:00+00:00">2017-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%B8%E7%BF%92%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/" itemprop="url" rel="index"><span itemprop="name">學習單元測試</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/04/19/%E3%80%90Unit-Test%E3%80%91Day-3-%E5%B0%88%E6%B3%A8%E6%96%BC%E9%82%8F%E8%BC%AF%EF%BC%8C%E9%9A%94%E9%9B%A2%E8%88%87%E5%A4%96%E9%83%A8%E7%9A%84%E9%97%9C%E8%81%AF/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/19/【Unit-Test】Day-3-專注於邏輯，隔離與外部的關聯/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="note info">
+            <p>Demo檔案 : <a target="_blank" rel="noopener" href="https://github.com/toyo0103/UnitTest_Day3">Git傳送門</a></p>
+          </div>
+<p>昨天有提到對於外部有關聯時該如何寫單元測試，例如API就是一個典型的例子，當在沒有網路環境時，對於要拿到API的結果做後續處理，這時候該怎麼辦？今天要來實作並且落實昨天提到的重要特性</p>
+<div class="note info">
+            <p>單元測試應該是隨時隨地都要能正確執行，只要它本身的邏輯是正確的！！</p>
+          </div>
+<p>**<br>**<strong>來看看今天的情境範例</strong><br>我們有一個需求，它要能夠讓我們帶入台北市的公車路線名稱，並取回該路線的站點資料，該資料來源從<a target="_blank" rel="noopener" href="http://ptx.transportdata.tw/PTX/">公共運輸整合資訊流通服務平台</a>的API取得。</p>
+<div class="note info">
+            <p>測試API : <a target="_blank" rel="noopener" href="http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/Taipei/307?$top=1&amp;$format=JSON">http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/Taipei/307?$top=1&amp;$format=JSON</a></p>
+          </div>
+<p>從呼叫API看到的呼叫結果大致如下</p>
+<p><img src="https://4.bp.blogspot.com/-te6lfBR6K44/WPb5BSAp1NI/AAAAAAAAIIE/lRXidmjjdE042MalNHIsNkgtogf_8gz-ACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25881.43.10.png"></p>
+<p><strong>開始寫程式</strong><br>首先我們準備了一個主控台專案，裡面有一個PTX的Class，希望他有個方法能帶入<strong>縣市</strong>、<strong>公車路線名稱</strong>，然後回傳該路線所有站牌名稱與ID</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 巴士路線(該方法要回傳的結果)</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BusRouteDTO</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 路線名稱</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 巴士站列表</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> List&lt;BusStop&gt; BusStops &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 巴士站</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BusStop</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> 站名</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> ID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>用來承接API回傳資料的DTO </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 取PTX BusRoute的結果</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTXBusRouteResult</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> NameDTO RouteName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> List&lt;StopDTO&gt; Stops &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 巴士路線名稱</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">NameDTO</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> Zh_tw &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> En &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 站點</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">StopDTO</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> 站點ID</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">            <span class="keyword">public</span> <span class="built_in">string</span> StopUID &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> 站點名稱</span></span><br><span class="line">            <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">            <span class="keyword">public</span> NameDTO StopName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">NameDTO</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">public</span> <span class="built_in">string</span> Zh_tw &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">                <span class="keyword">public</span> <span class="built_in">string</span> En &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>PTX的程式</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTX</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 取得巴士路線資料</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;city&quot;&gt;</span>縣市名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;routeName&quot;&gt;</span>巴士路線名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> BusRouteDTO <span class="title">Get</span>(<span class="params"><span class="built_in">string</span> city,<span class="built_in">string</span> routeName</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            BusRouteDTO Result = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//Use RestSharp Call API</span></span><br><span class="line">            <span class="keyword">var</span> client = <span class="keyword">new</span> RestClient(<span class="string">$&quot;http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/<span class="subst">&#123;city&#125;</span>/<span class="subst">&#123;routeName&#125;</span>?%24top=1&amp;%24format=JSON&quot;</span>);</span><br><span class="line">            <span class="keyword">var</span> request = <span class="keyword">new</span> RestRequest(Method.GET);</span><br><span class="line">            request.AddHeader(<span class="string">&quot;cache-control&quot;</span>, <span class="string">&quot;no-cache&quot;</span>);</span><br><span class="line">            IRestResponse response = client.Execute(request);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (response.StatusCode == HttpStatusCode.OK)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> APIResult = JsonConvert.DeserializeObject&lt;List&lt;PTXBusRouteResult&gt;&gt;(response.Content);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (APIResult != <span class="literal">null</span> &amp;&amp; APIResult.Count &gt; <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Route = APIResult.First();</span><br><span class="line">                    Result = <span class="keyword">new</span> BusRouteDTO</span><br><span class="line">                    &#123;</span><br><span class="line">                        Name = Route.RouteName.Zh_tw,</span><br><span class="line">                        BusStops = <span class="keyword">new</span> List&lt;BusRouteDTO.BusStop&gt;()</span><br><span class="line">                    &#125;;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> stop <span class="keyword">in</span> Route.Stops)</span><br><span class="line">                    &#123;</span><br><span class="line">                        Result.BusStops.Add(<span class="keyword">new</span> BusRouteDTO.BusStop</span><br><span class="line">                        &#123;</span><br><span class="line">                            ID = stop.StopUID,</span><br><span class="line">                            Name = stop.StopName.Zh_tw</span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這邊呼叫API用的套件為RestSharp<br><img src="https://2.bp.blogspot.com/-NABAfYFPjgY/WPcA6MJCu5I/AAAAAAAAIIU/oMdlNWKwh4M7ZJ5vSuL4tkV10WoMUJzpACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.01.34.png"></p>
+<p>將回傳的Json格式轉成DTO的套件是Newtonsoft.Json</p>
+<p><img src="https://1.bp.blogspot.com/-opEwoBAjHF4/WPcBOB9kjhI/AAAAAAAAIIY/Ke3oAKptN_8zE9TQvYWpVa7rbylKfH_7QCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.18.08.png"></p>
+<p>OK，因為是範例程式，所以一些寫作風格或是是否會Null的問題我們就先擺一邊吧，還是專注在我們的怎麼寫單元測試上。</p>
+<p>接著我們來執行看看程式是否依照我們預期的可以取回結果</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> PTXFunction = <span class="keyword">new</span> PTX();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> Result = PTXFunction.Get(<span class="string">&quot;Taipei&quot;</span>,<span class="string">&quot;307&quot;</span>);</span><br><span class="line"></span><br><span class="line">            Console.Write(JsonConvert.SerializeObject(Result));</span><br><span class="line"></span><br><span class="line">            Console.ReadKey();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://3.bp.blogspot.com/-OWf1ZOiTZ7E/WPcJ0i-lFFI/AAAAAAAAIIo/sEjugyqLlpQI9lVT6VMi6VbbvBATGEt8QCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.52.18.png"></p>
+<p>程式正確執行也取得回資料，第一階段搞定！！接下來開始寫單元測試了</p>
+<h4 id="單元測試"><a href="#單元測試" class="headerlink" title="單元測試"></a>單元測試</h4><p>首先替它加上單元測試吧，老樣子在PTX的Get方法<strong>右鍵 &gt; 建立單元測試</strong></p>
+<p><img src="https://3.bp.blogspot.com/-Mte3C3QIeVI/WPcKsy_8lrI/AAAAAAAAIIw/ew6tzFNAUlAP3mb-D-2pCk3mEo9jd23ewCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25882.58.09.png"></p>
+<p>寫單元測試，這邊稍微解釋一下，因為還沒說怎麼驗證整個Class的內容比對，所以這邊先驗證回傳結果名稱就好，之後的章節會講怎麼驗證整個回傳內容的數值</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass()</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTXTests</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> GetTest_傳入縣市和公車路線名稱_如果查的到資料_應回傳該路線的BusRouteDTO()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> PTX();</span><br><span class="line">            <span class="keyword">var</span> City = <span class="string">&quot;Taipei&quot;</span>;</span><br><span class="line">            <span class="keyword">var</span> RouteName = <span class="string">&quot;307&quot;</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> expected = <span class="string">&quot;307&quot;</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Get(City, RouteName);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(actual.Name, expected);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>執行看看，得到正確的結果！！</p>
+<p><img src="https://2.bp.blogspot.com/-yA_Wv9OQc3U/WPcMSNtLG4I/AAAAAAAAII8/3j0wOx6UXeYfc8CC-P_j-H5B3hGPE_wfACLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25883.05.31.png"></p>
+<p>但這邊我們都知道，如果今天網路斷掉或是對方API暫時提供服務，則我們的單元測試就會壞掉，因為他呼叫不到真實的API，而這其實違反我們之前說的「單元測試應該關注的是它的邏輯，而非外部的關聯」。如果今天因為環境就出錯，單元測試一多，可能我們常常都要花很多時間去找目前狀況是什麼，更可能的是查到最後才發現原來你的程式沒錯….</p>
+<p>所以回頭看看我們的PTX程式，它的外部關聯是什麼？它關注的邏輯又是什麼？</p>
+<div class="note info">
+            <p>PTX.Get程式目前內部的邏輯如下<br>1.將帶入的參數組成API Url並進行呼叫<br>2.將取回的Json轉成DTO<br>3.判斷回傳的DTO是否有值？有則轉成我們要的結果回傳<br>3.1 否則直接回傳Null</p>
+          </div>
+<p>從這邊我會把它拆成<strong>1.呼叫外部API</strong>為外部行為，因為如果今天網路斷掉或是對方API壞掉、甚至是對方的API還沒開發好，理論上都不是我們程式的問題，而是網路或是對方要依照規格來處理。</p>
+<p>所以第一步是我們要把外部行為隔離出去，並且想辦法讓我們可以模擬它而不是真正去呼叫線上的API，當然這邊做法有很多種，我選擇將Call API的行為還是視為PTX這個物件的內部行為，所以沒有獨立到別的Class去處理，而是封裝起來</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTX</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 取得巴士路線資料</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;city&quot;&gt;</span>縣市名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;routeName&quot;&gt;</span>巴士路線名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> BusRouteDTO <span class="title">Get</span>(<span class="params"><span class="built_in">string</span> city,<span class="built_in">string</span> routeName</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            BusRouteDTO Result = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> JsonResult = CallAPI(city, routeName);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrEmpty(JsonResult))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> APIResult = JsonConvert.DeserializeObject&lt;List&lt;PTXBusRouteResult&gt;&gt;(JsonResult);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (APIResult != <span class="literal">null</span> &amp;&amp; APIResult.Count &gt; <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> Route = APIResult.First();</span><br><span class="line">                    Result = <span class="keyword">new</span> BusRouteDTO</span><br><span class="line">                    &#123;</span><br><span class="line">                        Name = Route.RouteName.Zh_tw,</span><br><span class="line">                        BusStops = <span class="keyword">new</span> List&lt;BusRouteDTO.BusStop&gt;()</span><br><span class="line">                    &#125;;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">foreach</span> (<span class="keyword">var</span> stop <span class="keyword">in</span> Route.Stops)</span><br><span class="line">                    &#123;</span><br><span class="line">                        Result.BusStops.Add(<span class="keyword">new</span> BusRouteDTO.BusStop</span><br><span class="line">                        &#123;</span><br><span class="line">                            ID = stop.StopUID,</span><br><span class="line">                            Name = stop.StopName.Zh_tw</span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> Result;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> Call API</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;city&quot;&gt;</span>縣市<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;routeName&quot;&gt;</span>巴士路線名稱<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="built_in">string</span> <span class="title">CallAPI</span>(<span class="params"><span class="built_in">string</span> city, <span class="built_in">string</span> routeName</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">//Use RestSharp Call API</span></span><br><span class="line">            <span class="keyword">var</span> client = <span class="keyword">new</span> RestClient(<span class="string">$&quot;http://ptx.transportdata.tw/MOTC/v2/Bus/StopOfRoute/City/<span class="subst">&#123;city&#125;</span>/<span class="subst">&#123;routeName&#125;</span>?%24top=1&amp;%24format=JSON&quot;</span>);</span><br><span class="line">            <span class="keyword">var</span> request = <span class="keyword">new</span> RestRequest(Method.GET);</span><br><span class="line">            request.AddHeader(<span class="string">&quot;cache-control&quot;</span>, <span class="string">&quot;no-cache&quot;</span>);</span><br><span class="line">            IRestResponse response = client.Execute(request);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (response.StatusCode == HttpStatusCode.OK)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> response.Content;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">string</span>.Empty;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這樣就達到分離了Call API這個外部行為，但是接下來的問題是我們該如何模擬CallAPI的行為，因為目前的程式還是會去呼叫外部API。</p>
+<p><strong>讓我們把CallAPI從private改成protect吧，並且把它改成可以virtual，讓繼承它的子類別都可以改寫它</strong></p>
+<p><img src="https://3.bp.blogspot.com/-5c0QoB53oMk/WPcSezyN0uI/AAAAAAAAIJM/Q-yAz7HaCEsF9035DvdLbpaAqnPx58YxgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25883.31.18.png"></p>
+<p>接著我們在單元測試專案中，然後開一個PTXStub的Class來繼承它並賦予他特殊屬性能改寫CallAPI的內部行為</p>
+<div class="note info">
+            <p>這邊提到Stub，在單元測試中還有一種叫做Ｍock，詳情定義跟討論可以參考<br><a target="_blank" rel="noopener" href="http://stackoverflow.com/questions/3459287/whats-the-difference-between-a-mock-stub">stackoverflow - What’s the difference between a mock &amp; stub?</a></p>
+          </div>
+
+<p><img src="https://2.bp.blogspot.com/-2F8TjU8dKmg/WPcTQ0NTwpI/AAAAAAAAIJU/aJUEa1WYgp4azwqfmuCQw6CRJAxwvN1DgCLcB/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2017-04-19%2B%25E4%25B8%258B%25E5%258D%25883.35.13.png"></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PTXStub</span> :<span class="title">PTX</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 用來模擬API回傳的Json Result</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">string</span> CallAPIResult;</span><br><span class="line">        <span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="built_in">string</span> <span class="title">CallAPI</span>(<span class="params"><span class="built_in">string</span> city, <span class="built_in">string</span> routeName</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrEmpty(CallAPIResult))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> CallAPIResult;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span>  <span class="keyword">base</span>.CallAPI(city, routeName);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我們將CallAPIResult的方法改寫掉，讓他回傳我們對外開放出來的CallAPIResult這個屬性，此屬性可以讓我們設定API應該回傳的結果。</p>
+<p>接下就回頭改單元測試的部分 </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> GetTest_傳入縣市和公車路線名稱_如果查的到資料_應回傳該路線的BusRouteDTO()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> PTXStub(); <span class="comment">//改成PTXStub</span></span><br><span class="line">            <span class="keyword">var</span> City = <span class="string">&quot;Taipei&quot;</span>;</span><br><span class="line">            <span class="keyword">var</span> RouteName = <span class="string">&quot;307&quot;</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//API應該回傳的結果</span></span><br><span class="line">            <span class="keyword">var</span> sb = <span class="keyword">new</span> System.Text.StringBuilder(<span class="number">12766</span>);</span><br><span class="line">            sb.AppendLine(<span class="string">@&quot;[&#123;&quot;&quot;RouteUID&quot;&quot;:&quot;&quot;TPE16111&quot;&quot;,&quot;&quot;RouteID&quot;&quot;:&quot;&quot;16111&quot;&quot;,&quot;&quot;RouteName&quot;&quot;:&#123;&quot;&quot;Zh_tw&quot;&quot;:&quot;&quot;307&quot;&quot;,&quot;&quot;En&quot;&quot;:&quot;&quot;307&quot;&quot;&#125;,&quot;&quot;KeyPattern&quot;&quot;:false,&quot;&quot;SubRouteUID&quot;&quot;:&quot;&quot;TPE157462&quot;&quot;,&quot;&quot;SubRouteID&quot;&quot;:&quot;&quot;157462&quot;&quot;,&quot;&quot;SubRouteName&quot;&quot;:&#123;&quot;&quot;Zh_tw&quot;&quot;:&quot;&quot;307莒光經板橋前站&quot;&quot;,&quot;&quot;En&quot;&quot;:&quot;&quot;307&quot;&quot;&#125;,&quot;&quot;Direction&quot;&quot;:0,&quot;&quot;Stops&quot;&quot;:[&#123;&quot;&quot;StopUID&quot;&quot;:&quot;&quot;TPE15294&quot;&quot;,&quot;&quot;StopID&quot;&quot;:&quot;&quot;15294&quot;&quot;,&quot;&quot;StopName&quot;&quot;:&#123;&quot;&quot;Zh_tw&quot;&quot;:&quot;&quot;莊敬里&quot;&quot;,]............&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//設定CallAPI回傳結果</span></span><br><span class="line">            Sut.CallAPIResult = sb.ToString();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> expected = <span class="string">&quot;307&quot;</span>;</span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Get(City, RouteName);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(actual.Name, expected);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>API應該回傳的結果那邊因為太長，所以省略部分回傳結果，但在實際程式是完整貼上，詳請看Git的Source Code。</p>
+<p>這樣就可以模擬CallAPI這個跟外部連結的結果，但依然可以測試我們所關注的邏輯，是否可卻轉成我們要的結果，執行後可以發現單元測試還是顯示綠燈的正確無誤。</p>
+<p>但這個方法也不是百分之百沒有缺點，你應該也可以觀察到其中一段在這單元測試中無法被涵蓋到，那就是組API Url那段，在這種透過繼承解耦合的方式中，因為回傳結果是自己設定的，實際上組成的URL正確與否我們並不知道，換句話說，如果我們今天這樣寫測試可能會過，但上線後才會發現錯誤，檢查之下發現原來是在串Url的時候錯字之類的。</p>
+<p>這是這種測試方法的缺點，但今天就先談到這邊，還有別種方法可以解決這個問題，只是通常有一好沒兩好，各自都會有優缺點，就看實際專案情形自行判斷跟取捨了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unit-Test/" rel="tag"># Unit Test</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/18/%E3%80%90Unit-Test%E3%80%91Day-2-%E5%A6%82%E4%BD%95%E5%AF%AB%E4%B8%80%E5%80%8B%E5%A5%BD%E7%9A%84%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/" rel="prev" title="【Unit Test】Day 2 - 如何寫一個好的單元測試">
+      <i class="fa fa-chevron-left"></i> 【Unit Test】Day 2 - 如何寫一個好的單元測試
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/20/%E3%80%90Unit-Test%E3%80%91Day-4-Mock/" rel="next" title="【Unit Test】Day 4 - Mock">
+      【Unit Test】Day 4 - Mock <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6"><span class="nav-number">1.</span> <span class="nav-text">單元測試</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2017/04/19/%E3%80%90Unit-Test%E3%80%91Day-3-%E5%B0%88%E6%B3%A8%E6%96%BC%E9%82%8F%E8%BC%AF%EF%BC%8C%E9%9A%94%E9%9B%A2%E8%88%87%E5%A4%96%E9%83%A8%E7%9A%84%E9%97%9C%E8%81%AF/";
+    this.page.identifier = "2017/04/19/【Unit-Test】Day-3-專注於邏輯，隔離與外部的關聯/";
+    this.page.title = "【Unit Test】Day 3 - 專注於邏輯，隔離與外部的關聯";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

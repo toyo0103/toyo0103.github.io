@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="所謂的工程師就是，【接手別人專案時，總是問怎麼沒有規格書? 自己開發專案時卻又不喜歡寫規格書】的一群人，本人也是一個極度不喜歡寫規格書的人，簡單說就是懶到極致，懶到深處無怨尤。而且常常改版時來匆匆忙忙，寫程式的時間都不夠了，誰還管你規格書有沒有更新，就這樣恍神個兩三次忘記回去更新規格，這本規格書就光榮列入公司十大(搞不好百大?)不可思議天書，可謂極度麻煩費時討厭….. 還好同事介紹了Swagger">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Swagger】活著的API規格書">
+<meta property="og:url" content="https://toyo0103.github.io/2016/10/14/%E3%80%90Swagger%E3%80%91%E6%B4%BB%E8%91%97%E7%9A%84API%E8%A6%8F%E6%A0%BC%E6%9B%B8/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="所謂的工程師就是，【接手別人專案時，總是問怎麼沒有規格書? 自己開發專案時卻又不喜歡寫規格書】的一群人，本人也是一個極度不喜歡寫規格書的人，簡單說就是懶到極致，懶到深處無怨尤。而且常常改版時來匆匆忙忙，寫程式的時間都不夠了，誰還管你規格書有沒有更新，就這樣恍神個兩三次忘記回去更新規格，這本規格書就光榮列入公司十大(搞不好百大?)不可思議天書，可謂極度麻煩費時討厭….. 還好同事介紹了Swagger">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://1.bp.blogspot.com/-esv5JivSR4Y/WABBED8FfQI/AAAAAAAAH_E/YiqAJZ5gpAoLo97p4H6T6hp6ipz9r54mgCLcB/s640/1.png">
+<meta property="article:published_time" content="2016-10-14T11:01:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.093Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="Swagger">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://1.bp.blogspot.com/-esv5JivSR4Y/WABBED8FfQI/AAAAAAAAH_E/YiqAJZ5gpAoLo97p4H6T6hp6ipz9r54mgCLcB/s640/1.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2016/10/14/%E3%80%90Swagger%E3%80%91%E6%B4%BB%E8%91%97%E7%9A%84API%E8%A6%8F%E6%A0%BC%E6%9B%B8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【Swagger】活著的API規格書 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/10/14/%E3%80%90Swagger%E3%80%91%E6%B4%BB%E8%91%97%E7%9A%84API%E8%A6%8F%E6%A0%BC%E6%9B%B8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Swagger】活著的API規格書
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-10-14 11:01:00" itemprop="dateCreated datePublished" datetime="2016-10-14T11:01:00+00:00">2016-10-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/10/14/%E3%80%90Swagger%E3%80%91%E6%B4%BB%E8%91%97%E7%9A%84API%E8%A6%8F%E6%A0%BC%E6%9B%B8/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/14/【Swagger】活著的API規格書/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>所謂的工程師就是，【接手別人專案時，總是問怎麼沒有規格書? 自己開發專案時卻又不喜歡寫規格書】的一群人，本人也是一個極度不喜歡寫規格書的人，簡單說就是懶到極致，懶到深處無怨尤。而且常常改版時來匆匆忙忙，寫程式的時間都不夠了，誰還管你規格書有沒有更新，就這樣恍神個兩三次忘記回去更新規格，這本規格書就光榮列入公司十大(搞不好百大?)不可思議天書，可謂極度麻煩費時討厭…..</p>
+<p>還好同事介紹了Swagger的用法，讓你邊開發程式時，規格就產生書產生出來了，而且還是本可以使用的規格書，讓你從今以後再也不用擔心規格書與實際規格脫鉤的問題，以下就筆記一下如何使用</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://4.bp.blogspot.com/-DHN0U1Vqe3U/WAA8GQA474I/AAAAAAAAH-o/idcyU1UFoPoM9sI2fs7Jga7vTRrA_Lz7gCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)](https://4.bp.blogspot.com/-DHN0U1Vqe3U/WAA8GQA474I/AAAAAAAAH-o/idcyU1UFoPoM9sI2fs7Jga7vTRrA_Lz7gCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">Swagger-當開發完API時，規格書也就完成了!!</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://4.bp.blogspot.com/-Q_gy5BypWEQ/WAA8wzGS32I/AAAAAAAAH-s/dbAyDeDRpPgfEc-OjH9_s2GIaafUpCBjACLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)](https://4.bp.blogspot.com/-Q_gy5BypWEQ/WAA8wzGS32I/AAAAAAAAH-s/dbAyDeDRpPgfEc-OjH9_s2GIaafUpCBjACLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">輸入的參數與說明也寫得清清楚楚</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://1.bp.blogspot.com/-WbKmvP1AzgE/WAA-rbXKmUI/AAAAAAAAH-8/-tLhejDldqI_HmO2FNDS1gO6ImyOrrfngCLcB/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)](https://1.bp.blogspot.com/-WbKmvP1AzgE/WAA-rbXKmUI/AAAAAAAAH-8/-tLhejDldqI_HmO2FNDS1gO6ImyOrrfngCLcB/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</td></tr><tr><td class="tr-caption" style="text-align: center;"><span style="font-size: 12.8px;">按下Try it Out後，可以馬上測試API跟觀看結果!!</span></td></tr></tbody></table>
+
+<h3 id="使用步驟"><a href="#使用步驟" class="headerlink" title="使用步驟"></a>使用步驟</h3><div>
+
+<ul>
+<li>  首先我先開一個WebAPI專案，然後寫一支簡單的API讓他可以運作</div><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a target="_blank" rel="noopener" href="https://1.bp.blogspot.com/-esv5JivSR4Y/WABBED8FfQI/AAAAAAAAH_E/YiqAJZ5gpAoLo97p4H6T6hp6ipz9r54mgCLcB/s1600/1.png"><img src="https://1.bp.blogspot.com/-esv5JivSR4Y/WABBED8FfQI/AAAAAAAAH_E/YiqAJZ5gpAoLo97p4H6T6hp6ipz9r54mgCLcB/s640/1.png"></a></td></tr><tr><td class="tr-caption" style="text-align: center;">開一個WebAPI專案</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://3.bp.blogspot.com/-VmbQGY5UMMU/WABBEd25TPI/AAAAAAAAH_I/MGng_1nDDSEQ-zLiXyahRK5GTT9XMtSEwCLcB/s640/2.png)](https://3.bp.blogspot.com/-VmbQGY5UMMU/WABBEd25TPI/AAAAAAAAH_I/MGng_1nDDSEQ-zLiXyahRK5GTT9XMtSEwCLcB/s1600/2.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">新增一個新的TestSwaggerController</td></tr></tbody></table>
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-AENbjbb3Ia4/WABBERDf0cI/AAAAAAAAH_M/Ea_va3RXz0kCcplepPRx-nBqaHHpLLsCwCLcB/s1600/3.png)](https://1.bp.blogspot.com/-AENbjbb3Ia4/WABBERDf0cI/AAAAAAAAH_M/Ea_va3RXz0kCcplepPRx-nBqaHHpLLsCwCLcB/s1600/3.png)</div><div>
+</div><div>
+</div><div>
+</div><div></li>
+</ul>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><ul>
+<li><p><strong>開始撰寫幾個簡單的API跟輸入輸出參數</strong></p>
+</div><div>
+</div>```csharp
+public class testSwaggerGetParameter
+  {
+      /// <summary>
+      /// 帳號
+      /// </summary>
+      /// <value>
+      /// The identifier.
+      /// </value>
+      public string ID { get; set; }
+
+<pre><code>  /// &lt;summary&gt;
+  /// 密碼
+  /// &lt;/summary&gt;
+  /// &lt;value&gt;
+  /// The passWord.
+  /// &lt;/value&gt;
+  public string PassWord &#123; get; set; &#125;
+</code></pre>
+<p>  }</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#96;&#96;&#96;csharp</span><br><span class="line">public class TestSwaggerController : ApiController</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; 測試Swagger的API</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;&#x2F;summary&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;param name&#x3D;&quot;parameter&quot;&gt;The parameter.&lt;&#x2F;param&gt;</span><br><span class="line">        &#x2F;&#x2F;&#x2F; &lt;returns&gt;&lt;&#x2F;returns&gt;</span><br><span class="line">        [HttpGet]</span><br><span class="line">        [Route(&quot;api&#x2F;testSwagger&quot;)]</span><br><span class="line">        public HttpResponseMessage Get([FromUri]testSwaggerGetParameter parameter)</span><br><span class="line">        &#123;</span><br><span class="line">            if (parameter !&#x3D; null &amp;&amp;</span><br><span class="line">                parameter.ID &#x3D;&#x3D; &quot;toyo&quot; &amp;&amp; </span><br><span class="line">                parameter.PassWord &#x3D;&#x3D; &quot;123456&quot;)</span><br><span class="line">            &#123;</span><br><span class="line">                return Request.CreateResponse(HttpStatusCode.OK, &quot;帳號密碼正確&quot;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            return Request.CreateResponse(HttpStatusCode.OK, &quot;帳號密碼錯誤摟!!!!!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="-1"><a href="#-1" class="headerlink" title=""></a></h3><ul>
+<li>  接著先來測試API的運作是否正常<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://3.bp.blogspot.com/-NGEX0U-saSw/WABFAd9ksPI/AAAAAAAAH_c/AQuEDjoIGL4jbBYZs2PJ7B7lnAS7fB8xQCLcB/s640/2.png)](https://3.bp.blogspot.com/-NGEX0U-saSw/WABFAd9ksPI/AAAAAAAAH_c/AQuEDjoIGL4jbBYZs2PJ7B7lnAS7fB8xQCLcB/s1600/2.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">輸入正確的測試</td></tr></tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://1.bp.blogspot.com/-i923xx2aY30/WABFABbQrdI/AAAAAAAAH_Y/cvhLOl1x6xw3aJ5Yvd-T7gBcePHTb8GCwCLcB/s640/1.png)](https://1.bp.blogspot.com/-i923xx2aY30/WABFABbQrdI/AAAAAAAAH_Y/cvhLOl1x6xw3aJ5Yvd-T7gBcePHTb8GCwCLcB/s1600/1.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">輸入錯誤的測試</td></tr></tbody></table></li>
+</ul>
+<h3 id="-2"><a href="#-2" class="headerlink" title=""></a></h3><ul>
+<li>  <strong>API都準備就緒後，來安裝Swagger吧</strong><br>首先打開Nuget搜尋<strong>Swashbuckle</strong>並安裝<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-I6T6On4UU0I/WABGKKbp_4I/AAAAAAAAH_g/thsWbtJB9d8M-wBG3oHoBHct0d6N-7ohwCLcB/s640/1.png)](https://1.bp.blogspot.com/-I6T6On4UU0I/WABGKKbp_4I/AAAAAAAAH_g/thsWbtJB9d8M-wBG3oHoBHct0d6N-7ohwCLcB/s1600/1.png)</div></li>
+</ul>
+<p>接著打開專案屬性，設定輸出XML說明格式</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-Q35LXg-ZAbc/WABHQqOA9II/AAAAAAAAH_o/IqpSnKPL7AIkGskPH8LPMKDBYKS-cJvNACLcB/s640/1.png)](https://3.bp.blogspot.com/-Q35LXg-ZAbc/WABHQqOA9II/AAAAAAAAH_o/IqpSnKPL7AIkGskPH8LPMKDBYKS-cJvNACLcB/s1600/1.png)</div><div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-kTvzjXCAY7Q/WABHWnjk79I/AAAAAAAAH_s/WYApFDnj0RACcVPP3KQC9qGsgdxf3a3swCLcB/s640/2.png)](https://2.bp.blogspot.com/-kTvzjXCAY7Q/WABHWnjk79I/AAAAAAAAH_s/WYApFDnj0RACcVPP3KQC9qGsgdxf3a3swCLcB/s1600/2.png)</div>
+
+<p>打開SwaggerConfig做些設定</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-3KPOfrFBs7A/WABHvcNMO4I/AAAAAAAAH_w/-tsOz_SqAGcvVxxSOOwok_Q1yTpZyDAiQCLcB/s1600/1.png)](https://1.bp.blogspot.com/-3KPOfrFBs7A/WABHvcNMO4I/AAAAAAAAH_w/-tsOz_SqAGcvVxxSOOwok_Q1yTpZyDAiQCLcB/s1600/1.png)</div>
+
+<p>在第一百行的地方把註解拿掉</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-sNuzZJH1_Tk/WABH-ckCYAI/AAAAAAAAH_0/dY91muQCTvAggbaSNAxXFuf687P37-f4wCLcB/s640/1.png)](https://2.bp.blogspot.com/-sNuzZJH1_Tk/WABH-ckCYAI/AAAAAAAAH_0/dY91muQCTvAggbaSNAxXFuf687P37-f4wCLcB/s1600/1.png)</div>
+
+<p>在最下面補上以下程式碼</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-LZWGCrO2m1E/WABIPqVRXuI/AAAAAAAAH_4/XDwqWQFF4zIfyBMKgjUfNqisGADqPMPvQCLcB/s640/1.png)](https://2.bp.blogspot.com/-LZWGCrO2m1E/WABIPqVRXuI/AAAAAAAAH_4/XDwqWQFF4zIfyBMKgjUfNqisGADqPMPvQCLcB/s1600/1.png)</div>
+
+<h3 id="-3"><a href="#-3" class="headerlink" title=""></a></h3><ul>
+<li>  重新執行WebAPI，並且在網址列輸入……./Swagger<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://2.bp.blogspot.com/-VKr_8qKHN7Y/WABIxRpt8gI/AAAAAAAAH_8/XaVeA3uG-9whtv0DrZ7DQYIzKXjaHryYgCLcB/s640/1.png)](https://2.bp.blogspot.com/-VKr_8qKHN7Y/WABIxRpt8gI/AAAAAAAAH_8/XaVeA3uG-9whtv0DrZ7DQYIzKXjaHryYgCLcB/s1600/1.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">看到API被輸出成規格了，參數的註解是跟著Summary的</td></tr></tbody></table><div>
+</div><div>
+</div><div>
+</div><div>來測試看看!!!</div><div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-651X7h-rIVw/WABJN-3Jf-I/AAAAAAAAIAA/iBthsKVDiscN_ItWjk4WUUSgemSLEfDLQCLcB/s640/1.png)](https://1.bp.blogspot.com/-651X7h-rIVw/WABJN-3Jf-I/AAAAAAAAIAA/iBthsKVDiscN_ItWjk4WUUSgemSLEfDLQCLcB/s1600/1.png)</div>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-JPjRZMJusSE/WABJOPutBbI/AAAAAAAAIAE/aFON9GjhDe0HKHY_jjJ8M8JfstfCDLoLgCLcB/s640/2.png)](https://3.bp.blogspot.com/-JPjRZMJusSE/WABJOPutBbI/AAAAAAAAIAE/aFON9GjhDe0HKHY_jjJ8M8JfstfCDLoLgCLcB/s1600/2.png)</div><div>
+</div><div>
+</div><div>
+</div><div>
+</div><div>最後，Swagger雖然已經非常好用了，也能符合大部分的情境運用，但還是有些美中不足的地方，例如如果今天API部分資訊要帶在Header裡面傳給API，在預設產生的地方是沒有提供可以輸入的地方。</div><div>
+</div><div>但慶幸的是Swagger可以很彈性的去改寫這張最後會產生的View，可以自己擴充需要的欄位，下一篇在來介紹如何客製化Swagger頁面!!!</div><div>
+</div><div>
+</div><div>
+</div><div>
+</div></li>
+</ul>
+<h4 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h4><div>
+
+<ol>
+<li> <a target="_blank" rel="noopener" href="http://kevintsengtw.blogspot.tw/2015/12/aspnet-web-api-swagger.html">mrkt&nbsp;- ASP.NET Web API 文件產生器 - 使用 Swagger</a></li>
+<li> <a target="_blank" rel="noopener" href="http://kevintsengtw.blogspot.tw/2015/12/swashbuckle-swagger-for-web-api.html">mrkt-&nbsp;Swashbuckle - Swagger for Web Api 顯示內容的調整</a></div><div></div><div>
+</div></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Swagger/" rel="tag"># Swagger</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/10/12/%E7%94%A8-FluentValidation-%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8/" rel="prev" title="用 FluentValidation 驗證參數">
+      <i class="fa fa-chevron-left"></i> 用 FluentValidation 驗證參數
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/10/14/%E3%80%90Swagger%E3%80%91%E5%AE%A2%E8%A3%BD%E5%8C%96%E5%8F%AF%E4%BB%A5%E8%BC%B8%E5%85%A5Header%E7%9A%84%E6%AC%84%E4%BD%8D/" rel="next" title="【Swagger】客製化可以輸入Header的欄位">
+      【Swagger】客製化可以輸入Header的欄位 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%A9%9F"><span class="nav-number">1.</span> <span class="nav-text">使用步驟</span></a></li><li class="nav-item nav-level-3"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#-1"><span class="nav-number">3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#-2"><span class="nav-number">4.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#-3"><span class="nav-number">5.</span> <span class="nav-text"></span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%83%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">5.1.</span> <span class="nav-text">參考文章</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2016/10/14/%E3%80%90Swagger%E3%80%91%E6%B4%BB%E8%91%97%E7%9A%84API%E8%A6%8F%E6%A0%BC%E6%9B%B8/";
+    this.page.identifier = "2016/10/14/【Swagger】活著的API規格書/";
+    this.page.title = "【Swagger】活著的API規格書";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

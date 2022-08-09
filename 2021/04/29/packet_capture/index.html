@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="最近接到一個任務，需要協助團隊重現幾個 DB 連線時的錯誤，例如: connection pool 超過上限爆掉、connection timeout 等等，而其中一個錯誤 Pre-Login handshack 最難重現 12System.Data.SqlClient.SqlException (0x80131904): Connection Timeout Expired.  The time">
+<meta property="og:type" content="article">
+<meta property="og:title" content="擷取封包練習">
+<meta property="og:url" content="https://toyo0103.github.io/2021/04/29/packet_capture/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="最近接到一個任務，需要協助團隊重現幾個 DB 連線時的錯誤，例如: connection pool 超過上限爆掉、connection timeout 等等，而其中一個錯誤 Pre-Login handshack 最難重現 12System.Data.SqlClient.SqlException (0x80131904): Connection Timeout Expired.  The time">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://toyo0103.github.io/images/20210429/1.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20210429/2.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20210429/3.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20210429/4.png">
+<meta property="article:published_time" content="2021-04-29T13:45:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.081Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="wireshark">
+<meta property="article:tag" content="clumsy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20210429/1.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2021/04/29/packet_capture/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>擷取封包練習 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2021/04/29/packet_capture/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          擷取封包練習
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-29 13:45:00" itemprop="dateCreated datePublished" datetime="2021-04-29T13:45:00+00:00">2021-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2021/04/29/packet_capture/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/04/29/packet_capture/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近接到一個任務，需要協助團隊重現幾個 DB 連線時的錯誤，例如: connection pool 超過上限爆掉、connection timeout 等等，而其中一個錯誤 Pre-Login handshack 最難重現</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">System.Data.SqlClient.SqlException (0x80131904): Connection Timeout Expired.  The timeout period elapsed while attempting to consume the pre-login handshake acknowledgement.  This could be because the </span><br><span class="line">pre-login handshake failed or the server was unable to respond back in time.  The duration spent while attempting to connect to this server was - [Pre-Login] initialization=2846; handshake=6765; </span><br></pre></td></tr></table></figure>
+<p>這個錯誤推測是在與 SQL Server 連線時 three-way handshake 沒有收到回應導致的失敗，可能屬於網路不穩掉封包問題導致，但問題怎麼證明?</p>
+<h1 id="Wireshark"><a href="#Wireshark" class="headerlink" title="Wireshark"></a>Wireshark</h1><p>首先得先確認與 SQL Server 連線時到底傳了哪些封包出去，可以透過 <a target="_blank" rel="noopener" href="https://www.wireshark.org/">wireshark</a> 側錄封包的功能來達成</p>
+<h2 id="1-設定-Capture"><a href="#1-設定-Capture" class="headerlink" title="1. 設定 Capture"></a>1. 設定 Capture</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dst host xxx.xxx.xxx.xxx &amp;&amp; port 1433</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20210429/1.png" alt="/images/20210429/1.png"></p>
+<h2 id="2-嘗試對-SQL-做一次連線並觀察封包"><a href="#2-嘗試對-SQL-做一次連線並觀察封包" class="headerlink" title="2. 嘗試對 SQL 做一次連線並觀察封包"></a>2. 嘗試對 SQL 做一次連線並觀察封包</h2><p><img src="/images/20210429/2.png" alt="/images/20210429/2.png"><br>可以發現 Pre-login handshake 應該會有三次封包傳輸</p>
+<h1 id="Packet-Loss"><a href="#Packet-Loss" class="headerlink" title="Packet Loss"></a>Packet Loss</h1><p>接著得想辦法重現封包丟失的狀況下，是否會引發相同的 Exception，因為不知道怎麼精準的特定封包攔下來 (如果有人會的話也歡迎留言教學一下)，所以這邊透過 <a target="_blank" rel="noopener" href="https://github.com/jagt/clumsy">Clumsy</a> 這個套件來輔助達成</p>
+<h2 id="1-指定目的地的封包多少比例被攔截下來"><a href="#1-指定目的地的封包多少比例被攔截下來" class="headerlink" title="1. 指定目的地的封包多少比例被攔截下來"></a>1. 指定目的地的封包多少比例被攔截下來</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">outbound and ip.DstAddr = xxx.xxx.xxx.xxx</span><br></pre></td></tr></table></figure>
+<p><img src="/images/20210429/3.png" alt="/images/20210429/3.png"></p>
+<h2 id="2-增加連線-handshake-的機率"><a href="#2-增加連線-handshake-的機率" class="headerlink" title="2. 增加連線 handshake 的機率"></a>2. 增加連線 handshake 的機率</h2><p>因為無法精準攔截封包，所以採取短時間快速重複連線來增加封包被攔截的碰撞機率，所以我將 Connection Pool 關閉，並且開多執行序只做最簡單的連線與關閉連線，果然很快就碰到 handshake 的封包被攔掉的狀況</p>
+<p><img src="/images/20210429/4.png" alt="/images/20210429/4.png"></p>
+<p>而最後也證實了只要連線時網路不穩定導致掉封包等狀況時，底層是會引發上述錯誤的狀況</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/wireshark/" rel="tag"># wireshark</a>
+              <a href="/tags/clumsy/" rel="tag"># clumsy</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/01/dotnet_core_3_container_ms_sql_2016/" rel="prev" title="dotnet core 3 container 無法連線 MSSQL 2016">
+      <i class="fa fa-chevron-left"></i> dotnet core 3 container 無法連線 MSSQL 2016
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/08/15/intro_cqrs/" rel="next" title="淺談 CQRS">
+      淺談 CQRS <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Wireshark"><span class="nav-number">1.</span> <span class="nav-text">Wireshark</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%A8%AD%E5%AE%9A-Capture"><span class="nav-number">1.1.</span> <span class="nav-text">1. 設定 Capture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%98%97%E8%A9%A6%E5%B0%8D-SQL-%E5%81%9A%E4%B8%80%E6%AC%A1%E9%80%A3%E7%B7%9A%E4%B8%A6%E8%A7%80%E5%AF%9F%E5%B0%81%E5%8C%85"><span class="nav-number">1.2.</span> <span class="nav-text">2. 嘗試對 SQL 做一次連線並觀察封包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Packet-Loss"><span class="nav-number">2.</span> <span class="nav-text">Packet Loss</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%8C%87%E5%AE%9A%E7%9B%AE%E7%9A%84%E5%9C%B0%E7%9A%84%E5%B0%81%E5%8C%85%E5%A4%9A%E5%B0%91%E6%AF%94%E4%BE%8B%E8%A2%AB%E6%94%94%E6%88%AA%E4%B8%8B%E4%BE%86"><span class="nav-number">2.1.</span> <span class="nav-text">1. 指定目的地的封包多少比例被攔截下來</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%A2%9E%E5%8A%A0%E9%80%A3%E7%B7%9A-handshake-%E7%9A%84%E6%A9%9F%E7%8E%87"><span class="nav-number">2.2.</span> <span class="nav-text">2. 增加連線 handshake 的機率</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2021/04/29/packet_capture/";
+    this.page.identifier = "2021/04/29/packet_capture/";
+    this.page.title = "擷取封包練習";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="建立共同語言這章主是在講述語言的重要性，而語言又如何直接間接的影響到系統的成敗。這邊的語言並非指程式語言，而是指在相同情境下大家所共同理解的語言，就用 User 這個詞來舉例，在不同情境下就可能代表著不同意義  對購物網站而言 : User 可能代表的是逛商城的消費者 對商城平台而言 : User 可能代表是進駐的廠商 對商城後台而言 : User 可能代表的是進駐廠商的員工  一個 User 在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[讀書心得][領域驅動設計與 .Net Core] Chapter2: 語言與情境">
+<meta property="og:url" content="https://toyo0103.github.io/2022/05/25/book_hands_on_ddd_with_dotnet_ch2/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="建立共同語言這章主是在講述語言的重要性，而語言又如何直接間接的影響到系統的成敗。這邊的語言並非指程式語言，而是指在相同情境下大家所共同理解的語言，就用 User 這個詞來舉例，在不同情境下就可能代表著不同意義  對購物網站而言 : User 可能代表的是逛商城的消費者 對商城平台而言 : User 可能代表是進駐的廠商 對商城後台而言 : User 可能代表的是進駐廠商的員工  一個 User 在">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://toyo0103.github.io/images/20220525/1.jpg">
+<meta property="article:published_time" content="2022-05-25T22:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.079Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="DDD">
+<meta property="article:tag" content="讀書心得">
+<meta property="article:tag" content="領域驅動設計與 .Net Core">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20220525/1.jpg">
+
+<link rel="canonical" href="https://toyo0103.github.io/2022/05/25/book_hands_on_ddd_with_dotnet_ch2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>[讀書心得][領域驅動設計與 .Net Core] Chapter2: 語言與情境 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2022/05/25/book_hands_on_ddd_with_dotnet_ch2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [讀書心得][領域驅動設計與 .Net Core] Chapter2: 語言與情境
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-25 22:00:00" itemprop="dateCreated datePublished" datetime="2022-05-25T22:00:00+00:00">2022-05-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A0%98%E5%9F%9F%E9%A9%85%E5%8B%95%E8%A8%AD%E8%A8%88%E8%88%87-Net-Core/" itemprop="url" rel="index"><span itemprop="name">領域驅動設計與.Net Core</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2022/05/25/book_hands_on_ddd_with_dotnet_ch2/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/05/25/book_hands_on_ddd_with_dotnet_ch2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="建立共同語言"><a href="#建立共同語言" class="headerlink" title="建立共同語言"></a>建立共同語言</h2><p>這章主是在講述語言的重要性，而語言又如何直接間接的影響到系統的成敗。這邊的語言並非指程式語言，而是指在相同情境下大家所共同理解的語言，就用 <code>User</code> 這個詞來舉例，在不同情境下就可能代表著不同意義</p>
+<ul>
+<li>對購物網站而言 : User 可能代表的是逛商城的<em>消費者</em></li>
+<li>對商城平台而言 : User 可能代表是<em>進駐的廠商</em></li>
+<li>對商城後台而言 : User 可能代表的是<em>進駐廠商的員工</em></li>
+</ul>
+<p>一個 User 在各個情境下代表著不同意義，想關注的事情也不盡相同，當我們沒有情境為背景下，單單用 User 做為溝通可能會陷入雞同鴨講的狀況，這就是情境之於語言為何重要的地方。</p>
+<div class="note info">
+            <p>過去開會時發現一個現象，時常開發單位與需求單位在溝通時，彼此對於同一個東西用的詞是完全不同的，當需求單位在描述事情時，較新進或對 Domain 不熟的開發人員可能會弄不清楚對方在說什麼，這時候就需要熟的人在旁邊補充「他指的是系統裡的 xxx」，而會產生這樣的差距，常常是因為開發人員將他們的工作視為”將需求翻譯成程式語言”，所以程式內的語言可能自成一格，並與現實用語脫鉤，而這類的情況一多，當不同背景的人共同溝通時就會需要彼此一直翻譯，翻譯的狀況越多，中間遺失掉的”知識”可能就越多，大家應該都有看過翻譯很爛的書的經驗吧…</p>
+          </div>
+
+<p>所以書中建議為不同背景的人找尋共同用語相當重要，這可以減少溝通時因為翻譯而導致的落差，書中舉了一個很真實的案例：當使用者在廣告系統中發佈 (publish) 廣告時，為了避免帶有惡意或不適當的內容，會讓該廣告進入審核的流程 ….，而當這個需求轉化為程式語言後可能會變成</p>
+<ul>
+<li>當使用者按下 publish 按鈕時，將廣告狀態更新為 Published，並且發出<code>廣告狀態已變更(AdStatusUpdated)</code>的事件</li>
+<li>審核系統收到 <code>廣告狀態已變更(AdStatusUpdated)</code> 事件時將廣告撈出來排入審核流程</li>
+</ul>
+<p>看出這中間有多大的落差了嗎？我們在系統中不用 <code>廣告已被發佈(AdPublished)</code>，取而代之的是<code>廣告狀態已變更（AdStatusUpdated）</code>，發佈的動作轉化成狀態的變更，需求在這大量轉化為系統程式碼的過程中，很有可能原始的意圖早已消失，而這可能正是關鍵知識遺失的過程。</p>
+<h2 id="精準需求的迷失"><a href="#精準需求的迷失" class="headerlink" title="精準需求的迷失"></a>精準需求的迷失</h2><p>每當我們交付功能給客戶，面對客戶的不滿意時，常常歸因於<code>需求描述的失準</code>，開發團隊內會互相抱怨、指責，開發者埋怨開需求的人規格亂寫，開需求的人埋怨開發者搞不清楚也不問，導致開發出來的系統與最終想解決的問題有一大段落差，所以團隊可能會開始找更厲害的 PO 或 PM，開始要求規格書的格式，試圖用鉅細彌遺厚厚一本的規格書來彌補與真實之間的落差。</p>
+<p>而事實真的是這樣嗎？很多時候開發人員是沒有機會直接面對需求單位或業務人員的，所以當這些需求單位透過與系統分析師描述後，再透過<code>系統分析師的理解</code>轉化成規格書，這中間可能就已經遺失了一部分真實。</p>
+<div class="note info">
+            <p>很多時候會議內所謂的共識，是你以為你的共識，我以為我的共識，實際上彼此認知的事情根本不是一回事，等雙方都告一段落後回來一對才發現跟當時說的不一樣，但彼此都覺得自己是照當時的決議實作的啊，所以問題可能不是雙方背信，而是彼此認知根本不在同一個點上。</p>
+          </div>
+
+<p>書中提到可以嘗試在溝通中，用視覺化的方式彌平彼此認知的落差，而我自己的經驗也發現，大量的文字描述常常聽者很難聚焦，當開始把各個會議中談到的東西視覺化，輔助上依賴關係與線性流程，有助於幫助與會人員更能聚焦在同一個點上。<br><img src="/images/20220525/1.jpg" alt="/images/20220525/1.jpg"><br>圖片來源: 領域驅動設計與 .Net Core 書中 p.26</p>
+<h2 id="透過新的術語發現新的情境"><a href="#透過新的術語發現新的情境" class="headerlink" title="透過新的術語發現新的情境"></a>透過新的術語發現新的情境</h2><p>最前面提到在不同情境下，User 可能代表的意義完全不同，當我們在討論過程中可能會脫口而出<code>前台的消費者</code>、<code>平台的廠商</code>、<code>後台的管理者</code>…等等，而當這些用語的不同時，其實也幫助了我們發現了<code>新的情境</code>，針對這些新出現的情境建立對應的模型是需要的，對比於前面只用 <code>使用者(User)</code>來描述，後者更精準也更貼近真實，這也可以避免開發者寫出近乎於上帝類別的 User 來。 </p>
+<p>雖然短短一小篇，但發現要把讀完的東西用自己的話再說一次真的還有一段差距啊</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/DDD/" rel="tag"># DDD</a>
+              <a href="/tags/%E8%AE%80%E6%9B%B8%E5%BF%83%E5%BE%97/" rel="tag"># 讀書心得</a>
+              <a href="/tags/%E9%A0%98%E5%9F%9F%E9%A9%85%E5%8B%95%E8%A8%AD%E8%A8%88%E8%88%87-Net-Core/" rel="tag"># 領域驅動設計與 .Net Core</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/05/23/book_hands_on_ddd_with_dotnet/" rel="prev" title="[讀書心得][領域驅動設計與 .Net Core] Chapter1: 為什麼需要領域驅動設計">
+      <i class="fa fa-chevron-left"></i> [讀書心得][領域驅動設計與 .Net Core] Chapter1: 為什麼需要領域驅動設計
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/08/08/http_client_does_not_change_cookie_value_per_request/" rel="next" title="HttpClient doesn't change cookie value per request">
+      HttpClient doesn't change cookie value per request <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%85%B1%E5%90%8C%E8%AA%9E%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">建立共同語言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B2%BE%E6%BA%96%E9%9C%80%E6%B1%82%E7%9A%84%E8%BF%B7%E5%A4%B1"><span class="nav-number">2.</span> <span class="nav-text">精準需求的迷失</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%8F%E9%81%8E%E6%96%B0%E7%9A%84%E8%A1%93%E8%AA%9E%E7%99%BC%E7%8F%BE%E6%96%B0%E7%9A%84%E6%83%85%E5%A2%83"><span class="nav-number">3.</span> <span class="nav-text">透過新的術語發現新的情境</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2022/05/25/book_hands_on_ddd_with_dotnet_ch2/";
+    this.page.identifier = "2022/05/25/book_hands_on_ddd_with_dotnet_ch2/";
+    this.page.title = "[讀書心得][領域驅動設計與 .Net Core] Chapter2: 語言與情境";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
