@@ -189,6 +189,93 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/01/20/Async-Await-DeadLock%E5%95%8F%E9%A1%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/01/20/Async-Await-DeadLock%E5%95%8F%E9%A1%8C/" class="post-title-link" itemprop="url">Async Await DeadLock問題</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-01-20 14:52:00" itemprop="dateCreated datePublished" datetime="2016-01-20T14:52:00+08:00">2016-01-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/01/20/Async-Await-DeadLock%E5%95%8F%E9%A1%8C/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/01/20/Async-Await-DeadLock問題/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>之前寫了一個簡單上傳圖片的功能，碰到用await跟async非同執行的問題，本來在本機Visual Studio偵錯執行Run都好好的，但是放到線上後就永遠得不到回應TimeOut</p>
+<p>隱隱約約記得之前黑大寫過類似的文章，當時看過沒啥特別感覺，翻回來看後在實際操作後終於弄懂了(果然寫程式很多地方一知半解會GG的)，關於Async、Await這些推薦可以看這兩篇文章</p>
+<p><a target="_blank" rel="noopener" href="http://huan-lin.blogspot.com/2016/01/async-and-await.html">Huan-Lin 學習筆記-async 與 await</a><br><a target="_blank" rel="noopener" href="http://blog.darkthread.net/post-2015-08-06-await-task-block-deadlock.aspx">黑暗執行緒-&nbsp;await與Task.Result/Task.Wait()的Deadlock問題</a></p>
+<p>兩位前輩大大已經寫的很完整詳盡了，在這邊就不獻醜了，只簡單提供個範例給有興趣的人玩玩</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DeadLockController</span> : <span class="title">ApiController</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="meta">HttpGet</span>]</span><br><span class="line">        [<span class="meta">Route(<span class="meta-string">&quot;api/DeadLock/Index&quot;</span>)</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> HttpResponseMessage <span class="title">Index</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Task&lt;<span class="built_in">int</span>&gt; mytask = Go();</span><br><span class="line">            mytask.Wait();</span><br><span class="line">            <span class="keyword">return</span> Request.CreateResponse(mytask.Result);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">HttpGet</span>]</span><br><span class="line">        [<span class="meta">Route(<span class="meta-string">&quot;api/DeadLock&quot;</span>)</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> HttpResponseMessage <span class="title">DeadLock</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> result = Go().Result;</span><br><span class="line">            <span class="keyword">return</span> Request.CreateResponse(result);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">HttpGet</span>]</span><br><span class="line">        [<span class="meta">Route(<span class="meta-string">&quot;api/DeadLock/NoDeadLock&quot;</span>)</span>]</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task&lt;HttpResponseMessage&gt; <span class="title">NoDeadLock</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> result = <span class="keyword">await</span> Go();</span><br><span class="line">            <span class="keyword">return</span> Request.CreateResponse(result);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">async</span> Task&lt;<span class="built_in">int</span>&gt; <span class="title">Go</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="built_in">int</span> res = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">await</span> Task.Run(() =&gt;</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">//假裝執行某個耗時程序後取得結果</span></span><br><span class="line">                Task.Delay(<span class="number">1000</span>);</span><br><span class="line">                res = <span class="number">32767</span>;</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這邊只有NoDeadLock那個Action的寫法才不會DeadLock,其餘兩個永遠都不會得到回應，原因簡單的說就是在<span style="color: red;">Web中</span>**(特別強調在Web中，因為Console並不會)**，.Result 與 Wait()的方法都會鎖定目前的Thread等待結果回應再繼續執行，而上面的範例GO()這個Method在Web中會記住是哪個Thread來呼叫他的，以便他執行完後回應該Thread結果繼續執行。</p>
+<p>這時候就會發生DeadLock了，因為外面用Wait() or .Result鎖住當前Thread，GO()這個Method又在等待他被釋放好跟他回應結果，互相等待也就DeadLock了。</p>
+<p>前面兩篇文章很久以前就看過了，只是當時沒有特別放在心上，直到被這個簡單到只有5行Code的東西困擾了3~4天，才終於想到有這件事情，現在不懂沒關係，等到被鎖一次就懂了(吶喊!!)</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/01/11/Linq-%E5%8B%95%E6%85%8B%E7%B5%84%E5%90%88Linq%E6%A2%9D%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +300,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2016-01-11 15:11:00" itemprop="dateCreated datePublished" datetime="2016-01-11T15:11:00+00:00">2016-01-11</time>
+              <time title="Created: 2016-01-11 15:11:00" itemprop="dateCreated datePublished" datetime="2016-01-11T15:11:00+08:00">2016-01-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -299,14 +386,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-12-14 10:08:00" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+00:00">2015-12-14</time>
+              <time title="Created: 2015-12-14 10:08:00" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+08:00">2015-12-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -384,14 +471,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-12-14 10:08:00" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+00:00">2015-12-14</time>
+              <time title="Created: 2015-12-14 10:08:00" itemprop="dateCreated datePublished" datetime="2015-12-14T10:08:00+08:00">2015-12-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -492,14 +579,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-12-08 16:42:00" itemprop="dateCreated datePublished" datetime="2015-12-08T16:42:00+00:00">2015-12-08</time>
+              <time title="Created: 2015-12-08 16:42:00" itemprop="dateCreated datePublished" datetime="2015-12-08T16:42:00+08:00">2015-12-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -588,14 +675,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-12-03 17:08:00" itemprop="dateCreated datePublished" datetime="2015-12-03T17:08:00+00:00">2015-12-03</time>
+              <time title="Created: 2015-12-03 17:08:00" itemprop="dateCreated datePublished" datetime="2015-12-03T17:08:00+08:00">2015-12-03</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -724,14 +811,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-11-25 09:43:00" itemprop="dateCreated datePublished" datetime="2015-11-25T09:43:00+00:00">2015-11-25</time>
+              <time title="Created: 2015-11-25 09:43:00" itemprop="dateCreated datePublished" datetime="2015-11-25T09:43:00+08:00">2015-11-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -824,14 +911,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-10-23 14:49:00" itemprop="dateCreated datePublished" datetime="2015-10-23T14:49:00+00:00">2015-10-23</time>
+              <time title="Created: 2015-10-23 14:49:00" itemprop="dateCreated datePublished" datetime="2015-10-23T14:49:00+08:00">2015-10-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -917,14 +1004,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-10-23 12:00:00" itemprop="dateCreated datePublished" datetime="2015-10-23T12:00:00+00:00">2015-10-23</time>
+              <time title="Created: 2015-10-23 12:00:00" itemprop="dateCreated datePublished" datetime="2015-10-23T12:00:00+08:00">2015-10-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1026,14 +1113,14 @@ public bool Login(LoginViewModel model)
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-10-22 14:13:00" itemprop="dateCreated datePublished" datetime="2015-10-22T14:13:00+00:00">2015-10-22</time>
+              <time title="Created: 2015-10-22 14:13:00" itemprop="dateCreated datePublished" datetime="2015-10-22T14:13:00+08:00">2015-10-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1086,137 +1173,6 @@ public bool Login(LoginViewModel model)
 <p>*<br>這邊特別備註一下,如果今天是直接用物件模型將function拉進來,並且直接對xxxDataContext.fn_CreatePWD()操作是可以運作沒問題.</p>
 <p>但因為我今天的狀況是在Repository Pattern的情況下,並不會真的對實體做操作,而是全部都對基底類別DataContext做執行,所以沒有這個Method可以使用</p>
 <p>我想以上狀況應該是LinqToSql的Bug吧!!網路上也查了滿久的資料,好像沒有人對這塊有比較好的處理方式,如果有再補充上來～</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/06/09/Android-Use-Post-To-Call-API/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2015/06/09/Android-Use-Post-To-Call-API/" class="post-title-link" itemprop="url">[Android] Use Post To Call API</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2015-06-09 10:31:00" itemprop="dateCreated datePublished" datetime="2015-06-09T10:31:00+00:00">2015-06-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2015/06/09/Android-Use-Post-To-Call-API/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/09/Android-Use-Post-To-Call-API/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>開發Android時,如何用Post的方式 Call API來取得值</p>
-<ul>
-<li><p>首先 ```csharp<br>String UrlLocation = 你的API位置; //API位置</p>
-<pre><code>      String PostData = 要傳遞的資料(字串); //EX: ID=Toyo&amp;Name=Steven
-
-          HttpURLConnection conn = null;
-      StringBuilder sb = new StringBuilder();
-      try
-      &#123;
-          URL Url = new URL(UrlLocation);
-          conn = (HttpURLConnection)Url.openConnection();
-          conn.setRequestMethod(&quot;POST&quot;); //要呼意的方式 Get Or Post
-          conn.setDoInput(true);
-          conn.setDoOutput(true);
-          conn.connect();
-          //開始傳輸資料過去給API
-          OutputStream Output = conn.getOutputStream();
-          BufferedWriter writer = new BufferedWriter(
-                  new OutputStreamWriter(Output, &quot;UTF-8&quot;));
-          writer.write(PostData);
-          writer.flush();
-          writer.close();
-          Output.close();
-          //讀取API回傳的值
-          BufferedReader br = new BufferedReader(new InputStreamReader(
-                  conn.getInputStream(),&quot;utf-8&quot;));
-  
-              String line;
-          while ((line=br.readLine())!=null)
-          &#123;
-              sb.append(line);
-          &#125;
-      &#125;
-      catch(Exception ex)
-      &#123;
-          Log.e(&quot;API_Post&quot;,ex.getMessage());
-      &#125;
-      finally
-      &#123;
-          if (conn != null)
-              conn.disconnect();
-      &#125;
-  
-          return sb.toString();
-</code></pre>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   目前測試的結果是,如果不把呼叫API用執行緒AsyncTask的方式處理,在conn.connect()這邊會跳出Http...InMainThread的Exception,原因是Andorid預設呼叫外部處理5秒沒有回應就會跳Exception,所以預設不管這支API反應速度快不快,他都要你把上面那段做成切執行緒的方式處理,當然網路上還是有舊的方式可以用,但既然這是官方目前推薦的做法就照做吧 &#96;&#96;&#96;csharp</span><br><span class="line">&#x2F;&#x2F;這邊有三個參數</span><br><span class="line">&#x2F;&#x2F;第一個參數String : 呼叫這個方法時要帶入的參數型態,這邊就是可以帶入String,</span><br><span class="line">&#x2F;&#x2F;第二個參數Void : 處理時會回報狀態跟進度,這邊寫Void表示不回傳目前處理狀態</span><br><span class="line">&#x2F;&#x2F;第三個參數String : 處理完成時回傳的值</span><br><span class="line">private class Post extends AsyncTask&lt;String,Void,String&gt;</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;事件處理順序onPreExecute , doInBackground ,onPostExecute</span><br><span class="line">        @Override</span><br><span class="line">        protected void onPreExecute() &#123;</span><br><span class="line">            super.onPreExecute();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">        protected String doInBackground(String ... params) &#123;</span><br><span class="line">            &#x2F;&#x2F;改寫這邊,呼叫方法時可以傳進多個String,所以這邊改抓params</span><br><span class="line">            String UrlLocation &#x3D; params[0]; &#x2F;&#x2F;API位置</span><br><span class="line">            String PostData &#x3D; params[1]; &#x2F;&#x2F;要傳資料</span><br><span class="line"></span><br><span class="line">                HttpURLConnection conn &#x3D; null;</span><br><span class="line">            StringBuilder sb &#x3D; new StringBuilder();</span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                URL Url &#x3D; new URL(UrlLocation);</span><br><span class="line">                conn &#x3D; (HttpURLConnection)Url.openConnection();</span><br><span class="line">                conn.setRequestMethod(&quot;POST&quot;); &#x2F;&#x2F;要呼意的方式 Get Or Post</span><br><span class="line">                conn.setDoInput(true);</span><br><span class="line">                conn.setDoOutput(true);</span><br><span class="line">                conn.connect();</span><br><span class="line">                &#x2F;&#x2F;開始傳輸資料過去給API</span><br><span class="line">                OutputStream Output &#x3D; conn.getOutputStream();</span><br><span class="line">                BufferedWriter writer &#x3D; new BufferedWriter(</span><br><span class="line">                        new OutputStreamWriter(Output, &quot;UTF-8&quot;));</span><br><span class="line">                writer.write(PostData);</span><br><span class="line">                writer.flush();</span><br><span class="line">                writer.close();</span><br><span class="line">                Output.close();</span><br><span class="line"></span><br><span class="line">                    &#x2F;&#x2F;讀取API回傳的值</span><br><span class="line">                BufferedReader br &#x3D; new BufferedReader(new InputStreamReader(</span><br><span class="line">                        conn.getInputStream(),&quot;utf-8&quot;));</span><br><span class="line"></span><br><span class="line">                    String line;</span><br><span class="line">                while ((line&#x3D;br.readLine())!&#x3D;null)</span><br><span class="line">                &#123;</span><br><span class="line">                    sb.append(line);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            catch(Exception ex)</span><br><span class="line">            &#123;</span><br><span class="line">                Log.e(&quot;API_Post&quot;,ex.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">            finally</span><br><span class="line">            &#123;</span><br><span class="line">                if (conn !&#x3D; null)</span><br><span class="line">                    conn.disconnect();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                return sb.toString();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">           @Override</span><br><span class="line">        protected void onPostExecute(String Result) &#123;</span><br><span class="line">            super.onPostExecute(Result);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>  最後,因為在Debug模式AsyncTask並不會進入,所以要在doInBackground的事件裡面加上這行,但因為非Debug模式下這行會造成Android沒有回應, 所以記得在部署時把這行拿掉！！ ```csharp<br>android.os.Debug.waitForDebugger();</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   全部完成後,呼叫方式如下 &#96;&#96;&#96;csharp</span><br><span class="line">String Url &#x3D; &quot;http:&#x2F;&#x2F;www.api.com.tw&quot;;</span><br><span class="line">String PostData &#x3D; &quot;id&#x3D;toyo&amp;name&#x3D;steven&quot;;</span><br><span class="line">String Response &#x3D; new Post().execute(Url,PostData).get();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -1301,7 +1257,7 @@ public bool Login(LoginViewModel model)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1314,7 +1270,7 @@ public bool Login(LoginViewModel model)
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

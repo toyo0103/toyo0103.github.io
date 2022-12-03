@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="2018-10-25 更新 :DotNet Core 版本已經找出解決方案了，更新在最下面注意 !! 這篇的結論是 DotNet Core + Selenium + Chrome headless  + AWS Lambda  執行是失敗的，所以如果不想看失敗案例的可以直接跳過了，寫下來是因為過程踩了太多雷想記錄一下 ，如果想要簡單一點的作法，建議採用  NodeJs +">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【.Net Core】AWS Lambda + Chrome Headless + Snapshot">
+<meta property="og:url" content="https://toyo0103.github.io/2018/10/12/AWS_Lambda_Chrome_HeadLess/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="2018-10-25 更新 :DotNet Core 版本已經找出解決方案了，更新在最下面注意 !! 這篇的結論是 DotNet Core + Selenium + Chrome headless  + AWS Lambda  執行是失敗的，所以如果不想看失敗案例的可以直接跳過了，寫下來是因為過程踩了太多雷想記錄一下 ，如果想要簡單一點的作法，建議採用  NodeJs +">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/1.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/2.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/3.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/4.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/5.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/6.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/7.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/8.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/9.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/10.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/11.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/12.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20181011/13.png">
+<meta property="article:published_time" content="2018-10-11T17:58:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.076Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="dotnet core">
+<meta property="article:tag" content="AWS">
+<meta property="article:tag" content="Lambda">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20181011/1.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2018/10/12/AWS_Lambda_Chrome_HeadLess/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【.Net Core】AWS Lambda + Chrome Headless + Snapshot | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/10/12/AWS_Lambda_Chrome_HeadLess/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【.Net Core】AWS Lambda + Chrome Headless + Snapshot
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-12 01:58:00" itemprop="dateCreated datePublished" datetime="2018-10-12T01:58:00+08:00">2018-10-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/10/12/AWS_Lambda_Chrome_HeadLess/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/12/AWS_Lambda_Chrome_HeadLess/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div class="note danger">
+            <p><strong>2018-10-25 更新</strong> :DotNet Core 版本已經找出解決方案了，更新在最下面</p><p><strong>注意 !!</strong> </p><p><del>這篇的結論是 <code>DotNet Core + Selenium + Chrome headless  + AWS Lambda</code>  執行是失敗的，所以如果不想看失敗案例的可以直接跳過了，寫下來是因為過程踩了太多雷想記錄一下</del> ，如果想要簡單一點的作法，建議採用  <code>NodeJs + Chrome Headless + AWS Lambda</code>  的解決方案，幾乎不用什麼調整即可使用。</p><p><a target="_blank" rel="noopener" href="https://github.com/adieuadieu/serverless-chrome">NodeJs 版本參考: adieuadieu/serverless-chrome</a></p>
+          </div>
+
+
+
+<h1 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h1><p>近期公司希望將訂單快照從 <a target="_blank" rel="noopener" href="http://phantomjs.org/">PhantomJS</a> 改成 Chrome Headless 來實作，然後放到 <a target="_blank" rel="noopener" href="https://aws.amazon.com/cn/lambda/?sc_channel=PS&sc_campaign=acquisition_TW&sc_publisher=google&sc_medium=lambda_b&sc_content=lambda_e&sc_detail=aws%20lambda&sc_category=lambda&sc_segment=165241565701&sc_matchtype=e&sc_country=TW&s_kwcid=AL!4422!3!165241565701!e!!g!!aws%20lambda&ef_id=W5skSAAAAUVNZtNI:20181011080758:s">AWS Lambda</a> 上透過 <a target="_blank" rel="noopener" href="https://aws.amazon.com/tw/sqs/">AWS SQS</a> 來觸發，達成 Serverless 的架構。</p>
+<p>隨著 Chrome Headless 的推出，PhantomJS 也宣布停止更新了，想當年也跟它奮戰許久，又一滴時代的眼淚阿，而要能在 Lambda 上執行，則必須是能在 Linux 上執行的程式，所以 .Net Core 成為這次的選擇，為了不要每次改程式都要佈署到 Lambda 上才能測試(跑一次大概5分鐘)，所以透過 Docker 模擬 AWS Lambda 的環境直接在本機測試。</p>
+<h1 id="環境"><a href="#環境" class="headerlink" title="環境"></a>環境</h1><h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p>DotNet Core 2.1 : <a target="_blank" rel="noopener" href="https://www.microsoft.com/net/download">下載</a><br>Docker for Windows : <a target="_blank" rel="noopener" href="https://docs.docker.com/docker-for-windows/install/">下載</a></p>
+<h1 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h1><p>因為大量使用到 AWS SDK，查找官方 API 文件會更清楚些，所以本篇不著重在程式內容本身，只會帶到自己覺得關鍵的地方。</p>
+<h2 id="建立-Net-Core-類別庫專案"><a href="#建立-Net-Core-類別庫專案" class="headerlink" title="建立 .Net Core 類別庫專案"></a>建立 .Net Core 類別庫專案</h2><p>請選擇 .Net Core &gt; 類別庫 (.Net Core)</p>
+<p><img src="/images/20181011/1.png" alt="/images/20181011/1.png"></p>
+<h2 id="安裝-AWS-相關套件"><a href="#安裝-AWS-相關套件" class="headerlink" title="安裝 AWS 相關套件"></a>安裝 AWS 相關套件</h2><p><img src="/images/20181011/2.png" alt="/images/20181011/2.png"></p>
+<h2 id="實作-SQSHandler"><a href="#實作-SQSHandler" class="headerlink" title="實作 SQSHandler"></a>實作 SQSHandler</h2><p>因為是接收 SQS 來的命令，所以我建立了一支類別 <strong>SQSHandler</strong> ，並且寫了一個名為 <strong>Snapshot</strong> 的方法</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 執行快照</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;sqsEvent&quot;&gt;</span>The SQS event.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>執行結果<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">async</span> Task&lt;ResponseEntity&gt; <span class="title">Snapshot</span>(<span class="params">SQSEvent sqsEvent</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">                    </span><br><span class="line">    <span class="keyword">var</span> <span class="keyword">record</span> = sqsEvent.Records.First();</span><br><span class="line">    <span class="keyword">var</span> parameter = JsonConvert.DeserializeObject&lt;SqsEventBodyEntity&gt;(<span class="keyword">record</span>.Body);</span><br><span class="line">    </span><br><span class="line">    <span class="comment"><span class="doctag">///</span>/ 拍照</span></span><br><span class="line">    snapshotService.Do(parameter.TSCode, parameter.SalePageId);</span><br><span class="line">			</span><br><span class="line">    ...   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要接收 SQS 來的命令， AWS SDK 有提供 <strong>SQSEvent</strong> 類別，傳入自訂的參數會放在 <strong>Records</strong> 中，我們是將要拍照的參數用 Json 組起來後透過 SQS 拋進來，所以讀出 Records 後返解 Json String 為 Object ，然後拋給實作的SnapshotServiece。</p>
+<p>Snapshot 這個方法回傳值為<code>自定義</code>的，可以依照自己需求調整，避免誤會所以特別說明一下</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 執行快照</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;sqsEvent&quot;&gt;</span>The SQS event.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span>執行結果<span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">Snapshot</span>(<span class="params">SQSEvent sqsEvent</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">&#125;		</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Chrome-Headless"><a href="#Chrome-Headless" class="headerlink" title="Chrome Headless"></a>Chrome Headless</h2><p>什麼是 <a target="_blank" rel="noopener" href="https://developers.google.com/web/updates/2017/04/headless-chrome">Chrome Headless</a> ,簡單說就是透過無介面的方式要求Chrome執行一些快照、讀取頁面的服務。</p>
+<p>為了能夠執行驅動 Chrome，所以這邊安裝 Selenium 來輔助</p>
+<p><img src="/images/20181011/3.png" alt="/images/20181011/3.png"></p>
+<p>Selenium 還需要搭配 Chorme Driver 來操作 Chrome，所以需要先去<a target="_blank" rel="noopener" href="http://chromedriver.chromium.org/">http://chromedriver.chromium.org/</a>下載，但需要特別注意的是要下載 <strong>Linux64</strong> 的版本，因為 AWS Lambda 是 Linux 環境</p>
+<p><img src="/images/20181011/4.png" alt="/images/20181011/4.png"></p>
+<h3 id="實作-1"><a href="#實作-1" class="headerlink" title="實作"></a>實作</h3><p>這邊將下載回來的 Chrome Driver 放在 Root 的資料夾，所以在建立 ChromeDriver Instance 需要告訴它 Driver的位置</p>
+<p><img src="/images/20181011/5.png" alt="/images/20181011/5.png"></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//chrome headless的參數</span></span><br><span class="line">ChromeOptions options = <span class="keyword">new</span> ChromeOptions();</span><br><span class="line">options.AddArgument(<span class="string">&quot;no-sandbox&quot;</span>);</span><br><span class="line">options.AddArgument(<span class="string">&quot;headless&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//取得Driver的位置</span></span><br><span class="line"><span class="keyword">var</span> root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> driver = <span class="keyword">new</span> ChromeDriver(root, options);</span><br></pre></td></tr></table></figure>
+
+
+
+<p>拍照</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">    </span><br><span class="line"><span class="comment">//等待Timeout的設定</span></span><br><span class="line">WebDriverWait _wait = <span class="keyword">new</span> WebDriverWait(driver, <span class="keyword">new</span> TimeSpan(<span class="number">0</span>, <span class="number">0</span>, <span class="number">10</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">//要連的網址</span></span><br><span class="line">driver.Navigate().GoToUrl(targetUrl);</span><br><span class="line"></span><br><span class="line"><span class="comment">//尋找要拍的Element Class</span></span><br><span class="line"><span class="keyword">var</span> targetElement = _wait.Until&lt;IWebElement&gt;(d =&gt; driver.FindElement(By.ClassName(targetElementClass)));</span><br><span class="line"></span><br><span class="line"><span class="comment">//因為要拍的區塊可能超過預設螢幕大小，所以這邊抓到Element後將它的寬高設定給Chrome Windows Size</span></span><br><span class="line">driver.Manage().Window.Size = <span class="keyword">new</span> Size(targetElement.Size.Width, targetElement.Size.Height);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 拍照</span></span><br><span class="line">Screenshot screenShot = ((ITakesScreenshot)driver).GetScreenshot();</span><br><span class="line"></span><br><span class="line"><span class="comment">//處理圖片存到哪邊，我是存到S3，但因為不是本篇重點所以省略後面的程式碼</span></span><br><span class="line"><span class="keyword">var</span> imgStream = <span class="keyword">new</span> MemoryStream(screenShot.AsByteArray, <span class="number">0</span>, screenShot.AsByteArray.Length);</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Docker-測試"><a href="#Docker-測試" class="headerlink" title="Docker 測試"></a>Docker 測試</h1><p>打開 Power Shell，先確定已正確安裝 Docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker --version</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20181011/6.png" alt="/images/20181011/6.png"></p>
+<p>將目錄移到 .csproj 那層，然後執行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dotnet publish -c release -r linux-x64</span><br></pre></td></tr></table></figure>
+
+<div class="note info">
+            <p>dotnet publish command : <a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-publish?tabs=netcore21">文件</a></p>
+          </div>
+
+<p>如果發行成功應該可以在 <code>\bin\release\netcoreapp2.1\linux-x64\publish</code> 找到發行好的檔案</p>
+<p>透過 Docker Image 測試執行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat test.json | docker run -v <span class="variable">$&#123;PWD&#125;</span>/bin/QA/netcoreapp2.1/publish:/var/task/ -i -e DOCKER_LAMBDA_USE_STDIN=1 lambci/lambda:dotnetcore2.1 xxx.Slsa.Snapshot.Console::xxx.Slsa.Snapshot.Console.SqsHandler::Snapshot</span><br></pre></td></tr></table></figure>
+
+<p>解釋一下 Command</p>
+<p><code>cat test.json</code>  : 這是拿來模擬 SQS 的呼叫時傳遞的參數檔案，檔案內容如下，我會一直替換Body 的值來測試程式是否正確去拍我要求拍的頁面，所以可以理解成是把檔案讀取後丟到後面的指令執行。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="attr">&quot;Records&quot;</span>:[</span><br><span class="line">&#123;</span><br><span class="line"><span class="attr">&quot;messageId&quot;</span>:<span class="string">&quot;xxxxxxxx&quot;</span>,</span><br><span class="line"><span class="attr">&quot;receiptHandle&quot;</span>:<span class="string">&quot;xxxxx&quot;</span>,</span><br><span class="line"><span class="attr">&quot;body&quot;</span>:<span class="string">&quot;&#123;\&quot;SalePageId\&quot;: 12345,\&quot;TSCode\&quot;: \&quot;abcde\&quot;&#125;&quot;</span>,</span><br><span class="line"><span class="attr">&quot;attributes&quot;</span>:&#123;</span><br><span class="line"><span class="attr">&quot;ApproximateReceiveCount&quot;</span>:<span class="string">&quot;x&quot;</span>,</span><br><span class="line"><span class="attr">&quot;SentTimestamp&quot;</span>:<span class="string">&quot;xxxx&quot;</span>,</span><br><span class="line"><span class="attr">&quot;SenderId&quot;</span>:<span class="string">&quot;xxxx&quot;</span>,</span><br><span class="line"><span class="attr">&quot;ApproximateFirstReceiveTimestamp&quot;</span>:<span class="string">&quot;xxxxxx&quot;</span></span><br><span class="line">&#125;,</span><br><span class="line"><span class="attr">&quot;messageAttributes&quot;</span>:&#123;</span><br><span class="line">&#125;,</span><br><span class="line"><span class="attr">&quot;md5OfBody&quot;</span>:<span class="string">&quot;xxxxx&quot;</span>,</span><br><span class="line"><span class="attr">&quot;eventSource&quot;</span>:<span class="string">&quot;aws:sqs&quot;</span>,</span><br><span class="line"><span class="attr">&quot;eventSourceARN&quot;</span>:<span class="string">&quot;xxxxxx&quot;</span>,</span><br><span class="line"><span class="attr">&quot;awsRegion&quot;</span>:<span class="string">&quot;xxxxxx&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>docker run -v $&#123;PWD&#125;/bin/QA/netcoreapp2.1/publish:/var/task/ </code> : ${PWD} 為預設變數，表示目前的目路位置，加上 /bin/QA/netcoreapp2.1/publish 後就是剛剛發行的檔案位置，mount 到 Docker container 裡面的 <code>/var/task</code> 位置，而這也是 lambda 預設執行的位置</p>
+<p><code>lambci/lambda:dotnetcore2.1</code> : Docker Image 的名稱，這是別人已經做好跟 AWS lambda 一模一樣環境的 Image ，透過它來建置我們要的環境做測試</p>
+<p><code>xxx.Slsa.Snapshot.Console::xxx.Slsa.Snapshot.Console.SqsHandler::Snapshot</code> : 格式為 Assembly Name :: Class Name ::  FunctionName，表示請它執行剛剛我們開發的 SQSHandler 的 Snapshot 方法</p>
+<h2 id="找不到-Chrome-binary-錯誤"><a href="#找不到-Chrome-binary-錯誤" class="headerlink" title="找不到 Chrome binary 錯誤"></a>找不到 Chrome binary 錯誤</h2><p>這時候應該會發生找不到 Chrome binary 的錯誤，原因是在 Lambda 的環境並不能安裝 Chrome，所以 Chrome Driver 想去預設環境找 Chrome 核心來執行時會找不到。</p>
+<p><img src="/images/20181011/7.png" alt="/images/20181011/7.png"></p>
+<div class="note info">
+            <p>整個驅動 Chrome 的流程</p><p>Selenum → Chrome Driver → Chrome binary</p>
+          </div>
+
+<p>還好已經有網路上的大神解決了這問題，<a target="_blank" rel="noopener" href="https://github.com/adieuadieu/serverless-chrome/blob/master/docs/chrome.md">serverless-chrome</a>這個 Project 就是將 Chrome 封裝成 Binary 檔後可以打包進專案中，在 Power Shell 執行以下指令來取得 Chrome Binary</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -dt --rm --name headless-chromium adieuadieu/headless-chromium-for-aws-lambda:stable</span><br><span class="line">$ docker cp headless-chromium:/bin/headless-chromium ./</span><br><span class="line">$ docker stop headless-chromium</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在目前 Power Shell 指的資料底下可以找到 <strong>headless-chromium</strong> 檔案，將這個檔案加到專案中</p>
+<p><img src="/images/20181011/8.png" alt="/images/20181011/8.png"></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//chrome headless的參數</span></span><br><span class="line">ChromeOptions options = <span class="keyword">new</span> ChromeOptions();</span><br><span class="line">options.AddArgument(<span class="string">&quot;no-sandbox&quot;</span>);</span><br><span class="line">options.AddArgument(<span class="string">&quot;headless&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//取得Driver的位置</span></span><br><span class="line"><span class="keyword">var</span> root = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);</span><br><span class="line"></span><br><span class="line"><span class="comment">//指定Chrome Binary位置</span></span><br><span class="line">options.BinaryLocation = Path.Combine(root, <span class="string">&quot;headless-chromium&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> driver = <span class="keyword">new</span> ChromeDriver(root, options);</span><br></pre></td></tr></table></figure>
+
+<p>做到這邊再執行剛剛的指令應該可以正常拍照了。</p>
+<h1 id="掃雷"><a href="#掃雷" class="headerlink" title="掃雷"></a>掃雷</h1><h2 id="亂碼問題"><a href="#亂碼問題" class="headerlink" title="亂碼問題"></a>亂碼問題</h2><p>因為 Chrome Binary 輕量化，所以作者並沒有把中文/日文/韓文包進來，所以拍一下遇到上述文字都會出現亂碼</p>
+<div class="note info">
+            <p>詳細討論串</p><p><a target="_blank" rel="noopener" href="https://github.com/adieuadieu/serverless-chrome/issues/49">Include Chinese/Japanese/Korean/more fonts in headless Chrome binary #49</a></p>
+          </div>
+
+<p>依據該討論串下方的回應，已經有對應的解決方案</p>
+<p><img src="/images/20181011/9.png" alt="/images/20181011/9.png"></p>
+<p>1.將需要的字典檔下載回來放在 Root 的 <code>.fonts</code> 資料夾中</p>
+<p><img src="/images/20181011/10.png" alt="/images/20181011/10.png"></p>
+<p>2.將 <code>$HOME</code> 環境變數指到 <code>/var/task</code></p>
+<p>建立一個檔案 <code>env.variable</code> 裡面寫</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HOME=/var/task</span><br></pre></td></tr></table></figure>
+
+<p>接著透過 Docker Container 執行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat test.json | docker run --env-file ./env.variable -v <span class="variable">$&#123;PWD&#125;</span>/bin/QA/netcoreapp2.1/publish:/var/task/ -i -e DOCKER_LAMBDA_USE_STDIN=1 lambci/lambda:dotnetcore2.1 xxx.Slsa.Snapshot.Console::xxx.Slsa.Snapshot.Console.SqsHandler::Snapshot</span><br></pre></td></tr></table></figure>
+
+<p>這樣拍出來的中文、韓文、日文的畫面就不會亂碼了</p>
+<h2 id="權限"><a href="#權限" class="headerlink" title="權限"></a>權限</h2><p>將程式打包好放到 AWS Lambda 上面跑，隨即碰到以下錯誤</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Permission denied: Win32Exception</span><br><span class="line">at Interop.Sys.ForkAndExecProcess(String filename, String[] argv, String[] envp, String cwd, Boolean redirectStdin, Boolean redirectStdout, Boolean redirectStderr, Boolean setUser, UInt32 userId, UInt32 groupId, Int32&amp; lpChildPid, Int32&amp; stdinFd, Int32&amp; stdoutFd, Int32&amp; stderrFd, Boolean shouldThrow)</span><br><span class="line">at System.Diagnostics.Process.StartCore(ProcessStartInfo startInfo)</span><br><span class="line">at System.Diagnostics.Process.Start()</span><br><span class="line">at OpenQA.Selenium.DriverService.Start()</span><br><span class="line">at OpenQA.Selenium.Remote.DriverServiceCommandExecutor.Execute(Command commandToExecute)</span><br><span class="line">at OpenQA.Selenium.Remote.RemoteWebDriver.Execute(String driverCommandToExecute, Dictionary`2 parameters)</span><br><span class="line">at OpenQA.Selenium.Remote.RemoteWebDriver.StartSession(ICapabilities desiredCapabilities)</span><br><span class="line">at OpenQA.Selenium.Remote.RemoteWebDriver..ctor(ICommandExecutor commandExecutor, ICapabilities desiredCapabilities)</span><br><span class="line">at OpenQA.Selenium.Chrome.ChromeDriver..ctor(ChromeDriverService service, ChromeOptions options, TimeSpan commandTimeout)</span><br><span class="line">at .........</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>原因是 Lambda 的 <code>/var/task</code> 是 read-only，所以要執行 Chrome Driver 與 Chrome Binary 時會沒有權限，只好用很 tricky 的方式，先把 Chrome Driver 與 Chrome Binary 搬到 <code>/tmp</code> 底下再授予權限</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Isinitialeds this instance.</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Initial</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!File.Exists(<span class="string">&quot;/tmp/chromedriver&quot;</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        File.Copy(<span class="string">&quot;/var/task/chromedriver&quot;</span>, <span class="string">&quot;/tmp/chromedriver&quot;</span>, <span class="literal">true</span>);</span><br><span class="line">        Exec(<span class="string">&quot;chmod +x /tmp/chromedriver&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!File.Exists(<span class="string">&quot;/tmp/headless-chromium&quot;</span>))</span><br><span class="line">    &#123;</span><br><span class="line">        File.Copy(<span class="string">&quot;/var/task/headless-chromium&quot;</span>, <span class="string">&quot;/tmp/headless-chromium&quot;</span>, <span class="literal">true</span>);</span><br><span class="line">        Exec(<span class="string">&quot;chmod +x /tmp/headless-chromium&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> Executes the specified command.</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;cmd&quot;&gt;</span>The command.<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Exec</span>(<span class="params"><span class="built_in">string</span> cmd</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> escapedArgs = cmd.Replace(<span class="string">&quot;\&quot;&quot;</span>, <span class="string">&quot;\\\&quot;&quot;</span>);</span><br><span class="line">    <span class="keyword">var</span> process = <span class="keyword">new</span> Process</span><br><span class="line">    &#123;</span><br><span class="line">        StartInfo = <span class="keyword">new</span> ProcessStartInfo</span><br><span class="line">        &#123;</span><br><span class="line">            RedirectStandardOutput = <span class="literal">true</span>,</span><br><span class="line">            UseShellExecute = <span class="literal">false</span>,</span><br><span class="line">            CreateNoWindow = <span class="literal">true</span>,</span><br><span class="line">            WindowStyle = ProcessWindowStyle.Hidden,</span><br><span class="line">            FileName = <span class="string">&quot;/bin/bash&quot;</span>,</span><br><span class="line">            Arguments = <span class="string">$&quot;-c \&quot;<span class="subst">&#123;escapedArgs&#125;</span>\&quot;&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    process.Start();</span><br><span class="line">    process.WaitForExit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//chrome headless的參數</span></span><br><span class="line">ChromeOptions options = <span class="keyword">new</span> ChromeOptions();</span><br><span class="line">options.AddArgument(<span class="string">&quot;no-sandbox&quot;</span>);</span><br><span class="line">options.AddArgument(<span class="string">&quot;headless&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//指定Chrome Binary位置</span></span><br><span class="line">options.BinaryLocation = <span class="string">&quot;/tmp/headless-chromium&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> driver = <span class="keyword">new</span> ChromeDriver(<span class="string">&quot;/tmp&quot;</span>, options);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="CreatePlatformSocket-Operation-not-permitted-1"><a href="#CreatePlatformSocket-Operation-not-permitted-1" class="headerlink" title="CreatePlatformSocket() Operation not permitted (1)"></a>CreatePlatformSocket() Operation not permitted (1)</h2><p>接著遇到下個問題是， ChromeDriver Init 起來時會去呼叫 <a href="http://localhost:xxxx/Session">http://localhost:xxxx/Session</a> ，而這時後就會因為沒有權限而失敗，但這個在 NodeJs 的版本不會發生，查了 Selenium 的 Source Code 也看不出原因，找了相當多的討論串，<del>目前似乎依然無解，也是在這一題後不得不先放棄</del>，改採用相容較高的 NodeJs 版本</p>
+<p><img src="/images/20181011/11.png" alt="/images/20181011/11.png"></p>
+<div class="note info">
+            <p><strong>相關討論串</strong></p><p><a target="_blank" rel="noopener" href="https://github.com/SeleniumHQ/selenium/issues/5457">The HTTP request to the remote WebDriver server for URL http://localhost:42607/session timed out after 60 seconds.</a></p><p><a target="_blank" rel="noopener" href="https://github.com/SeleniumHQ/selenium/issues/6234">Message: OpenQA.Selenium.WebDriverException : The HTTP request to the remote WebDriver server for URL when using Chrome Headles #6234</a></p>
+          </div>
+
+
+
+<p><strong>2018-10-25 更新</strong></p>
+<p>在產生 ChromeDriver 的時候加上 <code>disable-dev-shm-usage</code> 、 <code>single-process</code> 兩個參數可以解決這個問題，</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">options.AddArguments(<span class="string">&quot;no-sandbox&quot;</span>, <span class="string">&quot;headless&quot;</span>, <span class="string">&quot;disable-dev-shm-usage&quot;</span>, <span class="string">&quot;disable-gpu&quot;</span>, <span class="string">&quot;single-process&quot;</span>, <span class="string">&quot;no-zygote&quot;</span>, <span class="string">&quot;hide-scrollbars&quot;</span>, <span class="string">&quot;lang=zh-TW,zh&quot;</span>);</span><br><span class="line"></span><br><span class="line">options.BinaryLocation = <span class="string">&quot;/tmp/headless-chromium&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> driver = <span class="keyword">new</span> ChromeDriver(<span class="string">&quot;/tmp&quot;</span>, options);</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>single-process</code> 為 Chromium 的模式之一，詳細可以參考文件</p>
+<div class="note info">
+            <p><a target="_blank" rel="noopener" href="https://www.chromium.org/developers/design-documents/process-models">[The Chromium Projects] - Process Models</a></p><p><a target="_blank" rel="noopener" href="https://peter.sh/experiments/chromium-command-line-switches/">List of Chromium Command Line Switches</a></p>
+          </div>
+
+
+
+<p><code>disable-dev-shm-usage</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">To fix, run the container with docker run --shm-size&#x3D;1gb to increase the size of &#x2F;dev&#x2F;shm . Since Chrome 65, this is no longer necessary. Instead, launch the browser with the --disable-dev-shm-usage flag</span><br></pre></td></tr></table></figure>
+
+
+
+<p>會找到這個解法是因為去看了 <a target="_blank" rel="noopener" href="https://github.com/adieuadieu/serverless-chrome">serverless-chrome</a> 的 source code 發現他是這樣寫的，但這樣搭配為什麼會正常，說實在的目前我還看不出為什麼 ， 只能等之後讀更多文件再看看有沒有辦法解答。</p>
+<p>加上這兩個參數後 Lambda 上面雖然還是會報 <code>CreatePlatformSocket() Operation not permitted (1)</code> 錯誤，但減少到只剩下兩次，就正常執行了</p>
+<p><img src="/images/20181011/12.png" alt="/images/20181011/12.png"></p>
+<h2 id="補充-環境問題"><a href="#補充-環境問題" class="headerlink" title="補充 : 環境問題"></a>補充 : 環境問題</h2><p>最後雖然我們採用了 NodeJs 的版本，但還是踩了一個小小的雷，那就是要把檔案壓縮成 zip 檔放到 AWS Lambda 時，相同的程式用我的電腦壓出來是不能執行，但同事壓出來的 zip 檔案卻可以，經過測試後發現，因為我的 Mac 語系環境是中文，壓縮出來時預設會是<code>封裝.zip</code>，不管是中文的的放上去，或是改了檔名後放上去都會錯誤。</p>
+<p>只能下 command 指定壓縮出來的檔名才可解決這個問題</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ zip -r -j ./destination/pacakge ./<span class="built_in">source</span></span><br></pre></td></tr></table></figure>
+
+<p>相同的，在 Windows 壓出來放上去一樣會壞掉，推測是相同原因….真的是雷到你不要不要的</p>
+<p><strong>2018-10-25 更新</strong></p>
+<p>網路上找到有人討論 Windows 壓縮後放上去會壞掉的問題，解法是請安裝 7zip，並且直接到 root 層執行壓縮，壓完後解壓就要是Root，不要再包一層資料夾，另外…只能用 GUI 執行壓縮，我用 PowerShell 壓縮一樣不行，不知道為什麼(暈)，難怪論壇開宗明義第一句話就是，<strong>不要用 Windows</strong> ，Linux base 的東西跟 windows 真的是很不合…</p>
+<p><img src="/images/20181011/13.png" alt="/images/20181011/13.png"></p>
+ <div class="note info">
+            <p><a target="_blank" rel="noopener" href="https://forums.aws.amazon.com/thread.jspa?threadID=179638">Lambda disdains ZIP files compressed with PowerShell</a></p>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dotnet-core/" rel="tag"># dotnet core</a>
+              <a href="/tags/AWS/" rel="tag"># AWS</a>
+              <a href="/tags/Lambda/" rel="tag"># Lambda</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/09/14/%E8%87%AA%E8%A8%82Google_SearchEngine/" rel="prev" title="【生產力】自訂Google Search Engine">
+      <i class="fa fa-chevron-left"></i> 【生產力】自訂Google Search Engine
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/24/%E3%80%90%E8%8B%B1%E6%96%87%E3%80%91Down%20the%20line/" rel="next" title="【英文】Down the line">
+      【英文】Down the line <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%83%85%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">情境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%92%B0%E5%A2%83"><span class="nav-number">2.</span> <span class="nav-text">環境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D"><span class="nav-number">2.1.</span> <span class="nav-text">安裝</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">實作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B-Net-Core-%E9%A1%9E%E5%88%A5%E5%BA%AB%E5%B0%88%E6%A1%88"><span class="nav-number">3.1.</span> <span class="nav-text">建立 .Net Core 類別庫專案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%9D-AWS-%E7%9B%B8%E9%97%9C%E5%A5%97%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">安裝 AWS 相關套件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C-SQSHandler"><span class="nav-number">3.3.</span> <span class="nav-text">實作 SQSHandler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Chrome-Headless"><span class="nav-number">3.4.</span> <span class="nav-text">Chrome Headless</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9C-1"><span class="nav-number">3.4.1.</span> <span class="nav-text">實作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker-%E6%B8%AC%E8%A9%A6"><span class="nav-number">4.</span> <span class="nav-text">Docker 測試</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%BE%E4%B8%8D%E5%88%B0-Chrome-binary-%E9%8C%AF%E8%AA%A4"><span class="nav-number">4.1.</span> <span class="nav-text">找不到 Chrome binary 錯誤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%83%E9%9B%B7"><span class="nav-number">5.</span> <span class="nav-text">掃雷</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%82%E7%A2%BC%E5%95%8F%E9%A1%8C"><span class="nav-number">5.1.</span> <span class="nav-text">亂碼問題</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AC%8A%E9%99%90"><span class="nav-number">5.2.</span> <span class="nav-text">權限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CreatePlatformSocket-Operation-not-permitted-1"><span class="nav-number">5.3.</span> <span class="nav-text">CreatePlatformSocket() Operation not permitted (1)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A3%9C%E5%85%85-%E7%92%B0%E5%A2%83%E5%95%8F%E9%A1%8C"><span class="nav-number">5.4.</span> <span class="nav-text">補充 : 環境問題</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2018/10/12/AWS_Lambda_Chrome_HeadLess/";
+    this.page.identifier = "2018/10/12/AWS_Lambda_Chrome_HeadLess/";
+    this.page.title = "【.Net Core】AWS Lambda + Chrome Headless + Snapshot";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

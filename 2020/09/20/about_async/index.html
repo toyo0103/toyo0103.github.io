@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="說來真的好久沒有寫文章了，除了工作很忙之外，目前碰到的問題也通常不是一兩篇文章可以交代的清，所以也就更新部落格的時間也就間隔越來越長了。 這次主要是想把最近針對 Async 的一些測試研究記錄下來，那我們就開始吧 ！ # Async 是什麼？Async 在 C# 語言中用來支援非同步處理的一種語法，而它的使用往往搭配 Await 一起使用，先來看看一段簡單的程式碼 1234567891011121">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【C#】 關於 Async 的三兩事">
+<meta property="og:url" content="https://toyo0103.github.io/2020/09/20/about_async/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="說來真的好久沒有寫文章了，除了工作很忙之外，目前碰到的問題也通常不是一兩篇文章可以交代的清，所以也就更新部落格的時間也就間隔越來越長了。 這次主要是想把最近針對 Async 的一些測試研究記錄下來，那我們就開始吧 ！ # Async 是什麼？Async 在 C# 語言中用來支援非同步處理的一種語法，而它的使用往往搭配 Await 一起使用，先來看看一段簡單的程式碼 1234567891011121">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://toyo0103.github.io/images/20200919/1.png">
+<meta property="article:published_time" content="2020-09-19T17:07:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.079Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="Async">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20200919/1.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2020/09/20/about_async/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【C#】 關於 Async 的三兩事 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2020/09/20/about_async/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【C#】 關於 Async 的三兩事
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-20 01:07:00" itemprop="dateCreated datePublished" datetime="2020-09-20T01:07:00+08:00">2020-09-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2020/09/20/about_async/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/20/about_async/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>說來真的好久沒有寫文章了，除了工作很忙之外，目前碰到的問題也通常不是一兩篇文章可以交代的清，所以也就更新部落格的時間也就間隔越來越長了。</p>
+<p>這次主要是想把最近針對 Async 的一些測試研究記錄下來，那我們就開始吧 ！</p>
+<h1 id="Async-是什麼？"><a href="#Async-是什麼？" class="headerlink" title="# Async 是什麼？"></a># Async 是什麼？</h1><p>Async 在 C# 語言中用來支援非同步處理的一種語法，而它的使用往往搭配 Await 一起使用，先來看看一段簡單的程式碼</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>  &#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;1. Hi I&#x27;m Async Demo&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//拿到非同步的任務</span></span><br><span class="line">    <span class="keyword">var</span> task = DoAsync();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//繼續執行</span></span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;2. Hello World!&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//等待非同步任務執行完成</span></span><br><span class="line">    <span class="keyword">await</span> task;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;4. End!&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">DoAsync</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>  &#123;</span><br><span class="line">    <span class="comment">//碰到 await 時，會將控制項回傳給呼叫端，並且等待非同步的方法執行完成</span></span><br><span class="line">    <span class="keyword">await</span> Task.Run(()=&gt; </span><br><span class="line">                   &#123;</span><br><span class="line">                     Thread.Sleep(TimeSpan.FromSeconds(<span class="number">5</span>));</span><br><span class="line">                     Console.WriteLine(<span class="string">$&quot;3. Async method Done&quot;</span>);</span><br><span class="line">                   &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這段程式碼執行後可以看到以下結果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. Hi I&#39;m Async Demo</span><br><span class="line">2. Hello World!</span><br><span class="line">3. Async method Done</span><br><span class="line">4. End!</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="觀察執行緒的切換"><a href="#觀察執行緒的切換" class="headerlink" title="觀察執行緒的切換"></a>觀察執行緒的切換</h2><p>接著加上執行緒 Id 看看，讓我們更清楚執行緒之間是如何切換的</p>
+<p><img src="/images/20200919/1.png" alt="/images/20200919/1.png"></p>
+<p>執行結果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[1] 1. Hi I&#39;m Async Demo</span><br><span class="line">[1] 2. Hello World!</span><br><span class="line">[4] 3. Async method Done</span><br><span class="line">[4] 4. End!</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>執行流程</strong></p>
+<ul>
+<li><p><strong>執行緒_1</strong> 在 11 行印出了 <code>[1] 1. Hi I&#39;m Async Demo</code></p>
+</li>
+<li><p><strong>執行緒_1</strong> 在 14 行進入了 DoAsync 的方法中</p>
+</li>
+<li><p><strong>執行緒_1</strong> 在 27 行碰到 Task.Run 開啟了非同步執行的方法，並因為 await 跳出了這個 DoAsync() </p>
+</li>
+<li><p><strong>執行緒_1</strong> 在 16 行碰到印出了 <code>[1] 2. Hello World!</code></p>
+</li>
+<li><p><strong>執行緒_1</strong> 在 19 行碰到 await task ，開始等待 task 執行完成，<strong>執行緒_1</strong> 釋放回到 Thread Pool</p>
+</li>
+<li><p><strong>執行緒_4</strong> 在非同步方法的第 30 行 印出了 <code>[4] 3. Async method Done</code> ，並通知 await task 執行完成</p>
+</li>
+<li><p>TaskScheduler（通常，這會是以執行緒集區為目標的預設工作排程器）依據最有效率的判斷，讓 <strong>執行緒_4</strong> 往下執行未完的部分</p>
+</li>
+<li><p><strong>執行緒_4</strong> 接手繼續將 await 之後還沒做完的工作執行完成，意即 21 行，印出 <code>[4] 4. End!</code></p>
+</li>
+</ul>
+<h2 id="稍微修改一下程式…"><a href="#稍微修改一下程式…" class="headerlink" title="稍微修改一下程式…"></a>稍微修改一下程式…</h2><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">Main</span>(<span class="params"><span class="built_in">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>  &#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;[<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>] 1. Hi I&#x27;m Async Demo&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//強制將非同步方法改成同步</span></span><br><span class="line">    DoAsync().Wait();</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;[<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>] 2. Hello World!&quot;</span>);</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;[<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>] 4. End!&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">async</span> Task <span class="title">DoAsync</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>  &#123;</span><br><span class="line">    <span class="comment">//碰到 await 時，會將控制項回傳給呼叫端，並且等待非同步的方法執行完成</span></span><br><span class="line">    <span class="keyword">await</span> Task.Run(()=&gt; </span><br><span class="line">                   &#123;</span><br><span class="line">                     Thread.Sleep(TimeSpan.FromSeconds(<span class="number">5</span>));</span><br><span class="line">                     Console.WriteLine(<span class="string">$&quot;[<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>] 3. Async method Done&quot;</span>);</span><br><span class="line">                   &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>執行結果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[1] 1. Hi I&#39;m Async Demo</span><br><span class="line">[4] 3. Async method Done</span><br><span class="line">[1] 2. Hello World!</span><br><span class="line">[1] 4. End!</span><br></pre></td></tr></table></figure>
+
+<p>這邊可以看到 <strong>執行緒_1</strong> 在執行到 await Task.Run(()=&gt; …) 時跳出，但因為我們下了 Wait()，所以強迫 <strong>執行緒_1</strong> 進行同步的等待。</p>
+<p><strong>執行緒_4</strong> 印完 <code>[4] 3. Async method Done</code> 後，通知 <strong>執行緒_1</strong> 繼續往下進行，所以看到 <strong>執行緒_1</strong>  接著將剩下的程式跑完</p>
+<h2 id="差別在哪？"><a href="#差別在哪？" class="headerlink" title="差別在哪？"></a>差別在哪？</h2><p>當呼叫非同步執行方法時，如果一路都是用 await 並不會造成任何執行緒被封鎖，換言之該執行緒還可以在別的地方繼續服務，一旦呼叫了 <strong>Result</strong> 或 <strong>Wait()</strong> 這類的強制同步方法，則該執行緒會被封鎖，並等待到非同步方法執行完成後才繼續完成尚未完成的後續工作，這會嚴重消耗執行緒的使用效率。</p>
+<p>我曾經對一個 Web API 專案進行壓測，在資源給得非常有限的情境下 (約 0.5 core cpu)，<code>await 搭配 Task.Run()</code> 跟 <code>Result 搭配 Task.Run</code> ，兩個 RPS 測起來差了快一倍之多，在資源極度有限下，執行緒的使用效率將大大影響整體服務的效率。</p>
+<h1 id="SynchronizationContext"><a href="#SynchronizationContext" class="headerlink" title="# SynchronizationContext"></a># SynchronizationContext</h1><p>SynchronizationContext 是用來記錄當前執行緒環境的類別，在 ASP.NET、WPF、WinForm 都有類似的類別只是名字可能有些差異，其最主要的目的都是在非同步方法中要能調用 UI 執行緒來更新介面之類的操作，而 SynchronizationContext 就紀錄著 UI 執行緒。</p>
+<h2 id="Deadlock"><a href="#Deadlock" class="headerlink" title="Deadlock"></a>Deadlock</h2><p>過去寫 ASP.NET 的時候曾經踩過一次  SynchronizationContext 的雷，在 ASP.NET 中如果如果呼叫 <code>SynchronizationContext.Currnt</code> 會發現並不為 Null，且型別是 <code>AspNetSynchronizationContext</code> ，當我們用上述的 <code>Result / Wait() 搭配 await</code> 將會導致 Deadlock。</p>
+<p>原因是程式碰到 await 時會先判斷 SynchronizationContext.Currnt 是否為 Null，如果是則會在 Task 結束時呼叫 TaskScheduler （通常為 Thread Pool）來安排後續工作。反之，如果 SynchronizationContext.Currnt 不為 Null 時，就會透過 SynchronizationContext.Currnt 來繼續後續的動作。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//碰到 await 時，記住了 SynchronizationContext.Currnt</span></span><br><span class="line"><span class="keyword">await</span> Task.Run(()=&gt; </span><br><span class="line">               &#123;</span><br><span class="line">                 Thread.Sleep(TimeSpan.FromSeconds(<span class="number">5</span>));</span><br><span class="line">                 Console.WriteLine(<span class="string">$&quot;[<span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>] 3. Async method Done&quot;</span>);</span><br><span class="line">               &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>而 .Result / Wait() 的方法會封鎖住 SynchronizationContext.Currnt，造成兩邊互等的情況發生，產生了 Deadlock</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DoAsync().Wait(); <span class="comment">//封鎖 SynchronizationContext.Currnt 的物件等待 Task 完成</span></span><br></pre></td></tr></table></figure>
+
+<p>而這只會發生在 SynchronizationContext.Currnt 不為 Null 的系統中，像是前述提到的 ASP.NET、WPF、WinForm，在 Console Application 並不會發生。</p>
+<h2 id="解決方法-ConfigureAwait-false"><a href="#解決方法-ConfigureAwait-false" class="headerlink" title="解決方法 ConfigureAwait(false)"></a>解決方法 ConfigureAwait(false)</h2><p>如果要避免上述所提到的 Deadlock ，可以在呼叫非同步方法時加上 ConfigureAwait(false)，這樣非同工作完成時就會透過另一條執行緒繼續完成後續工作</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> Task.Run(()=&gt; </span><br><span class="line">          &#123;</span><br><span class="line">              ....</span><br><span class="line">          &#125;).ConfigureAwait(<span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="在-ASP-Net-Core-的時代…"><a href="#在-ASP-Net-Core-的時代…" class="headerlink" title="在 ASP.Net Core 的時代…"></a>在 ASP.Net Core 的時代…</h2><p>在 ASP.Net core 呼叫 SynchronizationContext.Current 現在只會得到 Null ，換言之剛剛發生 deadlock 的情境已經不會發生，所以過往在非同步的地方常常要用 ConfigureAwait(false) 可以不用寫了，不過如果你是寫元件或 SDK 類的，並無法預測會被使用在怎樣的環境的話，建議還是都加上會比較保險。</p>
+<h1 id="Best-Practice"><a href="#Best-Practice" class="headerlink" title="# Best Practice"></a># Best Practice</h1><p>在使用 Async / await 等非同步技巧時，最好的方式還是都盡量使用非阻斷式的寫法 await ，避免使用 Result / Wait() ，即使你已經是寫 ASP.Net core 不會發生 Deadlock 的情況，阻斷式的寫法對於執行緒的使用效率來說還是會有影響的。</p>
+<div class="note info">
+            <p>參考文章</p><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-tw/dotnet/standard/asynchronous-programming-patterns/consuming-the-task-based-asynchronous-pattern">使用以工作為基礎的非同步模式</a></p><p><a target="_blank" rel="noopener" href="https://blog.stephencleary.com/2017/03/aspnetcore-synchronization-context.html">ASP.NET Core SynchronizationContext</a></p><p><a target="_blank" rel="noopener" href="https://devblogs.microsoft.com/dotnet/configureawait-faq/">ConfigureAwait FAQ</a></p><p><a target="_blank" rel="noopener" href="https://www.huanlintalk.com/2016/01/asyc-deadlock-in-aspbet.html">.NET 程式鎖死與 SynchronizationContext</a></p><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lzxianren/p/SynchronizationContext.html">搞懂 SynchronizationContext（第一部分)</a></p>
+          </div>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Async/" rel="tag"># Async</a>
+              <a href="/tags/C/" rel="tag"># C#</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/07/rabbitmq_container_initial_queue/" rel="prev" title="initialize RabbitMQ container's Queue and Exchange">
+      <i class="fa fa-chevron-left"></i> initialize RabbitMQ container's Queue and Exchange
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/02/dotnet_core_3_container_ms_sql_2016/" rel="next" title="dotnet core 3 container 無法連線 MSSQL 2016">
+      dotnet core 3 container 無法連線 MSSQL 2016 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Async-%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text"># Async 是什麼？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%80%E5%AF%9F%E5%9F%B7%E8%A1%8C%E7%B7%92%E7%9A%84%E5%88%87%E6%8F%9B"><span class="nav-number">1.1.</span> <span class="nav-text">觀察執行緒的切換</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8D%E5%BE%AE%E4%BF%AE%E6%94%B9%E4%B8%80%E4%B8%8B%E7%A8%8B%E5%BC%8F%E2%80%A6"><span class="nav-number">1.2.</span> <span class="nav-text">稍微修改一下程式…</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%AE%E5%88%A5%E5%9C%A8%E5%93%AA%EF%BC%9F"><span class="nav-number">1.3.</span> <span class="nav-text">差別在哪？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SynchronizationContext"><span class="nav-number">2.</span> <span class="nav-text"># SynchronizationContext</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Deadlock"><span class="nav-number">2.1.</span> <span class="nav-text">Deadlock</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E6%B1%BA%E6%96%B9%E6%B3%95-ConfigureAwait-false"><span class="nav-number">2.2.</span> <span class="nav-text">解決方法 ConfigureAwait(false)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-ASP-Net-Core-%E7%9A%84%E6%99%82%E4%BB%A3%E2%80%A6"><span class="nav-number">2.3.</span> <span class="nav-text">在 ASP.Net Core 的時代…</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Best-Practice"><span class="nav-number">3.</span> <span class="nav-text"># Best Practice</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2020/09/20/about_async/";
+    this.page.identifier = "2020/09/20/about_async/";
+    this.page.title = "【C#】 關於 Async 的三兩事";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -189,6 +189,137 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/06/09/Android-Use-Post-To-Call-API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/06/09/Android-Use-Post-To-Call-API/" class="post-title-link" itemprop="url">[Android] Use Post To Call API</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-06-09 10:31:00" itemprop="dateCreated datePublished" datetime="2015-06-09T10:31:00+08:00">2015-06-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/06/09/Android-Use-Post-To-Call-API/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/06/09/Android-Use-Post-To-Call-API/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>開發Android時,如何用Post的方式 Call API來取得值</p>
+<ul>
+<li><p>首先 ```csharp<br>String UrlLocation = 你的API位置; //API位置</p>
+<pre><code>      String PostData = 要傳遞的資料(字串); //EX: ID=Toyo&amp;Name=Steven
+
+          HttpURLConnection conn = null;
+      StringBuilder sb = new StringBuilder();
+      try
+      &#123;
+          URL Url = new URL(UrlLocation);
+          conn = (HttpURLConnection)Url.openConnection();
+          conn.setRequestMethod(&quot;POST&quot;); //要呼意的方式 Get Or Post
+          conn.setDoInput(true);
+          conn.setDoOutput(true);
+          conn.connect();
+          //開始傳輸資料過去給API
+          OutputStream Output = conn.getOutputStream();
+          BufferedWriter writer = new BufferedWriter(
+                  new OutputStreamWriter(Output, &quot;UTF-8&quot;));
+          writer.write(PostData);
+          writer.flush();
+          writer.close();
+          Output.close();
+          //讀取API回傳的值
+          BufferedReader br = new BufferedReader(new InputStreamReader(
+                  conn.getInputStream(),&quot;utf-8&quot;));
+  
+              String line;
+          while ((line=br.readLine())!=null)
+          &#123;
+              sb.append(line);
+          &#125;
+      &#125;
+      catch(Exception ex)
+      &#123;
+          Log.e(&quot;API_Post&quot;,ex.getMessage());
+      &#125;
+      finally
+      &#123;
+          if (conn != null)
+              conn.disconnect();
+      &#125;
+  
+          return sb.toString();
+</code></pre>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   目前測試的結果是,如果不把呼叫API用執行緒AsyncTask的方式處理,在conn.connect()這邊會跳出Http...InMainThread的Exception,原因是Andorid預設呼叫外部處理5秒沒有回應就會跳Exception,所以預設不管這支API反應速度快不快,他都要你把上面那段做成切執行緒的方式處理,當然網路上還是有舊的方式可以用,但既然這是官方目前推薦的做法就照做吧 &#96;&#96;&#96;csharp</span><br><span class="line">&#x2F;&#x2F;這邊有三個參數</span><br><span class="line">&#x2F;&#x2F;第一個參數String : 呼叫這個方法時要帶入的參數型態,這邊就是可以帶入String,</span><br><span class="line">&#x2F;&#x2F;第二個參數Void : 處理時會回報狀態跟進度,這邊寫Void表示不回傳目前處理狀態</span><br><span class="line">&#x2F;&#x2F;第三個參數String : 處理完成時回傳的值</span><br><span class="line">private class Post extends AsyncTask&lt;String,Void,String&gt;</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">            &#x2F;&#x2F;事件處理順序onPreExecute , doInBackground ,onPostExecute</span><br><span class="line">        @Override</span><br><span class="line">        protected void onPreExecute() &#123;</span><br><span class="line">            super.onPreExecute();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            @Override</span><br><span class="line">        protected String doInBackground(String ... params) &#123;</span><br><span class="line">            &#x2F;&#x2F;改寫這邊,呼叫方法時可以傳進多個String,所以這邊改抓params</span><br><span class="line">            String UrlLocation &#x3D; params[0]; &#x2F;&#x2F;API位置</span><br><span class="line">            String PostData &#x3D; params[1]; &#x2F;&#x2F;要傳資料</span><br><span class="line"></span><br><span class="line">                HttpURLConnection conn &#x3D; null;</span><br><span class="line">            StringBuilder sb &#x3D; new StringBuilder();</span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                URL Url &#x3D; new URL(UrlLocation);</span><br><span class="line">                conn &#x3D; (HttpURLConnection)Url.openConnection();</span><br><span class="line">                conn.setRequestMethod(&quot;POST&quot;); &#x2F;&#x2F;要呼意的方式 Get Or Post</span><br><span class="line">                conn.setDoInput(true);</span><br><span class="line">                conn.setDoOutput(true);</span><br><span class="line">                conn.connect();</span><br><span class="line">                &#x2F;&#x2F;開始傳輸資料過去給API</span><br><span class="line">                OutputStream Output &#x3D; conn.getOutputStream();</span><br><span class="line">                BufferedWriter writer &#x3D; new BufferedWriter(</span><br><span class="line">                        new OutputStreamWriter(Output, &quot;UTF-8&quot;));</span><br><span class="line">                writer.write(PostData);</span><br><span class="line">                writer.flush();</span><br><span class="line">                writer.close();</span><br><span class="line">                Output.close();</span><br><span class="line"></span><br><span class="line">                    &#x2F;&#x2F;讀取API回傳的值</span><br><span class="line">                BufferedReader br &#x3D; new BufferedReader(new InputStreamReader(</span><br><span class="line">                        conn.getInputStream(),&quot;utf-8&quot;));</span><br><span class="line"></span><br><span class="line">                    String line;</span><br><span class="line">                while ((line&#x3D;br.readLine())!&#x3D;null)</span><br><span class="line">                &#123;</span><br><span class="line">                    sb.append(line);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            catch(Exception ex)</span><br><span class="line">            &#123;</span><br><span class="line">                Log.e(&quot;API_Post&quot;,ex.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">            finally</span><br><span class="line">            &#123;</span><br><span class="line">                if (conn !&#x3D; null)</span><br><span class="line">                    conn.disconnect();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">                return sb.toString();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">           @Override</span><br><span class="line">        protected void onPostExecute(String Result) &#123;</span><br><span class="line">            super.onPostExecute(Result);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>  最後,因為在Debug模式AsyncTask並不會進入,所以要在doInBackground的事件裡面加上這行,但因為非Debug模式下這行會造成Android沒有回應, 所以記得在部署時把這行拿掉！！ ```csharp<br>android.os.Debug.waitForDebugger();</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   全部完成後,呼叫方式如下 &#96;&#96;&#96;csharp</span><br><span class="line">String Url &#x3D; &quot;http:&#x2F;&#x2F;www.api.com.tw&quot;;</span><br><span class="line">String PostData &#x3D; &quot;id&#x3D;toyo&amp;name&#x3D;steven&quot;;</span><br><span class="line">String Response &#x3D; new Post().execute(Url,PostData).get();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/13/swift-CoreData-2-%E6%96%B0%E5%A2%9E-%E5%88%AA%E9%99%A4CoreData%E8%B3%87%E6%96%99/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +344,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-13 18:20:00" itemprop="dateCreated datePublished" datetime="2015-03-13T18:20:00+00:00">2015-03-13</time>
+              <time title="Created: 2015-03-13 18:20:00" itemprop="dateCreated datePublished" datetime="2015-03-13T18:20:00+08:00">2015-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -445,14 +576,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-13 10:44:00" itemprop="dateCreated datePublished" datetime="2015-03-13T10:44:00+00:00">2015-03-13</time>
+              <time title="Created: 2015-03-13 10:44:00" itemprop="dateCreated datePublished" datetime="2015-03-13T10:44:00+08:00">2015-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -598,14 +729,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-12 11:03:00" itemprop="dateCreated datePublished" datetime="2015-03-12T11:03:00+00:00">2015-03-12</time>
+              <time title="Created: 2015-03-12 11:03:00" itemprop="dateCreated datePublished" datetime="2015-03-12T11:03:00+08:00">2015-03-12</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -688,14 +819,14 @@ return
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-11 17:33:00" itemprop="dateCreated datePublished" datetime="2015-03-11T17:33:00+00:00">2015-03-11</time>
+              <time title="Created: 2015-03-11 17:33:00" itemprop="dateCreated datePublished" datetime="2015-03-11T17:33:00+08:00">2015-03-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -795,14 +926,14 @@ return
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-11 11:18:00" itemprop="dateCreated datePublished" datetime="2015-03-11T11:18:00+00:00">2015-03-11</time>
+              <time title="Created: 2015-03-11 11:18:00" itemprop="dateCreated datePublished" datetime="2015-03-11T11:18:00+08:00">2015-03-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -892,14 +1023,14 @@ return
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-10 14:33:00" itemprop="dateCreated datePublished" datetime="2015-03-10T14:33:00+00:00">2015-03-10</time>
+              <time title="Created: 2015-03-10 14:33:00" itemprop="dateCreated datePublished" datetime="2015-03-10T14:33:00+08:00">2015-03-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -992,14 +1123,14 @@ return
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-09 15:44:00" itemprop="dateCreated datePublished" datetime="2015-03-09T15:44:00+00:00">2015-03-09</time>
+              <time title="Created: 2015-03-09 15:44:00" itemprop="dateCreated datePublished" datetime="2015-03-09T15:44:00+08:00">2015-03-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1103,14 +1234,14 @@ return
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-09 10:20:00" itemprop="dateCreated datePublished" datetime="2015-03-09T10:20:00+00:00">2015-03-09</time>
+              <time title="Created: 2015-03-09 10:20:00" itemprop="dateCreated datePublished" datetime="2015-03-09T10:20:00+08:00">2015-03-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1185,14 +1316,14 @@ return
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-09 09:58:00" itemprop="dateCreated datePublished" datetime="2015-03-09T09:58:00+00:00">2015-03-09</time>
+              <time title="Created: 2015-03-09 09:58:00" itemprop="dateCreated datePublished" datetime="2015-03-09T09:58:00+08:00">2015-03-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1232,87 +1363,6 @@ return
 <li>  結果<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-ScO8IMg64Mc/VPz-IPzpfGI/AAAAAAAAEg8/PUHhR5dzQrc/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8A%E5%8D%889.57.22.png"><img src="http://2.bp.blogspot.com/-ScO8IMg64Mc/VPz-IPzpfGI/AAAAAAAAEg8/PUHhR5dzQrc/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-09%2B%E4%B8%8A%E5%8D%889.57.22.png"></a></li>
 </ul>
 
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/07/SQL-2008-R2-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87%E7%89%88%E5%AE%89%E8%A3%9D%E5%95%8F%E9%A1%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2015/03/07/SQL-2008-R2-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87%E7%89%88%E5%AE%89%E8%A3%9D%E5%95%8F%E9%A1%8C/" class="post-title-link" itemprop="url">[SQL] 2008 R2 繁體中文版安裝問題</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2015-03-07 12:24:00" itemprop="dateCreated datePublished" datetime="2015-03-07T12:24:00+00:00">2015-03-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2015/03/07/SQL-2008-R2-%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87%E7%89%88%E5%AE%89%E8%A3%9D%E5%95%8F%E9%A1%8C/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/07/SQL-2008-R2-繁體中文版安裝問題/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>如果你作業系統是從英文版安裝與語系版本成為中文版的話,安裝SQL繁體中文版應該會遇到不明的錯誤而停止,上網找了一下資料發現這篇:<br><a target="_blank" rel="noopener" href="http://www.dotblogs.com.tw/hunterpo/archive/2010/07/14/16555.aspx">解決 Windows 7 線上更新語言包後安裝 SQL Server 2008 R2 繁體中文版失敗的問題</a></p>
-<p>原因是從英文版透過語系包轉成的中文版的作業系統,他是香港繁體中文版,在安裝SQL時預設會去抓3076_ZHH_LP這個資料夾,但繁體中文版的SQL Server的資料夾為1028_CHT_LP。</p>
-<p>所以解決方法就是,把全部的光碟內容複製下來,並且將1028_CHT_LP複製一份並且改名為3076_ZHH_LP,用這個資料夾安裝就可以順利完成了</p>
-<div class="separator" style="clear: both; text-align: center;">[![](http://1.bp.blogspot.com/-ygIcfJtBNic/VPp9GMAHE0I/AAAAAAAAEgk/oi6kUT_rkfc/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png)](http://1.bp.blogspot.com/-ygIcfJtBNic/VPp9GMAHE0I/AAAAAAAAEgk/oi6kUT_rkfc/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png)</div>
       
     </div>
 
@@ -1396,7 +1446,7 @@ return
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1409,7 +1459,7 @@ return
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -189,6 +189,98 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/10/17/%E3%80%90Unit-Test%E3%80%91Fake-DLL%E7%99%BC%E7%94%9Fdoes-not-exist-in-the-namespace-System-Diagnostics-Tracing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/10/17/%E3%80%90Unit-Test%E3%80%91Fake-DLL%E7%99%BC%E7%94%9Fdoes-not-exist-in-the-namespace-System-Diagnostics-Tracing/" class="post-title-link" itemprop="url">【Unit Test】Fake DLL發生does not exist in the namespace 'System.Diagnostics.Tracing'</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-10-17 14:49:00" itemprop="dateCreated datePublished" datetime="2016-10-17T14:49:00+08:00">2016-10-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/10/17/%E3%80%90Unit-Test%E3%80%91Fake-DLL%E7%99%BC%E7%94%9Fdoes-not-exist-in-the-namespace-System-Diagnostics-Tracing/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/17/【Unit-Test】Fake-DLL發生does-not-exist-in-the-namespace-System-Diagnostics-Tracing/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>上一篇<a target="_blank" rel="noopener" href="http://toyo0103.blogspot.tw/2016/10/unittestfake-systemdatetime.html">【Unit Test】Fake System.DateTime</a>&nbsp;寫到如何Fake DLL，在本機建置與進行測試都沒問題，唯獨放到CICD機器去做自動化部屬時，一直鬼擋牆的跳建置方案錯誤，錯誤內容如下</p>
+<p><span style="background-color: white; font-family: &quot;Segoe UI&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana;">The type or namespace name ‘EventSourceCreatedEventArgs’ does not exist in the namespace ‘System.Diagnostics.Tracing’ (are you missing an assembly reference?)&nbsp;</span><br><span style="background-color: white; font-family: &quot;Segoe UI&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana;"><br></span>上網查了一下找到以下解法</p>
+<ul>
+<li>打開mscorlib.fakes，改成以下內容```csharp<Fakes xmlns="http://schemas.microsoft.com/fakes/2011/">
+<Assembly Name="mscorlib" Version="4.0.0.0"/>
+<StubGeneration>
+  <Remove FullName="System.Diagnostics.Tracing"/>
+  <Remove FullName="System.Text.Encoding"/>
+  <Remove FullName="System.Security.Cryptography" />
+</StubGeneration>
+</Fakes></li>
+</ul>
+<p>```</p>
+<p>自動化佈署機器這樣去建置佈署就過關了!!!!</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/10/17/%E3%80%90Unit-Test%E3%80%91Fake-System-DateTime/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +305,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2016-10-17 14:26:00" itemprop="dateCreated datePublished" datetime="2016-10-17T14:26:00+00:00">2016-10-17</time>
+              <time title="Created: 2016-10-17 14:26:00" itemprop="dateCreated datePublished" datetime="2016-10-17T14:26:00+08:00">2016-10-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -334,14 +426,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2016-10-14 14:26:00" itemprop="dateCreated datePublished" datetime="2016-10-14T14:26:00+00:00">2016-10-14</time>
+              <time title="Created: 2016-10-14 14:26:00" itemprop="dateCreated datePublished" datetime="2016-10-14T14:26:00+08:00">2016-10-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -450,14 +542,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2016-10-14 11:01:00" itemprop="dateCreated datePublished" datetime="2016-10-14T11:01:00+00:00">2016-10-14</time>
+              <time title="Created: 2016-10-14 11:01:00" itemprop="dateCreated datePublished" datetime="2016-10-14T11:01:00+08:00">2016-10-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -611,14 +703,14 @@ public class testSwaggerGetParameter
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2016-10-12 15:12:00" itemprop="dateCreated datePublished" datetime="2016-10-12T15:12:00+00:00">2016-10-12</time>
+              <time title="Created: 2016-10-12 15:12:00" itemprop="dateCreated datePublished" datetime="2016-10-12T15:12:00+08:00">2016-10-12</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -927,14 +1019,14 @@ public class testSwaggerGetParameter
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2016-09-26 14:52:00" itemprop="dateCreated datePublished" datetime="2016-09-26T14:52:00+00:00">2016-09-26</time>
+              <time title="Created: 2016-09-26 14:52:00" itemprop="dateCreated datePublished" datetime="2016-09-26T14:52:00+08:00">2016-09-26</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1025,14 +1117,14 @@ public class testSwaggerGetParameter
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2016-08-18 11:16:00" itemprop="dateCreated datePublished" datetime="2016-08-18T11:16:00+00:00">2016-08-18</time>
+              <time title="Created: 2016-08-18 11:16:00" itemprop="dateCreated datePublished" datetime="2016-08-18T11:16:00+08:00">2016-08-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1201,14 +1293,14 @@ public class testSwaggerGetParameter
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2016-08-17 16:36:00" itemprop="dateCreated datePublished" datetime="2016-08-17T16:36:00+00:00">2016-08-17</time>
+              <time title="Created: 2016-08-17 16:36:00" itemprop="dateCreated datePublished" datetime="2016-08-17T16:36:00+08:00">2016-08-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1366,14 +1458,14 @@ public class testSwaggerGetParameter
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2016-08-16 15:33:00" itemprop="dateCreated datePublished" datetime="2016-08-16T15:33:00+00:00">2016-08-16</time>
+              <time title="Created: 2016-08-16 15:33:00" itemprop="dateCreated datePublished" datetime="2016-08-16T15:33:00+08:00">2016-08-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1553,14 +1645,14 @@ public class SupplierFactory
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2016-08-05 10:39:00" itemprop="dateCreated datePublished" datetime="2016-08-05T10:39:00+00:00">2016-08-05</time>
+              <time title="Created: 2016-08-05 10:39:00" itemprop="dateCreated datePublished" datetime="2016-08-05T10:39:00+08:00">2016-08-05</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1602,140 +1694,6 @@ public class SupplierFactory
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">actual.ShouldBeEquivalentTo(</span><br><span class="line">               expected,</span><br><span class="line">               <span class="comment">//當欄位型別為Double時，相差到0.000001之內都是OK的</span></span><br><span class="line">               option =&gt; option.Using&lt;<span class="built_in">double</span>&gt;(</span><br><span class="line">                           ctx =&gt; ctx.Subject.Should().BeApproximately(ctx.Expectation, <span class="number">0.000001</span>))</span><br><span class="line">                       .WhenTypeIs&lt;<span class="built_in">double</span>&gt;());</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>這樣驗證就會過關了!!</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2016/08/04/%E5%BF%AB%E9%80%9F%E6%90%9C%E5%B0%8B%E5%8F%AF%E8%A6%96%E7%AF%84%E5%9C%8D%E7%9A%84%E5%BA%A7%E6%A8%99%E9%BB%9E%E3%80%82-%E9%80%8F%E9%81%8E%E5%9B%9B%E5%85%83%E6%A8%B9%E6%BC%94%E7%AE%97%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2016/08/04/%E5%BF%AB%E9%80%9F%E6%90%9C%E5%B0%8B%E5%8F%AF%E8%A6%96%E7%AF%84%E5%9C%8D%E7%9A%84%E5%BA%A7%E6%A8%99%E9%BB%9E%E3%80%82-%E9%80%8F%E9%81%8E%E5%9B%9B%E5%85%83%E6%A8%B9%E6%BC%94%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">快速搜尋可視範圍的座標點。 透過四元樹演算法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2016-08-04 17:32:00" itemprop="dateCreated datePublished" datetime="2016-08-04T17:32:00+00:00">2016-08-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2016/08/04/%E5%BF%AB%E9%80%9F%E6%90%9C%E5%B0%8B%E5%8F%AF%E8%A6%96%E7%AF%84%E5%9C%8D%E7%9A%84%E5%BA%A7%E6%A8%99%E9%BB%9E%E3%80%82-%E9%80%8F%E9%81%8E%E5%9B%9B%E5%85%83%E6%A8%B9%E6%BC%94%E7%AE%97%E6%B3%95/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/08/04/快速搜尋可視範圍的座標點。-透過四元樹演算法/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>接到一個任務，要把全國的公車資料座標訊息爬回來，並且做整理歸納。研究了一下<a target="_blank" rel="noopener" href="http://ptx.transportdata.tw/PTX/Service">交通部的公共運輸整合資訊平台</a>的內容，資訊相當完整，API也寫得很彈性。</p>
-<p>唯獨公車站牌的部分，是以公車路線為出發點思考，每條路線雖然會經過同一個站牌，站牌的ID都會視為不同，不同ID的站牌，經緯度可能相同。</p>
-<p>例如 :<br>富陽街口的公車站牌資料</p>
-<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-rsJGRd8q0Yk/V6LuwauETRI/AAAAAAAAH2I/MXCywQPawicA3nbmx9j-D6608XWt5RxXQCLcB/s640/13765731_1287175481295263_7952967575366659415_o.jpg)](https://1.bp.blogspot.com/-rsJGRd8q0Yk/V6LuwauETRI/AAAAAAAAH2I/MXCywQPawicA3nbmx9j-D6608XWt5RxXQCLcB/s1600/13765731_1287175481295263_7952967575366659415_o.jpg)</div>
-富陽街口去程回程的公車，透過GoogleMap算大概有8支站牌，但透過API去撈會發現有17支ID皆為不同的資料。
-
-<p><strong>任務目標 :</strong><br>將所有站牌資料爬回來，相同的站名距離20公尺內的站牌要能自動聚合在一起，成為一支站牌。</p>
-<p>原本思考是全部爬回來後用站名做整合，但發現一個問題是宜蘭與桃園都有相同站名的站牌”吊橋頭”，而距離相差十萬八千里，所以站名不可行。會加上20公尺的條件是因為像是台北火車站他的腹地很大，公車站牌可能很多相距很遠， 或是有些捷運站出口在兩條路口的轉角都有公車站牌，且站名相同，如果單純把這些點整合在一起放回地圖上，會發現公車站牌少了許多，失真。</p>
-<p>歸納以上的條件，我們會有一大批公車站牌的資料(<u>118728筆資料</u>)，如果把每個站牌用同名稱的逐筆下去比對各自的距離，顯然掃到天荒地老也跑不完，顯然浪費效能且不切實際。</p>
-<p>看了一篇文章後得到非常大的啟發，該方法是透過四元樹演算法將大批座標快速塞選出範圍內的點，並且做出聚合。<br>參考 &nbsp;: &nbsp;<a target="_blank" rel="noopener" href="https://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps">How To Efficiently Display Large Amounts of Data on iOS Maps</a><br>四元樹演算法 : <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%9B%9B%E5%8F%89%E6%A0%91">Wiki</a></p>
-<p>節錄Wiki對四元樹的解說:「<span style="background-color: white; color: #252525; font-family: sans-serif; font-size: 14px; line-height: 22.4px;"><strong>假如四元樹區塊被用來表達一組點資料(諸如一組城市的經緯度)，區塊就進行次分割直到每個葉節點包含最多一個單點。</strong></span>」</p>
-<p>用圖片來表示就像這樣</p>
-<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://4.bp.blogspot.com/-waUqxqrmcf8/V6L7oy8YO-I/AAAAAAAAH2Y/kMcCy8J_kGw45_XPYsvcsqONAuQa767qgCLcB/s320/quadTreeInsert.gif)](https://4.bp.blogspot.com/-waUqxqrmcf8/V6L7oy8YO-I/AAAAAAAAH2Y/kMcCy8J_kGw45_XPYsvcsqONAuQa767qgCLcB/s1600/quadTreeInsert.gif)</td></tr><tr><td class="tr-caption" style="text-align: center;">**<span style="background-color: white; font-family: &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif; font-size: 14px; line-height: 16px;">Source &nbsp;: &nbsp;</span><span style="font-family: &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif;"><span style="font-size: 14px; line-height: 16px;">https://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps</span></span>**
-
-</td></tr></tbody></table>四元樹包含幾個概念
-1.每個節點最多只能包含一個座標
-2.當節點的座標滿了，會分裂出四個象限
-
-<p>根據以上概念寫出以下Class</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 四元樹節點</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">QuadTreeNode</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//四個象限</span></span><br><span class="line">        <span class="keyword">public</span> QuadTreeNode NorthWest &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> QuadTreeNode NorthEast &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> QuadTreeNode SouthWest &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">        <span class="keyword">public</span> QuadTreeNode SouthEast &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 邊界</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> BoundingBoxDTO BoundingBox &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 節點數量</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">int</span> BucketCapacity &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 座標資料</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="keyword">public</span> List&lt;Data&gt; Points &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">QuadTreeNode</span>(<span class="params">BoundingBoxDTO boundingBox , <span class="built_in">int</span> capacity</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            BoundingBox = boundingBox;</span><br><span class="line">            BucketCapacity = capacity;</span><br><span class="line">            Points = <span class="keyword">new</span> List&lt;BusStopAPIResult&gt;();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>那座標插入四元樹節點時如何運作?</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">Insert</span>(<span class="params">QuadTreeNode node, Data point</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">// 確定這個座標符合四元樹的框框範圍</span></span><br><span class="line">            <span class="keyword">if</span> (!CheckBoundingBoxContainData(node.BoundingBox, point))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 如果這個座標符合框框範圍，檢查這個節點是否已經超過座標存放上限</span></span><br><span class="line">            <span class="comment">// 如果沒有，那就座標放入回傳True</span></span><br><span class="line">            <span class="keyword">if</span> ((node.Points.Count +<span class="number">1</span>) &lt;= node.BucketCapacity)</span><br><span class="line">            &#123;</span><br><span class="line">                node.Points.Add(data);</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 會走到這一步，表示這個座標在這個四元樹的框框範圍內</span></span><br><span class="line">            <span class="comment">// 但是能存放的座標已經滿了，判斷這個四元樹節點是否有四個象限</span></span><br><span class="line">            <span class="comment">// 如果沒有，進行分裂</span></span><br><span class="line">            <span class="keyword">if</span> (node.NorthWest == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Subdivide(node);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 將座標丟到新分裂出來的四個四元樹象限，符合座標坐落的位置，存放好回傳True</span></span><br><span class="line">            <span class="keyword">if</span> (Insert(node.NorthWest, data)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span> (Insert(node.NorthEast, data)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span> (Insert(node.SouthWest, data)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">if</span> (Insert(node.SouthEast, data)) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>四元樹分裂的程式碼</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 四元樹分裂</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;node&quot;&gt;</span>四元樹節點<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">Subdivide</span>(<span class="params">QuadTreeNode node</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> box = node.BoundingBox;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//找出要分裂的四元樹中心點</span></span><br><span class="line">            <span class="built_in">double</span> LatMid = (box.LeftTop.Latitude + box.RightBottom.Latitude) / <span class="number">2.0</span>;</span><br><span class="line">            <span class="built_in">double</span> LngMid = (box.LeftTop.Longitude + box.RightBottom.Longitude) / <span class="number">2.0</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//算出西北象限的左上右下座標點</span></span><br><span class="line">            <span class="keyword">var</span> NorthWest = <span class="keyword">new</span> BoundingBoxDTO</span><br><span class="line">            &#123;</span><br><span class="line">                LeftTop = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = box.LeftTop.Latitude,</span><br><span class="line">                    Longitude = box.LeftTop.Longitude</span><br><span class="line">                &#125;,</span><br><span class="line">                RightBottom = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = LatMid,</span><br><span class="line">                    Longitude = LngMid</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            node.NorthWest = <span class="keyword">new</span> QuadTreeNode(NorthWest, node.BucketCapacity);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//算出東北象限的左上右下座標點</span></span><br><span class="line">            <span class="keyword">var</span> NorthEast = <span class="keyword">new</span> BoundingBoxDTO</span><br><span class="line">            &#123;</span><br><span class="line">                LeftTop = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = box.LeftTop.Latitude,</span><br><span class="line">                    Longitude = LngMid</span><br><span class="line">                &#125;,</span><br><span class="line">                RightBottom = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = LatMid,</span><br><span class="line">                    Longitude = box.RightBottom.Longitude</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            node.NorthEast = <span class="keyword">new</span> QuadTreeNode(NorthEast, node.BucketCapacity);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//算出西南象限的左上右下座標點</span></span><br><span class="line">            <span class="keyword">var</span> SouthWest = <span class="keyword">new</span> BoundingBoxDTO</span><br><span class="line">            &#123;</span><br><span class="line">                LeftTop = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = LatMid,</span><br><span class="line">                    Longitude = box.LeftTop.Longitude</span><br><span class="line">                &#125;,</span><br><span class="line">                RightBottom = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = box.RightBottom.Latitude,</span><br><span class="line">                    Longitude = LngMid</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            node.SouthWest = <span class="keyword">new</span> QuadTreeNode(SouthWest, node.BucketCapacity);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//算出東南象限的左上右下座標點</span></span><br><span class="line">            <span class="keyword">var</span> SouthEast = <span class="keyword">new</span> BoundingBoxDTO</span><br><span class="line">            &#123;</span><br><span class="line">                LeftTop = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = LatMid,</span><br><span class="line">                    Longitude = LngMid</span><br><span class="line">                &#125;,</span><br><span class="line">                RightBottom = <span class="keyword">new</span> CoordinateDTO</span><br><span class="line">                &#123;</span><br><span class="line">                    Latitude = box.RightBottom.Latitude,</span><br><span class="line">                    Longitude = box.RightBottom.Longitude</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            node.SouthEast = <span class="keyword">new</span> QuadTreeNode(SouthEast, node.BucketCapacity);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>看到這邊可能會有個疑問，那就是雖然知道四元樹就像是遞迴的概念，將地圖分裂成很多塊，每個大區塊可能又被分裂成若干的小區塊，一層一層的往下長</p>
-<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://1.bp.blogspot.com/-m_rkkVB1hxw/V6MCmq-X0gI/AAAAAAAAH2o/FHOE9VcWAvkLDp8BWJvjYnWvP9-NlbGfgCLcB/s320/500px-Point_quadtree.svg.png)](https://1.bp.blogspot.com/-m_rkkVB1hxw/V6MCmq-X0gI/AAAAAAAAH2o/FHOE9VcWAvkLDp8BWJvjYnWvP9-NlbGfgCLcB/s1600/500px-Point_quadtree.svg.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">**<span style="background-color: white; font-family: &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif; font-size: 14px; line-height: 16px;">Source &nbsp;: &nbsp;</span><span style="font-family: &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif; font-size: 12.8px;"><span style="font-size: 14px; line-height: 16px;">https://zh.wikipedia.org/wiki/%E5%9B%9B%E5%8F%89%E6%A0%91</span></span>**</td></tr></tbody></table>
-但為何會讓搜尋速度加快呢? 原因是他從上層開始看是否有重疊到要搜尋的區塊，如果有就往該節點的四象限遞迴繼續往下找重疊，如果在大區塊的節點就已經沒有包含重疊區域，那他無限往下延伸的子節點也就不會被搜尋了。引用原作者的圖片就一目了然
-
-<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://3.bp.blogspot.com/-FXlbFONjFzI/V6MEINzRBHI/AAAAAAAAH20/gXhavItzQ_o3GgeyMPRgBGAxhJ9U6MuVwCLcB/s400/quadTreeQuery.gif)](https://3.bp.blogspot.com/-FXlbFONjFzI/V6MEINzRBHI/AAAAAAAAH20/gXhavItzQ_o3GgeyMPRgBGAxhJ9U6MuVwCLcB/s1600/quadTreeQuery.gif)</td></tr><tr><td class="tr-caption" style="text-align: center;">**<span style="background-color: white; font-family: &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif; font-size: 14px; line-height: 16px;">Source &nbsp;: &nbsp;</span><span style="font-family: &quot;helvetica neue&quot; , &quot;helvetica&quot; , &quot;arial&quot; , sans-serif; font-size: 12.8px;"><span style="font-size: 14px; line-height: 16px;">https://robots.thoughtbot.com/how-to-handle-large-amounts-of-data-on-maps</span></span>**</td></tr></tbody></table>
-
-<p>搜尋程式碼如下<br>如何透過座標判斷地理位置有無交集，請參考上一篇文章:&nbsp;【<a target="_blank" rel="noopener" href="http://toyo0103.blogspot.tw/2016/08/blog-post.html">地理位置】透過座標框出地理位置，與判斷地理位置是否重疊</a></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SearchDataInRange</span>(<span class="params">QuadTreeNode node, BoundingBoxDTO range, <span class="keyword">ref</span> List&lt;Data&gt; datas</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">// 確認要搜尋的區塊是否與四元樹節點所涵蓋的區塊有重疊到，如果沒有就直接跳掉</span></span><br><span class="line">            <span class="keyword">if</span> (!CheckIntersectionBoundingBox(node.BoundingBox, range))</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//如果有，將這個區塊的節點拿出來比對是否在要搜尋的範圍中</span></span><br><span class="line">            <span class="comment">//因為雖然範圍有重疊到，但不代表裡面的所有節點都落在重疊的範圍</span></span><br><span class="line">            <span class="comment">//如果落在重疊的範圍，儲存起來，之後回傳</span></span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> node.Points)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// Gather points contained in range</span></span><br><span class="line">                <span class="keyword">if</span> (CheckBoundingBoxContainData(range, item))</span><br><span class="line">                &#123;</span><br><span class="line">                    datas.Add(item);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//確認這個節點是否有分裂過</span></span><br><span class="line">            <span class="keyword">if</span> (node.NorthWest == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//如果有分裂成四個象限，繼續遞迴往下找</span></span><br><span class="line">            SearchDataInRange(node.NorthWest, range, <span class="keyword">ref</span> datas);</span><br><span class="line">            SearchDataInRange(node.NorthEast, range, <span class="keyword">ref</span> datas);</span><br><span class="line">            SearchDataInRange(node.SouthWest, range, <span class="keyword">ref</span> datas);</span><br><span class="line">            SearchDataInRange(node.SouthEast, range, <span class="keyword">ref</span> datas);</span><br><span class="line">        &#125; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>說了這麼多，我們如何將上述的四元樹理論運用在我們的目標上呢?</p>
-<p>首先我們把一堆的公車站牌資料抓回來後，依據名稱先進行第一次分類，把每個名稱相同的依據上面的方式做成四元樹節點，但這邊有個前面提到的問題，如果是同個站名但其實是不同的站點呢? </p>
-<p>這邊我用的方法是將同名稱的公車站牌，找出兩個離最遠的站牌算距離，如果超過1公里合理懷疑這是兩個不同的站點，只是碰巧相同名稱。台灣應該沒有差了一公里遠但是是同一個站的吧……(有的話請跟我說XD)。</p>
-<p>將這群同站名但其實不同地方的站牌，依據一公里為單位分組，這樣就能有效地將這類同名的站牌做更細部的歸類。</p>
-<p>計算兩點座標距離的程式</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">const</span> <span class="built_in">double</span> EARTH_RADIUS = <span class="number">6378.137</span>; <span class="comment">//地球半?</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> 計算距離(返回公尺)</span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;lat1&quot;&gt;</span>點1經<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;lng1&quot;&gt;</span>點1緯<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;lat2&quot;&gt;</span>點2經<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;lng2&quot;&gt;</span>點2緯<span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">        <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">double</span> <span class="title">GetDistance</span>(<span class="params"><span class="built_in">double</span> lat1, <span class="built_in">double</span> lng1, <span class="built_in">double</span> lat2, <span class="built_in">double</span> lng2</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="built_in">double</span> radLat1 = rad(lat1);</span><br><span class="line">            <span class="built_in">double</span> radLat2 = rad(lat2);</span><br><span class="line">            <span class="built_in">double</span> a = radLat1 - radLat2;</span><br><span class="line">            <span class="built_in">double</span> b = rad(lng1) - rad(lng2);</span><br><span class="line">            <span class="built_in">double</span> s = <span class="number">2</span> * Math.Asin(Math.Sqrt(Math.Pow(Math.Sin(a / <span class="number">2</span>), <span class="number">2</span>) +</span><br><span class="line">             Math.Cos(radLat1) * Math.Cos(radLat2) * Math.Pow(Math.Sin(b / <span class="number">2</span>), <span class="number">2</span>)));</span><br><span class="line">            s = s * EARTH_RADIUS;</span><br><span class="line">            s = Math.Round(s * <span class="number">10000</span>) / <span class="number">10</span>;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="built_in">double</span> <span class="title">rad</span>(<span class="params"><span class="built_in">double</span> d</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">return</span> d * Math.PI / <span class="number">180.0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>上面的問題皆排除並分類後，依據同名的站牌，算出這群站牌座標的中心點，並用離中心最遠的座標距離做為範圍，依照每小格20公尺的矩形進行四元樹搜尋，在同一格內的整合成一個站牌，記錄下來</p>
-<p>概念圖</p>
-<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-C9CqLPtlx7Q/V6MKsEK1vTI/AAAAAAAAH3E/KDH_KTeXYQQnoFWCQdLL7mvIihxNMh7KgCLcB/s640/1.png)](https://2.bp.blogspot.com/-C9CqLPtlx7Q/V6MKsEK1vTI/AAAAAAAAH3E/KDH_KTeXYQQnoFWCQdLL7mvIihxNMh7KgCLcB/s1600/1.png)</div>
-1.這些點只是亂標的，但假設真的有個同名站牌坐落在這些位置，找到中心點後，藍色線為中心點與最遠座標的直線距離，依據這個距離做為矩形二分之一寬。
-
-<p>2.有了距離後就能求出左上跟右下角的點，透過<span style="background-color: white; color: #6aa84f; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px; line-height: 25.5px;">DbGeography</span><span style="background-color: white; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px; line-height: 25.5px;">這個來取得地理面積的物件</span><br><span style="background-color: white; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px; line-height: 25.5px;"><br></span><span style="background-color: white; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px; line-height: 25.5px;">3.從左上開始，橘色的每小格為長寬各20公尺的矩形，透過四元樹下去搜尋，被同一格橘色小框框到的座標收納成同一個點，記錄下來</span><br><span style="background-color: white; font-family: &quot;roboto slab&quot; , sans-serif; font-size: 15px; line-height: 25.5px;"><br></span></p>
-<p>經過實測，如果只是雙北市的公車站點，只要4分鐘就能全部歸類掃描完畢，全國的話大概4個小時能算完，以上是這次任務的小筆記</p>
-<p>測試環境 :<br>CPU &nbsp;: &nbsp;I7 &nbsp;4核 (實際在跑的時候控制大概在3核左右)<br>RAM : 16G</p>
 
       
     </div>
@@ -1820,7 +1778,7 @@ public class SupplierFactory
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1833,7 +1791,7 @@ public class SupplierFactory
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

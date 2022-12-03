@@ -189,6 +189,93 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/10/17/VM%E4%B8%8A%E7%B6%B2%E8%A8%AD%E5%AE%9A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2012/10/17/VM%E4%B8%8A%E7%B6%B2%E8%A8%AD%E5%AE%9A/" class="post-title-link" itemprop="url">VM上網設定</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2012-10-17 10:36:00" itemprop="dateCreated datePublished" datetime="2012-10-17T10:36:00+08:00">2012-10-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2012/10/17/VM%E4%B8%8A%E7%B6%B2%E8%A8%AD%E5%AE%9A/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/10/17/VM上網設定/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>連結有詳細介紹!! &nbsp; 終於可以安心在VM裡面開發SharePoint了</p>
+<p><a target="_blank" rel="noopener" href="http://tw.myblog.yahoo.com/jw!ozeuU_mGAx1rvd0bKga8nQ--/article?mid=434&amp;l=f&amp;fid=25">Windows7中的VMWare網路設定 </a><br><strong>以下是摘錄</strong></p>
+<ul>
+<li>首先開啟網路共用中心 &gt; 變更介面卡設定 &gt; 找到VMnet1然後記住它的名稱<br><a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-4rwOPHWCWeA/UXiZ97dgMtI/AAAAAAAACkk/55cCcvmWE08/s1600/11.png"><img src="http://3.bp.blogspot.com/-4rwOPHWCWeA/UXiZ97dgMtI/AAAAAAAACkk/55cCcvmWE08/s1600/11.png"></a></li>
+<li>  找到目前的連線(此圖為無線網路連線)&gt; 右鍵點選內容 &gt; 切到”共用”頁籤&gt; 然後把共用都打勾並選擇剛剛那個VM的連線與他共享<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-2obanFUgJrw/UXibp8XUfnI/AAAAAAAACk0/QIMQcO2zGQo/s1600/11.png"><img src="http://2.bp.blogspot.com/-2obanFUgJrw/UXibp8XUfnI/AAAAAAAACk0/QIMQcO2zGQo/s1600/11.png"></a></li>
+<li>  接著點選VMnet1右鍵 &gt; 內容 &gt; TCP/IPV4 &gt;設定如下<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-QVdsPKPrP6M/UXieOWafJ1I/AAAAAAAAClA/vy_D7FK1m8s/s1600/11.png"><img src="http://2.bp.blogspot.com/-QVdsPKPrP6M/UXieOWafJ1I/AAAAAAAAClA/vy_D7FK1m8s/s1600/11.png"></a></li>
+<li>  執行 VMWare 及虛擬系統，例如：Windows XP，開啟虛擬系統的「網蔎連線」，在「區域網路」上按滑鼠右鍵，選擇「內容」<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-KPtz27OW_ho/UXifEuXbtBI/AAAAAAAAClM/wjXQloJ00eo/s1600/UZidjL7joI6_8oXzaY6oCA.jpg"><img src="http://2.bp.blogspot.com/-KPtz27OW_ho/UXifEuXbtBI/AAAAAAAAClM/wjXQloJ00eo/s1600/UZidjL7joI6_8oXzaY6oCA.jpg"></a></li>
+<li>  最後在 VMWare 的「VM \ setting」中將「Hardware \ Ethenet」設定為「Host-Only」<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-FFmWeEuVggY/UXifTCLSDUI/AAAAAAAAClU/dDLLKl5RPMY/s1600/MZxveFdaHiBXh4q6vZyrRQ.jpg"><img src="http://2.bp.blogspot.com/-FFmWeEuVggY/UXifTCLSDUI/AAAAAAAAClU/dDLLKl5RPMY/s1600/MZxveFdaHiBXh4q6vZyrRQ.jpg"></a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/10/16/%E3%80%90SharePoint%E3%80%91%E5%AE%89%E8%A3%9D%E7%AD%86%E8%A8%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +300,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2012-10-16 16:54:00" itemprop="dateCreated datePublished" datetime="2012-10-16T16:54:00+00:00">2012-10-16</time>
+              <time title="Created: 2012-10-16 16:54:00" itemprop="dateCreated datePublished" datetime="2012-10-16T16:54:00+08:00">2012-10-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -313,14 +400,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2012-10-16 14:09:00" itemprop="dateCreated datePublished" datetime="2012-10-16T14:09:00+00:00">2012-10-16</time>
+              <time title="Created: 2012-10-16 14:09:00" itemprop="dateCreated datePublished" datetime="2012-10-16T14:09:00+08:00">2012-10-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -467,7 +554,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -480,7 +567,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

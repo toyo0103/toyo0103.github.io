@@ -189,6 +189,150 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/06/05/%E3%80%90LeetCode%E3%80%91Add%20Two%20Numbers/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/05/%E3%80%90LeetCode%E3%80%91Add%20Two%20Numbers/" class="post-title-link" itemprop="url">【LeetCode】Add Two Numbers</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-05 21:10:00" itemprop="dateCreated datePublished" datetime="2018-06-05T21:10:00+08:00">2018-06-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/06/05/%E3%80%90LeetCode%E3%80%91Add%20Two%20Numbers/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/05/【LeetCode】Add Two Numbers/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>有感於自己是個廢物工程師，開了LeetCode帳號好幾個月一題都還沒刷，所以決定寫一系列紀錄自己刷LeetCode的過程跟解題方法，希望幾年後回頭能看見自己的進步，廢話不多說直接進入題目。</p>
+<h1 id="題目"><a href="#題目" class="headerlink" title="#題目"></a>#題目</h1><p>You are given two <strong>non-empty</strong> linked lists representing two non-negative integers. The digits are stored in <strong>reverse order</strong> and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p>
+<p>You may assume the two numbers do not contain any leading zero, except the number 0 itself.</p>
+<p><strong>Example</strong> </p>
+<div class="note info">
+            <p>Input: (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)<br>Output: 7 -&gt; 0 -&gt; 8<br>Explanation: 342 + 465 = 807</p>
+          </div>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     public int val;</span></span><br><span class="line"><span class="comment"> *     public ListNode next;</span></span><br><span class="line"><span class="comment"> *     public ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Solution</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">AddTwoNumbers</span>(<span class="params">ListNode l1, ListNode l2</span>)</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="解題"><a href="#解題" class="headerlink" title="#解題"></a>#解題</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Solution</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="function"><span class="keyword">public</span> ListNode <span class="title">AddTwoNumbers</span>(<span class="params">ListNode l1, ListNode l2</span>)</span></span><br><span class="line"><span class="function"></span>       &#123;</span><br><span class="line">           ListNode Result = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">           ListNode CN1 = l1;</span><br><span class="line">           ListNode CN2 = l2;</span><br><span class="line"></span><br><span class="line">           ListNode RCN = Result;</span><br><span class="line">           <span class="built_in">bool</span> Flag = <span class="literal">true</span>;</span><br><span class="line">           <span class="keyword">while</span> (Flag)</span><br><span class="line">           &#123;</span><br><span class="line">               <span class="keyword">var</span> Sum = RCN.val +  GetNodeValue(CN1) + GetNodeValue(CN2);</span><br><span class="line"></span><br><span class="line">               RCN.val = Sum % <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">if</span> (Sum &gt; <span class="number">9</span>)</span><br><span class="line">                   RCN.next = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">               CN1 = CN1 == <span class="literal">null</span> ? <span class="literal">null</span> : CN1.next;</span><br><span class="line">               CN2 = CN2 == <span class="literal">null</span> ? <span class="literal">null</span> : CN2.next;</span><br><span class="line">               </span><br><span class="line"></span><br><span class="line">               Flag = (CN1 != <span class="literal">null</span> || CN2 != <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">               <span class="keyword">if</span> (Flag &amp;&amp; RCN.next == <span class="literal">null</span>)</span><br><span class="line">                   RCN.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">               RCN = RCN.next;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="keyword">return</span> Result;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">private</span> <span class="built_in">int</span> <span class="title">GetNodeValue</span>(<span class="params">ListNode node</span>)</span></span><br><span class="line"><span class="function"></span>       &#123;</span><br><span class="line">           <span class="keyword">return</span> node == <span class="literal">null</span> ?  <span class="number">0</span> : node.val;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Unit-Testing"><a href="#Unit-Testing" class="headerlink" title="Unit Testing"></a>Unit Testing</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SolutionTests</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">TestMethod</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> AddTwoNumbersTest_輸入L1為<span class="number">342</span>_L2為<span class="number">456</span>_應得到<span class="number">807</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//arrange</span></span><br><span class="line">        <span class="keyword">var</span> l1 = <span class="keyword">new</span> ListNode(<span class="number">2</span>);</span><br><span class="line">        l1.next = <span class="keyword">new</span> ListNode(<span class="number">4</span>);</span><br><span class="line">        l1.next.next = <span class="keyword">new</span> ListNode(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> l2 = <span class="keyword">new</span> ListNode(<span class="number">5</span>);</span><br><span class="line">        l2.next = <span class="keyword">new</span> ListNode(<span class="number">6</span>);</span><br><span class="line">        l2.next.next = <span class="keyword">new</span> ListNode(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> expected = <span class="keyword">new</span> ListNode(<span class="number">7</span>);</span><br><span class="line">        expected.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        expected.next.next = <span class="keyword">new</span> ListNode(<span class="number">8</span>);</span><br><span class="line">        <span class="comment">//act</span></span><br><span class="line">        <span class="keyword">var</span> actual = sut.AddTwoNumbers(l1,l2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//assert</span></span><br><span class="line">        actual.Should().BeEquivalentTo(expected);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">TestMethod</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> AddTwoNumbersTest_輸入L1為<span class="number">42</span>_L2為<span class="number">708</span>_應得到<span class="number">750</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//arrange</span></span><br><span class="line">        <span class="keyword">var</span> l1 = <span class="keyword">new</span> ListNode(<span class="number">2</span>);</span><br><span class="line">        l1.next = <span class="keyword">new</span> ListNode(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> l2 = <span class="keyword">new</span> ListNode(<span class="number">8</span>);</span><br><span class="line">        l2.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        l2.next.next = <span class="keyword">new</span> ListNode(<span class="number">7</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> expected = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        expected.next = <span class="keyword">new</span> ListNode(<span class="number">5</span>);</span><br><span class="line">        expected.next.next = <span class="keyword">new</span> ListNode(<span class="number">7</span>);</span><br><span class="line">        <span class="comment">//act</span></span><br><span class="line">        <span class="keyword">var</span> actual = sut.AddTwoNumbers(l1, l2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//assert</span></span><br><span class="line">        actual.Should().BeEquivalentTo(expected);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">TestMethod</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> AddTwoNumbersTest_輸入L1為<span class="number">1</span>_L2為<span class="number">99</span>_應得到<span class="number">100</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//arrange</span></span><br><span class="line">        <span class="keyword">var</span> l1 = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> l2 = <span class="keyword">new</span> ListNode(<span class="number">9</span>);</span><br><span class="line">        l2.next = <span class="keyword">new</span> ListNode(<span class="number">9</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> expected = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        expected.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        expected.next.next = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">//act</span></span><br><span class="line">        <span class="keyword">var</span> actual = sut.AddTwoNumbers(l1, l2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//assert</span></span><br><span class="line">        actual.Should().BeEquivalentTo(expected);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="分析結果"><a href="#分析結果" class="headerlink" title="#分析結果"></a>#分析結果</h1><p>雖然過了但是效率不佳，執行完LeetCode全部的測試總共花費 <strong>176 ms</strong>只贏過38.84%的提交範例，所以試試看優化它</p>
+<p><img src="/images/20180615/leetcode/1.jpg" alt="/images/20180615/leetcode/1.jpg"></p>
+<h2 id="移除三元運算子"><a href="#移除三元運算子" class="headerlink" title="移除三元運算子"></a>移除三元運算子</h2><p>基本上三元運算子比較耗效能，所以優先改進它</p>
+<p><strong>原本</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="built_in">int</span> <span class="title">GetNodeValue</span>(<span class="params">ListNode node</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> node == <span class="literal">null</span> ?  <span class="number">0</span> : node.val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>修改後</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="built_in">int</span> <span class="title">GetNodeValue</span>(<span class="params">ListNode node</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (node == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> node.val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><strong>原本</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CN1 = CN1 == <span class="literal">null</span> ? <span class="literal">null</span> : CN1.next;</span><br><span class="line">CN2 = CN2 == <span class="literal">null</span> ? <span class="literal">null</span> : CN2.next;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>修改後</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (Node1Cursor != <span class="literal">null</span>)</span><br><span class="line">    Node1Cursor = Node1Cursor.next;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (Node2Cursor != <span class="literal">null</span>)</span><br><span class="line">    Node2Cursor = Node2Cursor.next;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>測試結果</strong></p>
+<p><img src="/images/20180615/leetcode/2.jpg" alt="/images/20180615/leetcode/2.jpg"></p>
+<p>簡直是三元運算子定生死….</p>
+<h2 id="優化可讀性"><a href="#優化可讀性" class="headerlink" title="優化可讀性"></a>優化可讀性</h2><blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>乾淨的程式碼，閱讀起來應該像是幾何證明般</p>
+<p>Uncle Bob</p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<p>所以試著讓變數命名更貼近意義一點</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Solution</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">AddTwoNumbers</span>(<span class="params">ListNode l1, ListNode l2</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        ListNode Result = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        ListNode Node1Cursor = l1;</span><br><span class="line">        ListNode Node2Cursor = l2;</span><br><span class="line"></span><br><span class="line">        ListNode Head = Result;</span><br><span class="line">        <span class="built_in">bool</span> NeedNextRun = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">while</span> (NeedNextRun)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> Sum = Head.val + GetNodeValue(Node1Cursor) + GetNodeValue(Node2Cursor);</span><br><span class="line"></span><br><span class="line">            Head.val = Sum % <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Sum &gt; <span class="number">9</span>)</span><br><span class="line">                Head.next = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Node1Cursor != <span class="literal">null</span>)</span><br><span class="line">                Node1Cursor = Node1Cursor.next;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Node2Cursor != <span class="literal">null</span>)</span><br><span class="line">                Node2Cursor = Node2Cursor.next;</span><br><span class="line"></span><br><span class="line">            NeedNextRun = (Node1Cursor != <span class="literal">null</span> || Node2Cursor != <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (NeedNextRun &amp;&amp; Head.next == <span class="literal">null</span>)</span><br><span class="line">                Head.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            Head = Head.next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="built_in">int</span> <span class="title">GetNodeValue</span>(<span class="params">ListNode node</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (node == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> node.val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>也因為有寫單元測試的關係，上述的調整過程中都沒讓程式壞掉，最後希望藉由這樣的練習能讓自己TDD與重構的技巧再更純熟一些</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/06/05/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%917.%E9%A9%97%E8%AD%89%E5%8F%83%E6%95%B8-DataAnnotations%20/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +357,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-06-05 11:40:00" itemprop="dateCreated datePublished" datetime="2018-06-05T11:40:00+00:00">2018-06-05</time>
+              <time title="Created: 2018-06-05 11:40:00" itemprop="dateCreated datePublished" datetime="2018-06-05T11:40:00+08:00">2018-06-05</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -400,14 +544,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-06-04 14:42:00" itemprop="dateCreated datePublished" datetime="2018-06-04T14:42:00+00:00">2018-06-04</time>
+              <time title="Created: 2018-06-04 14:42:00" itemprop="dateCreated datePublished" datetime="2018-06-04T14:42:00+08:00">2018-06-04</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -512,14 +656,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-05-07 18:23:00" itemprop="dateCreated datePublished" datetime="2018-05-07T18:23:00+00:00">2018-05-07</time>
+              <time title="Created: 2018-05-07 18:23:00" itemprop="dateCreated datePublished" datetime="2018-05-07T18:23:00+08:00">2018-05-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -642,14 +786,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-04-25 23:08:00" itemprop="dateCreated datePublished" datetime="2018-04-25T23:08:00+00:00">2018-04-25</time>
+              <time title="Created: 2018-04-25 23:08:00" itemprop="dateCreated datePublished" datetime="2018-04-25T23:08:00+08:00">2018-04-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -767,14 +911,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-04-25 14:42:00" itemprop="dateCreated datePublished" datetime="2018-04-25T14:42:00+00:00">2018-04-25</time>
+              <time title="Created: 2018-04-25 14:42:00" itemprop="dateCreated datePublished" datetime="2018-04-25T14:42:00+08:00">2018-04-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -882,14 +1026,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-04-05 00:14:00" itemprop="dateCreated datePublished" datetime="2018-04-05T00:14:00+00:00">2018-04-05</time>
+              <time title="Created: 2018-04-05 00:14:00" itemprop="dateCreated datePublished" datetime="2018-04-05T00:14:00+08:00">2018-04-05</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1010,14 +1154,14 @@ constraints的部分，我們把ID限制在只能出現數字，（如果對於�
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-03-17 20:54:00" itemprop="dateCreated datePublished" datetime="2018-03-17T20:54:00+00:00">2018-03-17</time>
+              <time title="Created: 2018-03-17 20:54:00" itemprop="dateCreated datePublished" datetime="2018-03-17T20:54:00+08:00">2018-03-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1215,14 +1359,14 @@ constraints的部分，我們把ID限制在只能出現數字，（如果對於�
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-02-22 22:31:00" itemprop="dateCreated datePublished" datetime="2018-02-22T22:31:00+00:00">2018-02-22</time>
+              <time title="Created: 2018-02-22 22:31:00" itemprop="dateCreated datePublished" datetime="2018-02-22T22:31:00+08:00">2018-02-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1333,14 +1477,14 @@ constraints的部分，我們把ID限制在只能出現數字，（如果對於�
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-02-21 16:06:00" itemprop="dateCreated datePublished" datetime="2018-02-21T16:06:00+00:00">2018-02-21</time>
+              <time title="Created: 2018-02-21 16:06:00" itemprop="dateCreated datePublished" datetime="2018-02-21T16:06:00+08:00">2018-02-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1463,162 +1607,6 @@ constraints的部分，我們把ID限制在只能出現數字，（如果對於�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/26/%E3%80%90CI-CD%E3%80%914-%E5%9C%A8%E4%BD%88%E7%BD%B2%E9%9A%8E%E6%AE%B5%E7%BD%AE%E6%8F%9B%E5%8F%83%E6%95%B8%E5%80%BC%EF%BC%8C%E4%BB%A5Web-Config%E7%82%BA%E4%BE%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/01/26/%E3%80%90CI-CD%E3%80%914-%E5%9C%A8%E4%BD%88%E7%BD%B2%E9%9A%8E%E6%AE%B5%E7%BD%AE%E6%8F%9B%E5%8F%83%E6%95%B8%E5%80%BC%EF%BC%8C%E4%BB%A5Web-Config%E7%82%BA%E4%BE%8B/" class="post-title-link" itemprop="url">【CI/CD】4. 在佈署階段置換參數值，以Web.Config為例</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-01-26 17:25:00" itemprop="dateCreated datePublished" datetime="2018-01-26T17:25:00+00:00">2018-01-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/VSTS%E5%BB%BA%E7%BD%AECI-CD/" itemprop="url" rel="index"><span itemprop="name">VSTS建置CI-CD</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2018/01/26/%E3%80%90CI-CD%E3%80%914-%E5%9C%A8%E4%BD%88%E7%BD%B2%E9%9A%8E%E6%AE%B5%E7%BD%AE%E6%8F%9B%E5%8F%83%E6%95%B8%E5%80%BC%EF%BC%8C%E4%BB%A5Web-Config%E7%82%BA%E4%BE%8B/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/26/【CI-CD】4-在佈署階段置換參數值，以Web-Config為例/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <div class="note info">
-            <p>接續前篇 : <a target="_blank" rel="noopener" href="https://toyo0103.blogspot.tw/2018/01/cicd3-vsts-azure-appservice-slot.html">【CI/CD】3. 透過VSTS 切換Azure AppService Slot</a></p>
-          </div>
-
-<p>如果你的佈署狀況如下</p>
-<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://3.bp.blogspot.com/-uiFFGMOOPlQ/WmraN8BbjEI/AAAAAAAAIdo/xzVVbXd5NLkz4xpa1wI-gTNN048M5R7ngCLcBGAs/s640/1.png)](https://3.bp.blogspot.com/-uiFFGMOOPlQ/WmraN8BbjEI/AAAAAAAAIdo/xzVVbXd5NLkz4xpa1wI-gTNN048M5R7ngCLcBGAs/s1600/1.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">原諒我只繪畫醜圖....</td></tr></tbody></table>
-有一次更版進到到Master Branch，而CI設定Trigger是Master更動時自動建置，CD接收到CI建置完成後執行佈署機器，而每台機器的Web.Config值都有差異，這時候該怎麼做?
-
-<h1 id="XML-variable-substitution"><a href="#XML-variable-substitution" class="headerlink" title="#XML variable substitution"></a>#XML variable substitution</h1><p>Azure App Service Deploy有提供XML variable substitutuin可以選擇</p>
-<div class="separator" style="clear: both; text-align: center;">
-</div><div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-LN_4j9iX9As/WmrfdZWF3oI/AAAAAAAAId4/Tc9U1W24Lq45Ms0p9qhtBLNX2EJ8sKJ_QCLcBGAs/s640/1.png)](https://4.bp.blogspot.com/-LN_4j9iX9As/WmrfdZWF3oI/AAAAAAAAId4/Tc9U1W24Lq45Ms0p9qhtBLNX2EJ8sKJ_QCLcBGAs/s1600/1.png)</div>
-<div class="note info">
-            <p>依據註解中說明就是，當這個選項勾選時，他會自動去找專案中的所有.Config檔案，檔案中的appSettings，application Settings , connectionString區塊，如果有Key或Name與設定的變數相同時自動置換，且是發生在Config transforms之後</p>
-          </div>
-
-
-<p>什麼意思呢? 直接看範例，如果我們的Web.Config裡面長這樣</p>
-<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-iEfgD967KZc/WmriR-qREbI/AAAAAAAAIeE/P_zG3I8Ah3EPMA4uADVKwh8LqCImdKpjACLcBGAs/s400/1.png)](https://1.bp.blogspot.com/-iEfgD967KZc/WmriR-qREbI/AAAAAAAAIeE/P_zG3I8Ah3EPMA4uADVKwh8LqCImdKpjACLcBGAs/s1600/1.png)</div>
-那他就會在去比對appSettings、connectionString區塊，裡面的Name或是Key有對應到變數設定的話，Value值會自動被替換，而變數設定又在哪邊呢?
-
-<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-bJ9GV3qzx1A/WmrjTH_HnSI/AAAAAAAAIeM/XMf0yAL-XBsfedMAXLy7jbkiS5RcfRViwCLcBGAs/s400/1.png)](https://2.bp.blogspot.com/-bJ9GV3qzx1A/WmrjTH_HnSI/AAAAAAAAIeM/XMf0yAL-XBsfedMAXLy7jbkiS5RcfRViwCLcBGAs/s1600/1.png)</div>
-
-<p>以上面兩張圖來說，那他在WebDeploy到Azure App Service之前就會將我的<strong>StaticDomains、Domain</strong>的<strong>Value</strong>換掉，因為我們在變數檔案裡面有設定。</p>
-<p>這樣我們就能透過建置多個環境的方式，在每個環境中設定好對應的變數值，只要執行一次CI流程，觸發多個CD流程，達到多台同時佈署的目的</p>
-<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-Vn7jrg9S6zM/WmrkbLQL9JI/AAAAAAAAIeY/DSoCnAGpUUA_-3oKJhbPD6sj9bdNQ0DPQCLcBGAs/s400/1.png)](https://2.bp.blogspot.com/-Vn7jrg9S6zM/WmrkbLQL9JI/AAAAAAAAIeY/DSoCnAGpUUA_-3oKJhbPD6sj9bdNQ0DPQCLcBGAs/s1600/1.png)</div>
-
-<h1 id="參數不在appSettings，application-Settings-connectionString區塊之中"><a href="#參數不在appSettings，application-Settings-connectionString區塊之中" class="headerlink" title="#參數不在appSettings，application Settings , connectionString區塊之中"></a>#參數不在appSettings，application Settings , connectionString區塊之中</h1><p>這邊特別注意，剛剛那種置換的值方法僅適用於上述區塊之中，換句話說，如果我們有環境設定變數，但他又不在這幾個區塊之中，該如何做?</p>
-<h2 id="Parameter-xml"><a href="#Parameter-xml" class="headerlink" title="Parameter.xml"></a>Parameter.xml</h2><p>還好微軟有提供另一種方式能處理這個問題，就是透過Parameters.xml</p>
-<h2 id="建立parameters-xml"><a href="#建立parameters-xml" class="headerlink" title="建立parameters.xml"></a>建立parameters.xml</h2><div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-DIAJpQ2tUYk/WmrlsIo55sI/AAAAAAAAIeg/PCaPpM04JucMUYC8QFByvv4X3pPcRwjJgCLcBGAs/s320/1.png)](https://4.bp.blogspot.com/-DIAJpQ2tUYk/WmrlsIo55sI/AAAAAAAAIeg/PCaPpM04JucMUYC8QFByvv4X3pPcRwjJgCLcBGAs/s1600/1.png)</div><div>
-</div>
-
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parameters</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">parameter</span> <span class="attr">name</span>=<span class="string">&quot;ExceptionlessAPIKey&quot;</span> <span class="attr">defaultValue</span>=<span class="string">&quot;#&#123;ExceptionlessAPIKey&#125;#&quot;</span> &gt;</span></span><br><span class="line">  &lt;parameterEntry</span><br><span class="line">      kind=&quot;XmlFile&quot;</span><br><span class="line">      scope=&quot;Web\.config&quot;</span><br><span class="line">      match=&quot;//exceptionless/@apiKey&quot; /&gt;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">parameter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">parameter</span> <span class="attr">name</span>=<span class="string">&quot;SessionConnectionString&quot;</span> <span class="attr">defaultValue</span>=<span class="string">&quot;#&#123;SessionConnectionString&#125;#&quot;</span> &gt;</span></span><br><span class="line">    &lt;parameterEntry</span><br><span class="line">      kind=&quot;XmlFile&quot;</span><br><span class="line">      scope=&quot;Web\.config&quot;</span><br><span class="line">      match=&quot;//configuration/system.web/sessionState/@sqlConnectionString&quot; /&gt;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">parameter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parameters</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><strong>Name</strong> : 變數名稱<br><strong>Scope</strong> : 受影響的檔案為和，你可以設定整個專案底下全部的.Config也行<br><strong>Match</strong> : 在這些檔案底下如何尋找要被替換的值</p>
-<div class="note info">
-            <p>Example 1 :  Web.Config底下從根結點開始找起，找到一個叫做exceptionLess的Tag，然後把apiKey這個屬性換成我設定的值</p><p>Example 2 :  Web.Config底下從根結點開始找起，找到configuration底下的system.web底下的sessionState Tag，然後把sqlConnectionString這個屬性換成我設定的值</p>
-          </div>
-
-<p><strong>DefaultValue</strong> : 如果在佈署時沒有設定參數值時，預設給的Value</p>
-<p>接著在VisualStudio按發行後應該會看到檔案長出<strong>SetParameters.xml</strong></p>
-<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-s_s3aU7dr74/WmrsRb8ETdI/AAAAAAAAIew/WYlqsjbIk0oj7ow-GOqheH4FJY6QZAUHgCLcBGAs/s640/1.png)](https://3.bp.blogspot.com/-s_s3aU7dr74/WmrsRb8ETdI/AAAAAAAAIew/WYlqsjbIk0oj7ow-GOqheH4FJY6QZAUHgCLcBGAs/s1600/1.png)</div>
-
-<p>打開來會看到</p>
-<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-viIUyylwlDg/Wmr6qYwZv-I/AAAAAAAAIgE/C0ISadjZIigW7FQ6sMezcjZwYudaEaLrwCLcBGAs/s640/1.png)](https://1.bp.blogspot.com/-viIUyylwlDg/Wmr6qYwZv-I/AAAAAAAAIgE/C0ISadjZIigW7FQ6sMezcjZwYudaEaLrwCLcBGAs/s1600/1.png)</div><div class="separator" style="clear: both; text-align: center;">
-</div>
-
-<p>到這邊我們已經成功將Web.Config的指定位置挖成變數值，等等在CD階段，我們就是要想辦法把<strong>SetParameters.xml</strong>的Value值換掉</p>
-<h2 id="回到CD設定介面"><a href="#回到CD設定介面" class="headerlink" title="回到CD設定介面"></a>回到CD設定介面</h2><p>告訴<strong>Azure App Service Deploy Task</strong>，你有<strong>SetParameters.xml</strong></p>
-<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-NUpiKPxhPRY/Wmrtx-vh_HI/AAAAAAAAIfE/RRml5NRckGQ6S4uDWJJsfSHhX2H7CWEBgCLcBGAs/s640/1.png)](https://4.bp.blogspot.com/-NUpiKPxhPRY/Wmrtx-vh_HI/AAAAAAAAIfE/RRml5NRckGQ6S4uDWJJsfSHhX2H7CWEBgCLcBGAs/s1600/1.png)</div>
-
-<h2 id="安裝Replace-Token-Task"><a href="#安裝Replace-Token-Task" class="headerlink" title="安裝Replace Token Task"></a>安裝Replace Token Task</h2><div>為了置換掉SetParameters.xml裡面的值，必須幫我們VSTS安裝套件</div><div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-Kq1PpE97VYE/WmruR4NMthI/AAAAAAAAIfM/Vu2lwFOUsx4Npju7imY-kYBuW3Frt1exACLcBGAs/s400/1.png)](https://1.bp.blogspot.com/-Kq1PpE97VYE/WmruR4NMthI/AAAAAAAAIfM/Vu2lwFOUsx4Npju7imY-kYBuW3Frt1exACLcBGAs/s1600/1.png)</div><div>
-</div><div>安裝連結 :&nbsp; [Replace Token MarketPlace&nbsp;](https://marketplace.visualstudio.com/items?itemName=qetza.replacetokens)</div>
-
-<p>在<strong>Azure App Service Deploy</strong>之前加上<strong>Replace Token Task</strong></p>
-<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-jDdk2Q7Mj7I/Wmru-f9N1fI/AAAAAAAAIfU/y2x-uJAWD8wQSwaij7_B6TyOS7T2RmMzQCLcBGAs/s640/1.png)](https://2.bp.blogspot.com/-jDdk2Q7Mj7I/Wmru-f9N1fI/AAAAAAAAIfU/y2x-uJAWD8wQSwaij7_B6TyOS7T2RmMzQCLcBGAs/s1600/1.png)</div><div>
-</div><div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-mTQYjeZIYho/WmrvSLWq_lI/AAAAAAAAIfY/hWpXjtyZkzMf40oTRqx4cfaWoSxvNQ5XgCLcBGAs/s640/1.png)](https://3.bp.blogspot.com/-mTQYjeZIYho/WmrvSLWq_lI/AAAAAAAAIfY/hWpXjtyZkzMf40oTRqx4cfaWoSxvNQ5XgCLcBGAs/s1600/1.png)</div><div>
-</div>
-
-<h2 id="設定"><a href="#設定" class="headerlink" title="設定"></a>設定</h2><div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-j-77BDvLK7A/WmrxsFTAD8I/AAAAAAAAIfo/4PIBYR3ck7Uc0DSDfUcTbjs4bAA2CzM-ACLcBGAs/s640/1.png)](https://4.bp.blogspot.com/-j-77BDvLK7A/WmrxsFTAD8I/AAAAAAAAIfo/4PIBYR3ck7Uc0DSDfUcTbjs4bAA2CzM-ACLcBGAs/s1600/1.png)</div>
-**Root Directory : **要替換的目標檔案Root資料夾位置
-**Target files : **告訴它我們要找的檔案是誰，以這邊來說就是SetParameters.xml
-**Token prefix、Token suffix : **比對什麼是它要幫我們置換的，而這邊就是#{xxxx}#包起來的就是參數
-
-<p>這樣設定完之後，它就會在WebDeploy之前執行<strong>Replace Token Task</strong>，而這個Task會去找到SetParameters.xml，然後找到#{xxx}#符號的，然後用我們之前設定在<strong>Variables</strong>的參數置換掉</p>
-<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-rvxpn3Nkvrw/WmrzQb7-SUI/AAAAAAAAIf0/fMBjj3gSnYwGvbR50p7UZcQQwvGUf5MNgCLcBGAs/s640/1.png)](https://2.bp.blogspot.com/-rvxpn3Nkvrw/WmrzQb7-SUI/AAAAAAAAIf0/fMBjj3gSnYwGvbR50p7UZcQQwvGUf5MNgCLcBGAs/s1600/1.png)</div><div>
-</div>
-
-<div class="note info">
-            <p>**參考文章 **</p><p><a target="_blank" rel="noopener" href="http://andrew.lansdowne.me/2016/12/15/using-environment-variables-for-configuration-with-vsts-build-and-release/">Using environment variables for configuration with VSTS build and release</a></p><p><a target="_blank" rel="noopener" href="http://cobus.io/devops/2016/02/06/Parameterizing_Webconfig.html">Parameterizing Web.config</a></p><p><a target="_blank" rel="noopener" href="https://blogs.iis.net/elliotth/web-deploy-xml-file-parameterization">Web Deploy XML File Parameterization</a></p><p><a target="_blank" rel="noopener" href="http://jakeydocs.readthedocs.io/en/latest/publishing/vsts-continuous-deployment.html">Use VSTS to Build and Publish to an Azure Web App with Continuous Deployment</a></p><p><a target="_blank" rel="noopener" href="http://blog.ehn.nu/2016/03/using-web-deploy-in-visual-studio-team-services-release-management/">Using Web Deploy in Visual Studio Team Services Release Management</a></p><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/vsts/build-release/tasks/transforms-variable-substitution">File transforms and variable substitution reference</a></p>
-          </div>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1688,7 +1676,7 @@ constraints的部分，我們把ID限制在只能出現數字，（如果對於�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1701,7 +1689,7 @@ constraints的部分，我們把ID限制在只能出現數字，（如果對於�
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前言之前專案就使用過 CQRS 做為系統的架構來開發，但一直覺得自己『知其然，而不知其所以然』，剛好最近出了一本CQRS 命令查詢職責分離模式 所以就買回來把他讀完了，趁記憶還很清晰時趕快做一下筆記，以下的內容參雜了許多自己的見解，歡迎大家一起討論 什麼是 CQRSCQRS 全名為 Command Query Responsibility Segregation ，意即命令與查詢分離的設計模式，而">
+<meta property="og:type" content="article">
+<meta property="og:title" content="淺談 CQRS">
+<meta property="og:url" content="https://toyo0103.github.io/2021/08/16/intro_cqrs/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="前言之前專案就使用過 CQRS 做為系統的架構來開發，但一直覺得自己『知其然，而不知其所以然』，剛好最近出了一本CQRS 命令查詢職責分離模式 所以就買回來把他讀完了，趁記憶還很清晰時趕快做一下筆記，以下的內容參雜了許多自己的見解，歡迎大家一起討論 什麼是 CQRSCQRS 全名為 Command Query Responsibility Segregation ，意即命令與查詢分離的設計模式，而">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://toyo0103.github.io/images/20210815/cqrs.png">
+<meta property="article:published_time" content="2021-08-15T23:37:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.080Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="CQRS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20210815/cqrs.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2021/08/16/intro_cqrs/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>淺談 CQRS | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2021/08/16/intro_cqrs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          淺談 CQRS
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-08-16 07:37:00" itemprop="dateCreated datePublished" datetime="2021-08-16T07:37:00+08:00">2021-08-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2021/08/16/intro_cqrs/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/08/16/intro_cqrs/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之前專案就使用過 CQRS 做為系統的架構來開發，但一直覺得自己『知其然，而不知其所以然』，剛好最近出了一本<a target="_blank" rel="noopener" href="https://www.tenlong.com.tw/products/9789864347926">CQRS 命令查詢職責分離模式</a> 所以就買回來把他讀完了，趁記憶還很清晰時趕快做一下筆記，以下的內容參雜了許多自己的見解，歡迎大家一起討論</p>
+<h1 id="什麼是-CQRS"><a href="#什麼是-CQRS" class="headerlink" title="什麼是 CQRS"></a>什麼是 CQRS</h1><p>CQRS 全名為 Command Query Responsibility Segregation ，意即<strong>命令</strong>與<strong>查詢</strong>分離的設計模式，而</p>
+<ul>
+<li>Command : 會對系統狀態或資料做出異動的行為</li>
+<li>Query : 單純取得資料不會對系統狀態造成異動的行為</li>
+</ul>
+<p>以傳統 CRUD 類比的話，CUD = Command，R = Query</p>
+<h1 id="為什麼需要-CQRS"><a href="#為什麼需要-CQRS" class="headerlink" title="為什麼需要 CQRS"></a>為什麼需要 CQRS</h1><h2 id="降低複雜度"><a href="#降低複雜度" class="headerlink" title="降低複雜度"></a>降低複雜度</h2><p>我自己接觸過的大部分系統，大多都是以維護資料做為出發點來設計的系統，例如專案內一定會有所謂的 Repository Layer ： 一個提供各種 API 並能對資料做 CRUD 的封裝層。<br>系統本來就是一系列對資料維護的過程，這樣做有錯嗎？ 只要商業情境不要太複雜的話，大部分都沒什麼問題，但如果系統規模越做越大，商業情境越來越複雜，如果只是用 CRUD 的思維來設計系統，往往會讓複雜度越疊越高，甚至到不可收拾的地步。<br>舉個例子，你應該看過這樣的 API</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params">MemberDto member</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> memberEntity = MemberRepository.Get(member.Id);</span><br><span class="line">    <span class="keyword">if</span>(memberEntity == <span class="literal">null</span>) </span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> NullReferenceException(<span class="string">&quot;Member not found.&quot;</span>); </span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">string</span>.IsNullOrEmpty(member.Name)) </span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentNullException(<span class="keyword">nameof</span>(member.Name));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(DateTime.TryParse(member.Birthday, <span class="keyword">out</span> <span class="keyword">var</span> birthday) == <span class="literal">false</span>)</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentException(<span class="keyword">nameof</span>(member.Birthday));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//bla bla bla ....</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">string</span>.IsNullOrEmpty(member.Password)) </span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentNullException(<span class="keyword">nameof</span>(member.Password));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Set Entity ...</span></span><br><span class="line"></span><br><span class="line">    memberEntity.Password = member.Password;</span><br><span class="line"></span><br><span class="line">    MemberRepository.Update(memberEntity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這個 API 可能包含了對 Member 資料的各種邏輯驗證，而呼叫這個 API 的你可能只是為了完成密碼變更而已，這份 Code 硬要說沒什麼大問題，但也體現了從 CRUD 角度設計出的 API 可能隨著商業邏輯的日益複雜，複雜度可能會成長到非常可怕的地步，而這也是 CQRS 中想避免的事情。</p>
+<h2 id="Command-會這樣做"><a href="#Command-會這樣做" class="headerlink" title="Command 會這樣做"></a>Command 會這樣做</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Handle</span>(<span class="params">ResetPasswordCommand command</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> member = MemberRepository.Get(command.Id);</span><br><span class="line">    <span class="keyword">if</span>(memberEntity == <span class="literal">null</span>) </span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> NullReferenceException(<span class="string">&quot;Member not found.&quot;</span>); </span><br><span class="line"></span><br><span class="line">    <span class="comment">//領域模型知道 ResetPassowrd 的相關驗證與知識</span></span><br><span class="line">    member.ResetPassword(command.Password);</span><br><span class="line"></span><br><span class="line">    MemberRepository.Update(member);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="1-貼近現實世界的用語"><a href="#1-貼近現實世界的用語" class="headerlink" title="1. 貼近現實世界的用語"></a>1. 貼近現實世界的用語</h3><p>PO 會對我們說需要<code>會員註冊</code>的功能，而不會說需要<code>新增會員</code>的功能，而通常<code>更換密碼</code>與<code>忘記密碼</code>會是完全不一樣的流程，用 <code>UpdatePassword</code> 很難精準說明這裡面做了什麼，你可能需要翻程式碼看流程，才能說出這個方法內包含了哪些商業情境，而這正是 Command 想避免的。</p>
+<h3 id="2-貼近商業邏輯"><a href="#2-貼近商業邏輯" class="headerlink" title="2. 貼近商業邏輯"></a>2. 貼近商業邏輯</h3><p>一個 Command 只做一件事情，而 Command 所執行的流程跟邏輯應符合真實流程與情境</p>
+<h3 id="3-Command-內盡量不要再串其他-Command"><a href="#3-Command-內盡量不要再串其他-Command" class="headerlink" title="3. Command 內盡量不要再串其他 Command"></a>3. Command 內盡量不要再串其他 Command</h3><p>Command 通常會對應觸發系統 Event，當 Command 串 Command 時，後續的連鎖反應容易失控，盡量讓 Command 就是獨立完成一個商業邏輯。</p>
+<p>也許看到這邊會覺得這好像有點 DDD 的影子，定義領域模型並封裝領域知識，外部透過 Command 觸發領域模型做事，就我目前的認識，的確 DDD 通常會採用 CQRS 的設計模式來實作，但 CQRS 卻不一定要實作 DDD，不過 DDD 我還是初學者就不獻醜了。</p>
+<h2 id="提升效能"><a href="#提升效能" class="headerlink" title="提升效能"></a>提升效能</h2><p>系統都希望提供各種角度的搜尋來滿足分析與功能需求，而這會加重資料庫的運算資源短缺問題，通常下一步就會開始將資料庫做<code>讀寫分離</code>的拆解，但最終逃離不了 Table Schema 需要同一套的束縛，而這個束縛在運算或是資料到達某個量級時就很難再往上提升了。</p>
+<p>搜尋、寫入最佳化是個兩難的問題，搜尋要快通常要對 Index 設計下一些功夫，而偏偏 Index 越多寫入越慢，又或是 Table Schema 適度的反正規化對搜尋較為友善，但偏偏這會讓寫入資料維護時變得異常麻煩；反過來看，寫入要快需要盡量只寫入該寫入或該更新的資料，而正規化反而是有利於寫入的情境。當讀寫都對同一個 DB 或是同一張 Table 時這兩邊的平衡往往會讓 RD 抓狂，而 CQRS 正是能解決的問題的很好解決方案。<br><img src="/images/20210815/cqrs.png" alt="/images/20210815/cqrs.png"><br>CQRS 允許 Command 與 Query 可以是 Table 等級的隔離也可以是資料庫的實體隔離，更提供針對 Command 與 Query 各自選用最佳方案的資料庫，例如：Command 選用 RDB 而 Query 選擇 NoSQL 甚至是 Elasticsearch 這種重量級搜尋服務來滿足，兩邊資料則透過 Event Sync 的方式來同步。<br>通常系統寫入與查詢的量也是不成比例的，一般系統大部分都在應付各種查詢，而寫入可能只有讀取不到 10 分之 1 的量，CQRS 是有辦法單獨對 Query DB 做橫向擴充，而這在傳統系統架構上是很難做到的一點。</p>
+<h1 id="既然這麼好，我是否該每個系統都這樣設計"><a href="#既然這麼好，我是否該每個系統都這樣設計" class="headerlink" title="既然這麼好，我是否該每個系統都這樣設計"></a>既然這麼好，我是否該每個系統都這樣設計</h1><p>有優點就有缺點，而 CQRS 的缺點是對於開發的難度提升了不止一個檔次，等等！上面不是說為了簡化才選擇 CQRS，這邊又說開發變困難，筆者態度前後不一啦（怒噴兩萬字）</p>
+<p>先冷靜聽我說，CQRS 是想讓你的程式碼符合商業情境，並盡量符合 Single responsibility principle，這是 Code Level 的簡化，但架構卻變得更為複雜，第一你得面對兩邊資料庫的選擇問題，就算退一步說，我系統量不大，選擇同一座資料庫切 Table 可以吧，但 Command 與 Query 就是會有同步時間差，資料只能做到<strong>最終一致性</strong>，而你準備好面對這樣的改變了嗎？你應該不會想要採用 CQRS ，但抄寫兩張 Table 卻用同步的作法，這樣用單張 Table 採用 CRUD 的方式還更快一些。</p>
+<p>當你的開始對 Command / Query 各自選用最佳的資料庫解決方案時，Event Sync 抄寫資料的實作想好解決方案了嗎？中間是透過 Queue 實作 Pub / Sub 同步嗎？ 資料同步延遲的 SLO 定好了嗎？ Consumer 同步速度跟不上寫入發過來的 Event 時，橫向擴充的機制是否想好了？</p>
+<p>當開始要面對最終一致性時，不單單只是系統層面的調整，有時甚至從需求到 RD 觀念都是需要做些改變，現實世界最終一致性例子比比皆是，但在過去的大單體時代強一致性才是顯學，如今系統需要乘載的量體已經不可同日而語，除非有革命性的物理突破，不然我們都要開始習慣這個改變</p>
+<div class="note info">
+            <p>延伸閱讀<br><a target="_blank" rel="noopener" href="https://www.enterpriseintegrationpatterns.com/ramblings/18_starbucks.html">Starbucks Does Not Use Two-Phase Commit</a></p>
+          </div>
+
+<p>講這麼多，那到底怎樣才需要用到 CQRS 實作系統？ 我的建議是如果這個系統<strong>流量</strong>或<strong>資料量</strong>預期成長不大，或需求不太會隨著商業情境一直改變的，例如後台系統，這種真的套個 Template 用 CRUD 簡單搞定就好，引入 CQRS 只會增加複雜度且不會有多大效益的，反之如果這個系統預期未來會持續成長，商業需求也會一直調整，那我會建議可以考慮引入 CQRS，但在前期可以選擇單一資料庫切 Table 的方式就好，等到真的量開始起來時再開始 Migration 都還來得及。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CQRS/" rel="tag"># CQRS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/29/packet_capture/" rel="prev" title="擷取封包練習">
+      <i class="fa fa-chevron-left"></i> 擷取封包練習
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/21/become_a_tech_lead/" rel="next" title="弱雞 Tech Lead 初體驗">
+      弱雞 Tech Lead 初體驗 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF-CQRS"><span class="nav-number">2.</span> <span class="nav-text">什麼是 CQRS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E9%9C%80%E8%A6%81-CQRS"><span class="nav-number">3.</span> <span class="nav-text">為什麼需要 CQRS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%8D%E4%BD%8E%E8%A4%87%E9%9B%9C%E5%BA%A6"><span class="nav-number">3.1.</span> <span class="nav-text">降低複雜度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Command-%E6%9C%83%E9%80%99%E6%A8%A3%E5%81%9A"><span class="nav-number">3.2.</span> <span class="nav-text">Command 會這樣做</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%B2%BC%E8%BF%91%E7%8F%BE%E5%AF%A6%E4%B8%96%E7%95%8C%E7%9A%84%E7%94%A8%E8%AA%9E"><span class="nav-number">3.2.1.</span> <span class="nav-text">1. 貼近現實世界的用語</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%B2%BC%E8%BF%91%E5%95%86%E6%A5%AD%E9%82%8F%E8%BC%AF"><span class="nav-number">3.2.2.</span> <span class="nav-text">2. 貼近商業邏輯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Command-%E5%85%A7%E7%9B%A1%E9%87%8F%E4%B8%8D%E8%A6%81%E5%86%8D%E4%B8%B2%E5%85%B6%E4%BB%96-Command"><span class="nav-number">3.2.3.</span> <span class="nav-text">3. Command 內盡量不要再串其他 Command</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E5%8D%87%E6%95%88%E8%83%BD"><span class="nav-number">3.3.</span> <span class="nav-text">提升效能</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%97%A2%E7%84%B6%E9%80%99%E9%BA%BC%E5%A5%BD%EF%BC%8C%E6%88%91%E6%98%AF%E5%90%A6%E8%A9%B2%E6%AF%8F%E5%80%8B%E7%B3%BB%E7%B5%B1%E9%83%BD%E9%80%99%E6%A8%A3%E8%A8%AD%E8%A8%88"><span class="nav-number">4.</span> <span class="nav-text">既然這麼好，我是否該每個系統都這樣設計</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2021/08/16/intro_cqrs/";
+    this.page.identifier = "2021/08/16/intro_cqrs/";
+    this.page.title = "淺談 CQRS";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

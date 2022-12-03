@@ -189,6 +189,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/09/06/%E3%80%90LINQ-TO-SQL%E3%80%91%E8%A7%A3%E6%B1%BASubmitChanges%E6%99%82%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E8%A1%9D%E7%AA%81%E7%9A%84%E5%95%8F%E9%A1%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2013/09/06/%E3%80%90LINQ-TO-SQL%E3%80%91%E8%A7%A3%E6%B1%BASubmitChanges%E6%99%82%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E8%A1%9D%E7%AA%81%E7%9A%84%E5%95%8F%E9%A1%8C/" class="post-title-link" itemprop="url">【LINQ TO SQL】解決SubmitChanges時與資料庫衝突的問題</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2013-09-06 10:39:00" itemprop="dateCreated datePublished" datetime="2013-09-06T10:39:00+08:00">2013-09-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2013/09/06/%E3%80%90LINQ-TO-SQL%E3%80%91%E8%A7%A3%E6%B1%BASubmitChanges%E6%99%82%E8%88%87%E8%B3%87%E6%96%99%E5%BA%AB%E8%A1%9D%E7%AA%81%E7%9A%84%E5%95%8F%E9%A1%8C/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/09/06/【LINQ-TO-SQL】解決SubmitChanges時與資料庫衝突的問題/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><p>  一樣參考保哥的<a target="_blank" rel="noopener" href="http://blog.miniasp.com/post/2008/05/24/Resolve-LINQ-to-SQL-Change-Conflict-Exception.aspx">解決 LINQ to SQL 資料庫更新衝突的情形</a>與公司前輩的Source Code</p>
+</li>
+<li><p><strong>發生原因：</strong>有可能我們在跟DB取得某個欄位時得到A這個值，但當我們改動這個值並嘗試更新回DB時，可能DB早就被其他使用者改成B了。DBContext SubmitChanges會去比對這個欄位最初值是否與DB目前的值一致避免Dirty Data的問題，但當上述情況發生時則會擲出Exception。各種處理方式如下:```csharp<br>try<br>{<br> _dbContext.SubmitChanges(System.Data.Linq.ConflictMode.ContinueOnConflict);<br>}<br>catch (System.Data.Linq.ChangeConflictException ex)<br>{<br> foreach (System.Data.Linq.ObjectChangeConflict occ in _dbContext.ChangeConflicts)<br> {</p>
+<pre><code>// 採用資料庫的查詢出來的值，目前物件的值將會被資料庫最新查到的複寫
+//occ.Resolve(System.Data.Linq.RefreshMode.OverwriteCurrentValues);
+
+    // 採用目前物件中的值，並更新資料庫中的版本
+//occ.Resolve(System.Data.Linq.RefreshMode.KeepCurrentValues);
+
+    // 僅更新此物件中變更的欄位，僅將變更的欄位寫入資料庫（或稱為合併更新）
+occ.Resolve(System.Data.Linq.RefreshMode.KeepChanges);
+</code></pre>
+<p>  }<br>  // 注意：解決完衝突之後要記得重新再 SubmitChanges() 一次，否則一樣不會更新資料庫<br>  _dbContext.SubmitChanges();<br>}</p>
+</li>
+</ul>
+<pre><code>
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/09/03/%E3%80%90SQL%E3%80%91SQL-2008R2-%E9%96%8B%E5%95%9FSA%E5%B8%B3%E8%99%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +309,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-09-03 09:57:00" itemprop="dateCreated datePublished" datetime="2013-09-03T09:57:00+00:00">2013-09-03</time>
+              <time title="Created: 2013-09-03 09:57:00" itemprop="dateCreated datePublished" datetime="2013-09-03T09:57:00+08:00">2013-09-03</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -296,14 +392,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-09-01 17:04:04" itemprop="dateCreated datePublished" datetime="2013-09-01T17:04:04+00:00">2013-09-01</time>
+              <time title="Created: 2013-09-01 17:04:04" itemprop="dateCreated datePublished" datetime="2013-09-01T17:04:04+08:00">2013-09-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -388,14 +484,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-08-26 17:39:00" itemprop="dateCreated datePublished" datetime="2013-08-26T17:39:00+00:00">2013-08-26</time>
+              <time title="Created: 2013-08-26 17:39:00" itemprop="dateCreated datePublished" datetime="2013-08-26T17:39:00+08:00">2013-08-26</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -470,14 +566,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-07-14 12:27:00" itemprop="dateCreated datePublished" datetime="2013-07-14T12:27:00+00:00">2013-07-14</time>
+              <time title="Created: 2013-07-14 12:27:00" itemprop="dateCreated datePublished" datetime="2013-07-14T12:27:00+08:00">2013-07-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -549,14 +645,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-07-11 11:20:00" itemprop="dateCreated datePublished" datetime="2013-07-11T11:20:00+00:00">2013-07-11</time>
+              <time title="Created: 2013-07-11 11:20:00" itemprop="dateCreated datePublished" datetime="2013-07-11T11:20:00+08:00">2013-07-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -640,14 +736,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-06-13 17:27:10" itemprop="dateCreated datePublished" datetime="2013-06-13T17:27:10+00:00">2013-06-13</time>
+              <time title="Created: 2013-06-13 17:27:10" itemprop="dateCreated datePublished" datetime="2013-06-13T17:27:10+08:00">2013-06-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -723,14 +819,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-06-12 18:44:00" itemprop="dateCreated datePublished" datetime="2013-06-12T18:44:00+00:00">2013-06-12</time>
+              <time title="Created: 2013-06-12 18:44:00" itemprop="dateCreated datePublished" datetime="2013-06-12T18:44:00+08:00">2013-06-12</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -890,14 +986,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-06-10 22:53:00" itemprop="dateCreated datePublished" datetime="2013-06-10T22:53:00+00:00">2013-06-10</time>
+              <time title="Created: 2013-06-10 22:53:00" itemprop="dateCreated datePublished" datetime="2013-06-10T22:53:00+08:00">2013-06-10</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -974,14 +1070,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-05-29 17:13:00" itemprop="dateCreated datePublished" datetime="2013-05-29T17:13:00+00:00">2013-05-29</time>
+              <time title="Created: 2013-05-29 17:13:00" itemprop="dateCreated datePublished" datetime="2013-05-29T17:13:00+08:00">2013-05-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1020,86 +1116,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">         [![](http:&#x2F;&#x2F;3.bp.blogspot.com&#x2F;-hbcc3sD90ek&#x2F;UaXGjjKL0UI&#x2F;AAAAAAAADmw&#x2F;jh2ks4iABqM&#x2F;s1600&#x2F;%E6%9C%AA%E5%91%BD%E5%90%8D.png)](http:&#x2F;&#x2F;3.bp.blogspot.com&#x2F;-hbcc3sD90ek&#x2F;UaXGjjKL0UI&#x2F;AAAAAAAADmw&#x2F;jh2ks4iABqM&#x2F;s1600&#x2F;%E6%9C%AA%E5%91%BD%E5%90%8D.png)*   然後        &#96;&#96;&#96;sql</span><br><span class="line">select *</span><br><span class="line">         from (</span><br><span class="line">              select *  ,ROW_NUMBER() over(partition by location,who order by time Desc ) as row_index</span><br><span class="line">              from timeline) as tempTable</span><br><span class="line">         where tempTable.row_index &#x3D; 1</span><br><span class="line">       </span><br></pre></td></tr></table></figure>
 <pre><code>   [![](http://4.bp.blogspot.com/-E-Syl1jp57A/UaXHnZ_4jwI/AAAAAAAADm8/4cLCGkPmMag/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png)](http://4.bp.blogspot.com/-E-Syl1jp57A/UaXHnZ_4jwI/AAAAAAAADm8/4cLCGkPmMag/s1600/%E6%9C%AA%E5%91%BD%E5%90%8D.png)*   結論就是早點回家，否則也只是在公司吃東西而已 XD
 </code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/05/28/SQL-NOT-EXISTS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2013/05/28/SQL-NOT-EXISTS/" class="post-title-link" itemprop="url">SQL NOT  EXISTS</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2013-05-28 14:46:00" itemprop="dateCreated datePublished" datetime="2013-05-28T14:46:00+00:00">2013-05-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2013/05/28/SQL-NOT-EXISTS/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/05/28/SQL-NOT-EXISTS/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a target="_blank" rel="noopener" href="http://frankiestudy.blogspot.tw/2012/01/sql-not-exists.html">參考</a><br><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/en-us/library/bb399769.aspx">MSDN</a><br>結論就是，如果單一欄位要篩選掉就用Not IN ```sql<br>select *<br>from [order]<br>where 序號 not in<br>(<br> select 訂單編號 from orderDetail<br>)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">如果多個欄位要同時符合才篩選掉，就用Not Exists &#96;&#96;&#96;sql</span><br><span class="line">select *</span><br><span class="line">from [order] a</span><br><span class="line">where not exists</span><br><span class="line">(</span><br><span class="line"> select 訂單編號 from orderDetail b </span><br><span class="line"> where b.訂單編號 &#x3D; a.序號 and b.購買日期 &#x3D; (a.民國年+1911) </span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -1184,7 +1200,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1197,7 +1213,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

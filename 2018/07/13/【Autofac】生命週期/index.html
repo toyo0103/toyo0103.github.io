@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="2019&#x2F;08&#x2F;21 補充 ： 將之前在公司分享的  Demo Code 整理並放到 Github，有興趣的可以下載來試試看。  #什麼是Autofac用來實作控制反轉(Inversion of Control, IoC)的套件,幫我們管理抽象與實體之間的對應關係, 除了Autofac之外還有Unity等其它套件可以實作,但概念都大同小異。              Autofac官網">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Autofac】生命週期">
+<meta property="og:url" content="https://toyo0103.github.io/2018/07/13/%E3%80%90Autofac%E3%80%91%E7%94%9F%E5%91%BD%E9%80%B1%E6%9C%9F/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="2019&#x2F;08&#x2F;21 補充 ： 將之前在公司分享的  Demo Code 整理並放到 Github，有興趣的可以下載來試試看。  #什麼是Autofac用來實作控制反轉(Inversion of Control, IoC)的套件,幫我們管理抽象與實體之間的對應關係, 除了Autofac之外還有Unity等其它套件可以實作,但概念都大同小異。              Autofac官網">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180712/1.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180712/2.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180712/3.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180712/4.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180712/6.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180712/7.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180712/5.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180712/8.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20180712/9.jpg">
+<meta property="article:published_time" content="2018-07-12T16:06:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.085Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="AutoFac">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20180712/1.jpg">
+
+<link rel="canonical" href="https://toyo0103.github.io/2018/07/13/%E3%80%90Autofac%E3%80%91%E7%94%9F%E5%91%BD%E9%80%B1%E6%9C%9F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【Autofac】生命週期 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/07/13/%E3%80%90Autofac%E3%80%91%E7%94%9F%E5%91%BD%E9%80%B1%E6%9C%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Autofac】生命週期
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-13 00:06:00" itemprop="dateCreated datePublished" datetime="2018-07-13T00:06:00+08:00">2018-07-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/07/13/%E3%80%90Autofac%E3%80%91%E7%94%9F%E5%91%BD%E9%80%B1%E6%9C%9F/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/07/13/【Autofac】生命週期/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>2019/08/21 補充 ： 將之前在公司分享的  Demo Code 整理並放到 <a target="_blank" rel="noopener" href="https://github.com/toyo0103/AutofacLifetimeScopeDemo">Github</a>，有興趣的可以下載來試試看。 </p>
+<h1 id="什麼是Autofac"><a href="#什麼是Autofac" class="headerlink" title="#什麼是Autofac"></a>#什麼是Autofac</h1><p>用來實作<strong>控制反轉</strong>(Inversion of Control, IoC)的套件,幫我們管理抽象與實體之間的對應關係, 除了Autofac之外還有Unity等其它套件可以實作,但概念都大同小異。</p>
+<div class="note info">
+            <p><a target="_blank" rel="noopener" href="https://autofac.org/">Autofac官網</a></p>
+          </div>
+
+<h1 id="Autofac的生命週期有哪些"><a href="#Autofac的生命週期有哪些" class="headerlink" title="#Autofac的生命週期有哪些"></a>#Autofac的生命週期有哪些</h1><ul>
+<li>InstancePerDependency</li>
+<li>SingleInstance</li>
+<li>InstancePerLifetimeScope</li>
+<li>InstancePerRequest</li>
+</ul>
+<p>下面會一一解說跟實作測試,在這之前先準備一個WebAPI的專案,並且將Autofac與Autofac WebAPI2裝起來</p>
+<p><img src="/images/20180712/1.jpg" alt="/images/20180712/1.jpg"></p>
+<p>然後在App_Start資料夾新增AutofacConfig類別</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">AutofacConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> IContainer Container &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">BuildContainer</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">var</span> builder = <span class="keyword">new</span> ContainerBuilder();</span><br><span class="line"></span><br><span class="line">        Register(builder);</span><br><span class="line"></span><br><span class="line">        Container = builder.Build();</span><br><span class="line">        GlobalConfiguration.Configuration.DependencyResolver = <span class="keyword">new</span> AutofacWebApiDependencyResolver(Container);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Register</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">var</span> assembly = <span class="keyword">typeof</span>(AutofacConfig).Assembly;</span><br><span class="line">        builder.RegisterApiControllers(assembly);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>Global.asax</strong>加上這行</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Application_Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//Autofac Init</span></span><br><span class="line">    AutofacConfig.BuildContainer();</span><br><span class="line"></span><br><span class="line">    AreaRegistration.RegisterAllAreas();</span><br><span class="line">    GlobalConfiguration.Configure(WebApiConfig.Register);</span><br><span class="line">    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);</span><br><span class="line">    RouteConfig.RegisterRoutes(RouteTable.Routes);</span><br><span class="line">    BundleConfig.RegisterBundles(BundleTable.Bundles);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="InstancePerDependency"><a href="#InstancePerDependency" class="headerlink" title="InstancePerDependency"></a>InstancePerDependency</h2><div class="note info">
+            <p>Also called ‘transient’ or ‘factory’ in other containers. Using per-dependency scope, <strong>a unique instance will be returned from each request for a service.</strong> </p>
+          </div>
+
+<p>每次呼叫都回傳一個新的實體,產生的Instance隨著呼叫者的生命週期消滅</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">LiftTimeModel</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">int</span> Count;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">int</span> ID &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LiftTimeModel</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Count++;</span><br><span class="line">        <span class="keyword">this</span>.ID = LiftTimeModel.Count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>AutofacConfig</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">AutofacConfig</span></span><br><span class="line">&#123;</span><br><span class="line">	....省略....</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Register</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">var</span> assembly = <span class="keyword">typeof</span>(AutofacConfig).Assembly;</span><br><span class="line">        builder.RegisterApiControllers(assembly);</span><br><span class="line"></span><br><span class="line">        builder.RegisterType&lt;LiftTimeModel&gt;().InstancePerDependency();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>TestController</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestController</span> : <span class="title">ApiController</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">private</span> LifeTimeModel _lifeTimeModel;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TestController</span>(<span class="params">LifeTimeModel lifeTimeModel</span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">		<span class="keyword">this</span>._lifeTimeModel = lifeTimeModel;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// GET api/&lt;controller&gt;</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>	&#123;</span><br><span class="line">		StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">		sb.AppendLine(<span class="built_in">string</span>.Concat(<span class="string">&quot;PerDependencyModel ID :&quot;</span>, <span class="keyword">this</span>._lifeTimeModel.ID));</span><br><span class="line"></span><br><span class="line">    	<span class="keyword">return</span> sb.ToString();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>呼叫/api/test會發現隨著呼叫的次數增加，LifeTimeModel ID 也會一直增加，因為每次Request呼叫開始都會產生新的TestController Instance，隨著Request結束TestController也會被消滅，依賴在它身上的LifeTimeModel也隨之產生與消滅。而每次產生新的LifeTimeModel Instance都會在建構子將static的Count加1，這是數字一直增加的緣故。</p>
+<p>此外Autofac預設使用的生命週期即為InstancePerDependency，所以這兩行的意思是一樣的</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">builder.RegisterType&lt;LiftTimeModel&gt;().InstancePerDependency();</span><br><span class="line">builder.RegisterType&lt;LiftTimeModel&gt;();</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/20180712/2.jpg" alt="InstancePerDependency圖解"></p>
+<h2 id="SingleInstance"><a href="#SingleInstance" class="headerlink" title="SingleInstance"></a>SingleInstance</h2><div class="note info">
+            <p>This is also known as ‘singleton.’ Using single instance scope, <strong>one instance is returned from all requests in the root and all nested scopes</strong>. </p>
+          </div>
+
+<p>不管呼叫幾次都只有產生一個Instance，以WebAPI為例只有當Application Shut down的時候會消滅</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">AutofacConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    ...省略....</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Register</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">var</span> assembly = <span class="keyword">typeof</span>(AutofacConfig).Assembly;</span><br><span class="line">        builder.RegisterApiControllers(assembly);</span><br><span class="line">        <span class="comment">//改成SingleInstance</span></span><br><span class="line">        builder.RegisterType&lt;LifeTimeModel&gt;().SingleInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>會發現不管呼叫/api/test幾次ID永遠都是1,原因是LifeTimeModel只會產生一次</p>
+<p><img src="/images/20180712/3.jpg" alt="SingleInstance圖解"></p>
+<h2 id="InstancePerLifetimeScope"><a href="#InstancePerLifetimeScope" class="headerlink" title="InstancePerLifetimeScope"></a>InstancePerLifetimeScope</h2><div class="note info">
+            <p>This scope applies to nested lifetimes. <strong>A component with per-lifetime scope will have at most a single instance per nested lifetime scope.</strong> </p>
+          </div>
+
+<p>這個非常容易跟InstancePerRequest搞混,簡單理解方式就是,每個Scope只會最多產生一個Instance。</p>
+<p>所以在Root只會產生一個，在Autofac WebRequest只會產生一組</p>
+<p><strong>新增TestPerLifetimeScopeModel做為觀察標的</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestPerLifetimeScopeModel</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> LifeTimeModel LifeTimeModel &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestPerLifetimeScopeModel</span>(<span class="params">LifeTimeModel lifeTimeModel</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">this</span>.LifeTimeModel = lifeTimeModel;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">AutofacConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    ...省略....</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Register</span>(<span class="params">ContainerBuilder builder</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">var</span> assembly = <span class="keyword">typeof</span>(AutofacConfig).Assembly;</span><br><span class="line">        builder.RegisterApiControllers(assembly);</span><br><span class="line">        </span><br><span class="line">        builder.RegisterType&lt;TestPerLifetimeScopeModel&gt;();</span><br><span class="line">         <span class="comment">//改成InstancePerLifetimeScope</span></span><br><span class="line">        builder.RegisterType&lt;LifeTimeModel&gt;().InstancePerLifetimeScope();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestController</span> : <span class="title">ApiController</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">private</span> LifeTimeModel _lifeTimeModel;</span><br><span class="line">    <span class="keyword">private</span> TestPerLifetimeScopeModel _testPerLifetimeScopeModel;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TestController</span>(<span class="params">LifeTimeModel lifeTimeModel, TestPerLifetimeScopeModel testPerLifetimeScopeModel</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">    	<span class="keyword">this</span>._lifeTimeModel = lifeTimeModel;</span><br><span class="line">    	<span class="keyword">this</span>._testPerLifetimeScopeModel = testPerLifetimeScopeModel;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// GET api/&lt;controller&gt;</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">    	StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">    	sb.AppendLine(<span class="built_in">string</span>.Concat(<span class="string">&quot;PerDependencyModel ID :&quot;</span>, <span class="keyword">this</span>._lifeTimeModel.ID));</span><br><span class="line">        sb.AppendLine(<span class="built_in">string</span>.Concat(<span class="string">&quot;TestPerLifetimeScopeModel&#x27;s LifeTimeModel ID :&quot;</span>, <span class="keyword">this</span>._testPerLifetimeScopeModel.LifeTimeModel.ID));</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> sb.ToString();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>會發現兩個得到的ID都是相同的，原因是Autofac WebRequest Scope中，一次Request只會產生一組LifeTimeModel，所以ID都會一樣</p>
+<p><img src="/images/20180712/4.jpg" alt="/images/20180712/4.jpg"></p>
+<p><del>更進一步說，如果我們今天有使用WebAPI DelegatingHandler，因為Handler只會在Application起來時產生一次Instance，所以在這產生的LifeTimeModel也會變成Singleton</del>   *<strong>註1</strong></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestHandler</span>: <span class="title">DelegatingHandler</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> Task&lt;HttpResponseMessage&gt; <span class="title">SendAsync</span>(<span class="params">HttpRequestMessage request, CancellationToken cancellationToken</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">    	<span class="keyword">var</span> Model = AutofacConfig.Container.Resolve&lt;LifeTimeModel&gt;();</span><br><span class="line">    	<span class="keyword">var</span> TestID = Model.ID;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">base</span>.SendAsync(request, cancellationToken);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">WebApiConfig</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Register</span>(<span class="params">HttpConfiguration config</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">// Web API 設定和服務</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Web API 路由</span></span><br><span class="line">        config.MapHttpAttributeRoutes();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 註冊Handler</span></span><br><span class="line">        config.MessageHandlers.Add(<span class="keyword">new</span> TestHandler());</span><br><span class="line"></span><br><span class="line">        config.Routes.MapHttpRoute(</span><br><span class="line">            name: <span class="string">&quot;DefaultApi&quot;</span>,</span><br><span class="line">            routeTemplate: <span class="string">&quot;api/&#123;controller&#125;/&#123;id&#125;&quot;</span>,</span><br><span class="line">            defaults: <span class="keyword">new</span> &#123; id = RouteParameter.Optional &#125;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>會發現Handler裡面的ID永遠拿到的都是1，而API回傳的結果則會慢慢增加，兩邊是各自獨立的實體</p>
+<p><img src="/images/20180712/6.jpg" alt="/images/20180712/6.jpg"></p>
+<p><img src="/images/20180712/7.jpg" alt="/images/20180712/7.jpg"></p>
+<p><img src="/images/20180712/5.jpg" alt="InstancePerLifetimeScope圖解"></p>
+<div class="note danger">
+            <p><strong>註1</strong></p><p>這邊觀念有錯誤，會Singleton的原因不在於DelegatingHandler的問題，而是因為使用AutofacConfig.Container來產生實體，Container是Root層級也是Singleton，請它產生LifeTimeModel (InstancePerLifetimeScope)，所以會變成Singleton。</p><p>交叉測試的方法是把這段 AutofacConfig.Container.Resolve<LifeTimeModel>()放到Controller的Action之中，產出來的實體也會是Singleton，所以癥結在AutofacConfig.Container而非DelegatingHandler或Controller Action的生命週期，特此更正</p>
+          </div>
+
+
+
+<h2 id="InstancePerRequest"><a href="#InstancePerRequest" class="headerlink" title="InstancePerRequest"></a>InstancePerRequest</h2><div class="note info">
+            <p>Some application types naturally lend themselves to “request” type semantics, for example ASP.NET <a target="_blank" rel="noopener" href="http://autofac.readthedocs.io/en/latest/integration/webforms.html">web forms</a> and <a target="_blank" rel="noopener" href="http://autofac.readthedocs.io/en/latest/integration/mvc.html">MVC</a> applications. In these application types, it’s helpful to have the ability to have a sort of “singleton per request.” </p>
+          </div>
+
+<p>基本上跟InstancePerLifetimeScope認知是一致的，唯一差別是它無法Root Scope產生Instance，因為生命週期隨著Request產生與消滅，不會有Singleton的可能，所以如果改成InstancePerRequest，剛剛的TestHandler就會產生Exception。</p>
+<p><img src="/images/20180712/8.jpg" alt="/images/20180712/8.jpg"></p>
+<p><img src="/images/20180712/9.jpg" alt="/images/20180712/9.jpg"></p>
+<p>Unity跟Autofac的生命週期一直都不是很好懂所以之前也踩了不少雷，筆記起來希望對大家能有幫助</p>
+<div class="note info">
+            <p><strong>補充</strong></p><p>產生在AutofacWebRequest Scope的實體，一定會在每次Request結束後被消滅</p>
+          </div>
+
+
+
+<div class="note info">
+            <p><strong>參考文件</strong></p><p><a target="_blank" rel="noopener" href="https://web.archive.org/web/20170111185216/http://decompile.it/blog/2014/03/13/webapi-autofac-lifetime-scopes/">WebAPI, Autofac, and Lifetime Scopes</a></p>
+          </div>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/AutoFac/" rel="tag"># AutoFac</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/07/11/%E3%80%90%E7%94%9F%E7%94%A2%E5%8A%9B%E3%80%91Code%20Snippet/" rel="prev" title="【生產力】Code Snippet">
+      <i class="fa fa-chevron-left"></i> 【生產力】Code Snippet
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/07/24/%E3%80%90Entity%20Framework%E3%80%91The_connection_was_not_closed_The_connection_s_current_state_is_connecting/" rel="next" title="【Entity Framework】The connection was not closed. The connection's current state is connecting">
+      【Entity Framework】The connection was not closed. The connection's current state is connecting <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AFAutofac"><span class="nav-number">1.</span> <span class="nav-text">#什麼是Autofac</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Autofac%E7%9A%84%E7%94%9F%E5%91%BD%E9%80%B1%E6%9C%9F%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="nav-number">2.</span> <span class="nav-text">#Autofac的生命週期有哪些</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#InstancePerDependency"><span class="nav-number">2.1.</span> <span class="nav-text">InstancePerDependency</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SingleInstance"><span class="nav-number">2.2.</span> <span class="nav-text">SingleInstance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InstancePerLifetimeScope"><span class="nav-number">2.3.</span> <span class="nav-text">InstancePerLifetimeScope</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InstancePerRequest"><span class="nav-number">2.4.</span> <span class="nav-text">InstancePerRequest</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2018/07/13/%E3%80%90Autofac%E3%80%91%E7%94%9F%E5%91%BD%E9%80%B1%E6%9C%9F/";
+    this.page.identifier = "2018/07/13/【Autofac】生命週期/";
+    this.page.title = "【Autofac】生命週期";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

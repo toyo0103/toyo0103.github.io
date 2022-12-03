@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="最近因為任務關係對 NATS Streaming 做了一些研究跟 POC，這邊把一些研究到的NATS Streaming 特性記錄下來 什麼是 NATSNATS 是一種 Queue , 它效能比一般的 Queue 好上許多，號稱 Sender &#x2F; Reciever 每秒可高達 20 萬筆 Message，這是非常驚人的數字。  （來源：https:&#x2F;&#x2F;bravenewgeek.com&#x2F;disse">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NATS Streaming 調查報告書">
+<meta property="og:url" content="https://toyo0103.github.io/2019/08/20/nats_streaming/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="最近因為任務關係對 NATS Streaming 做了一些研究跟 POC，這邊把一些研究到的NATS Streaming 特性記錄下來 什麼是 NATSNATS 是一種 Queue , 它效能比一般的 Queue 好上許多，號稱 Sender &#x2F; Reciever 每秒可高達 20 萬筆 Message，這是非常驚人的數字。  （來源：https:&#x2F;&#x2F;bravenewgeek.com&#x2F;disse">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190819/0.jpg">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190819/1.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190819/2.png">
+<meta property="og:image" content="https://toyo0103.github.io/images/20190819/3.png">
+<meta property="article:published_time" content="2019-08-19T23:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.081Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="microservice">
+<meta property="article:tag" content="NATS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://toyo0103.github.io/images/20190819/0.jpg">
+
+<link rel="canonical" href="https://toyo0103.github.io/2019/08/20/nats_streaming/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>NATS Streaming 調查報告書 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/08/20/nats_streaming/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          NATS Streaming 調查報告書
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-08-20 07:00:00" itemprop="dateCreated datePublished" datetime="2019-08-20T07:00:00+08:00">2019-08-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/08/20/nats_streaming/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/08/20/nats_streaming/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="/images/20190819/0.jpg" alt="/images/20190819/0.jpg"></p>
+<p>最近因為任務關係對 NATS Streaming 做了一些研究跟 POC，這邊把一些研究到的NATS Streaming 特性記錄下來</p>
+<h1 id="什麼是-NATS"><a href="#什麼是-NATS" class="headerlink" title="什麼是 NATS"></a>什麼是 NATS</h1><p><a target="_blank" rel="noopener" href="https://nats.io/">NATS</a> 是一種 Queue , 它效能比一般的 Queue 好上許多，號稱 Sender / Reciever 每秒可高達 20 萬筆 Message，這是非常驚人的數字。</p>
+<p><img src="/images/20190819/1.png" alt="/images/20190819/1.png"></p>
+<p>（來源：<a target="_blank" rel="noopener" href="https://bravenewgeek.com/dissecting-message-queues/%EF%BC%89">https://bravenewgeek.com/dissecting-message-queues/）</a></p>
+<p>可以看到 RabbitMQ 在它旁邊矮了一大截….</p>
+<br>
+
+<p>NATS 支援 Subscribe 模式，Subscriber 訂閱需要的 subject，當 NATS 收到 Message 時就會同時派發給所有訂閱者。</p>
+<p><img src="/images/20190819/2.png" alt="/images/20190819/2.png"></p>
+<p>（來源：<a target="_blank" rel="noopener" href="https://nats-io.github.io/docs/developer/concepts/pubsub.html%EF%BC%89">https://nats-io.github.io/docs/developer/concepts/pubsub.html）</a></p>
+<br>
+
+<p>NATS 也支援 Queu Group，NATS 會對同一個 Queue Group 的所有 Subscriber 分配訂閱的 Message，而不會重複</p>
+<p><img src="/images/20190819/3.png" alt="/images/20190819/3.png"></p>
+<p>（來源：<a target="_blank" rel="noopener" href="https://nats-io.github.io/docs/developer/concepts/queue.html%EF%BC%89">https://nats-io.github.io/docs/developer/concepts/queue.html）</a></p>
+<p>不過這些都不算太特別，畢竟 RabbitMQ 一樣能做到相同的功能，最特別的是 NATS Streaming</p>
+<br>
+
+<h1 id="什麼是-NATS-Streaming"><a href="#什麼是-NATS-Streaming" class="headerlink" title="什麼是 NATS Streaming"></a>什麼是 NATS Streaming</h1><p>NATS Streaming 是附加在 NATS 之上的加值功能，他可以永久的保留所有的 Message，並且支援 Cursor（指標）功能，你可以任意的讓 Subscriber 回到特定的點 <strong>重播</strong> 所有的 Message。</p>
+<p>這一點相當有用，試想一下，如果今天我們將所有交易的過程都透過 NATS Streaming 記錄下來，假設資料庫或記錄的地方損毀，我們只要重新 Replay 所有 Message，即能重建最後的結果。這也是 <a target="_blank" rel="noopener" href="https://microservices.io/patterns/data/event-sourcing.html">Event Sourcing</a> 中最重要的的一環。</p>
+<p>為了達成 Event Sourcing 這個設計模式的目標，演練了一些特定的情境</p>
+<ol>
+<li>為了達成 HA 及加快處理速度的需求，需要多個 Subscriber 同時訂閱相同 Subject，並且彼此不會做到重複的 Message。</li>
+<li>演練災難還原，Subscriber 必須能回朔到過去的的定時間點，重新 Replay 所有歷程</li>
+</ol>
+<br>
+
+<h2 id="1-Queue-Group"><a href="#1-Queue-Group" class="headerlink" title="1. Queue Group"></a>1. Queue Group</h2><p>其實第一項相對於容易，只要用 Queue Group 即可輕鬆達成，只要每個 Subscriber 給定同一組 Queue Group Name 即可。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> options = StanOptions.GetDefaultOptions();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> subOptions = StanSubscriptionOptions.GetDefaultOptions();</span><br><span class="line">subOptions.MaxInflight = <span class="number">1</span>; <span class="comment">// MaxInflight</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> cf = <span class="keyword">new</span> StanConnectionFactory();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c = cf.CreateConnection(<span class="string">&quot;test-cluster&quot;</span>, clientId, options);</span><br><span class="line"><span class="keyword">var</span> s = c.Subscribe(<span class="string">&quot;foo&quot;</span>, queueGroup, subOptions, (obj, args) =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">                ......</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//等待接收關機訊號</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//關閉連線</span></span><br><span class="line">s.Close(); </span><br><span class="line">c.Close();</span><br><span class="line">c.Dispose();</span><br></pre></td></tr></table></figure>
+
+<p>這邊需要特別注意 <strong>MaxInflight</strong> 這個參數，為了效率 NATS  預設會一次派給 Subscriber 1000 則Message（預設值有點忘記），好讓 Subscriber 不需要每做完一筆才透過網路要下一筆 Message，但這也讓我測出一個問題，當預收的訊息太多並且 Subscriber 根本來不及消化掉，這時候 NATS 會判定該則訊息 timeout，轉而派給同群別的Subscriber 來處理，這時候可能會發生兩個 Subscriber 執行到同一筆 Message 的狀況，所以請估算好 MaxInflight 的值，避免抓一堆做不完重派的狀況發生。</p>
+<p>當最後一個 <strong>Subscriber</strong> 離線後，Queue Group 即會被刪除</p>
+<br>
+
+<h2 id="2-Durable-Name"><a href="#2-Durable-Name" class="headerlink" title="2. Durable Name"></a>2. Durable Name</h2><p>前面有提到 NATS Streaming 支援 Cursor 的功能，當 Subscriber 都離線時，如果有給它 Durable Name，他會記得上次你執行到哪一筆，當下次 Subscriber 重新連上時會從那個點繼續往下派發</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> subOptions = StanSubscriptionOptions.GetDefaultOptions();</span><br><span class="line">subOptions.DurableName = _appSetting.DURABLENAME;</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h2 id="3-StartAt"><a href="#3-StartAt" class="headerlink" title="3. StartAt"></a>3. StartAt</h2><p>接著來實作災難還原的步驟，首先如何讓特定的 Queue Group 退到特定的點，呈上，同時多個 Subscriber 與 Durable Name 都還是要能符合。</p>
+<p>SDK 其實有提供 <strong>StartAt()</strong> 的 API</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Receive messages starting at a specific sequence number</span></span><br><span class="line"><span class="keyword">var</span> subOptions = StanSubscriptionOptions.GetDefaultOptions();</span><br><span class="line">subOptions.StartAt(<span class="number">22</span>);</span><br></pre></td></tr></table></figure>
+
+<p>不過這邊需特別注意，同一個 Queue Group 只有在第一個 Subscriber 進來時（也就建立這個 Queue Group 的時候）<strong>StartAt 才會生效</strong>，之後進來的 Subscriber 帶這個值都會被直接忽略掉。</p>
+<p>這邊問題就來了，當我們帶了 Queue Group ＋ Durable Name，即便所有的 Subscriber 都離線了，NATS 還是會貼心的幫你記錄最後執行到的地方，所以之後進來的 Subscriber 也都不可能是第一個了，換言之這樣的狀況是無法重新設定指標的。</p>
+<p>所以如果要刪除  Queue Group ＋ Durable Name 的 Queue Group 唯一的方法只有讓所有的 Subscriber 退訂閱</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 取消訂閱 刪除該Group</span></span><br><span class="line">s.Unsubscribe();</span><br></pre></td></tr></table></figure>
+
+<p>這邊跟上面的範例程式不一樣，上面的是用 **Close()**，這樣並不會讓 Subscriber 退訂閱，只會是離線而已，唯有用 <strong>Unsubscribe()</strong> 將 Subscriber 全部退訂閱後，有 Durable Name 的 Queue Group 才會被刪除掉。</p>
+<p>另外 NATS SDK 並沒有提供查詢 Queue Group 所有 Subscriber 的 Client ID，依據官方的說法，這份清單應該是使用者需要自己維護的，在上面這個案例上，就會需要將所有 <strong>Subscriber</strong> 用相同 Client ID 連上線後退訂閱。</p>
+<br>
+
+<h2 id="4-ManualAcks"><a href="#4-ManualAcks" class="headerlink" title="4. ManualAcks"></a>4. ManualAcks</h2><p>用上述的方法成功刪除 Queue Group 後，下一步就是重新讓第一個 <strong>Subscriber</strong> 去建立 Queue Group 並指定 <strong>StartAt</strong> ，不過這邊有點麻煩的地方是，<strong>Subscriber</strong> 一連線後馬上就會開始拋 Message 過來，這時後如果你是希望災難還原與重新執行 Replay 分開做時就會很困擾。</p>
+<p>預設 StanSubscriptionOptions 是收到 Message 後自動就幫你 Ack 回報 NATS 你收到了在處理了，NATS 也就會繼續往下把下一筆分配給別人，但我只是想指定位子不想要處理 Message 呢？</p>
+<p>這時候就要透過設定將 Ack 改成手動回報</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> subOptions = StanSubscriptionOptions.GetDefaultOptions();</span><br><span class="line">subOptions.ManualAcks = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">.......</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> s = c.Subscribe(<span class="string">&quot;foo&quot;</span>, queueGroup, subOptions, (obj, args) =&gt;</span><br><span class="line">                    &#123;</span><br><span class="line">                      args.Message.Ack();</span><br><span class="line">                    &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>這樣只要不呼叫 **Ack()**，就等於不處理這筆 Message 了，當 Subscriber 離線或是 Message timeout，NATS 就會重新分派給其他 Subscriber 處理了，這樣也間接達到重建 Queue Group 與指定 Cursor 的目標。</p>
+<div class="note info">
+            <p>參考文章</p><p><a target="_blank" rel="noopener" href="https://nats-io.github.io/docs/">NATS Document</a></p><p><a target="_blank" rel="noopener" href="https://github.com/nats-io/stan.net">The official NATS .NET C# Streaming Client</a></p>
+          </div>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/microservice/" rel="tag"># microservice</a>
+              <a href="/tags/NATS/" rel="tag"># NATS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/08/02/threadpool/" rel="prev" title="ThreadPool">
+      <i class="fa fa-chevron-left"></i> ThreadPool
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/11/09/service_discovery/" rel="next" title="Service Discovery">
+      Service Discovery <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF-NATS"><span class="nav-number">1.</span> <span class="nav-text">什麼是 NATS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%80%E9%BA%BC%E6%98%AF-NATS-Streaming"><span class="nav-number">2.</span> <span class="nav-text">什麼是 NATS Streaming</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Queue-Group"><span class="nav-number">2.1.</span> <span class="nav-text">1. Queue Group</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Durable-Name"><span class="nav-number">2.2.</span> <span class="nav-text">2. Durable Name</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-StartAt"><span class="nav-number">2.3.</span> <span class="nav-text">3. StartAt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-ManualAcks"><span class="nav-number">2.4.</span> <span class="nav-text">4. ManualAcks</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2019/08/20/nats_streaming/";
+    this.page.identifier = "2019/08/20/nats_streaming/";
+    this.page.title = "NATS Streaming 調查報告書";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

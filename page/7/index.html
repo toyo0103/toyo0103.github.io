@@ -189,6 +189,162 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/26/%E3%80%90CI-CD%E3%80%914-%E5%9C%A8%E4%BD%88%E7%BD%B2%E9%9A%8E%E6%AE%B5%E7%BD%AE%E6%8F%9B%E5%8F%83%E6%95%B8%E5%80%BC%EF%BC%8C%E4%BB%A5Web-Config%E7%82%BA%E4%BE%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/01/26/%E3%80%90CI-CD%E3%80%914-%E5%9C%A8%E4%BD%88%E7%BD%B2%E9%9A%8E%E6%AE%B5%E7%BD%AE%E6%8F%9B%E5%8F%83%E6%95%B8%E5%80%BC%EF%BC%8C%E4%BB%A5Web-Config%E7%82%BA%E4%BE%8B/" class="post-title-link" itemprop="url">【CI/CD】4. 在佈署階段置換參數值，以Web.Config為例</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-01-26 17:25:00" itemprop="dateCreated datePublished" datetime="2018-01-26T17:25:00+08:00">2018-01-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/VSTS%E5%BB%BA%E7%BD%AECI-CD/" itemprop="url" rel="index"><span itemprop="name">VSTS建置CI-CD</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/01/26/%E3%80%90CI-CD%E3%80%914-%E5%9C%A8%E4%BD%88%E7%BD%B2%E9%9A%8E%E6%AE%B5%E7%BD%AE%E6%8F%9B%E5%8F%83%E6%95%B8%E5%80%BC%EF%BC%8C%E4%BB%A5Web-Config%E7%82%BA%E4%BE%8B/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/01/26/【CI-CD】4-在佈署階段置換參數值，以Web-Config為例/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <div class="note info">
+            <p>接續前篇 : <a target="_blank" rel="noopener" href="https://toyo0103.blogspot.tw/2018/01/cicd3-vsts-azure-appservice-slot.html">【CI/CD】3. 透過VSTS 切換Azure AppService Slot</a></p>
+          </div>
+
+<p>如果你的佈署狀況如下</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://3.bp.blogspot.com/-uiFFGMOOPlQ/WmraN8BbjEI/AAAAAAAAIdo/xzVVbXd5NLkz4xpa1wI-gTNN048M5R7ngCLcBGAs/s640/1.png)](https://3.bp.blogspot.com/-uiFFGMOOPlQ/WmraN8BbjEI/AAAAAAAAIdo/xzVVbXd5NLkz4xpa1wI-gTNN048M5R7ngCLcBGAs/s1600/1.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">原諒我只繪畫醜圖....</td></tr></tbody></table>
+有一次更版進到到Master Branch，而CI設定Trigger是Master更動時自動建置，CD接收到CI建置完成後執行佈署機器，而每台機器的Web.Config值都有差異，這時候該怎麼做?
+
+<h1 id="XML-variable-substitution"><a href="#XML-variable-substitution" class="headerlink" title="#XML variable substitution"></a>#XML variable substitution</h1><p>Azure App Service Deploy有提供XML variable substitutuin可以選擇</p>
+<div class="separator" style="clear: both; text-align: center;">
+</div><div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-LN_4j9iX9As/WmrfdZWF3oI/AAAAAAAAId4/Tc9U1W24Lq45Ms0p9qhtBLNX2EJ8sKJ_QCLcBGAs/s640/1.png)](https://4.bp.blogspot.com/-LN_4j9iX9As/WmrfdZWF3oI/AAAAAAAAId4/Tc9U1W24Lq45Ms0p9qhtBLNX2EJ8sKJ_QCLcBGAs/s1600/1.png)</div>
+<div class="note info">
+            <p>依據註解中說明就是，當這個選項勾選時，他會自動去找專案中的所有.Config檔案，檔案中的appSettings，application Settings , connectionString區塊，如果有Key或Name與設定的變數相同時自動置換，且是發生在Config transforms之後</p>
+          </div>
+
+
+<p>什麼意思呢? 直接看範例，如果我們的Web.Config裡面長這樣</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-iEfgD967KZc/WmriR-qREbI/AAAAAAAAIeE/P_zG3I8Ah3EPMA4uADVKwh8LqCImdKpjACLcBGAs/s400/1.png)](https://1.bp.blogspot.com/-iEfgD967KZc/WmriR-qREbI/AAAAAAAAIeE/P_zG3I8Ah3EPMA4uADVKwh8LqCImdKpjACLcBGAs/s1600/1.png)</div>
+那他就會在去比對appSettings、connectionString區塊，裡面的Name或是Key有對應到變數設定的話，Value值會自動被替換，而變數設定又在哪邊呢?
+
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-bJ9GV3qzx1A/WmrjTH_HnSI/AAAAAAAAIeM/XMf0yAL-XBsfedMAXLy7jbkiS5RcfRViwCLcBGAs/s400/1.png)](https://2.bp.blogspot.com/-bJ9GV3qzx1A/WmrjTH_HnSI/AAAAAAAAIeM/XMf0yAL-XBsfedMAXLy7jbkiS5RcfRViwCLcBGAs/s1600/1.png)</div>
+
+<p>以上面兩張圖來說，那他在WebDeploy到Azure App Service之前就會將我的<strong>StaticDomains、Domain</strong>的<strong>Value</strong>換掉，因為我們在變數檔案裡面有設定。</p>
+<p>這樣我們就能透過建置多個環境的方式，在每個環境中設定好對應的變數值，只要執行一次CI流程，觸發多個CD流程，達到多台同時佈署的目的</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-Vn7jrg9S6zM/WmrkbLQL9JI/AAAAAAAAIeY/DSoCnAGpUUA_-3oKJhbPD6sj9bdNQ0DPQCLcBGAs/s400/1.png)](https://2.bp.blogspot.com/-Vn7jrg9S6zM/WmrkbLQL9JI/AAAAAAAAIeY/DSoCnAGpUUA_-3oKJhbPD6sj9bdNQ0DPQCLcBGAs/s1600/1.png)</div>
+
+<h1 id="參數不在appSettings，application-Settings-connectionString區塊之中"><a href="#參數不在appSettings，application-Settings-connectionString區塊之中" class="headerlink" title="#參數不在appSettings，application Settings , connectionString區塊之中"></a>#參數不在appSettings，application Settings , connectionString區塊之中</h1><p>這邊特別注意，剛剛那種置換的值方法僅適用於上述區塊之中，換句話說，如果我們有環境設定變數，但他又不在這幾個區塊之中，該如何做?</p>
+<h2 id="Parameter-xml"><a href="#Parameter-xml" class="headerlink" title="Parameter.xml"></a>Parameter.xml</h2><p>還好微軟有提供另一種方式能處理這個問題，就是透過Parameters.xml</p>
+<h2 id="建立parameters-xml"><a href="#建立parameters-xml" class="headerlink" title="建立parameters.xml"></a>建立parameters.xml</h2><div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-DIAJpQ2tUYk/WmrlsIo55sI/AAAAAAAAIeg/PCaPpM04JucMUYC8QFByvv4X3pPcRwjJgCLcBGAs/s320/1.png)](https://4.bp.blogspot.com/-DIAJpQ2tUYk/WmrlsIo55sI/AAAAAAAAIeg/PCaPpM04JucMUYC8QFByvv4X3pPcRwjJgCLcBGAs/s1600/1.png)</div><div>
+</div>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parameters</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">parameter</span> <span class="attr">name</span>=<span class="string">&quot;ExceptionlessAPIKey&quot;</span> <span class="attr">defaultValue</span>=<span class="string">&quot;#&#123;ExceptionlessAPIKey&#125;#&quot;</span> &gt;</span></span><br><span class="line">  &lt;parameterEntry</span><br><span class="line">      kind=&quot;XmlFile&quot;</span><br><span class="line">      scope=&quot;Web\.config&quot;</span><br><span class="line">      match=&quot;//exceptionless/@apiKey&quot; /&gt;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">parameter</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">parameter</span> <span class="attr">name</span>=<span class="string">&quot;SessionConnectionString&quot;</span> <span class="attr">defaultValue</span>=<span class="string">&quot;#&#123;SessionConnectionString&#125;#&quot;</span> &gt;</span></span><br><span class="line">    &lt;parameterEntry</span><br><span class="line">      kind=&quot;XmlFile&quot;</span><br><span class="line">      scope=&quot;Web\.config&quot;</span><br><span class="line">      match=&quot;//configuration/system.web/sessionState/@sqlConnectionString&quot; /&gt;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">parameter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parameters</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>Name</strong> : 變數名稱<br><strong>Scope</strong> : 受影響的檔案為和，你可以設定整個專案底下全部的.Config也行<br><strong>Match</strong> : 在這些檔案底下如何尋找要被替換的值</p>
+<div class="note info">
+            <p>Example 1 :  Web.Config底下從根結點開始找起，找到一個叫做exceptionLess的Tag，然後把apiKey這個屬性換成我設定的值</p><p>Example 2 :  Web.Config底下從根結點開始找起，找到configuration底下的system.web底下的sessionState Tag，然後把sqlConnectionString這個屬性換成我設定的值</p>
+          </div>
+
+<p><strong>DefaultValue</strong> : 如果在佈署時沒有設定參數值時，預設給的Value</p>
+<p>接著在VisualStudio按發行後應該會看到檔案長出<strong>SetParameters.xml</strong></p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-s_s3aU7dr74/WmrsRb8ETdI/AAAAAAAAIew/WYlqsjbIk0oj7ow-GOqheH4FJY6QZAUHgCLcBGAs/s640/1.png)](https://3.bp.blogspot.com/-s_s3aU7dr74/WmrsRb8ETdI/AAAAAAAAIew/WYlqsjbIk0oj7ow-GOqheH4FJY6QZAUHgCLcBGAs/s1600/1.png)</div>
+
+<p>打開來會看到</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-viIUyylwlDg/Wmr6qYwZv-I/AAAAAAAAIgE/C0ISadjZIigW7FQ6sMezcjZwYudaEaLrwCLcBGAs/s640/1.png)](https://1.bp.blogspot.com/-viIUyylwlDg/Wmr6qYwZv-I/AAAAAAAAIgE/C0ISadjZIigW7FQ6sMezcjZwYudaEaLrwCLcBGAs/s1600/1.png)</div><div class="separator" style="clear: both; text-align: center;">
+</div>
+
+<p>到這邊我們已經成功將Web.Config的指定位置挖成變數值，等等在CD階段，我們就是要想辦法把<strong>SetParameters.xml</strong>的Value值換掉</p>
+<h2 id="回到CD設定介面"><a href="#回到CD設定介面" class="headerlink" title="回到CD設定介面"></a>回到CD設定介面</h2><p>告訴<strong>Azure App Service Deploy Task</strong>，你有<strong>SetParameters.xml</strong></p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-NUpiKPxhPRY/Wmrtx-vh_HI/AAAAAAAAIfE/RRml5NRckGQ6S4uDWJJsfSHhX2H7CWEBgCLcBGAs/s640/1.png)](https://4.bp.blogspot.com/-NUpiKPxhPRY/Wmrtx-vh_HI/AAAAAAAAIfE/RRml5NRckGQ6S4uDWJJsfSHhX2H7CWEBgCLcBGAs/s1600/1.png)</div>
+
+<h2 id="安裝Replace-Token-Task"><a href="#安裝Replace-Token-Task" class="headerlink" title="安裝Replace Token Task"></a>安裝Replace Token Task</h2><div>為了置換掉SetParameters.xml裡面的值，必須幫我們VSTS安裝套件</div><div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-Kq1PpE97VYE/WmruR4NMthI/AAAAAAAAIfM/Vu2lwFOUsx4Npju7imY-kYBuW3Frt1exACLcBGAs/s400/1.png)](https://1.bp.blogspot.com/-Kq1PpE97VYE/WmruR4NMthI/AAAAAAAAIfM/Vu2lwFOUsx4Npju7imY-kYBuW3Frt1exACLcBGAs/s1600/1.png)</div><div>
+</div><div>安裝連結 :&nbsp; [Replace Token MarketPlace&nbsp;](https://marketplace.visualstudio.com/items?itemName=qetza.replacetokens)</div>
+
+<p>在<strong>Azure App Service Deploy</strong>之前加上<strong>Replace Token Task</strong></p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-jDdk2Q7Mj7I/Wmru-f9N1fI/AAAAAAAAIfU/y2x-uJAWD8wQSwaij7_B6TyOS7T2RmMzQCLcBGAs/s640/1.png)](https://2.bp.blogspot.com/-jDdk2Q7Mj7I/Wmru-f9N1fI/AAAAAAAAIfU/y2x-uJAWD8wQSwaij7_B6TyOS7T2RmMzQCLcBGAs/s1600/1.png)</div><div>
+</div><div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-mTQYjeZIYho/WmrvSLWq_lI/AAAAAAAAIfY/hWpXjtyZkzMf40oTRqx4cfaWoSxvNQ5XgCLcBGAs/s640/1.png)](https://3.bp.blogspot.com/-mTQYjeZIYho/WmrvSLWq_lI/AAAAAAAAIfY/hWpXjtyZkzMf40oTRqx4cfaWoSxvNQ5XgCLcBGAs/s1600/1.png)</div><div>
+</div>
+
+<h2 id="設定"><a href="#設定" class="headerlink" title="設定"></a>設定</h2><div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-j-77BDvLK7A/WmrxsFTAD8I/AAAAAAAAIfo/4PIBYR3ck7Uc0DSDfUcTbjs4bAA2CzM-ACLcBGAs/s640/1.png)](https://4.bp.blogspot.com/-j-77BDvLK7A/WmrxsFTAD8I/AAAAAAAAIfo/4PIBYR3ck7Uc0DSDfUcTbjs4bAA2CzM-ACLcBGAs/s1600/1.png)</div>
+**Root Directory : **要替換的目標檔案Root資料夾位置
+**Target files : **告訴它我們要找的檔案是誰，以這邊來說就是SetParameters.xml
+**Token prefix、Token suffix : **比對什麼是它要幫我們置換的，而這邊就是#{xxxx}#包起來的就是參數
+
+<p>這樣設定完之後，它就會在WebDeploy之前執行<strong>Replace Token Task</strong>，而這個Task會去找到SetParameters.xml，然後找到#{xxx}#符號的，然後用我們之前設定在<strong>Variables</strong>的參數置換掉</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-rvxpn3Nkvrw/WmrzQb7-SUI/AAAAAAAAIf0/fMBjj3gSnYwGvbR50p7UZcQQwvGUf5MNgCLcBGAs/s640/1.png)](https://2.bp.blogspot.com/-rvxpn3Nkvrw/WmrzQb7-SUI/AAAAAAAAIf0/fMBjj3gSnYwGvbR50p7UZcQQwvGUf5MNgCLcBGAs/s1600/1.png)</div><div>
+</div>
+
+<div class="note info">
+            <p>**參考文章 **</p><p><a target="_blank" rel="noopener" href="http://andrew.lansdowne.me/2016/12/15/using-environment-variables-for-configuration-with-vsts-build-and-release/">Using environment variables for configuration with VSTS build and release</a></p><p><a target="_blank" rel="noopener" href="http://cobus.io/devops/2016/02/06/Parameterizing_Webconfig.html">Parameterizing Web.config</a></p><p><a target="_blank" rel="noopener" href="https://blogs.iis.net/elliotth/web-deploy-xml-file-parameterization">Web Deploy XML File Parameterization</a></p><p><a target="_blank" rel="noopener" href="http://jakeydocs.readthedocs.io/en/latest/publishing/vsts-continuous-deployment.html">Use VSTS to Build and Publish to an Azure Web App with Continuous Deployment</a></p><p><a target="_blank" rel="noopener" href="http://blog.ehn.nu/2016/03/using-web-deploy-in-visual-studio-team-services-release-management/">Using Web Deploy in Visual Studio Team Services Release Management</a></p><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/vsts/build-release/tasks/transforms-variable-substitution">File transforms and variable substitution reference</a></p>
+          </div>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/01/26/%E3%80%90CI-CD%E3%80%913-%E9%80%8F%E9%81%8EVSTS-%E5%88%87%E6%8F%9BAzure-AppService-Slot/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +369,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-01-26 13:51:00" itemprop="dateCreated datePublished" datetime="2018-01-26T13:51:00+00:00">2018-01-26</time>
+              <time title="Created: 2018-01-26 13:51:00" itemprop="dateCreated datePublished" datetime="2018-01-26T13:51:00+08:00">2018-01-26</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -347,14 +503,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-01-26 11:12:00" itemprop="dateCreated datePublished" datetime="2018-01-26T11:12:00+00:00">2018-01-26</time>
+              <time title="Created: 2018-01-26 11:12:00" itemprop="dateCreated datePublished" datetime="2018-01-26T11:12:00+08:00">2018-01-26</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -498,14 +654,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-01-25 17:28:00" itemprop="dateCreated datePublished" datetime="2018-01-25T17:28:00+00:00">2018-01-25</time>
+              <time title="Created: 2018-01-25 17:28:00" itemprop="dateCreated datePublished" datetime="2018-01-25T17:28:00+08:00">2018-01-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -678,14 +834,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-01-24 13:49:00" itemprop="dateCreated datePublished" datetime="2018-01-24T13:49:00+00:00">2018-01-24</time>
+              <time title="Created: 2018-01-24 13:49:00" itemprop="dateCreated datePublished" datetime="2018-01-24T13:49:00+08:00">2018-01-24</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -824,14 +980,14 @@ IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-01-17 11:33:00" itemprop="dateCreated datePublished" datetime="2018-01-17T11:33:00+00:00">2018-01-17</time>
+              <time title="Created: 2018-01-17 11:33:00" itemprop="dateCreated datePublished" datetime="2018-01-17T11:33:00+08:00">2018-01-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -964,14 +1120,14 @@ RazorEngine也提供Layout的套版方法，可以在cshmtl上面設定對應的
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-01-15 11:01:00" itemprop="dateCreated datePublished" datetime="2018-01-15T11:01:00+00:00">2018-01-15</time>
+              <time title="Created: 2018-01-15 11:01:00" itemprop="dateCreated datePublished" datetime="2018-01-15T11:01:00+08:00">2018-01-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1060,14 +1216,14 @@ RazorEngine也提供Layout的套版方法，可以在cshmtl上面設定對應的
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2017-11-17 11:31:00" itemprop="dateCreated datePublished" datetime="2017-11-17T11:31:00+00:00">2017-11-17</time>
+              <time title="Created: 2017-11-17 11:31:00" itemprop="dateCreated datePublished" datetime="2017-11-17T11:31:00+08:00">2017-11-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1197,14 +1353,14 @@ RazorEngine也提供Layout的套版方法，可以在cshmtl上面設定對應的
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2017-11-16 11:17:00" itemprop="dateCreated datePublished" datetime="2017-11-16T11:17:00+00:00">2017-11-16</time>
+              <time title="Created: 2017-11-16 11:17:00" itemprop="dateCreated datePublished" datetime="2017-11-16T11:17:00+08:00">2017-11-16</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1292,14 +1448,14 @@ RazorEngine也提供Layout的套版方法，可以在cshmtl上面設定對應的
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2017-11-15 09:36:00" itemprop="dateCreated datePublished" datetime="2017-11-15T09:36:00+00:00">2017-11-15</time>
+              <time title="Created: 2017-11-15 09:36:00" itemprop="dateCreated datePublished" datetime="2017-11-15T09:36:00+08:00">2017-11-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1337,95 +1493,6 @@ RazorEngine也提供Layout的套版方法，可以在cshmtl上面設定對應的
 <div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-cMfu_9lAHPY/WguV9l_rY0I/AAAAAAAAIQM/3thXpbJDKr4ZQPGb5T7Ff-waUuo7p6tWgCLcBGAs/s640/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)](https://2.bp.blogspot.com/-cMfu_9lAHPY/WguV9l_rY0I/AAAAAAAAIQM/3thXpbJDKr4ZQPGb5T7Ff-waUuo7p6tWgCLcBGAs/s1600/%25E6%259C%25AA%25E5%2591%25BD%25E5%2590%258D.png)</div>
 然後用以下程式來進行Html修復
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//商品的尺寸報表Html有錯誤</span></span><br><span class="line"><span class="keyword">var</span> ps = <span class="keyword">this</span>.Products.Where(x = &gt; x.SizeReport != <span class="literal">null</span>);</span><br><span class="line"><span class="keyword">foreach</span> (<span class="keyword">var</span> p <span class="keyword">in</span> ps)</span><br><span class="line">&#123;</span><br><span class="line"> HtmlDocument doc = <span class="keyword">new</span> HtmlDocument();</span><br><span class="line"> <span class="comment">//fix when nesting errors are detected</span></span><br><span class="line"> doc.OptionFixNestedTags = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"> <span class="comment">//將Html Editor編輯的東西丟進去</span></span><br><span class="line"> doc.LoadHtml(p.SizeReport.ToString());</span><br><span class="line"></span><br><span class="line"> <span class="comment">//將修復後的Html結果存到MemoryStream</span></span><br><span class="line"> MemoryStream stream = <span class="keyword">new</span> MemoryStream();</span><br><span class="line"> doc.Save(stream);</span><br><span class="line"> <span class="keyword">try</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">using</span> (StreamReader reader = <span class="keyword">new</span> StreamReader(stream, Encoding.Default))</span><br><span class="line">  &#123;</span><br><span class="line">   stream.Position = <span class="number">0</span>;</span><br><span class="line">   p.SizeReport = reader.ReadToEnd(); <span class="comment">//儲存回DB</span></span><br><span class="line">   <span class="keyword">this</span>.SubmitChanges();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line"> catch (Exception ex)</span><br><span class="line"> &#123;</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/11/09/%E3%80%90Azure%E3%80%91%E5%A6%82%E4%BD%95%E8%B7%A8DB%E8%AE%80%E5%8F%96%E8%B3%87%E6%96%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/11/09/%E3%80%90Azure%E3%80%91%E5%A6%82%E4%BD%95%E8%B7%A8DB%E8%AE%80%E5%8F%96%E8%B3%87%E6%96%99/" class="post-title-link" itemprop="url">【Azure】如何跨DB讀取資料</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-11-09 10:05:00" itemprop="dateCreated datePublished" datetime="2017-11-09T10:05:00+00:00">2017-11-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2017/11/09/%E3%80%90Azure%E3%80%91%E5%A6%82%E4%BD%95%E8%B7%A8DB%E8%AE%80%E5%8F%96%E8%B3%87%E6%96%99/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/09/【Azure】如何跨DB讀取資料/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>忙了一大段時間，突然發現好長時間沒更新部落格了，這段時間專案實在太忙了，慢慢的再把這些時間學到的東西慢慢筆記下來，今天就先從Azure開始吧!!</p>
-<p>以前如果有跨DB存取或Join Table，通常都會請DBA開Link DB的方式來處理，但在Azure SQL上面就沒有這個選項了</p>
-<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://2.bp.blogspot.com/-LvGu3FglCEI/WgOxsaEfz7I/AAAAAAAAIP8/3xQmoM8lFCs4oIawixv-HHidz_NHEjRpQCEwYBhgL/s1600/1.png)](https://2.bp.blogspot.com/-LvGu3FglCEI/WgOxsaEfz7I/AAAAAAAAIP8/3xQmoM8lFCs4oIawixv-HHidz_NHEjRpQCEwYBhgL/s1600/1.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">跨DB讀取資料</td></tr></tbody></table>
-但它推出了一個語法來達成這樣子的需求 External Data Source，假設我在**A資料庫**，想要Join **B資料庫**的**PromoEmail Table**取得行銷案的Email資料來做交叉分析，這時候我們可以這樣寫
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> MASTER KEY ENCRYPTION <span class="keyword">BY</span> PASSWORD <span class="operator">=</span> <span class="string">&#x27;This Account Password&#x27;</span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> DATABASE SCOPED CREDENTIAL AzureStorageCredential </span><br><span class="line"><span class="keyword">WITH</span> <span class="keyword">IDENTITY</span> <span class="operator">=</span> <span class="string">&#x27;This DataBase Login Account&#x27;</span>, </span><br><span class="line">SECRET <span class="operator">=</span> <span class="string">&#x27;This Account Password&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> DATA SOURCE RefPromoTableDataBase</span><br><span class="line"><span class="keyword">WITH</span>  </span><br><span class="line">(  </span><br><span class="line">    TYPE<span class="operator">=</span>RDBMS,  </span><br><span class="line">    LOCATION <span class="operator">=</span><span class="string">&#x27;Your Azure SQL Database Location&#x27;</span>,  </span><br><span class="line">    DATABASE_NAME <span class="operator">=</span> <span class="string">&#x27;B&#x27;</span>,  <span class="comment">--外連B資料庫</span></span><br><span class="line">    CREDENTIAL <span class="operator">=</span> AzureStorageCredential</span><br><span class="line">);  </span><br><span class="line"></span><br><span class="line"><span class="comment">--建立一個External Table</span></span><br><span class="line"><span class="comment">--這邊Schema就取決於你要從B Database的PromoEmail Table取得什麼欄位</span></span><br><span class="line"><span class="comment">--欄位名稱跟資料型態要相同</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> [dbo].[PromoEmail](  </span><br><span class="line">    [Email] [<span class="type">varchar</span>] (<span class="number">300</span>) <span class="keyword">Not</span> <span class="keyword">NULL</span>  </span><br><span class="line">)  </span><br><span class="line"><span class="keyword">WITH</span>  </span><br><span class="line">(  </span><br><span class="line">    DATA_SOURCE <span class="operator">=</span> RefPromoTableDataBase</span><br><span class="line">);    </span><br><span class="line"></span><br><span class="line"><span class="comment">--在A資料庫Join PromoEmail Table</span></span><br><span class="line"><span class="comment">--看看行銷案轉換成訂單的績效</span></span><br><span class="line"><span class="keyword">SELECT</span> email</span><br><span class="line"><span class="keyword">FROM</span> [<span class="keyword">Order</span>] o</span><br><span class="line"><span class="keyword">Join</span> PromoEmail pe <span class="keyword">on</span> o.UserEmail <span class="operator">=</span> pe.Email</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>當然最後做完後，要記得把這些資源都釋放掉</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> PromoEmail</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">EXTERNAL</span> DATA SOURCE RefPromoTableDataBase</span><br><span class="line"><span class="keyword">DROP</span> DATABASE SCOPED CREDENTIAL AzureStorageCredential  </span><br><span class="line"><span class="keyword">DROP</span> MASTER KEY  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>參考資料<br><a target="_blank" rel="noopener" href="http://www.c-sharpcorner.com/article/cross-database-queries-in-azure-sql/">Cross Database Queries In Azure SQL</a><br><a target="_blank" rel="noopener" href="https://sqldusty.com/2017/05/30/setting-up-cross-database-queries-in-azure-sql-database/">SETTING UP CROSS DATABASE QUERIES IN AZURE SQL DATABASE</a></p>
 
       
     </div>
@@ -1510,7 +1577,7 @@ RazorEngine也提供Layout的套版方法，可以在cshmtl上面設定對應的
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1523,7 +1590,7 @@ RazorEngine也提供Layout的套版方法，可以在cshmtl上面設定對應的
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

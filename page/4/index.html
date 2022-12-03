@@ -189,6 +189,125 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/02/12/anycpu_x86_x64/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/02/12/anycpu_x86_x64/" class="post-title-link" itemprop="url">將程式編譯成 x86、x64、Any CPU差別在哪</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-02-12 11:09:00" itemprop="dateCreated datePublished" datetime="2019-02-12T11:09:00+08:00">2019-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/02/12/anycpu_x86_x64/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/12/anycpu_x86_x64/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>相信用過 Visual Studio 的應該都注意過編譯時可以選擇 Any CPU、x86、x64 (x86、x64 需要編輯組態檔才會看的到)</p>
+<p><img src="/images/20190212/1.png" alt="/images/20190212/1.png"></p>
+<p>這次踩到問題是，明明程式用 Any CPU 來編譯，但在 64 bit OS 上卻會用 32 bit  Process 來執行</p>
+<p><img src="/images/20190212/2.png" alt="/images/20190212/2.png"></p>
+<p>原來是因為專案建置的屬性勾到了 <code>建議使用32位元</code>的選項導致</p>
+<p><img src="/images/20190212/3.png" alt="/images/20190212/3.png"></p>
+<p>解決的同時也引起了對於編譯成 x86、x64、Any CPU 有什麼差別的好奇心，找了文章後整理如下</p>
+<br>
+
+<h1 id="差異"><a href="#差異" class="headerlink" title="差異"></a>差異</h1><br>
+
+<h2 id="在-32-bit-OS-上執行"><a href="#在-32-bit-OS-上執行" class="headerlink" title="在 32 bit OS 上執行"></a>在 32 bit OS 上執行</h2><p><strong>Any CPU</strong> : 會用 32 bit Process 來執行，可以載入 Any CPU 和 x86 方式編譯的組件，但如果載入 x64 編譯的組件將會引發 BadImageFormatException </p>
+<p><strong>Any CPU (勾選建議使用32位元)</strong> : 運作方式同上</p>
+<p><strong>x86</strong> : 運作方式同上</p>
+<p><strong>x64</strong> : 引發 BadImageFormatException</p>
+<br>
+
+<h2 id="在-64-bit-OS-上執行"><a href="#在-64-bit-OS-上執行" class="headerlink" title="在 64 bit OS 上執行"></a>在 64 bit OS 上執行</h2><p><strong>Any CPU</strong> : 會用 64 bit Process 來執行，可以載入 Any CPU 和 x64 方式編譯的組件，但如果載入 x86 編譯的組件將會引發 BadImageFormatException</p>
+<p><strong>Any CPU (勾選建議使用32位元)</strong> : 會用 32 bit Process 來執行，可以載入 Any CPU 和 <code>x86</code> 方式編譯的組件，但如果載入 x64 編譯的組件將會引發 BadImageFormatException</p>
+<p><strong>x86</strong> : 運作方式同 <strong>Any CPU (勾選建議使用32位元)</strong></p>
+<p><strong>x64</strong> : 運作方式同 <strong>Any CPU</strong>  </p>
+<br>
+
+<h2 id="Machine-Config"><a href="#Machine-Config" class="headerlink" title="Machine Config"></a>Machine Config</h2><p>依據執行的 Process 位元決定</p>
+<p>32 bit Process 吃的 Machine Config 位置 : C:\Windows\Microsoft.NET\ <code>Framework</code> \v4.0.30319\Config</p>
+<p>64 bit Process 吃的 Machine Config 位置 : C:\Windows\Microsoft.NET\ <code>Framework64</code> \v4.0.30319\Config</p>
+<br>
+
+<h1 id="怎麼查是用哪種方式編譯的"><a href="#怎麼查是用哪種方式編譯的" class="headerlink" title="怎麼查是用哪種方式編譯的?"></a>怎麼查是用哪種方式編譯的?</h1><p>可以透過 <code>CorFlags.exe</code> 的工具來查詢，該程式放在 <code>C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools</code> 路徑底下，設定為環境變數後就可以用 command 來檢視 PE </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ corflags yourPE.exe</span><br></pre></td></tr></table></figure>
+
+<div class="note info">
+            <p>PE : Process Executables (EXEs and DLLs)</p>
+          </div>
+
+<p><img src="/images/20190212/4.png" alt="/images/20190212/4.png"></p>
+<p>意義如下</p>
+<p><img src="/images/20190212/5.png" alt="/images/20190212/5.png"></p>
+<p>(圖片節錄至 : <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/18608785/how-to-interpret-the-corflags-flags/23614024#23614024">https://stackoverflow.com/questions/18608785/how-to-interpret-the-corflags-flags/23614024#23614024</a>)</p>
+<div class="note info">
+            <p>參考文章</p><p><a target="_blank" rel="noopener" href="https://blog.darkthread.net/blog/corflags/">【茶包射手日記】檢查.NET程式平台目標(Platform Target)</a></p><p><a target="_blank" rel="noopener" href="https://www.codeproject.com/Articles/1160645/Dealing-with-bit-bit-and-Any-CPU-Compilation-Optio">Dealing with 32-bit, 64-bit and Any CPU Compilation Options in .NET</a></p><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/18608785/how-to-interpret-the-corflags-flags">How to interpret the CorFlags flags?</a></p>
+          </div>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/12/21/%E3%80%90C-%E3%80%91yield_retuen/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +332,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-12-21 13:54:00" itemprop="dateCreated datePublished" datetime="2018-12-21T13:54:00+00:00">2018-12-21</time>
+              <time title="Created: 2018-12-21 13:54:00" itemprop="dateCreated datePublished" datetime="2018-12-21T13:54:00+08:00">2018-12-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -311,14 +430,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-12-03 15:53:00" itemprop="dateCreated datePublished" datetime="2018-12-03T15:53:00+00:00">2018-12-03</time>
+              <time title="Created: 2018-12-03 15:53:00" itemprop="dateCreated datePublished" datetime="2018-12-03T15:53:00+08:00">2018-12-03</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -399,14 +518,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-11-21 15:52:00" itemprop="dateCreated datePublished" datetime="2018-11-21T15:52:00+00:00">2018-11-21</time>
+              <time title="Created: 2018-11-21 15:52:00" itemprop="dateCreated datePublished" datetime="2018-11-21T15:52:00+08:00">2018-11-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -494,14 +613,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-11-14 17:04:00" itemprop="dateCreated datePublished" datetime="2018-11-14T17:04:00+00:00">2018-11-14</time>
+              <time title="Created: 2018-11-14 17:04:00" itemprop="dateCreated datePublished" datetime="2018-11-14T17:04:00+08:00">2018-11-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -617,14 +736,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-10-31 22:49:00" itemprop="dateCreated datePublished" datetime="2018-10-31T22:49:00+00:00">2018-10-31</time>
+              <time title="Created: 2018-10-31 22:49:00" itemprop="dateCreated datePublished" datetime="2018-10-31T22:49:00+08:00">2018-10-31</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -768,14 +887,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-10-24 15:45:00" itemprop="dateCreated datePublished" datetime="2018-10-24T15:45:00+00:00">2018-10-24</time>
+              <time title="Created: 2018-10-24 15:45:00" itemprop="dateCreated datePublished" datetime="2018-10-24T15:45:00+08:00">2018-10-24</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -871,14 +990,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-10-11 17:58:00" itemprop="dateCreated datePublished" datetime="2018-10-11T17:58:00+00:00">2018-10-11</time>
+              <time title="Created: 2018-10-11 17:58:00" itemprop="dateCreated datePublished" datetime="2018-10-11T17:58:00+08:00">2018-10-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1101,14 +1220,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-09-14 10:04:00" itemprop="dateCreated datePublished" datetime="2018-09-14T10:04:00+00:00">2018-09-14</time>
+              <time title="Created: 2018-09-14 10:04:00" itemprop="dateCreated datePublished" datetime="2018-09-14T10:04:00+08:00">2018-09-14</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1204,14 +1323,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-08-23 09:44:00" itemprop="dateCreated datePublished" datetime="2018-08-23T09:44:00+00:00">2018-08-23</time>
+              <time title="Created: 2018-08-23 09:44:00" itemprop="dateCreated datePublished" datetime="2018-08-23T09:44:00+08:00">2018-08-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1261,129 +1380,6 @@
 <p>只要將寫改改成 <strong>new UTF8Encoding(false)</strong> 即可</p>
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (StreamWriter file = <span class="keyword">new</span> StreamWriter(</span><br><span class="line">                         <span class="keyword">new</span> FileStream(path, FileMode.OpenOrCreate, FileAccess.Write),</span><br><span class="line">                         <span class="keyword">new</span> UTF8Encoding(<span class="literal">false</span>)))</span><br><span class="line">&#123;</span><br><span class="line">    .....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/07/24/%E3%80%90Entity%20Framework%E3%80%91The_connection_was_not_closed_The_connection_s_current_state_is_connecting/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/07/24/%E3%80%90Entity%20Framework%E3%80%91The_connection_was_not_closed_The_connection_s_current_state_is_connecting/" class="post-title-link" itemprop="url">【Entity Framework】The connection was not closed. The connection's current state is connecting</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-07-24 11:28:00" itemprop="dateCreated datePublished" datetime="2018-07-24T11:28:00+00:00">2018-07-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2018/07/24/%E3%80%90Entity%20Framework%E3%80%91The_connection_was_not_closed_The_connection_s_current_state_is_connecting/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/07/24/【Entity Framework】The_connection_was_not_closed_The_connection_s_current_state_is_connecting/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前情提要"><a href="#前情提要" class="headerlink" title="#前情提要"></a>#前情提要</h1><p>不定時、不定量、不特定API跳出**【System.InvalidOperationException】  - The connection was not closed. The connection’s current state is connecting.**錯誤，這個錯誤以前公司也遇到過，當時研判是Entity Framework與Unity套件生命週期的問題，當時專案不算太大又一直找不到確切解決方案，所以索性將Repository Layer整個用Dapper改寫讓問題得以解決了。</p>
-<div class="note info">
-            <p>當時的筆記</p><p><a href="https://toyo0103.github.io/2016/12/19/%E3%80%90EntityFramework%E3%80%91DBContext-Dispose%E8%88%87%E5%90%A6%EF%BC%8C%E8%88%87DB%E7%9A%84%E9%80%A3%E7%B7%9A%E6%95%B8%E6%98%AF%E5%90%A6%E6%9C%89%E9%97%9C%E4%BF%82/">【Entity Framework】DBContext Dispose與否，與DB的連線數是否有關係</a></p>
-          </div>
-
-
-
-<p>但這次退無可退，再次印證了一句話</p>
-<blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>你不解決問題，問題就會解決你</p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-
-<p>&nbsp; &nbsp;  </p>
-<h1 id="分析"><a href="#分析" class="headerlink" title="#分析"></a>#分析</h1><p>透過Elmah的Log分析，發現共同點都壞在一支Token驗證的DelegatingHandler裡面，因為呼叫每支API都會經過這，可以解釋為何壞在不特定API。</p>
-<p>而關鍵在其中的一行</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Service = AutofacConfig.Container.Resolve&lt;ISupplierApiProfileService&gt;();</span><br><span class="line"><span class="keyword">var</span> Profile = Service.GetSupplierApiProfileByToken(token);</span><br></pre></td></tr></table></figure>
-
-<p>透過Autofac Container取得ISupplierApiProfileService，猜測當時這樣撰寫是希望每次產生新的Service的實體來使用，在這之前先一下看一下整體的架構</p>
-<p><img src="/images/20180724/1.gif" alt="/images/20180724/1.gif"></p>
-<p>而每個實體分別Autofac註冊的生命週期為</p>
-<p><img src="/images/20180724/2.jpg" alt="/images/20180724/2.jpg"></p>
-<p>這導致了一個結果，因為Actofac Container為Singleton的實體，透過他Resolve出來的DBContext (<strong>InstancePerLifetimeScope</strong>)也會變成Singleton的生命週期。</p>
-<p>而Entity Framework非Thread Safe的設計，所以如果不同Thread共用同一個DBContext時，如果前一個交易尚未完成，撞在一起時就會有機率產生這個錯誤</p>
-<p><img src="/images/20180724/3.jpg" alt="/images/20180724/3.jpg"></p>
-<div class="note info">
-            <p>相關討論 </p><p><a target="_blank" rel="noopener" href="https://github.com/aspnet/EntityFrameworkCore/issues/3887">https://github.com/aspnet/EntityFrameworkCore/issues/3887</a></p>
-          </div>
-
-
-
-<h1 id="解法"><a href="#解法" class="headerlink" title="#解法"></a>#解法</h1><p>而DBContext會設定為<strong>InstancePerLifetimeScope</strong>的生命週期是希望DBContext隨著每次Request產生與消滅(亦即每個Request只會產生一次DBContext實體)，如果後續應用Transaction才不會發生問題，但在DelegatingHandler這邊的應用情境卻導致了Singleton的情況。</p>
-<h2 id="BeginLifetimeScope"><a href="#BeginLifetimeScope" class="headerlink" title="BeginLifetimeScope"></a>BeginLifetimeScope</h2><div class="note info">
-            <p>官方文件 - <a target="_blank" rel="noopener" href="https://autofaccn.readthedocs.io/en/latest/lifetime/working-with-scopes.html">Working with Lifetime Scopes</a></p>
-          </div>
-
-<p>Autofac提供給使用者產生一個動態的生命週期的方法，所有透過這個生命週期產生的實體會隨著它的消滅一併被Disposed掉，使用方式如下</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (<span class="keyword">var</span> scope = AutofacConfig.Container.BeginLifetimeScope())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> Service = scope.Resolve&lt;ISupplierApiProfileService&gt;();</span><br><span class="line">    <span class="keyword">var</span> Profile = Service.GetSupplierApiProfileByToken(token);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>這樣可以確保在DelegatingHandler裡面產生的DBContext不會變成Singleton，也不用動到最基底DBContext <strong>InstancePerLifetimeScope</strong>的生命週期，確保了每次Request共用同一個DBContext。</p>
-<p>上線後觀察Elmah，確認這個伴隨著我將近三年的問題終於徹底消滅了，可喜可賀 可喜可賀。</p>
 
       
     </div>
@@ -1468,7 +1464,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1481,7 +1477,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

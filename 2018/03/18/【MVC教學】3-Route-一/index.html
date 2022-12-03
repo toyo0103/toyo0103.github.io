@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什麼是Route？ 在現實生活中比較接近於郵差與地圖的關係，你將想要送的東西交給郵差,郵差依據包裹上的地址，透過地圖找到目的地然後投遞。  而對應到程式中[網址]就是你包裹要送達的目的地址，Route就是[地圖]，而網址的[參數]就是你要投遞的包裹 [![](https:&#x2F;&#x2F;4.bp.blogspot.com&#x2F;-v_OpLGzjdtw&#x2F;Wq0MHMSi2mI&#x2F;AAAAAAAAIko&#x2F;7mcxcoP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【MVC教學】3. Route(一)">
+<meta property="og:url" content="https://toyo0103.github.io/2018/03/18/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%913-Route-%E4%B8%80/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="什麼是Route？ 在現實生活中比較接近於郵差與地圖的關係，你將想要送的東西交給郵差,郵差依據包裹上的地址，透過地圖找到目的地然後投遞。  而對應到程式中[網址]就是你包裹要送達的目的地址，Route就是[地圖]，而網址的[參數]就是你要投遞的包裹 [![](https:&#x2F;&#x2F;4.bp.blogspot.com&#x2F;-v_OpLGzjdtw&#x2F;Wq0MHMSi2mI&#x2F;AAAAAAAAIko&#x2F;7mcxcoP">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-03-17T20:54:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.090Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="MVC教學">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://toyo0103.github.io/2018/03/18/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%913-Route-%E4%B8%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【MVC教學】3. Route(一) | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/03/18/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%913-Route-%E4%B8%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【MVC教學】3. Route(一)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-03-18 04:54:00" itemprop="dateCreated datePublished" datetime="2018-03-18T04:54:00+08:00">2018-03-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%B8%E7%BF%92MVC/" itemprop="url" rel="index"><span itemprop="name">學習MVC</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/03/18/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%913-Route-%E4%B8%80/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/03/18/【MVC教學】3-Route-一/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">什麼是<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>？<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> </span>在現實生活中比較接近於郵差與地圖的關係，你將想要送的東西交給郵差,郵差依據包裹上的地址，透過地圖找到目的地然後投遞。
+
+<p>而對應到程式中[網址]就是你包裹要送達的目的地址，Route就是[地圖]，而網址的[參數]就是你要投遞的包裹</div><div></p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-v_OpLGzjdtw/Wq0MHMSi2mI/AAAAAAAAIko/7mcxcoPLkpUWExDOSn657rGCjMfUtiJSgCLcBGAs/s400/1.jpg)](https://4.bp.blogspot.com/-v_OpLGzjdtw/Wq0MHMSi2mI/AAAAAAAAIko/7mcxcoPLkpUWExDOSn657rGCjMfUtiJSgCLcBGAs/s1600/1.jpg)</div>
+<div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">接著我們來看看專案內的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>在哪邊設定，又它是如何透過網址知道該把[包裹]送去哪支程式的，這邊先把我們之前的專案執行起來，並且點擊[關於]</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">
+</div><div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-ryN1Z3Mp3SI/Wq0MU9PT8mI/AAAAAAAAIks/ONCnMFBGRhYG0YWmLnZUV__5jGS5gpBBgCLcBGAs/s400/2.png)](https://1.bp.blogspot.com/-ryN1Z3Mp3SI/Wq0MU9PT8mI/AAAAAAAAIks/ONCnMFBGRhYG0YWmLnZUV__5jGS5gpBBgCLcBGAs/s1600/2.png)</div><div class="separator" style="clear: both; text-align: center;">
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">可以看到關於頁的網址為</span> /Home/About</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">
+</div><div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-F1fHYAInGic/Wq0MkAgp4uI/AAAAAAAAIkw/PN3nKltrc5wH8Lkb9Lk5_6flzLCy80GOACLcBGAs/s400/3.png)](https://4.bp.blogspot.com/-F1fHYAInGic/Wq0MkAgp4uI/AAAAAAAAIkw/PN3nKltrc5wH8Lkb9Lk5_6flzLCy80GOACLcBGAs/s1600/3.png)</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">接著我們在<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">HomeController</span>的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">About</span>下中斷點後再點擊一次網頁的[關於]按鈕，會發現程式停在我們下中斷點的地方了？<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> </span>為什麼知道程式會跑到這邊呢<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> ? </span>這一切都是因為有<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>指路的關係</div></div><div>
+</div><div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-LFueIPKzOYI/Wq0MwArDFLI/AAAAAAAAIk4/gJdWivFruxcZoCKaGNAfYamVnM8JEO3igCLcBGAs/s400/4.png)](https://1.bp.blogspot.com/-LFueIPKzOYI/Wq0MwArDFLI/AAAAAAAAIk4/gJdWivFruxcZoCKaGNAfYamVnM8JEO3igCLcBGAs/s1600/4.png)</div><div class="separator" style="clear: both; text-align: center;">
+</div><div class="separator" style="clear: both; text-align: center;">
+</div>
+
+<h3 id="RouteConfig"><a href="#RouteConfig" class="headerlink" title="RouteConfig"></a><strong>RouteConfig</strong></h3><div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>的規則是可以自己制訂的，而制定的地方就在<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">App_Start</span>資料夾底下的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">RouteConfig</span>裡面</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-empHw_-1tig/Wq0M_p2kL-I/AAAAAAAAIlA/XQjsx0UahlsjJyqijDxTtSa7hmnkJVm5ACLcBGAs/s400/5.png)](https://2.bp.blogspot.com/-empHw_-1tig/Wq0M_p2kL-I/AAAAAAAAIlA/XQjsx0UahlsjJyqijDxTtSa7hmnkJVm5ACLcBGAs/s1600/5.png)</div>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-r4pEpAts3NA/Wq0NBNPYBKI/AAAAAAAAIlE/rUslCqFTfUEvvPRAG5cWKdDvL8S_CgGGQCLcBGAs/s400/6.png)](https://3.bp.blogspot.com/-r4pEpAts3NA/Wq0NBNPYBKI/AAAAAAAAIlE/rUslCqFTfUEvvPRAG5cWKdDvL8S_CgGGQCLcBGAs/s1600/6.png)</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-size: 12px; font-stretch: normal; line-height: normal;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-size: 12px; font-stretch: normal; line-height: normal;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">讓我們來解讀這段程式碼，首先<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">routes.MapRoute</span>就是註冊地址的方法，裡面有幾個參數分別為</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal;">Name : <span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">你對於這個</span>Route<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">的命名</span></div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Url : </span>網址條件，當網址符合這個條件特徵時，就會依據這個<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>的指示去找對應執行的程式碼</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal;">defaults : <span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">參數的預設值</span></div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">相信光是講解參數的意義對於要理解<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>還有相當的距離，讓我們直接來實戰理解<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> /Home/About</span>這串網址如何對應到<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>的吧，剛剛有說，<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">routes.MapRoute</span>的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Url</span>參數是用來判斷網址特徵是否相符，如果相符就會被這串<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>捕捉到，但是這兩個怎麼看都不像啊</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">真實網址</span> <span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">：</span> /Home/About</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal;">Route Url :&nbsp; {controller}/{action}/{id}</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">首先必須先知道一件事情，當<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route Url</span>的網址用<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">{ }</span>包起來的時候，代表他是個變數，什麼是變數？變數是一個表示值，它可以是任意的值，而<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">{}</span>裡面的字就是變數的名稱，以上述例子為例</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">我們有一個變數叫做<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">controller</span>，它可以是任意的值</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">我們有一個變數叫做<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">action</span>，它可以是任意得值</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">我們有一個變數叫做<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">id</span>，它也可以是任意的值</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">那套入</span>/Home/About<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">會變成什麼結果？</span></div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">我們有一個變數叫做<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">controller</span>，它現在的值是<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Home</span></div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">我們有一個變數叫做<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">action</span>，它現在的值是<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">About</span></div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">我們有一個變數叫做<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">id</span>，它現在沒有值</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"><span style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">而</span><span style="color: #454545;">Route</span><span style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">的制定中，</span>**<span style="color: red;">controller<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">跟</span>action</span>**<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">**<span style="color: red;">為保留字</span>**<span style="color: #454545;">，意思是告訴他要執行哪個</span></span><span style="color: #454545;">controller</span><span style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">跟</span><span style="color: #454545;">Action</span><span style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">，依據這邊的規定，所以它知道要去執行</span><span style="color: #454545;">Home</span><span style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">這個</span><span style="color: #454545;">Controller</span><span style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">，裡面一個叫做</span><span style="color: #454545;">About</span><span style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">的</span><span style="color: #454545;">Action</span></div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-lPmkR6MJKWs/Wq0NMR-XeJI/AAAAAAAAIlM/NuECRMJtFww8ve031wVUqj-dnCa6K4FQgCLcBGAs/s400/7.png)](https://3.bp.blogspot.com/-lPmkR6MJKWs/Wq0NMR-XeJI/AAAAAAAAIlM/NuECRMJtFww8ve031wVUqj-dnCa6K4FQgCLcBGAs/s1600/7.png)</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-size: 12px; font-stretch: normal; line-height: normal;">
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div class="note info">
+            <p>在Controller裡面寫的方法我們稱之為Action，而他通常都會回傳ActionResult</p>
+          </div>
+<div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-stretch: normal; line-height: normal;">再讓我們看一個例子<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> </span>：<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> </span>[首頁]</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">首頁的網址為</span> : http://localhost:54004/</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-size: 12px; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-l2A_55syPtg/Wq0NzWKrZFI/AAAAAAAAIlg/NYnq1QMfQBUv9_fsyYczIqUSy4BW4ZHEQCLcBGAs/s400/8.png)](https://1.bp.blogspot.com/-l2A_55syPtg/Wq0NzWKrZFI/AAAAAAAAIlg/NYnq1QMfQBUv9_fsyYczIqUSy4BW4ZHEQCLcBGAs/s1600/8.png)</div>
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div class="note info">
+            <p>網址最前面這段寫著 Localhost :54004 ，Localhost為網址的Domain，54004為Port，Domain是網站的位置，例如我們在google搜尋Facebook時，會看到網址變成<a target="_blank" rel="noopener" href="https://www.google.com.tw/search?q=facebook%EF%BC%8C%E8%80%8Cwww.google.com.tw%E5%B0%B1%E6%98%AFDomain%EF%BC%8C%E7%95%B6%E8%AE%80%E5%88%B0%E9%80%99%E4%B8%B2Domain%E6%99%82%EF%BC%8C%E5%B0%B1%E6%9C%83%E9%80%8FDNS%E6%89%BE%E5%88%B0Google%E7%9A%84%E4%BC%BA%E6%9C%8D%E5%99%A8%EF%BC%8C%E7%84%B6%E5%BE%8C%E5%91%BC%E5%8F%AB%E5%AE%83%EF%BC%8C%E4%B8%A6%E4%B8%94%E8%AB%8B%E6%B1%82%E4%BB%96%E5%9F%B7%E8%A1%8C/search?q=facebook%EF%BC%8C%E9%80%99%E4%B9%9F%E6%98%AF%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E5%80%91%E8%A8%8E%E8%AB%96Route%E6%99%82%E6%B2%92%E6%9C%89%E6%8A%8ADomain%E7%B4%8D%E9%80%B2%E4%BE%86%EF%BC%8CDomain%E5%8F%AA%E6%98%AF%E8%AE%93%E7%B6%B2%E8%B7%AF%E8%83%BD%E6%89%BE%E5%88%B0%E4%BD%A0%E6%9C%8D%E5%8B%99%E7%9A%84%E4%BC%BA%E6%9C%8D%E5%99%A8%E4%BD%8D%E7%BD%AE%EF%BC%8C%E5%BE%8C%E9%9D%A2%E6%89%8D%E6%98%AF%E4%BD%A0%E6%92%B0%E5%AF%AB%E7%A8%8B%E5%BC%8F%E8%A6%81%E8%99%95%E7%90%86%E7%9A%84Route%E7%B6%B2%E5%9D%80">https://www.google.com.tw/search?q=facebook，而www.google.com.tw就是Domain，當讀到這串Domain時，就會透DNS找到Google的伺服器，然後呼叫它，並且請求他執行/search?q=facebook，這也是為什麼我們討論Route時沒有把Domain納進來，Domain只是讓網路能找到你服務的伺服器位置，後面才是你撰寫程式要處理的Route網址</a></p>
+          </div>
+<div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">所以首頁網址等於<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> &nbsp;</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">首頁網址<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> </span>：<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> /</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route Url :&nbsp; {controller}/{action}/{id}</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">我們有一個變數叫做<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">controller</span>，它現在沒有值</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">我們有一個變數叫做<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">action</span>，它現在沒有值</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">我們有一個變數叫做<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">id</span>，它現在沒有值</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">什麼都沒有，那程式到底要執行哪邊？<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> </span>這時候<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Default</span>終於派上用場了，<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Default</span>的意思就是，當沒有值時，請用我設定的值代替吧</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-size: 12px; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-TDgD-ND409Y/Wq0OX06AV7I/AAAAAAAAImc/CSNnXFgp6jkv3ajpzFLwlQuWyC8t7rBUgCEwYBhgL/s400/9.png)](https://1.bp.blogspot.com/-TDgD-ND409Y/Wq0OX06AV7I/AAAAAAAAImc/CSNnXFgp6jkv3ajpzFLwlQuWyC8t7rBUgCEwYBhgL/s1600/9.png)</div>
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">所以</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">controller<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">為空值，所以用</span>Default<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">的值代替，所以它的值為</span>Home</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">action<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">為空值，所以用</span>Default<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">的值代替，所以它的值為</span>Index</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">id<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">為空直，但</span>Default<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">設定它為</span>UrlParameter.Optional<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">，意思是它是選擇性的，如果沒有沒關係</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">所以這個<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>設定又完美符合了，所以依據條件，我們去<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">HomeController</span>的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Index</span>下中斷點，試試看進入首頁時是不是會停在這邊</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-size: 12px; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-3I8rJaSlSzI/Wq0OT3PebrI/AAAAAAAAIlo/gtyIS1YVuD83WLbI_Fh1huvHCyqCFcwUgCEwYBhgL/s400/10.png)](https://2.bp.blogspot.com/-3I8rJaSlSzI/Wq0OT3PebrI/AAAAAAAAIlo/gtyIS1YVuD83WLbI_Fh1huvHCyqCFcwUgCEwYBhgL/s1600/10.png)</div>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-koCX4c7IthY/Wq0OT1iZPOI/AAAAAAAAIls/8Crncjqy5b0piO1OdxXPkaPVzgxpD2pzwCEwYBhgL/s400/11.png)](https://3.bp.blogspot.com/-koCX4c7IthY/Wq0OT1iZPOI/AAAAAAAAIls/8Crncjqy5b0piO1OdxXPkaPVzgxpD2pzwCEwYBhgL/s1600/11.png)</div>
+
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">的確，他依據規則跑到了</span>HomeController<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">的</span>Index Action<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">了。</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">那舉一反三一下，換句話說首頁網址也可以是<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> /Home/Index </span>摟，試試看，你會發現它的確走到一樣的中斷點</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-size: 12px; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-PGK33fEJg-Q/Wq0OT4Pa-7I/AAAAAAAAImo/_9AR8OUt1Iga3IytGl1LuqwTxbsmNeWkwCEwYBhgL/s400/12.png)](https://2.bp.blogspot.com/-PGK33fEJg-Q/Wq0OT4Pa-7I/AAAAAAAAImo/_9AR8OUt1Iga3IytGl1LuqwTxbsmNeWkwCEwYBhgL/s1600/12.png)</div>
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">你可能會說，那這樣<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>還有什麼好學的，這個寫法幾乎萬用了啊？<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> </span>的確在ＭＶＣ預設專案中的這個<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>設定我們通常稱它為萬用<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>，但也因為它幾乎萬用，所以不好管理，所以正常來說都還是會制定自己的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>規則，好方便管理，這個之後慢慢寫專案碰到多了會更有感觸。</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">接著我們來試著修改一下程式，讓我們的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">{id}</span>能派上用場吧！！</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">在剛剛的案例中，因為<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">id</span>設定是<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Optional</span>所以都沒派上用場，來試試看他怎麼用吧，首先我們先在<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">HomeController</span>的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">About Action</span>中加入參數<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">id</span>，並且把回傳的訊息改成<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Your id is </span>(你帶進來的值)</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-size: 12px; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-FLI7MLnnMfw/Wq0OUuGGE3I/AAAAAAAAImk/nXWFNqHfTN8NUtq0rDJzxIB1jou_4DAdwCEwYBhgL/s400/13.png)](https://3.bp.blogspot.com/-FLI7MLnnMfw/Wq0OUuGGE3I/AAAAAAAAImk/nXWFNqHfTN8NUtq0rDJzxIB1jou_4DAdwCEwYBhgL/s1600/13.png)</div>
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;Helvetica Neue&quot;; font-size: 12px; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">接著我們重新執行一次程式，並且把網址改成<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">/Home/About/Steven</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-Zks5ZE30New/Wq0OUxoT8HI/AAAAAAAAIms/WxfowIPPItUnVcXErJ1H2FQPfHTWr58RgCEwYBhgL/s400/14.png)](https://2.bp.blogspot.com/-Zks5ZE30New/Wq0OUxoT8HI/AAAAAAAAIms/WxfowIPPItUnVcXErJ1H2FQPfHTWr58RgCEwYBhgL/s1600/14.png)</div>
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">再練習一次<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>比對</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">我們有一個變數叫做<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">controller</span>，它現在的值是<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Home</span></div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">我們有一個變數叫做<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">action</span>，它現在的值是<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">About</span></div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">我們有一個變數叫做<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">id</span>，它現在的值是<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Steven</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">讓接著看中斷點，把滑鼠移到<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">id</span>那的參數會看到，<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Id</span>依據我們下的網址，以<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Steven</span>帶進來了</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-h6ZLvBxZDRE/Wq0OVDhncjI/AAAAAAAAImo/IL83Kj55bx4EQb6yZg5uz7jkxi9Poyq1QCEwYBhgL/s400/15.png)](https://3.bp.blogspot.com/-h6ZLvBxZDRE/Wq0OVDhncjI/AAAAAAAAImo/IL83Kj55bx4EQb6yZg5uz7jkxi9Poyq1QCEwYBhgL/s1600/15.png)</div>
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">接著看網頁呈現的成果</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-4scpot89dZU/Wq0OVopL--I/AAAAAAAAImg/sdGZ1pxWLIMBO-ftiDpWhDA3l2f1tz7XwCEwYBhgL/s400/16.png)](https://3.bp.blogspot.com/-4scpot89dZU/Wq0OVopL--I/AAAAAAAAImg/sdGZ1pxWLIMBO-ftiDpWhDA3l2f1tz7XwCEwYBhgL/s1600/16.png)</div>
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal; margin-bottom: 2px;">
+
+<h3 id="練習制定一個屬於我們的Route"><a href="#練習制定一個屬於我們的Route" class="headerlink" title="練習制定一個屬於我們的Route"></a>練習制定一個屬於我們的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"><strong>Route</strong></span></h3></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">看了兩個範例，我們也來制定一個<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>規則給自己用吧，而且我們不要用變數的方式。</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-cOBHu8_QRGw/Wq0OV84UZ2I/AAAAAAAAImo/GhiHQFpeFGkvHHlIju0NPcUDtmSpF9OmQCEwYBhgL/s400/17.png)](https://3.bp.blogspot.com/-cOBHu8_QRGw/Wq0OV84UZ2I/AAAAAAAAImo/GhiHQFpeFGkvHHlIju0NPcUDtmSpF9OmQCEwYBhgL/s1600/17.png)</div>
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">我們希望有個網址為<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">/tellMe/whoAreYou/{name}</span>，且<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">name</span>跟之前的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">id</span>一樣是個變數，可以由你自己打喜歡的文字來決定，寫完後來試試看這個<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">route</span>可不可行</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-DviuNDcFiHg/Wq0OWIgZMfI/AAAAAAAAImk/uDokBOMNij0mSGMLcLZsxjp63J7qOdKDwCEwYBhgL/s400/18.png)](https://1.bp.blogspot.com/-DviuNDcFiHg/Wq0OWIgZMfI/AAAAAAAAImk/uDokBOMNij0mSGMLcLZsxjp63J7qOdKDwCEwYBhgL/s1600/18.png)</div>
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">結果竟然錯了，來看看少了什麼</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">網址</span> <span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">：</span> /tellMe/whoAreYou/steven</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route Url :&nbsp; /tellMe/whoAreYou/{name}</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">比對</span>tellMe<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">，符合</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">比對</span>whoAreYou<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">，符合</span></div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">比對<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Name</span>這個變數，現在的值為<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Steven</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">然後呢？<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> </span>有沒有發現即便這邊都比對正確，符合<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">route</span>規則，但我們沒告訴他<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Controller</span>是誰，<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Action</span>是誰，程式當然不知道該去執行誰，所以再來改一下，因為我們還沒學到如何建立<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Controller</span>跟<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Action</span>，所以先用現成的，<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> </span>導到<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">homeController</span>的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Contact</span>吧</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-qH5gM8_e5zA/Wq0OWghkjZI/AAAAAAAAImo/3gENq49UAPUaqw-ybuBoWEy2tlBNdeM6wCEwYBhgL/s400/19.png)](https://1.bp.blogspot.com/-qH5gM8_e5zA/Wq0OWghkjZI/AAAAAAAAImo/3gENq49UAPUaqw-ybuBoWEy2tlBNdeM6wCEwYBhgL/s1600/19.png)</div>
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-dSlvDEn3NLw/Wq0OW9IOoBI/AAAAAAAAIms/uPwgRJ_nwzkB6qAltJkNWfcSZGUu6h44wCEwYBhgL/s400/20.png)](https://2.bp.blogspot.com/-dSlvDEn3NLw/Wq0OW9IOoBI/AAAAAAAAIms/uPwgRJ_nwzkB6qAltJkNWfcSZGUu6h44wCEwYBhgL/s1600/20.png)</div>
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">讓我們再試試看剛剛的網址</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://1.bp.blogspot.com/-Pm-1-hAQ2Xc/Wq0OXEQrCpI/AAAAAAAAImo/7jBfE4xT3w8Y4QRu_iDmqrxtYcEk-8AgACEwYBhgL/s400/21.png)](https://1.bp.blogspot.com/-Pm-1-hAQ2Xc/Wq0OXEQrCpI/AAAAAAAAImo/7jBfE4xT3w8Y4QRu_iDmqrxtYcEk-8AgACEwYBhgL/s1600/21.png)</div>
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">這次不會壞掉了，且正確的導到</span>HomeController<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">的</span>Contact Action<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">去，接著試試不帶</span>{Name}<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">會怎麼樣</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;"><div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-qulCDWyyTIs/Wq0OXeD8fFI/AAAAAAAAIms/3CVn_ntnPms8AvxipLFd34dYGInhrSN_wCEwYBhgL/s400/22.png)](https://2.bp.blogspot.com/-qulCDWyyTIs/Wq0OXeD8fFI/AAAAAAAAIms/3CVn_ntnPms8AvxipLFd34dYGInhrSN_wCEwYBhgL/s1600/22.png)</div>
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">變成找不到資源，為什麼？因為我們的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Name</span>沒有設定為<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">UrlParameter.Optional</span>，所以是必帶的參數，這邊要特別注意！！！<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"> </span>之前教很多新人<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>時很多人都卡在這邊</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal; margin-bottom: 2px;"><span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">**Route**</span>比對時必須完全符合才會被捕捉到</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-stretch: normal; line-height: normal;"><div style="font-family: &quot;.pingfang tc&quot;;">所以回頭審視我們的<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>註冊目前有兩個規則</div><div style="font-family: &quot;.pingfang tc&quot;;"><span style="font-family: &quot;helvetica neue&quot;;">
+</span></div><span style="font-family: &quot;pingfang tc&quot;;">1.&nbsp;</span><span style="font-family: &quot;helvetica neue&quot;;">tellMe/whoAreYou/{name}</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">2\. {controller}/{action}/{id}</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">而我們帶的網址為</span> /tellMe/whoAreYou <span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">，比對的規則將會是</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">由上到下，所以先比對了</span> 1\. **tellMe/whoAreYou/{name}** <span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">的規則</span>&nbsp;</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">tellMe<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">，符合</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">whoAreYou<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">，符合</span></div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>要求要有<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Name</span>，且不是<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Optional</span>，所以必帶，”不符合”</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">
+</span><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">這段</span>Route<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">會被跳過，執行比對</span>2\. **{controller}/{action}/{id}&nbsp;**<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">的規則</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Controller<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">為</span>tellMe<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">，符合</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Action<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">為</span>WhoAreYou<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">，符合</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Id<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">為空值，因為為</span>Optional<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">，符合</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;"><span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">所以實際程式去找的是</span>TellMeController<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">裡面的</span>WhoAreYou<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">這個</span>Action<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">，因為找不到這支程式所以顯示錯誤，而不是去執行規則</span>1.<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">的</span> HomeController<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">的</span>Contact<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">這個</span>Action<span style="font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">。</span></div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal; min-height: 14px;">
+</div><div style="color: #454545; font-family: &quot;.pingfang tc&quot;; font-stretch: normal; line-height: normal;">這是新手常常會犯的觀念錯誤，所以特別舉這個例子希望能夠較清楚的比較跟釐清，而<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">Route</span>因為還有很多種設定，避免一次太多造成混亂，所以先到這邊。試著將上述的觀念釐清，對於之後撰寫<span style="font-family: &quot;helvetica neue&quot;; font-stretch: normal; line-height: normal;">MVC Route</span>時會很有幫助</div></div><div>
+</div><div>
+</div>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MVC%E6%95%99%E5%AD%B8/" rel="tag"># MVC教學</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/02/23/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%912-%E4%BB%80%E9%BA%BC%E6%98%AFMVC/" rel="prev" title="【MVC教學】2. 什麼是MVC">
+      <i class="fa fa-chevron-left"></i> 【MVC教學】2. 什麼是MVC
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/05/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%914-%E7%82%BA%E4%BD%A0%E7%9A%84Route%E5%8A%A0%E4%B8%80%E9%BB%9E%E9%99%90%E5%88%B6/" rel="next" title="【MVC教學】4. 為你的Route加一點限制">
+      【MVC教學】4. 為你的Route加一點限制 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RouteConfig"><span class="nav-number">1.</span> <span class="nav-text">RouteConfig</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B7%B4%E7%BF%92%E5%88%B6%E5%AE%9A%E4%B8%80%E5%80%8B%E5%B1%AC%E6%96%BC%E6%88%91%E5%80%91%E7%9A%84Route"><span class="nav-number">2.</span> <span class="nav-text">練習制定一個屬於我們的Route</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2018/03/18/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%913-Route-%E4%B8%80/";
+    this.page.identifier = "2018/03/18/【MVC教學】3-Route-一/";
+    this.page.title = "【MVC教學】3. Route(一)";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

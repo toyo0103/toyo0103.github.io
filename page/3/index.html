@@ -189,6 +189,155 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/04/30/jenkins_update_remote_docker_container/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/30/jenkins_update_remote_docker_container/" class="post-title-link" itemprop="url">【Docker】透過 Jenkins 重新部屬遠端機器 Container</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-30 10:00:00" itemprop="dateCreated datePublished" datetime="2019-04-30T10:00:00+08:00">2019-04-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2019/04/30/jenkins_update_remote_docker_container/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/30/jenkins_update_remote_docker_container/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><img src="/images/20190430/0.jpg" alt="/images/20190430/0.jpg"></p>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>公司慢慢在導入 Docker 等相關 Container 技術，但因為剛起步所以很多 CI/CD 流程都還在優化建構中，前幾天為了能讓 Jenkins 順利重新部屬新版 Container 搞得焦頭爛額，乾脆把這些過程記錄下來</p>
+<br>
+
+<h2 id="部屬流程"><a href="#部屬流程" class="headerlink" title="部屬流程"></a>部屬流程</h2><p><img src="/images/20190430/1.png" alt="/images/20190430/1.png"></p>
+<p>這個服務是由三個 Component 來組成，分開維護開發，換句話說如果有任何一個組件更新，整個服務都需要更新並重新部屬，目前的流程是各個 Component 更新後都會觸發 CD 流程將完成品打包放到 S3。</p>
+<p>而我這次做得線就是 Docker Image 那條，當有任何 Component 更新了都會觸發，我會將 S3 的各個 Component 最新版抓下來後整理，接著再打包一版 Build Docker Image 會需要的原料放到 S3。</p>
+<p>接著 Jenkins 接手將 Docker Image Artifact 抓下來開始 build =&gt; push =&gt; 換掉遠端機器正在跑的 Container。</p>
+<br>
+
+<h1 id="設定權限"><a href="#設定權限" class="headerlink" title="設定權限"></a>設定權限</h1><p> 所以第一步是釐清 Jenkins 所使用的 user 是否有執行 docker 相關指令的權限，後面都簡稱這位使用者為 <code>ciuser</code>。</p>
+<p>因為 docker 為 service 等級的服務，預設是 admin 才能使用相關指令，所以理所當然地馬上卡關</p>
+<p><img src="/images/20190430/2.png" alt="/images/20190430/2.png"></p>
+<p>要讓使用者有執行 docker 相關指令的權限有兩種方法</p>
+<ol>
+<li>賦予該 User Admin 的權限</li>
+<li>開一個群組，並設定 docker daemon ，賦予該群組權限</li>
+</ol>
+<p>顯然 (1) 不太可能(雖然最簡單)，所以這邊採取 (2) 的方法</p>
+<p>*** Windows 上右鍵 &gt; Computer Management**</p>
+<p><img src="/images/20190430/3.png" alt="/images/20190430/3.png"></p>
+<p>*** Local Users and Groups &gt;&gt; Groups **</p>
+<p><img src="/images/20190430/4.png" alt="/images/20190430/4.png"></p>
+<p>*** New Group &gt;&gt; 建立一個群組 &gt;&gt; 將 ciuser 加進去**</p>
+<p><img src="/images/20190430/5.png" alt="/images/20190430/5.png"></p>
+<p>*** 到 C:\ProgramData\docker\config 修改 daemon.json 檔案**(如果沒有這個檔案，請自己建一個)</p>
+<p>將剛剛的群組加進去</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> <span class="attr">&quot;group&quot;</span>: <span class="string">&quot;docker-users&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>*** 重新啟動 docker service ** (這邊需要 admin 權限)</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Powershell</span></span><br><span class="line"><span class="variable">$</span> <span class="built_in">Restart-Service</span> docker</span><br></pre></td></tr></table></figure>
+
+<p>做到這邊你在用 <code>ciuser</code> 下 docker command 應該就可以動了</p>
+<p><img src="/images/20190430/6.png" alt="/images/20190430/6.png"></p>
+<p>PS. 如果還不行，請先登出 <code>ciuser</code> 再登入，因為將使用者加入一個群組或賦予權限，重登才會生效</p>
+<div class="note info">
+            <p>參考文章</p><p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/virtualization/windowscontainers/manage-docker/configure-docker-daemon">Docker Engine on Windows</a></p>
+          </div>
+
+
+
+<p>到這邊應該已經打通 <code>ciuser</code> 可以執行 docker command 的權限了，接著在 Jenkins 設定 build 、 push Image的流程測試會發現依然錯誤</p>
+<div class="note info">
+            <p>error during connect: Get http://%2F%2F.%2Fpipe%2Fdocker_engine/v1.40/containers/json: open //./pipe/docker_engine: The system cannot find the file specified. In the default daemon configuration on Windows, the docker client must be run elevated to connect. This error may also indicate that the docker daemon is not running.</p>
+          </div>
+
+<p>但同樣的指令不透過 Jenkins 執行，而是用遠端登入直接執行會過，這個問題想了很久還是搞不懂為什麼，明明使用的 User 相同 …</p>
+<p>但找到了一篇文章也提到相同的事情並提供了解決方案，主要是需要調整 docker_engine ACL 設定，但因為過程太麻煩，作者很貼心的還提供了小套件可以使用</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Powershell</span></span><br><span class="line"><span class="variable">$</span> <span class="built_in">Install-Module</span> <span class="literal">-Name</span> dockeraccesshelper</span><br><span class="line"><span class="variable">$</span> <span class="built_in">Import-Module</span> dockeraccesshelper</span><br><span class="line"><span class="variable">$</span> <span class="built_in">Add-AccountToDockerAccess</span> <span class="string">&quot;ciuser&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>再次執行 Jenkins 就真的成功了</p>
+<div class="note info">
+            <p>參考文章</p><p><a target="_blank" rel="noopener" href="https://www.axians-infoma.com/techblog/allow-access-to-the-docker-engine-without-admin-rights-on-windows/">Allow access to the Docker Engine without admin rights on Windows</a></p>
+          </div>
+
+<br>
+
+<h1 id="設定-Jenkins"><a href="#設定-Jenkins" class="headerlink" title="設定 Jenkins"></a>設定 Jenkins</h1><p>Build Image 、 Push Image 這些流程就直接省略了，重點是最後一步怎麼觸發遠端機器更新 Container 。</p>
+<p>Docker Compose 提供 <code>--host</code> ，讓你可以操作遠端機器的 Container</p>
+<p><img src="/images/20190430/7.png" alt="/images/20190430/7.png"></p>
+<p>但前提是你必須先去該機器開啟 2376 port 的防火牆，還有設定 docker daemon config，跟上面那段一樣檔案，只是上次設定的是 jenkins 機器，這次是跑 Container 的機器</p>
+<p>路徑 :  C:\ProgramData\docker\config\daemon.json</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> <span class="attr">&quot;hosts&quot;</span>: [<span class="string">&quot;tcp://0.0.0.0:2376&quot;</span>, <span class="string">&quot;npipe://&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>都開好後回頭在 Jenkins 的流程中埋下最後一段</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> docker-compose -H machineIp:2376 pull</span></span><br><span class="line"></span><br><span class="line"><span class="meta">$</span><span class="bash"> docker-compose -H machineIp:2376 up -d</span></span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>雖然只是短短的一篇，但是整個設定的過程其實卡很久，尤其是 windows 的權限不是很熟常常會把自己搞得很亂，但為了團隊能接手維運，這些過程又勢必有人需要去踩過一次，以前都覺得 DevOps 的 Dev 才是主力(自己大部分經歷也都是待在開發團隊)，對於維運一直都沒有很深入去了解並感受他們的痛。</p>
+<p>但當角色從 Developer 漸漸轉成 Infra ，不同的角度去看這些事情有了完全不同的感受，<code>維運</code>真的才是整個軟體生命週期佔最大的部分，一套系統你可能開發個 1 ~ 3 年，但產品的維運可能是數十年，怎麼讓一套機制落地，讓人為介入越少越好，要考慮的面向真的比過去單純開發差非常多，果然還有得學阿。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/04/22/Docker_build/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +362,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-04-22 10:19:00" itemprop="dateCreated datePublished" datetime="2019-04-22T10:19:00+00:00">2019-04-22</time>
+              <time title="Created: 2019-04-22 10:19:00" itemprop="dateCreated datePublished" datetime="2019-04-22T10:19:00+08:00">2019-04-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -345,14 +494,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-03-23 17:53:00" itemprop="dateCreated datePublished" datetime="2019-03-23T17:53:00+00:00">2019-03-23</time>
+              <time title="Created: 2019-03-23 17:53:00" itemprop="dateCreated datePublished" datetime="2019-03-23T17:53:00+08:00">2019-03-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -442,14 +591,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-03-21 23:30:00" itemprop="dateCreated datePublished" datetime="2019-03-21T23:30:00+00:00">2019-03-21</time>
+              <time title="Created: 2019-03-21 23:30:00" itemprop="dateCreated datePublished" datetime="2019-03-21T23:30:00+08:00">2019-03-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -562,14 +711,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-03-15 17:30:00" itemprop="dateCreated datePublished" datetime="2019-03-15T17:30:00+00:00">2019-03-15</time>
+              <time title="Created: 2019-03-15 17:30:00" itemprop="dateCreated datePublished" datetime="2019-03-15T17:30:00+08:00">2019-03-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -663,14 +812,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-03-01 07:38:00" itemprop="dateCreated datePublished" datetime="2019-03-01T07:38:00+00:00">2019-03-01</time>
+              <time title="Created: 2019-03-01 07:38:00" itemprop="dateCreated datePublished" datetime="2019-03-01T07:38:00+08:00">2019-03-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -938,14 +1087,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-02-22 16:48:00" itemprop="dateCreated datePublished" datetime="2019-02-22T16:48:00+00:00">2019-02-22</time>
+              <time title="Created: 2019-02-22 16:48:00" itemprop="dateCreated datePublished" datetime="2019-02-22T16:48:00+08:00">2019-02-22</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1074,14 +1223,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-02-21 10:36:00" itemprop="dateCreated datePublished" datetime="2019-02-21T10:36:00+00:00">2019-02-21</time>
+              <time title="Created: 2019-02-21 10:36:00" itemprop="dateCreated datePublished" datetime="2019-02-21T10:36:00+08:00">2019-02-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1183,14 +1332,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-02-20 15:10:00" itemprop="dateCreated datePublished" datetime="2019-02-20T15:10:00+00:00">2019-02-20</time>
+              <time title="Created: 2019-02-20 15:10:00" itemprop="dateCreated datePublished" datetime="2019-02-20T15:10:00+08:00">2019-02-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1294,14 +1443,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-02-19 16:25:00" itemprop="dateCreated datePublished" datetime="2019-02-19T16:25:00+00:00">2019-02-19</time>
+              <time title="Created: 2019-02-19 16:25:00" itemprop="dateCreated datePublished" datetime="2019-02-19T16:25:00+08:00">2019-02-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1414,125 +1563,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2019/02/12/anycpu_x86_x64/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/02/12/anycpu_x86_x64/" class="post-title-link" itemprop="url">將程式編譯成 x86、x64、Any CPU差別在哪</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-02-12 11:09:00" itemprop="dateCreated datePublished" datetime="2019-02-12T11:09:00+00:00">2019-02-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2019/02/12/anycpu_x86_x64/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/12/anycpu_x86_x64/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>相信用過 Visual Studio 的應該都注意過編譯時可以選擇 Any CPU、x86、x64 (x86、x64 需要編輯組態檔才會看的到)</p>
-<p><img src="/images/20190212/1.png" alt="/images/20190212/1.png"></p>
-<p>這次踩到問題是，明明程式用 Any CPU 來編譯，但在 64 bit OS 上卻會用 32 bit  Process 來執行</p>
-<p><img src="/images/20190212/2.png" alt="/images/20190212/2.png"></p>
-<p>原來是因為專案建置的屬性勾到了 <code>建議使用32位元</code>的選項導致</p>
-<p><img src="/images/20190212/3.png" alt="/images/20190212/3.png"></p>
-<p>解決的同時也引起了對於編譯成 x86、x64、Any CPU 有什麼差別的好奇心，找了文章後整理如下</p>
-<br>
-
-<h1 id="差異"><a href="#差異" class="headerlink" title="差異"></a>差異</h1><br>
-
-<h2 id="在-32-bit-OS-上執行"><a href="#在-32-bit-OS-上執行" class="headerlink" title="在 32 bit OS 上執行"></a>在 32 bit OS 上執行</h2><p><strong>Any CPU</strong> : 會用 32 bit Process 來執行，可以載入 Any CPU 和 x86 方式編譯的組件，但如果載入 x64 編譯的組件將會引發 BadImageFormatException </p>
-<p><strong>Any CPU (勾選建議使用32位元)</strong> : 運作方式同上</p>
-<p><strong>x86</strong> : 運作方式同上</p>
-<p><strong>x64</strong> : 引發 BadImageFormatException</p>
-<br>
-
-<h2 id="在-64-bit-OS-上執行"><a href="#在-64-bit-OS-上執行" class="headerlink" title="在 64 bit OS 上執行"></a>在 64 bit OS 上執行</h2><p><strong>Any CPU</strong> : 會用 64 bit Process 來執行，可以載入 Any CPU 和 x64 方式編譯的組件，但如果載入 x86 編譯的組件將會引發 BadImageFormatException</p>
-<p><strong>Any CPU (勾選建議使用32位元)</strong> : 會用 32 bit Process 來執行，可以載入 Any CPU 和 <code>x86</code> 方式編譯的組件，但如果載入 x64 編譯的組件將會引發 BadImageFormatException</p>
-<p><strong>x86</strong> : 運作方式同 <strong>Any CPU (勾選建議使用32位元)</strong></p>
-<p><strong>x64</strong> : 運作方式同 <strong>Any CPU</strong>  </p>
-<br>
-
-<h2 id="Machine-Config"><a href="#Machine-Config" class="headerlink" title="Machine Config"></a>Machine Config</h2><p>依據執行的 Process 位元決定</p>
-<p>32 bit Process 吃的 Machine Config 位置 : C:\Windows\Microsoft.NET\ <code>Framework</code> \v4.0.30319\Config</p>
-<p>64 bit Process 吃的 Machine Config 位置 : C:\Windows\Microsoft.NET\ <code>Framework64</code> \v4.0.30319\Config</p>
-<br>
-
-<h1 id="怎麼查是用哪種方式編譯的"><a href="#怎麼查是用哪種方式編譯的" class="headerlink" title="怎麼查是用哪種方式編譯的?"></a>怎麼查是用哪種方式編譯的?</h1><p>可以透過 <code>CorFlags.exe</code> 的工具來查詢，該程式放在 <code>C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools</code> 路徑底下，設定為環境變數後就可以用 command 來檢視 PE </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ corflags yourPE.exe</span><br></pre></td></tr></table></figure>
-
-<div class="note info">
-            <p>PE : Process Executables (EXEs and DLLs)</p>
-          </div>
-
-<p><img src="/images/20190212/4.png" alt="/images/20190212/4.png"></p>
-<p>意義如下</p>
-<p><img src="/images/20190212/5.png" alt="/images/20190212/5.png"></p>
-<p>(圖片節錄至 : <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/18608785/how-to-interpret-the-corflags-flags/23614024#23614024">https://stackoverflow.com/questions/18608785/how-to-interpret-the-corflags-flags/23614024#23614024</a>)</p>
-<div class="note info">
-            <p>參考文章</p><p><a target="_blank" rel="noopener" href="https://blog.darkthread.net/blog/corflags/">【茶包射手日記】檢查.NET程式平台目標(Platform Target)</a></p><p><a target="_blank" rel="noopener" href="https://www.codeproject.com/Articles/1160645/Dealing-with-bit-bit-and-Any-CPU-Compilation-Optio">Dealing with 32-bit, 64-bit and Any CPU Compilation Options in .NET</a></p><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/18608785/how-to-interpret-the-corflags-flags">How to interpret the CorFlags flags?</a></p>
-          </div>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1602,7 +1632,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1615,7 +1645,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

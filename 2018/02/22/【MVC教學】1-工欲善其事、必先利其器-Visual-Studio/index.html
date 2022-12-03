@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="年前朋友討論是否寫Dot Net Mvc的簡單教學文章,害我過年都在思考該怎麼寫這東西…可惡(果然是個心裡容不下待辦事項的人啊)。 認真的想了後覺得這真是個非常難的主題,一來是網路上已經有很多資源,我也不是什麼大神,很怕誤人子弟。二來雖然以前曾經幫忙教育訓練過新進同事,但面對面的溝通且依照每個人程度不同給予討論,跟用文章教會一個不知道對象是誰,且博大精深的框架與語言,這個差距實在太大,所以最後只好">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【MVC教學】1. 工欲善其事、必先利其器 Visual Studio">
+<meta property="og:url" content="https://toyo0103.github.io/2018/02/22/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%911-%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B%E3%80%81%E5%BF%85%E5%85%88%E5%88%A9%E5%85%B6%E5%99%A8-Visual-Studio/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="年前朋友討論是否寫Dot Net Mvc的簡單教學文章,害我過年都在思考該怎麼寫這東西…可惡(果然是個心裡容不下待辦事項的人啊)。 認真的想了後覺得這真是個非常難的主題,一來是網路上已經有很多資源,我也不是什麼大神,很怕誤人子弟。二來雖然以前曾經幫忙教育訓練過新進同事,但面對面的溝通且依照每個人程度不同給予討論,跟用文章教會一個不知道對象是誰,且博大精深的框架與語言,這個差距實在太大,所以最後只好">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://1.bp.blogspot.com/-ExYk1nrzalI/Wo0aNHm1jLI/AAAAAAAAIiM/xA5vmqHWUkgo1DYB_4zz9nbfb1oKw3vyQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.03.31.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-_VDwlMMcZM0/Wo0iMV7i_mI/AAAAAAAAIjo/8yZiG4s8Kb0bXtwGlMl4UaLUxau9yZ5rACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.39.13.png">
+<meta property="og:image" content="https://3.bp.blogspot.com/-R2SEzOTjLeU/Wo0nRTaBCsI/AAAAAAAAIj8/Sx_eFGxFUgo0TNDMGsWEcVYutD1U9pYSgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25884.00.22.png">
+<meta property="article:published_time" content="2018-02-21T16:06:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.090Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="MVC教學">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://1.bp.blogspot.com/-ExYk1nrzalI/Wo0aNHm1jLI/AAAAAAAAIiM/xA5vmqHWUkgo1DYB_4zz9nbfb1oKw3vyQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.03.31.png">
+
+<link rel="canonical" href="https://toyo0103.github.io/2018/02/22/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%911-%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B%E3%80%81%E5%BF%85%E5%85%88%E5%88%A9%E5%85%B6%E5%99%A8-Visual-Studio/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【MVC教學】1. 工欲善其事、必先利其器 Visual Studio | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/02/22/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%911-%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B%E3%80%81%E5%BF%85%E5%85%88%E5%88%A9%E5%85%B6%E5%99%A8-Visual-Studio/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【MVC教學】1. 工欲善其事、必先利其器 Visual Studio
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-02-22 00:06:00" itemprop="dateCreated datePublished" datetime="2018-02-22T00:06:00+08:00">2018-02-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%B8%E7%BF%92MVC/" itemprop="url" rel="index"><span itemprop="name">學習MVC</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/02/22/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%911-%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B%E3%80%81%E5%BF%85%E5%85%88%E5%88%A9%E5%85%B6%E5%99%A8-Visual-Studio/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/22/【MVC教學】1-工欲善其事、必先利其器-Visual-Studio/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>年前朋友討論是否寫Dot Net Mvc的簡單教學文章,害我過年都在思考該怎麼寫這東西…可惡(果然是個心裡容不下待辦事項的人啊)。</p>
+<p>認真的想了後覺得這真是個非常難的主題,一來是網路上已經有很多資源,我也不是什麼大神,很怕誤人子弟。二來雖然以前曾經幫忙教育訓練過新進同事,但面對面的溝通且依照每個人程度不同給予討論,跟用文章教會一個不知道對象是誰,且博大精深的框架與語言,這個差距實在太大,所以最後只好一直將目標縮小再縮小,希望這系列文如果看完時能達到以下目標我就滿足了</p>
+<p>**目標對象 **</p>
+<div class="note info">
+            <p>1.你有一點程式語言的底子,但沒接觸過Dot Net MVC<br>2.寫過Dot Net MVC,但還不是很熟悉它怎麼應用</p>
+          </div>
+
+<p><strong>希望達成目標</strong></p>
+<div class="note info">
+            <p>1.能夠比較清楚的理解Dot Net MVC怎麼運作<br>2.知道了一些小東西,或許能改善目前你開發上困擾</p>
+          </div>
+
+
+<p>那就先從工具開始吧</p>
+<div class="note info">
+            <p>Visual Studio Community : <a target="_blank" rel="noopener" href="https://www.visualstudio.com/zh-hant/vs/community/">微軟官網載點</a></p>
+          </div>
+<p>開發Dot Net的工程師,應該9成9的人都是使用Visual Studio,它不僅號稱地表最強編輯器,微軟更佛心的提供了免費版本給大家使用,否則最基礎的一套Visual Studio的價格應該也會讓初學者非常卻步。</p>
+<p>當然既然是免費版本,功能上一定會有些陽春,但對於只是入門學習Dot Net而言已經是相當強大的工具了。</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://4.bp.blogspot.com/-AThY6IIeOMU/Wozqfrbkj8I/AAAAAAAAIhM/unPhEYOMwi4GocjIIbH3sQLsG6zFLwLXgCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258A%25E5%258D%258811.41.26.png)](https://4.bp.blogspot.com/-AThY6IIeOMU/Wozqfrbkj8I/AAAAAAAAIhM/unPhEYOMwi4GocjIIbH3sQLsG6zFLwLXgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258A%25E5%258D%258811.41.26.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">功能比較(來源: [https://www.visualstudio.com/zh-hant/vs/compare/](https://www.visualstudio.com/zh-hant/vs/compare/))</td></tr></tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://2.bp.blogspot.com/-IAZ842DU7bE/WozrAMFvS5I/AAAAAAAAIhU/hXxvWOr48VIim3dJ2gxOVdllEfdLsvspgCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258A%25E5%258D%258811.43.35.png)](https://2.bp.blogspot.com/-IAZ842DU7bE/WozrAMFvS5I/AAAAAAAAIhU/hXxvWOr48VIim3dJ2gxOVdllEfdLsvspgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258A%25E5%258D%258811.43.35.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">價格表(來源:[https://www.visualstudio.com/zh-hant/vs/pricing/](https://www.visualstudio.com/zh-hant/vs/pricing/))</td></tr></tbody></table>
+
+<p>下載完之後將它安裝起來</p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://4.bp.blogspot.com/-l_GogekWtuo/Wo0NeymgUGI/AAAAAAAAIhk/a9KRtEucnA8ZAofXpTfM1WKc0Cn1-VSeACLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.10.47.png)](https://4.bp.blogspot.com/-l_GogekWtuo/Wo0NeymgUGI/AAAAAAAAIhk/a9KRtEucnA8ZAofXpTfM1WKc0Cn1-VSeACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.10.47.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">選擇Community安裝</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://4.bp.blogspot.com/-VxH0BFcP1N4/Wo0OAeM_n8I/AAAAAAAAIhs/XbpBzTLtFQsEQwdPNDVF0V1-yghRDhHMgCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.13.01.png)](https://4.bp.blogspot.com/-VxH0BFcP1N4/Wo0OAeM_n8I/AAAAAAAAIhs/XbpBzTLtFQsEQwdPNDVF0V1-yghRDhHMgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.13.01.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">勾選ASP.NET與網頁程式開發</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://1.bp.blogspot.com/-YT3wMLUPuxQ/Wo0OS6i817I/AAAAAAAAIhw/cJGnL6jonT0Kf9XxbKzB9k_5qT6vdB16wCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.14.13.png)](https://1.bp.blogspot.com/-YT3wMLUPuxQ/Wo0OS6i817I/AAAAAAAAIhw/cJGnL6jonT0Kf9XxbKzB9k_5qT6vdB16wCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25882.14.13.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">等它安裝完</td></tr></tbody></table>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://2.bp.blogspot.com/-mb-CXRobkYs/Wo0ZC8U4VJI/AAAAAAAAIiE/hVP-yUd9UtMsSVpt3iVTjyRgksp825iLwCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.00.10.png)](https://2.bp.blogspot.com/-mb-CXRobkYs/Wo0ZC8U4VJI/AAAAAAAAIiE/hVP-yUd9UtMsSVpt3iVTjyRgksp825iLwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.00.10.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">安裝完之後打開應該會看到這個畫面</td></tr></tbody></table>
+<div class="note info">
+            <p>因為寫程式大部分時間都需要一直長盯著螢幕,所以螢幕底色如果是淺色系通常到下午我眼睛都會很酸,所以Visual Studio也很貼心了提供修改視窗色系的功能,例如我截圖就是深色系。<br>調整方式如下<br>工具 &gt; 選項 &gt; 色彩佈景主題<br><a target="_blank" rel="noopener" href="https://1.bp.blogspot.com/-ExYk1nrzalI/Wo0aNHm1jLI/AAAAAAAAIiM/xA5vmqHWUkgo1DYB_4zz9nbfb1oKw3vyQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.03.31.png"><img src="https://1.bp.blogspot.com/-ExYk1nrzalI/Wo0aNHm1jLI/AAAAAAAAIiM/xA5vmqHWUkgo1DYB_4zz9nbfb1oKw3vyQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.03.31.png"></a></p>
+          </div>
+**
+****
+****建立第一個Web專案**
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://3.bp.blogspot.com/-8NkEiv-Pdy0/Wo0atMIeTBI/AAAAAAAAIiY/Xqtt1Nt4vdYMutyRHnF6SK0ywGJw6IBVwCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.07.17.png)](https://3.bp.blogspot.com/-8NkEiv-Pdy0/Wo0atMIeTBI/AAAAAAAAIiY/Xqtt1Nt4vdYMutyRHnF6SK0ywGJw6IBVwCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.07.17.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">檔案 &gt; 新增 &gt; 專案</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://3.bp.blogspot.com/-52w4Z2LQrMo/Wo0bFfQ42ZI/AAAAAAAAIic/W7IdEeXSIqIh3rG2CmSN4slAT6Qu1qkzgCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.08.51.png)](https://3.bp.blogspot.com/-52w4Z2LQrMo/Wo0bFfQ42ZI/AAAAAAAAIic/W7IdEeXSIqIh3rG2CmSN4slAT6Qu1qkzgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.08.51.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">選擇Web &gt; Web應用程式(.NET Framework) 。
+專案名稱與放的位置依照自己喜好即可</td></tr></tbody></table><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://3.bp.blogspot.com/-sG9_1osHZzM/Wo0bo1ny1kI/AAAAAAAAIio/mRKCMTpCjp461LAbSFCK6EzS02y1Z02KQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.11.14.png)](https://3.bp.blogspot.com/-sG9_1osHZzM/Wo0bo1ny1kI/AAAAAAAAIio/mRKCMTpCjp461LAbSFCK6EzS02y1Z02KQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.11.14.png)</td></tr><tr><td class="tr-caption" style="text-align: center;">選擇MVC</td></tr></tbody></table>
+建立完成之後應該可以看到這個畫面
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/-bgNV43jpPbY/Wo0cBzZrZPI/AAAAAAAAIis/U152KITJzwkkk3aMigyzBB7fAyCPS0pIACLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.12.56.png)](https://3.bp.blogspot.com/-bgNV43jpPbY/Wo0cBzZrZPI/AAAAAAAAIis/U152KITJzwkkk3aMigyzBB7fAyCPS0pIACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.12.56.png)</div><div class="note info">
+            <p>如果看不到方案總管,可以透過<strong>檢視</strong>&gt; <strong>方案總管</strong>來打開</p>
+          </div>
+
+
+<p>右邊就是我們寫程式要放的地方,之後介紹Dot Net MVC時會慢慢帶到,但今天還不需要寫到程式,先直接將程式執行起來,看看預設建立好的網站是長什麼樣</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-rsiatvazfV0/Wo0dW96VDgI/AAAAAAAAIi0/62hUceI6RWI5zmuuQrkAE9MP5q0ZXAjaQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.17.44.png)](https://2.bp.blogspot.com/-rsiatvazfV0/Wo0dW96VDgI/AAAAAAAAIi0/62hUceI6RWI5zmuuQrkAE9MP5q0ZXAjaQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.17.44.png)</div>
+因為這是網站程式, 點選執行旁邊的向下箭頭後,可以依照個人喜好選擇習慣用的瀏覽器來瀏覽,我個人是習慣用Google Chrome,所以以下用Chrome做示範,選好後按下綠色的箭頭執行。
+
+<p>執行起來之後應該可以看到一個很專業的診斷工具面板,分別顯示目前佔了CPU幾%,用了多少記憶體…等等</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-02yTU2prJZY/Wo0ekE8DgvI/AAAAAAAAIi8/8BiY3LezXhUhV7QMK8XeKO9oy3RG4jKOQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.22.30.png)](https://2.bp.blogspot.com/-02yTU2prJZY/Wo0ekE8DgvI/AAAAAAAAIi8/8BiY3LezXhUhV7QMK8XeKO9oy3RG4jKOQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.22.30.png)</div>
+
+<p>而這時候你選擇的瀏覽器應該也會開啟，然後看到目前網站的成果</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-Xw28Lnnj1vI/Wo0euDl5nmI/AAAAAAAAIjA/hj1eQKYS0jcS8goj3FDv0yngDCHDYPmVACLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.24.20.png)](https://2.bp.blogspot.com/-Xw28Lnnj1vI/Wo0euDl5nmI/AAAAAAAAIjA/hj1eQKYS0jcS8goj3FDv0yngDCHDYPmVACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.24.20.png)</div>
+
+<p>可以隨意的點擊網站按鈕逛逛玩玩後,現在來簡單講一下該如何追蹤偵錯</p>
+<div class="note info">
+            <p>偵錯是門大學問,常常我們寫的程式編譯時都沒有錯誤,但執行結果卻不如我們預期那般時,一步一步偵錯就會是我們發現問題的好朋友</p>
+          </div>
+
+<p>我們以<strong>關於這個按鈕</strong>為例,究竟點擊<strong>關於</strong>這個按鈕時,程式是如何執行,讓我們可以看到畫面的</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://3.bp.blogspot.com/--aluBIC6nMg/Wo0gH9fbBYI/AAAAAAAAIjQ/BaKOSBTJacIOl9_W7YAz8lqi-9Fx5C0FQCLcBGAs/s640/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.29.58.png)](https://3.bp.blogspot.com/--aluBIC6nMg/Wo0gH9fbBYI/AAAAAAAAIjQ/BaKOSBTJacIOl9_W7YAz8lqi-9Fx5C0FQCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.29.58.png)</div>
+
+<p>因為我們還不知道目前整個程式的運作原理,所以依照下面的指示這樣做</p>
+<ol>
+<li><p> 找到HomeController,並且打開它</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-kCJKeJELsx0/Wo0gxIiQthI/AAAAAAAAIjY/FPc1xN8m0oQzv5tfWhG8hf649M2gp4jUACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.31.50.png)](https://4.bp.blogspot.com/-kCJKeJELsx0/Wo0gxIiQthI/AAAAAAAAIjY/FPc1xN8m0oQzv5tfWhG8hf649M2gp4jUACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.31.50.png)</div></li>
+<li><p> 找到第18行的地方,點擊那行的最左邊邊框,會產生一個紅色的原點,我們稱之為中斷點</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://2.bp.blogspot.com/-LIvuofL8J2g/Wo0ha-LzXzI/AAAAAAAAIjg/GrPyIZE-hss6nVqf2b6CgYKIhaXTjpfNgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.34.22.png)](https://2.bp.blogspot.com/-LIvuofL8J2g/Wo0ha-LzXzI/AAAAAAAAIjg/GrPyIZE-hss6nVqf2b6CgYKIhaXTjpfNgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.34.22.png)</div><div class="note info">
+            <p>中斷點的意思就是,當程式執行到這行時會停下來讓你知道,並且等待你的指示</p>
+          </div></li>
+<li><p> 接著再回去剛剛的網頁點擊<strong>關於,<strong>你會發現</strong>,視窗會跳到你剛剛下得中斷點位置,而網頁會卡住,並沒有顯示關於的頁面</strong><div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="https://3.bp.blogspot.com/-_VDwlMMcZM0/Wo0iMV7i_mI/AAAAAAAAIjo/8yZiG4s8Kb0bXtwGlMl4UaLUxau9yZ5rACLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.39.13.png"><img src="https://3.bp.blogspot.com/-_VDwlMMcZM0/Wo0iMV7i_mI/AAAAAAAAIjo/8yZiG4s8Kb0bXtwGlMl4UaLUxau9yZ5rACLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.39.13.png"></a></div><br>那是因為程式還沒執行完,所以還沒辦法顯示頁面資訊4.  按下<strong>F11</strong>,每按一次<strong>F11</strong>,你會看到程式往下走一行,藉此來觀察程式如何運行,並且是否符合我們預期的結果</p>
+<div class="separator" style="clear: both; text-align: center;">[![](https://4.bp.blogspot.com/-2hTcGcR7bAg/Wo0mas9EleI/AAAAAAAAIj0/H7T3H2WKSO0yF_lGqHIcrR-CxhuraR1egCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.56.54.png)](https://4.bp.blogspot.com/-2hTcGcR7bAg/Wo0mas9EleI/AAAAAAAAIj0/H7T3H2WKSO0yF_lGqHIcrR-CxhuraR1egCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25883.56.54.png)</div></li>
+<li><p> 當然,我們不必每次進入中斷點後都一步一步將它執行完,如果已經找到哪邊有問題,只要再按下繼續,程式就會自動往下跑,直到碰到下一個中斷點為止 <div class="separator" style="clear: both; text-align: center;"><a target="_blank" rel="noopener" href="https://3.bp.blogspot.com/-R2SEzOTjLeU/Wo0nRTaBCsI/AAAAAAAAIj8/Sx_eFGxFUgo0TNDMGsWEcVYutD1U9pYSgCLcBGAs/s1600/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25884.00.22.png"><img src="https://3.bp.blogspot.com/-R2SEzOTjLeU/Wo0nRTaBCsI/AAAAAAAAIj8/Sx_eFGxFUgo0TNDMGsWEcVYutD1U9pYSgCLcBGAs/s400/%25E8%259E%25A2%25E5%25B9%2595%25E5%25BF%25AB%25E7%2585%25A7%2B2018-02-21%2B%25E4%25B8%258B%25E5%258D%25884.00.22.png"></a></div><br>當然以上所提的,都是非常非常基礎的Visual Studio（之後文章都簡稱為VS）操作,跟日常比較會運用到的情境,VS之所以被人稱為地表最強編輯器,想當然耳不可能只有這樣而已,但這都是要慢慢開發中去體會跟累積的。相信如果真的用久了,開始使用擴充輔助套件之類的,就會知道它的強大之處。</p>
+</li>
+</ol>
+<p>下一篇來提何謂MVC，知道後應就能理解為何會知道<strong>關於</strong>這個按鈕點擊後,會停在我們今天下的中斷點了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MVC%E6%95%99%E5%AD%B8/" rel="tag"># MVC教學</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/01/27/%E3%80%90CI-CD%E3%80%914-%E5%9C%A8%E4%BD%88%E7%BD%B2%E9%9A%8E%E6%AE%B5%E7%BD%AE%E6%8F%9B%E5%8F%83%E6%95%B8%E5%80%BC%EF%BC%8C%E4%BB%A5Web-Config%E7%82%BA%E4%BE%8B/" rel="prev" title="【CI/CD】4. 在佈署階段置換參數值，以Web.Config為例">
+      <i class="fa fa-chevron-left"></i> 【CI/CD】4. 在佈署階段置換參數值，以Web.Config為例
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/02/23/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%912-%E4%BB%80%E9%BA%BC%E6%98%AFMVC/" rel="next" title="【MVC教學】2. 什麼是MVC">
+      【MVC教學】2. 什麼是MVC <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2018/02/22/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%911-%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B%E3%80%81%E5%BF%85%E5%85%88%E5%88%A9%E5%85%B6%E5%99%A8-Visual-Studio/";
+    this.page.identifier = "2018/02/22/【MVC教學】1-工欲善其事、必先利其器-Visual-Studio/";
+    this.page.title = "【MVC教學】1. 工欲善其事、必先利其器 Visual Studio";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

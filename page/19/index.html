@@ -189,6 +189,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/04/29/%E3%80%90MVC%E3%80%91Client-Side-Validate-in-Partial-View-with-unobtrusive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2013/04/29/%E3%80%90MVC%E3%80%91Client-Side-Validate-in-Partial-View-with-unobtrusive/" class="post-title-link" itemprop="url">【MVC】Client Side Validate in Partial View  with unobtrusive</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2013-04-29 16:23:00" itemprop="dateCreated datePublished" datetime="2013-04-29T16:23:00+08:00">2013-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2013/04/29/%E3%80%90MVC%E3%80%91Client-Side-Validate-in-Partial-View-with-unobtrusive/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>MVC中很好用的一種驗證方式就是在model寫attribute </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Required(ErrorMessage=<span class="meta-string">&quot;展覽名稱為必填&quot;</span>)</span>]</span><br><span class="line">[<span class="meta">MaxLength(50)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">string</span> ExhibitionName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>接著在View中用HtmlHelp方式建立Textbox </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@Html.TextBoxFor(m =&gt; m.ExhibitionName)</span><br><span class="line">@Html.ValidationMessageFor(m =&gt; m.ExhibitionName)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>MVC就會很貼心的把你的Client端驗證做好了。 </p>
+<p>但今天遇到的問題是，用同樣的方法寫在Partial View裡面卻沒有用<br>狀況如下：<br>在_layout Page中一樣載入了必備的MVC4提供的Jquery驗證檔案</p>
+<pre class="brush: html">&lt;script src="/Scripts/jquery.unobtrusive-ajax.js"&gt;&lt;/script&gt;
+&lt;script src="/Scripts/jquery.validate.js"&gt;&lt;/script&gt;
+&lt;script src="/Scripts/jquery.validate.unobtrusive.js"&gt;&lt;/script&gt;
+</pre>網站頁面長成這樣
+<div class="separator" style="clear: both; text-align: center;">[![](http://4.bp.blogspot.com/-WiQ8PRLsFG0/UX4vwwOgvvI/AAAAAAAACq8/ifNZBq9JUEs/s640/1.png)](http://4.bp.blogspot.com/-WiQ8PRLsFG0/UX4vwwOgvvI/AAAAAAAACq8/ifNZBq9JUEs/s1600/1.png)</div>當按下紅色框框內的功能列表，用Ajax的方式return Partial View放到藍色框框中。
+[![](http://1.bp.blogspot.com/-h-0y5VY6FgE/UX4wNNMxGiI/AAAAAAAACrE/IzSGeMXQhQo/s640/1.png)](http://1.bp.blogspot.com/-h-0y5VY6FgE/UX4wNNMxGiI/AAAAAAAACrE/IzSGeMXQhQo/s1600/1.png)
+但用Ajax載入的Partial View用上述的方式就不會自動驗證了，研判應該是動態產生的DOM元件沒有跟JQuery繫結到，這跟以前Asp.Net的UpdatePanel有異曲同工之妙。
+
+<p>所以在Partial View中的Script block中加入這行 <span style="color: red;">註:#ajaxForm為Partial View中Form ID </span></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&#x27;body&#x27;</span>).on(<span class="string">&quot;click&quot;</span>, <span class="string">&#x27;.addNewExihition&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        $.validator.unobtrusive.parse(<span class="string">&#x27;.ajaxForm&#x27;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這樣JQuery的驗證就又重新繫結上了，讚!!</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/04/29/%E3%80%90JQuery%E3%80%91%E7%82%BA%E5%8B%95%E6%85%8B%E6%96%B0%E5%A2%9E%E7%9A%84Elements%E7%B6%81%E5%AE%9A%E4%BA%8B%E4%BB%B6-jQuery-on/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +310,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-04-29 12:20:00" itemprop="dateCreated datePublished" datetime="2013-04-29T12:20:00+00:00">2013-04-29</time>
+              <time title="Created: 2013-04-29 12:20:00" itemprop="dateCreated datePublished" datetime="2013-04-29T12:20:00+08:00">2013-04-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -298,14 +395,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-04-29 10:48:00" itemprop="dateCreated datePublished" datetime="2013-04-29T10:48:00+00:00">2013-04-29</time>
+              <time title="Created: 2013-04-29 10:48:00" itemprop="dateCreated datePublished" datetime="2013-04-29T10:48:00+08:00">2013-04-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -389,14 +486,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-04-28 21:48:00" itemprop="dateCreated datePublished" datetime="2013-04-28T21:48:00+00:00">2013-04-28</time>
+              <time title="Created: 2013-04-28 21:48:00" itemprop="dateCreated datePublished" datetime="2013-04-28T21:48:00+08:00">2013-04-28</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -474,14 +571,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-04-24 16:33:00" itemprop="dateCreated datePublished" datetime="2013-04-24T16:33:00+00:00">2013-04-24</time>
+              <time title="Created: 2013-04-24 16:33:00" itemprop="dateCreated datePublished" datetime="2013-04-24T16:33:00+08:00">2013-04-24</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -562,14 +659,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-04-21 21:06:00" itemprop="dateCreated datePublished" datetime="2013-04-21T21:06:00+00:00">2013-04-21</time>
+              <time title="Created: 2013-04-21 21:06:00" itemprop="dateCreated datePublished" datetime="2013-04-21T21:06:00+08:00">2013-04-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -659,14 +756,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-04-21 16:02:00" itemprop="dateCreated datePublished" datetime="2013-04-21T16:02:00+00:00">2013-04-21</time>
+              <time title="Created: 2013-04-21 16:02:00" itemprop="dateCreated datePublished" datetime="2013-04-21T16:02:00+08:00">2013-04-21</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -758,14 +855,14 @@ as
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-04-13 17:33:30" itemprop="dateCreated datePublished" datetime="2013-04-13T17:33:30+00:00">2013-04-13</time>
+              <time title="Created: 2013-04-13 17:33:30" itemprop="dateCreated datePublished" datetime="2013-04-13T17:33:30+08:00">2013-04-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -846,14 +943,14 @@ as
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-01-31 11:14:00" itemprop="dateCreated datePublished" datetime="2013-01-31T11:14:00+00:00">2013-01-31</time>
+              <time title="Created: 2013-01-31 11:14:00" itemprop="dateCreated datePublished" datetime="2013-01-31T11:14:00+08:00">2013-01-31</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -938,14 +1035,14 @@ as
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-01-08 17:04:00" itemprop="dateCreated datePublished" datetime="2013-01-08T17:04:00+00:00">2013-01-08</time>
+              <time title="Created: 2013-01-08 17:04:00" itemprop="dateCreated datePublished" datetime="2013-01-08T17:04:00+08:00">2013-01-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1000,91 +1097,6 @@ else if(e.Row.RowType == DataControlRowType.Pager)
             }
         }
 </pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/12/27/%E3%80%90SharePoint%E3%80%91%E5%88%A4%E6%96%B7%E6%B8%85%E5%96%AE%E5%B1%AC%E6%80%A7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2012/12/27/%E3%80%90SharePoint%E3%80%91%E5%88%A4%E6%96%B7%E6%B8%85%E5%96%AE%E5%B1%AC%E6%80%A7/" class="post-title-link" itemprop="url">【SharePoint】判斷清單屬性</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2012-12-27 11:31:00" itemprop="dateCreated datePublished" datetime="2012-12-27T11:31:00+00:00">2012-12-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2012/12/27/%E3%80%90SharePoint%E3%80%91%E5%88%A4%E6%96%B7%E6%B8%85%E5%96%AE%E5%B1%AC%E6%80%A7/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/12/27/【SharePoint】判斷清單屬性/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近做一個SharePoint的功能，需要將SiteCollection裡面所有子網站的清單全數撈出來，並判斷是否為Survey或Announcement </p>
-<ul>
-<li>  判斷是否為Survey    ```csharp<br>List.BaseType.ToString() ==”Survey”<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   判斷是否為Announcement &#96;&#96;&#96;csharp</span><br><span class="line">List.BaseTemplate.ToString() &#x3D;&#x3D; &quot;Announcements&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-</ul>
-<table style="width:300px;margin:0px auto;"><tr> <td>問卷</td> <td>Survey</td></tr><tr> <td>公告</td> <td>Announcements</td></tr><tr> <td>文件庫</td> <td>DocumentLibrary</td></tr></table>
-
-<p>另外網路上查到各種清單的對照表，可以參考 :  <a target="_blank" rel="noopener" href="http://blog.bugrapostaci.com/2010/09/22/sharepoint-list-type-numbers/">清單對照表</a></p>
-
       
     </div>
 
@@ -1168,7 +1180,7 @@ else if(e.Row.RowType == DataControlRowType.Pager)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1181,7 +1193,7 @@ else if(e.Row.RowType == DataControlRowType.Pager)
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -189,6 +189,163 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2022/12/03/cache_control_directives/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/12/03/cache_control_directives/" class="post-title-link" itemprop="url">How cache-control directives affect caching?</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-12-03 15:00:00 / Modified: 15:56:59" itemprop="dateCreated datePublished" datetime="2022-12-03T15:00:00+08:00">2022-12-03</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2022/12/03/cache_control_directives/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/12/03/cache_control_directives/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>I’m curios how <code>cache-control</code> directives affect caching, so I make a small experiment to see the interaction between browser, reverse proxy and server.</p>
+<p>I introduce 6 APIs with different cache-control value in response header and respond current time directly.</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">Reponse Cache-Control</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">[GET]/cache/get-public</td>
+<td align="left">public,max-age=120</td>
+</tr>
+<tr>
+<td align="left">[GET]/cache/get-private</td>
+<td align="left">private,max-age=120</td>
+</tr>
+<tr>
+<td align="left">[GET]/cache/get-unset</td>
+<td align="left">max-age=120</td>
+</tr>
+<tr>
+<td align="left">[DELETE]/cache/delete-public</td>
+<td align="left">public,max-age=120</td>
+</tr>
+<tr>
+<td align="left">[DELETE]/cache/delete-private</td>
+<td align="left">private,max-age=120</td>
+</tr>
+<tr>
+<td align="left">[DELETE]/cache/delete-unset</td>
+<td align="left">max-age=120</td>
+</tr>
+</tbody></table>
+<p>Create a simple web page for test<br><img src="/images/20221103/0.png" alt="/images/20221103/0.png"></p>
+<p>Clicking the buttons will call the APIs and show the response data on page. At the same time I monitor the developer tool to record the results.</p>
+<p>Whether the browsers cache the response? (tested on safari, chrome and edge)</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">Public</th>
+<th align="center">Private</th>
+<th align="center">Unset</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">GET</td>
+<td align="center">V</td>
+<td align="center">V</td>
+<td align="center">V</td>
+</tr>
+<tr>
+<td align="center">DELETE</td>
+<td align="center">X</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+</tbody></table>
+<p>Whether the reverse proxy(I use nginx) caches the response?</p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">Public</th>
+<th align="center">Private</th>
+<th align="center">Unset</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">GET</td>
+<td align="center">V</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr>
+<td align="center">DELETE</td>
+<td align="center">X</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+</tbody></table>
+<p>According the result, we know the modern browsers will not break the rule of <code>cacheable</code>. Reverse proxy may not store the response when you don’t set public/private directives.</p>
+<div class="note info">
+            <p>References</p><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">Cache-Control - HTTP | MDN (mozilla.org)</a></p><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Glossary/cacheable">Cacheable - MDN Web Docs Glossary: Definitions of Web-related terms | MDN (mozilla.org)</a></p>
+          </div>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2022/08/08/http_client_does_not_change_cookie_value_per_request/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +370,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-08-08 11:00:00" itemprop="dateCreated datePublished" datetime="2022-08-08T11:00:00+00:00">2022-08-08</time>
+              <time title="Created: 2022-08-08 11:00:00" itemprop="dateCreated datePublished" datetime="2022-08-08T11:00:00+08:00">2022-08-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 14:30:13" itemprop="dateModified" datetime="2022-08-09T14:30:13+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 22:30:13" itemprop="dateModified" datetime="2022-08-09T22:30:13+08:00">2022-08-09</time>
               </span>
 
           
@@ -318,14 +475,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-05-25 22:00:00" itemprop="dateCreated datePublished" datetime="2022-05-25T22:00:00+00:00">2022-05-25</time>
+              <time title="Created: 2022-05-25 22:00:00" itemprop="dateCreated datePublished" datetime="2022-05-25T22:00:00+08:00">2022-05-25</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -431,14 +588,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-05-23 22:52:00" itemprop="dateCreated datePublished" datetime="2022-05-23T22:52:00+00:00">2022-05-23</time>
+              <time title="Created: 2022-05-23 22:52:00" itemprop="dateCreated datePublished" datetime="2022-05-23T22:52:00+08:00">2022-05-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -539,14 +696,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2022-05-20 23:39:00" itemprop="dateCreated datePublished" datetime="2022-05-20T23:39:00+00:00">2022-05-20</time>
+              <time title="Created: 2022-05-20 23:39:00" itemprop="dateCreated datePublished" datetime="2022-05-20T23:39:00+08:00">2022-05-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -656,14 +813,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2021-08-15 23:37:00" itemprop="dateCreated datePublished" datetime="2021-08-15T23:37:00+00:00">2021-08-15</time>
+              <time title="Created: 2021-08-15 23:37:00" itemprop="dateCreated datePublished" datetime="2021-08-15T23:37:00+08:00">2021-08-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -760,14 +917,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2021-04-29 13:45:00" itemprop="dateCreated datePublished" datetime="2021-04-29T13:45:00+00:00">2021-04-29</time>
+              <time title="Created: 2021-04-29 13:45:00" itemprop="dateCreated datePublished" datetime="2021-04-29T13:45:00+08:00">2021-04-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -851,14 +1008,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-12-01 22:22:00" itemprop="dateCreated datePublished" datetime="2020-12-01T22:22:00+00:00">2020-12-01</time>
+              <time title="Created: 2020-12-01 22:22:00" itemprop="dateCreated datePublished" datetime="2020-12-01T22:22:00+08:00">2020-12-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -942,14 +1099,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-09-19 17:07:00" itemprop="dateCreated datePublished" datetime="2020-09-19T17:07:00+00:00">2020-09-19</time>
+              <time title="Created: 2020-09-19 17:07:00" itemprop="dateCreated datePublished" datetime="2020-09-19T17:07:00+08:00">2020-09-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1083,14 +1240,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-06-06 23:48:00" itemprop="dateCreated datePublished" datetime="2020-06-06T23:48:00+00:00">2020-06-06</time>
+              <time title="Created: 2020-06-06 23:48:00" itemprop="dateCreated datePublished" datetime="2020-06-06T23:48:00+08:00">2020-06-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1146,99 +1303,6 @@
 <p>透過 build image 的過程中將檔案放進去，之後起起來也都不用在下 volume 指令，也算是簡單不少</p>
 <div class="note info">
             <p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/30747469/how-to-add-initial-users-when-starting-a-rabbitmq-docker-container"><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/30747469/how-to-add-initial-users-when-starting-a-rabbitmq-docker-container">How to add initial users when starting a RabbitMQ Docker container?</a></a></p><p><a target="_blank" rel="noopener" href="https://devops.datenkollektiv.de/creating-a-custom-rabbitmq-container-with-preconfigured-queues.html">Creating a custom RabbitMQ container with preconfigured queues</a></p>
-          </div>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2020/02/26/windows_docker_hnscall_error/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/02/26/windows_docker_hnscall_error/" class="post-title-link" itemprop="url">hnsCall failed in Win32 The object already exists</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-02-26 10:28:00" itemprop="dateCreated datePublished" datetime="2020-02-26T10:28:00+00:00">2020-02-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2020/02/26/windows_docker_hnscall_error/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/02/26/windows_docker_hnscall_error/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>windows server 2019 重開機後，自建 container nat networks 會消失。<br><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/virtualization/windowscontainers/container-networking/network-drivers-topologies">來源 : Windows container network drivers</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NAT networks created on Windows Server 2019 (or above) are no longer persisted after reboot.</span><br></pre></td></tr></table></figure>
-
-<p>所以我有寫一些重啟機器時檢查 network ，如果不存在就再建立一組並且啟動 docker，但時不時會碰到 <code>Error response from daemon: hnsCall failed in Win32: The object already exists. (0x1392)</code> 的錯誤。</p>
-<p>但透過以下指令卻又都找不到已經存在的 network mapping</p>
-<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$</span> docker network <span class="built_in">ls</span></span><br><span class="line"><span class="variable">$</span> <span class="built_in">Get-NetNatStaticMapping</span></span><br></pre></td></tr></table></figure>
-
-<p>直接下指令砍掉要建立的 network 名稱，會回傳這物件不存在，但你要建立又會說這物件已經存在的鬼擋牆狀況… 這應該是 windows container bug ，之前只要碰到這個問題都直接重長機器，而剛剛終於找到解法了 (灑花)</p>
-<h2 id="解法"><a href="#解法" class="headerlink" title="解法"></a>解法</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先停掉 docker service</span></span><br><span class="line"><span class="variable">$Stop</span><span class="literal">-Service</span> docker</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停掉 hns </span></span><br><span class="line"><span class="variable">$Stop</span><span class="literal">-Service</span> hns</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重啟 docker service, 這會連帶的 hns 也會被啟動</span></span><br><span class="line"><span class="variable">$Start</span><span class="literal">-Service</span> docker</span><br></pre></td></tr></table></figure>
-
-<p>這時候再重新跑 docker network create 就會過了，這問題卡了我很長一段時間，終於找到解法了</p>
-<div class="note info">
-            <p><a target="_blank" rel="noopener" href="https://github.com/docker/for-win/issues/1384">Docker Network Create Fails: HNS failed with error : The object already exists. #1384</a></p>
           </div>
 
 
@@ -1325,7 +1389,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1338,7 +1402,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

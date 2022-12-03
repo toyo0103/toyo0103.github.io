@@ -189,6 +189,118 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-1-%E5%8F%96%E5%BE%97%E7%9B%AE%E5%89%8D%E5%BA%A7%E6%A8%99%E4%BD%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-1-%E5%8F%96%E5%BE%97%E7%9B%AE%E5%89%8D%E5%BA%A7%E6%A8%99%E4%BD%8D%E7%BD%AE/" class="post-title-link" itemprop="url">[swift] IOS地圖運用 (1) 取得目前座標位置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2015-03-03 10:23:00" itemprop="dateCreated datePublished" datetime="2015-03-03T10:23:00+08:00">2015-03-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2015/03/03/swift-IOS%E5%9C%B0%E5%9C%96%E9%81%8B%E7%94%A8-1-%E5%8F%96%E5%BE%97%E7%9B%AE%E5%89%8D%E5%BA%A7%E6%A8%99%E4%BD%8D%E7%BD%AE/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/03/03/swift-IOS地圖運用-1-取得目前座標位置/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>地圖資訊是手機很大量運用的資訊之一,接下來是來整理關於目前學到的MapKit View地圖的運用</p>
+<ul>
+<li><p>  首先先拉一個新的ViewController,並將MapKit View拉近去<br><a target="_blank" rel="noopener" href="http://1.bp.blogspot.com/-E-lEkbuEGuw/VPUcOLnXUCI/AAAAAAAAEak/lUCmZ1i9-RA/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8810.27.49.png"><img src="http://1.bp.blogspot.com/-E-lEkbuEGuw/VPUcOLnXUCI/AAAAAAAAEak/lUCmZ1i9-RA/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8810.27.49.png"></a></p>
+</li>
+<li><p>接著在ViewController建立參數與MapKit View做對應,這邊需要注意的地方是用Map元件需要<strong>import MapKit</strong>```swift<br>import UIKit<br>import MapKit<br>class MapViewController: UIViewController {</p>
+<pre><code>  @IBOutlet weak var uimap: MKMapView!//地圖元件
+</code></pre>
+<p>  override func viewDidLoad() {</p>
+<pre><code>  super.viewDidLoad()
+</code></pre>
+<p>  }</p>
+<pre><code>  override func didReceiveMemoryWarning() &#123;
+  super.didReceiveMemoryWarning()
+  // Dispose of any resources that can be recreated.
+</code></pre>
+<p>  }<br>}</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   取得座標資訊是由一個叫要做CLLocationManager來控制的,又IOS8取得座標資訊必須先取得使用者的授權才可以,所以必須到Info.plist新增NSLocationAlwaysUsageDescription或NSLocationWhenInUseUsageDescription兩種鍵值,而前者表示不管ＡＰＰ在前景或背景執行都會持續取得座標資訊,而後者只有在需要時才會去取座標定位資訊,而這兩個鍵值分別對應到CLLocationManager的requestAlwaysAuthorization和requestWhenInUseAuthorization,這邊的範例已NSLocationWhenInUseUsageDescription為例 &#96;&#96;&#96;swift</span><br><span class="line">import UIKit</span><br><span class="line">import CoreLocation</span><br><span class="line">import MapKit</span><br><span class="line">class MapViewController: UIViewController,CLLocationManagerDelegate &#123;</span><br><span class="line"></span><br><span class="line">        @IBOutlet weak var uimap: MKMapView!&#x2F;&#x2F;地圖元件</span><br><span class="line">    var location : CLLocationManager!; &#x2F;&#x2F;座標管理元件</span><br><span class="line">    override func viewDidLoad() &#123;</span><br><span class="line">        super.viewDidLoad();</span><br><span class="line"></span><br><span class="line">            location &#x3D; CLLocationManager();</span><br><span class="line">        location.delegate &#x3D; self;</span><br><span class="line">        &#x2F;&#x2F;詢問使用者是否同意給APP定位功能</span><br><span class="line">        location.requestWhenInUseAuthorization();</span><br><span class="line">        &#x2F;&#x2F;開始接收目前位置資訊</span><br><span class="line">        location.startUpdatingLocation();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">        override func viewDidDisappear(animated: Bool) &#123;</span><br><span class="line">        &#x2F;&#x2F;因為ＧＰＳ功能很耗電,所以被敬執行時關閉定位功能</span><br><span class="line">        location.stopUpdatingLocation();</span><br><span class="line">    &#125;</span><br><span class="line">    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) &#123;</span><br><span class="line">        &#x2F;&#x2F;取得目前的座標位置</span><br><span class="line">        let c &#x3D; locations[0] as CLLocation;</span><br><span class="line">        &#x2F;&#x2F;c.coordinate.latitude 目前緯度</span><br><span class="line">        &#x2F;&#x2F;c.coordinate.longitude 目前經度</span><br><span class="line">        let nowLocation &#x3D; CLLocationCoordinate2D(latitude: c.coordinate.latitude, longitude: c.coordinate.longitude);</span><br><span class="line">        &#x2F;&#x2F;將map中心點定在目前所在的位置</span><br><span class="line">        &#x2F;&#x2F;span是地圖zoom in, zoom out的級距</span><br><span class="line">        let _span:MKCoordinateSpan &#x3D; MKCoordinateSpan(latitudeDelta: 0.0005, longitudeDelta: 0.0005);</span><br><span class="line">        self.uimap.setRegion(MKCoordinateRegion(center: nowLocation, span: _span), animated: true);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>接著別忘了去Info.plist新增NSLocationWhenInUsageDescription</p>
+<pre><code>[![](http://2.bp.blogspot.com/-FwRtS6qlxv0/VPUmFe5sNwI/AAAAAAAAEbI/ZBcSw4FmZKY/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.09.07.png)](http://2.bp.blogspot.com/-FwRtS6qlxv0/VPUmFe5sNwI/AAAAAAAAEbI/ZBcSw4FmZKY/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.09.07.png)
+</code></pre>
+<ul>
+<li><p>接著執行看看！！</p>
+<p>  詢問是否授權取得座標資訊<br><a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-83KznhU8x60/VPUmGa8My2I/AAAAAAAAEbQ/KcQPz9Qjhrk/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.28.png"><img src="http://4.bp.blogspot.com/-83KznhU8x60/VPUmGa8My2I/AAAAAAAAEbQ/KcQPz9Qjhrk/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.28.png"></a><br>地圖中心點移到你目前的位置摟~<a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-QvR128Ffqwk/VPUmImiWVqI/AAAAAAAAEbY/JihYA7S-IiI/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.40.png"><img src="http://3.bp.blogspot.com/-QvR128Ffqwk/VPUmImiWVqI/AAAAAAAAEbY/JihYA7S-IiI/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.08.40.png"></a></p>
+</li>
+<li><p>順帶一提,如果需要把使用者的位置座標顯示出來,在mapkit view設定檔將User Location打勾即可！！<a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-k22IlXdhDv4/VPUnkb4FXnI/AAAAAAAAEbk/0zrmSaQchns/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.15.45.png"><img src="http://3.bp.blogspot.com/-k22IlXdhDv4/VPUnkb4FXnI/AAAAAAAAEbk/0zrmSaQchns/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.15.45.png"></a></p>
+<p>  <a target="_blank" rel="noopener" href="http://4.bp.blogspot.com/-pgo8PxqY7R8/VPUn0drmU1I/AAAAAAAAEbs/3WRtslmNJTM/s1600/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.17.10.png"><img src="http://4.bp.blogspot.com/-pgo8PxqY7R8/VPUn0drmU1I/AAAAAAAAEbs/3WRtslmNJTM/s400/%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%2B2015-03-03%2B%E4%B8%8A%E5%8D%8811.17.10.png"></a></p>
+</li>
+<li><p>  如果你有實際run過這段程式應該會發現你滑動map時,它會一直彈回你目前所在的位置,原因是我們沒有指定移動多少距離才會更新座標位置,所以didUpdateLocations會一直被呼叫,也就一直被彈回你的所在位置摟,告訴app移動多少距離再更新座標資訊即可 ```swift<br>location.distanceFilter = CLLocationDistance(10); //表示移動10公尺再更新座標資訊</p>
+</li>
+</ul>
+<pre><code>
+</code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2015/03/03/swift-Navigation-Controller-2-%E5%82%B3%E9%81%9E%E5%8F%83%E6%95%B8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +325,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-03 09:28:00" itemprop="dateCreated datePublished" datetime="2015-03-03T09:28:00+00:00">2015-03-03</time>
+              <time title="Created: 2015-03-03 09:28:00" itemprop="dateCreated datePublished" datetime="2015-03-03T09:28:00+08:00">2015-03-03</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -303,14 +415,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-02 17:47:00" itemprop="dateCreated datePublished" datetime="2015-03-02T17:47:00+00:00">2015-03-02</time>
+              <time title="Created: 2015-03-02 17:47:00" itemprop="dateCreated datePublished" datetime="2015-03-02T17:47:00+08:00">2015-03-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -399,14 +511,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-02 16:45:00" itemprop="dateCreated datePublished" datetime="2015-03-02T16:45:00+00:00">2015-03-02</time>
+              <time title="Created: 2015-03-02 16:45:00" itemprop="dateCreated datePublished" datetime="2015-03-02T16:45:00+08:00">2015-03-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -484,14 +596,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-02 15:50:00" itemprop="dateCreated datePublished" datetime="2015-03-02T15:50:00+00:00">2015-03-02</time>
+              <time title="Created: 2015-03-02 15:50:00" itemprop="dateCreated datePublished" datetime="2015-03-02T15:50:00+08:00">2015-03-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -576,14 +688,14 @@ super.init();
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-02 15:08:00" itemprop="dateCreated datePublished" datetime="2015-03-02T15:08:00+00:00">2015-03-02</time>
+              <time title="Created: 2015-03-02 15:08:00" itemprop="dateCreated datePublished" datetime="2015-03-02T15:08:00+08:00">2015-03-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -667,14 +779,14 @@ super.init();
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-02 14:02:00" itemprop="dateCreated datePublished" datetime="2015-03-02T14:02:00+00:00">2015-03-02</time>
+              <time title="Created: 2015-03-02 14:02:00" itemprop="dateCreated datePublished" datetime="2015-03-02T14:02:00+08:00">2015-03-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -784,14 +896,14 @@ default:
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2015-03-02 11:05:00" itemprop="dateCreated datePublished" datetime="2015-03-02T11:05:00+00:00">2015-03-02</time>
+              <time title="Created: 2015-03-02 11:05:00" itemprop="dateCreated datePublished" datetime="2015-03-02T11:05:00+08:00">2015-03-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -867,14 +979,14 @@ default:
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2014-11-13 15:21:00" itemprop="dateCreated datePublished" datetime="2014-11-13T15:21:00+00:00">2014-11-13</time>
+              <time title="Created: 2014-11-13 15:21:00" itemprop="dateCreated datePublished" datetime="2014-11-13T15:21:00+08:00">2014-11-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1006,14 +1118,14 @@ return cell;
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2014-08-11 10:03:00" itemprop="dateCreated datePublished" datetime="2014-08-11T10:03:00+00:00">2014-08-11</time>
+              <time title="Created: 2014-08-11 10:03:00" itemprop="dateCreated datePublished" datetime="2014-08-11T10:03:00+08:00">2014-08-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1048,93 +1160,6 @@ return cell;
 <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 提示??，??信息如下： 十六?制值 0x0B 是?效的字符??</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>?生原因是xml文件中包含低位非打印字符造成的</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span>?理方法：在?生xml文件的?候，??低位非打印字符</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;tmp&quot; /&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">ReplaceLowOrderASCIICharacters</span>(<span class="params"><span class="built_in">string</span> tmp</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   StringBuilder info = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">   <span class="keyword">foreach</span> (<span class="built_in">char</span> cc <span class="keyword">in</span> tmp)</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="built_in">int</span> ss = (<span class="built_in">int</span>)cc;</span><br><span class="line">      <span class="keyword">if</span> (((ss &gt;= <span class="number">0</span>) &amp;&amp; (ss &lt;= <span class="number">8</span>)) || ((ss &gt;= <span class="number">11</span>) &amp;&amp; (ss &lt;= <span class="number">12</span>)) || ((ss &gt;= <span class="number">14</span>) &amp;&amp; (ss &lt;= <span class="number">32</span>)))</span><br><span class="line">         info.AppendFormat(<span class="string">&quot; &quot;</span>, ss);<span class="comment">//&amp;#x&#123;0:X&#125;;</span></span><br><span class="line">      <span class="keyword">else</span> info.Append(cc);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> info.ToString();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>把字元丟到這個function去過濾後就可以避免錯誤了!!</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2014/06/03/%E3%80%90-NET%E3%80%91%E9%98%B2%E6%AD%A2XSS%E6%94%BB%E6%93%8A/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/06/03/%E3%80%90-NET%E3%80%91%E9%98%B2%E6%AD%A2XSS%E6%94%BB%E6%93%8A/" class="post-title-link" itemprop="url">【.NET】防止XSS攻擊</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2014-06-03 16:39:00" itemprop="dateCreated datePublished" datetime="2014-06-03T16:39:00+00:00">2014-06-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2014/06/03/%E3%80%90-NET%E3%80%91%E9%98%B2%E6%AD%A2XSS%E6%94%BB%E6%93%8A/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/06/03/【-NET】防止XSS攻擊/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>一直都有聽過XSS攻擊的原理跟方式，但都沒有好好認真研究過，剛好最近看到一個小遊戲在這邊推薦給大家:<br><a target="_blank" rel="noopener" href="https://xss-game.appspot.com/level1">瞭解XSS攻擊的小遊戲</a></p>
-<p>查了一下.NET防止XSS攻擊的有效方法，剛好保哥有寫過相關的文章<br><a target="_blank" rel="noopener" href="http://blog.miniasp.com/post/2009/09/26/Recommand-Microsoft-Anti-XSS-Library-V31.aspx">保哥-推薦使用 Microsoft Anti-Cross Site Scripting Library v3.1</a><br>裡面介紹的非常詳細，這邊就不再多做贅述了。</p>
-<p>唯一需要特別注意的地方是Anti-XSS Library在4.2版的時候將GetSafeHtml 、GetSafeHtmlFragment移到了新的DLL了。所以如果依照文章去下載這個DLL會發現沒有這兩個方法可用，請改用Nuget搜尋HtmlSanitizationLibrary</p>
-<div class="separator" style="clear: both; text-align: center;">[![](http://4.bp.blogspot.com/-El2JuoTjn70/U42JPHwLqqI/AAAAAAAAEOM/z99tk-Wb_AI/s1600/1.png)](http://4.bp.blogspot.com/-El2JuoTjn70/U42JPHwLqqI/AAAAAAAAEOM/z99tk-Wb_AI/s1600/1.png)</div>
-
-<p>使用方法也變成 </p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Sanitizer.GetSafeHtmlFragment(inputext);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>真是很好很強大阿!!!!</p>
 
       
     </div>
@@ -1219,7 +1244,7 @@ return cell;
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1232,7 +1257,7 @@ return cell;
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

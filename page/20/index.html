@@ -189,6 +189,91 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/12/27/%E3%80%90SharePoint%E3%80%91%E5%88%A4%E6%96%B7%E6%B8%85%E5%96%AE%E5%B1%AC%E6%80%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2012/12/27/%E3%80%90SharePoint%E3%80%91%E5%88%A4%E6%96%B7%E6%B8%85%E5%96%AE%E5%B1%AC%E6%80%A7/" class="post-title-link" itemprop="url">【SharePoint】判斷清單屬性</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2012-12-27 11:31:00" itemprop="dateCreated datePublished" datetime="2012-12-27T11:31:00+08:00">2012-12-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2012/12/27/%E3%80%90SharePoint%E3%80%91%E5%88%A4%E6%96%B7%E6%B8%85%E5%96%AE%E5%B1%AC%E6%80%A7/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/12/27/【SharePoint】判斷清單屬性/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近做一個SharePoint的功能，需要將SiteCollection裡面所有子網站的清單全數撈出來，並判斷是否為Survey或Announcement </p>
+<ul>
+<li>  判斷是否為Survey    ```csharp<br>List.BaseType.ToString() ==”Survey”<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*   判斷是否為Announcement &#96;&#96;&#96;csharp</span><br><span class="line">List.BaseTemplate.ToString() &#x3D;&#x3D; &quot;Announcements&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<table style="width:300px;margin:0px auto;"><tr> <td>問卷</td> <td>Survey</td></tr><tr> <td>公告</td> <td>Announcements</td></tr><tr> <td>文件庫</td> <td>DocumentLibrary</td></tr></table>
+
+<p>另外網路上查到各種清單的對照表，可以參考 :  <a target="_blank" rel="noopener" href="http://blog.bugrapostaci.com/2010/09/22/sharepoint-list-type-numbers/">清單對照表</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/12/27/%E3%80%90SharePoint%E3%80%91VisualWebPart/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +298,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2012-12-27 11:17:00" itemprop="dateCreated datePublished" datetime="2012-12-27T11:17:00+00:00">2012-12-27</time>
+              <time title="Created: 2012-12-27 11:17:00" itemprop="dateCreated datePublished" datetime="2012-12-27T11:17:00+08:00">2012-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -327,14 +412,14 @@ namespace ScinoPharm.EIP.vwpSurveys
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2012-12-27 10:36:00" itemprop="dateCreated datePublished" datetime="2012-12-27T10:36:00+00:00">2012-12-27</time>
+              <time title="Created: 2012-12-27 10:36:00" itemprop="dateCreated datePublished" datetime="2012-12-27T10:36:00+08:00">2012-12-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -417,14 +502,14 @@ namespace ScinoPharm.EIP.vwpSurveys
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2012-12-26 18:14:00" itemprop="dateCreated datePublished" datetime="2012-12-26T18:14:00+00:00">2012-12-26</time>
+              <time title="Created: 2012-12-26 18:14:00" itemprop="dateCreated datePublished" datetime="2012-12-26T18:14:00+08:00">2012-12-26</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -511,14 +596,14 @@ namespace ScinoPharm.EIP.vwpSurveys
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2012-11-13 10:57:00" itemprop="dateCreated datePublished" datetime="2012-11-13T10:57:00+00:00">2012-11-13</time>
+              <time title="Created: 2012-11-13 10:57:00" itemprop="dateCreated datePublished" datetime="2012-11-13T10:57:00+08:00">2012-11-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -590,14 +675,14 @@ namespace ScinoPharm.EIP.vwpSurveys
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2012-11-13 10:51:00" itemprop="dateCreated datePublished" datetime="2012-11-13T10:51:00+00:00">2012-11-13</time>
+              <time title="Created: 2012-11-13 10:51:00" itemprop="dateCreated datePublished" datetime="2012-11-13T10:51:00+08:00">2012-11-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -671,14 +756,14 @@ namespace ScinoPharm.EIP.vwpSurveys
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2012-11-13 10:41:00" itemprop="dateCreated datePublished" datetime="2012-11-13T10:41:00+00:00">2012-11-13</time>
+              <time title="Created: 2012-11-13 10:41:00" itemprop="dateCreated datePublished" datetime="2012-11-13T10:41:00+08:00">2012-11-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -750,14 +835,14 @@ namespace ScinoPharm.EIP.vwpSurveys
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2012-11-01 15:18:00" itemprop="dateCreated datePublished" datetime="2012-11-01T15:18:00+00:00">2012-11-01</time>
+              <time title="Created: 2012-11-01 15:18:00" itemprop="dateCreated datePublished" datetime="2012-11-01T15:18:00+08:00">2012-11-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -855,14 +940,14 @@ namespace ScinoPharm.EIP.vwpSurveys
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2012-10-29 14:55:00" itemprop="dateCreated datePublished" datetime="2012-10-29T14:55:00+00:00">2012-10-29</time>
+              <time title="Created: 2012-10-29 14:55:00" itemprop="dateCreated datePublished" datetime="2012-10-29T14:55:00+08:00">2012-10-29</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -942,14 +1027,14 @@ namespace ScinoPharm.EIP.vwpSurveys
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2012-10-19 00:46:00" itemprop="dateCreated datePublished" datetime="2012-10-19T00:46:00+00:00">2012-10-19</time>
+              <time title="Created: 2012-10-19 00:46:00" itemprop="dateCreated datePublished" datetime="2012-10-19T00:46:00+08:00">2012-10-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -984,93 +1069,6 @@ namespace ScinoPharm.EIP.vwpSurveys
 <p>再丟給<span style="color: red;">FileExists</span>來判斷檔案是否存在，即大功告成。</p>
 <p><strong>全部code</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> objnav = navigator;</span><br><span class="line"><span class="keyword">var</span> OsVersion = objnav.appVersion;</span><br><span class="line"><span class="keyword">var</span> fso = <span class="keyword">new</span> ActiveXObject(<span class="string">&#x27;Scripting.FileSystemObject&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> objShell = <span class="keyword">new</span> ActiveXObject(<span class="string">&quot;Wscript.Shell&quot;</span>);</span><br><span class="line"></span><br><span class="line">strfolderpath = objShell.ExpandEnvironmentStrings(<span class="string">&quot;%appdata%\\Microsoft\\Windows\\StartMenu\\Programs\\Accessories\\Notepad.lnk&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> (fso.FileExists(strfolderpath))&#123;</span><br><span class="line">   alert(<span class="string">&#x27;絕對路徑有&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">   alert(<span class="string">&#x27;絕對路徑沒有&#x27;</span>);   </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2012/10/17/VM%E4%B8%8A%E7%B6%B2%E8%A8%AD%E5%AE%9A/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2012/10/17/VM%E4%B8%8A%E7%B6%B2%E8%A8%AD%E5%AE%9A/" class="post-title-link" itemprop="url">VM上網設定</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2012-10-17 10:36:00" itemprop="dateCreated datePublished" datetime="2012-10-17T10:36:00+00:00">2012-10-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2012/10/17/VM%E4%B8%8A%E7%B6%B2%E8%A8%AD%E5%AE%9A/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2012/10/17/VM上網設定/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>連結有詳細介紹!! &nbsp; 終於可以安心在VM裡面開發SharePoint了</p>
-<p><a target="_blank" rel="noopener" href="http://tw.myblog.yahoo.com/jw!ozeuU_mGAx1rvd0bKga8nQ--/article?mid=434&amp;l=f&amp;fid=25">Windows7中的VMWare網路設定 </a><br><strong>以下是摘錄</strong></p>
-<ul>
-<li>首先開啟網路共用中心 &gt; 變更介面卡設定 &gt; 找到VMnet1然後記住它的名稱<br><a target="_blank" rel="noopener" href="http://3.bp.blogspot.com/-4rwOPHWCWeA/UXiZ97dgMtI/AAAAAAAACkk/55cCcvmWE08/s1600/11.png"><img src="http://3.bp.blogspot.com/-4rwOPHWCWeA/UXiZ97dgMtI/AAAAAAAACkk/55cCcvmWE08/s1600/11.png"></a></li>
-<li>  找到目前的連線(此圖為無線網路連線)&gt; 右鍵點選內容 &gt; 切到”共用”頁籤&gt; 然後把共用都打勾並選擇剛剛那個VM的連線與他共享<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-2obanFUgJrw/UXibp8XUfnI/AAAAAAAACk0/QIMQcO2zGQo/s1600/11.png"><img src="http://2.bp.blogspot.com/-2obanFUgJrw/UXibp8XUfnI/AAAAAAAACk0/QIMQcO2zGQo/s1600/11.png"></a></li>
-<li>  接著點選VMnet1右鍵 &gt; 內容 &gt; TCP/IPV4 &gt;設定如下<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-QVdsPKPrP6M/UXieOWafJ1I/AAAAAAAAClA/vy_D7FK1m8s/s1600/11.png"><img src="http://2.bp.blogspot.com/-QVdsPKPrP6M/UXieOWafJ1I/AAAAAAAAClA/vy_D7FK1m8s/s1600/11.png"></a></li>
-<li>  執行 VMWare 及虛擬系統，例如：Windows XP，開啟虛擬系統的「網蔎連線」，在「區域網路」上按滑鼠右鍵，選擇「內容」<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-KPtz27OW_ho/UXifEuXbtBI/AAAAAAAAClM/wjXQloJ00eo/s1600/UZidjL7joI6_8oXzaY6oCA.jpg"><img src="http://2.bp.blogspot.com/-KPtz27OW_ho/UXifEuXbtBI/AAAAAAAAClM/wjXQloJ00eo/s1600/UZidjL7joI6_8oXzaY6oCA.jpg"></a></li>
-<li>  最後在 VMWare 的「VM \ setting」中將「Hardware \ Ethenet」設定為「Host-Only」<br><a target="_blank" rel="noopener" href="http://2.bp.blogspot.com/-FFmWeEuVggY/UXifTCLSDUI/AAAAAAAAClU/dDLLKl5RPMY/s1600/MZxveFdaHiBXh4q6vZyrRQ.jpg"><img src="http://2.bp.blogspot.com/-FFmWeEuVggY/UXifTCLSDUI/AAAAAAAAClU/dDLLKl5RPMY/s1600/MZxveFdaHiBXh4q6vZyrRQ.jpg"></a></li>
-</ul>
 
       
     </div>
@@ -1155,7 +1153,7 @@ namespace ScinoPharm.EIP.vwpSurveys
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1168,7 +1166,7 @@ namespace ScinoPharm.EIP.vwpSurveys
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

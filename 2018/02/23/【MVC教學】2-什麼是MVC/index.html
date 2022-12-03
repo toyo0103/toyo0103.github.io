@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="如果你本來跟我一樣是寫Dot Net Web的工程師,那你應該是從Web Form開始的,第一次接觸MVC時,應該心中都會浮現「什麼是MVC ?」  其實Wiki已經解釋得很清楚了,就不重複贅述這些定義,有興趣可以自己看看,而我比較想提的是這跟原本開發Web Form,或是說你是寫別語言但沒使用MVC這個架構時的差別。  還記得以前在接手前輩專案時,因為每個人開發習慣不盡相同,對於各種用途的類別可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【MVC教學】2. 什麼是MVC">
+<meta property="og:url" content="https://toyo0103.github.io/2018/02/23/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%912-%E4%BB%80%E9%BA%BC%E6%98%AFMVC/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="如果你本來跟我一樣是寫Dot Net Web的工程師,那你應該是從Web Form開始的,第一次接觸MVC時,應該心中都會浮現「什麼是MVC ?」  其實Wiki已經解釋得很清楚了,就不重複贅述這些定義,有興趣可以自己看看,而我比較想提的是這跟原本開發Web Form,或是說你是寫別語言但沒使用MVC這個架構時的差別。  還記得以前在接手前輩專案時,因為每個人開發習慣不盡相同,對於各種用途的類別可">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-02-22T22:31:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.090Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="MVC教學">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://toyo0103.github.io/2018/02/23/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%912-%E4%BB%80%E9%BA%BC%E6%98%AFMVC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【MVC教學】2. 什麼是MVC | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/02/23/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%912-%E4%BB%80%E9%BA%BC%E6%98%AFMVC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【MVC教學】2. 什麼是MVC
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-02-23 06:31:00" itemprop="dateCreated datePublished" datetime="2018-02-23T06:31:00+08:00">2018-02-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%B8%E7%BF%92MVC/" itemprop="url" rel="index"><span itemprop="name">學習MVC</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/02/23/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%912-%E4%BB%80%E9%BA%BC%E6%98%AFMVC/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/23/【MVC教學】2-什麼是MVC/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>如果你本來跟我一樣是寫Dot Net Web的工程師,那你應該是從Web Form開始的,第一次接觸MVC時,應該心中都會浮現「什麼是MVC ?」 </p>
+<p>其實<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/MVC">Wiki</a>已經解釋得很清楚了,就不重複贅述這些定義,有興趣可以自己看看,而我比較想提的是這跟原本開發Web Form,或是說你是寫別語言但沒使用MVC這個架構時的差別。 </p>
+<p>還記得以前在接手前輩專案時,因為每個人開發習慣不盡相同,對於各種用途的類別可能都有一套自己的歸類方式,所以剛開始總是需要花大把時間在熟悉前輩定義的架構, 如果專案一多,常常切換專案時都會有一種混亂感。  </p>
+<p>如果遇到是初心工程師,可能會有那種一個Function幾百行的,基本上要改個東西都要找很久之外,還很怕改錯,而這些不僅僅造成維護的成本增加之外,還讓接手別人專案時總是滿滿恨意！！ </p>
+<p>而MVC這個架構就是在解決這個問題,他將系統分成三大部分 Model 、View、 Controller, 而這三大部分分別管理著 </p>
+<p>Model : 資料的管理(例如與資料庫的溝通) , 演算法邏輯(商業邏輯) , 物件結構定義 </p>
+<p>View : 呈現給使用者看、操作的介面 </p>
+<div>Controller :  依據傳入的資料該怎麼運作、程式流程的控制、該回傳給使用者什麼資料等
+
+</div><div>
+</div><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://3.bp.blogspot.com/-ByxeEs_OPjo/Wo7SEU86Q2I/AAAAAAAAIkM/ILz4hUYI59gdspAfW_MxUekeTfa2ZaWCQCEwYBhgL/s640/2.jpg)](https://3.bp.blogspot.com/-ByxeEs_OPjo/Wo7SEU86Q2I/AAAAAAAAIkM/ILz4hUYI59gdspAfW_MxUekeTfa2ZaWCQCEwYBhgL/s1600/2.jpg)</td></tr><tr><td class="tr-caption" style="text-align: center;"><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-size: 12px; font-stretch: normal; line-height: normal;">出處 https://helloacm.com/model-view-controller-explained-in-c/</div></td></tr></tbody></table><div>
+</div>
+
+<h3 id="優點ㄧ-：-讓習慣代替配置"><a href="#優點ㄧ-：-讓習慣代替配置" class="headerlink" title="優點ㄧ ： 讓習慣代替配置"></a>優點ㄧ ： 讓習慣代替配置</h3><p><span style="font-weight: normal;">因為大家對於MVC有相同的認識,且Dot Net MVC更把這些定義落實到專案上,在不改動底層運作的情況下,屬於Controller的Class就該放到Controllers的資料夾、屬於頁面呈現的就放到Views資料夾,且預設也有一個Models的資料夾給你放Model,有了這些規範後,讓習慣來代替配置,你接手別人的MVC專案後, 所有人的開發方式基本上都會依照這個規範去落實,降低維護的成本。</span><br><span style="font-weight: normal;"><br></span></p>
+<table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;">[![](https://4.bp.blogspot.com/-4aTMTqC7vZE/Wo7SSOsXq7I/AAAAAAAAIkY/aQAQWR1nxkATcDPTD2xx4nwxLUOqQYI-gCEwYBhgL/s400/1.png)](https://4.bp.blogspot.com/-4aTMTqC7vZE/Wo7SSOsXq7I/AAAAAAAAIkY/aQAQWR1nxkATcDPTD2xx4nwxLUOqQYI-gCEwYBhgL/s1600/1.png)</td></tr><tr><td class="tr-caption" style="text-align: center;"><div style="color: #454545; font-family: &quot;.PingFang TC&quot;; font-size: 12px; font-stretch: normal; line-height: normal;">Dot Net MVC預設新建專案就會有這些資料夾</div></td></tr></tbody></table><div>
+</div>
+
+<h3 id="優點二-：-關注點分離"><a href="#優點二-：-關注點分離" class="headerlink" title="優點二 ： 關注點分離"></a>優點二 ： 關注點分離</h3><p>如果今天是在處理使用者操作介面,那就專心的套版,將Controller傳回來的資料看要怎麼擺放,又如果在處理資料流傳入的參數驗證,那就在Controller處理完,不用去管會不會影響到View的呈現, 如果是跟資料庫的溝通,就在Model裡將它實作好,不需擔心是否參數有空值或Null, 因為那些該是在Controller處理掉的。 </p>
+<p>相較於以前的Web Form開發方式,因為UserControl介於頁面跟Code Behind的事件之間,常常耦合度太強,一改兩邊都會動到，需要較嚴謹的開發規範才能避免耦合問題,而且我記憶最深的就是UserControl間的生命週期,那個互相攪在一起要改還真要命… </p>
+<div class="note info">
+            <p>Web Form有其快速且便利性,以上並非說Dot Net MVC能完全取代Web Form,<br>更想表達的是,這是當我從開發Web Form兩年然後跳到MVC目前5年多，<br>它所帶給我的感受與改變,希望透過這些講述能更清楚MVC是否是你該投入資源學習的架構</p>
+          </div>
+
+
+<h3 id="優點三-：-前端更自由"><a href="#優點三-：-前端更自由" class="headerlink" title="優點三 ： 前端更自由"></a>優點三 ： 前端更自由</h3><p>在Dot Net MVC中,不再有User Control這類的元件存在,所以前端會更加的自由,無論是在JS或是CSS的運用上，再也不會有元件Render時幫你加上一堆多餘的Tag或是Class。</p>
+<div class="note info">
+            <p>目前經手過的一些專案,有些都已經徹底前後端分離,<br>後端只有負責處理好API或是ViewModel(傳給View的資料通常定義出來的Class都會叫ViewModel,這之後會再提到)，<br>吐一個空的頁面載入指定JS,剩下就讓前端去處理介面,彼此分工更精細,互相耦合的程度也降低許多。</p>
+          </div>
+
+
+<p>這篇花比較多篇幅在解說ＭVC是什麼,又Dot Net MVC在開發上能帶來什麼改變跟好處, 下一篇預計就要開始講Router 與 Controller之間的關係。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MVC%E6%95%99%E5%AD%B8/" rel="tag"># MVC教學</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/02/22/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%911-%E5%B7%A5%E6%AC%B2%E5%96%84%E5%85%B6%E4%BA%8B%E3%80%81%E5%BF%85%E5%85%88%E5%88%A9%E5%85%B6%E5%99%A8-Visual-Studio/" rel="prev" title="【MVC教學】1. 工欲善其事、必先利其器 Visual Studio">
+      <i class="fa fa-chevron-left"></i> 【MVC教學】1. 工欲善其事、必先利其器 Visual Studio
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/03/18/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%913-Route-%E4%B8%80/" rel="next" title="【MVC教學】3. Route(一)">
+      【MVC教學】3. Route(一) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%84%AA%E9%BB%9E%E3%84%A7-%EF%BC%9A-%E8%AE%93%E7%BF%92%E6%85%A3%E4%BB%A3%E6%9B%BF%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">優點ㄧ ： 讓習慣代替配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%84%AA%E9%BB%9E%E4%BA%8C-%EF%BC%9A-%E9%97%9C%E6%B3%A8%E9%BB%9E%E5%88%86%E9%9B%A2"><span class="nav-number">2.</span> <span class="nav-text">優點二 ： 關注點分離</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%84%AA%E9%BB%9E%E4%B8%89-%EF%BC%9A-%E5%89%8D%E7%AB%AF%E6%9B%B4%E8%87%AA%E7%94%B1"><span class="nav-number">3.</span> <span class="nav-text">優點三 ： 前端更自由</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2018/02/23/%E3%80%90MVC%E6%95%99%E5%AD%B8%E3%80%912-%E4%BB%80%E9%BA%BC%E6%98%AFMVC/";
+    this.page.identifier = "2018/02/23/【MVC教學】2-什麼是MVC/";
+    this.page.title = "【MVC教學】2. 什麼是MVC";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>

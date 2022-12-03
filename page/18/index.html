@@ -189,6 +189,86 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/05/28/SQL-NOT-EXISTS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2013/05/28/SQL-NOT-EXISTS/" class="post-title-link" itemprop="url">SQL NOT  EXISTS</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2013-05-28 14:46:00" itemprop="dateCreated datePublished" datetime="2013-05-28T14:46:00+08:00">2013-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2013/05/28/SQL-NOT-EXISTS/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/05/28/SQL-NOT-EXISTS/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="http://frankiestudy.blogspot.tw/2012/01/sql-not-exists.html">參考</a><br><a target="_blank" rel="noopener" href="http://msdn.microsoft.com/en-us/library/bb399769.aspx">MSDN</a><br>結論就是，如果單一欄位要篩選掉就用Not IN ```sql<br>select *<br>from [order]<br>where 序號 not in<br>(<br> select 訂單編號 from orderDetail<br>)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">如果多個欄位要同時符合才篩選掉，就用Not Exists &#96;&#96;&#96;sql</span><br><span class="line">select *</span><br><span class="line">from [order] a</span><br><span class="line">where not exists</span><br><span class="line">(</span><br><span class="line"> select 訂單編號 from orderDetail b </span><br><span class="line"> where b.訂單編號 &#x3D; a.序號 and b.購買日期 &#x3D; (a.民國年+1911) </span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/05/20/%E3%80%90SharePoint-2013%E3%80%91%E9%96%8B%E5%95%9FBreadCrumb/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +293,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-05-20 10:15:00" itemprop="dateCreated datePublished" datetime="2013-05-20T10:15:00+00:00">2013-05-20</time>
+              <time title="Created: 2013-05-20 10:15:00" itemprop="dateCreated datePublished" datetime="2013-05-20T10:15:00+08:00">2013-05-20</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -322,14 +402,14 @@ MenuCss="ms-breadcrumb-menu ms-noList"></li>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-05-15 14:53:00" itemprop="dateCreated datePublished" datetime="2013-05-15T14:53:00+00:00">2013-05-15</time>
+              <time title="Created: 2013-05-15 14:53:00" itemprop="dateCreated datePublished" datetime="2013-05-15T14:53:00+08:00">2013-05-15</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -402,14 +482,14 @@ MenuCss="ms-breadcrumb-menu ms-noList"></li>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-05-13 17:19:14" itemprop="dateCreated datePublished" datetime="2013-05-13T17:19:14+00:00">2013-05-13</time>
+              <time title="Created: 2013-05-13 17:19:14" itemprop="dateCreated datePublished" datetime="2013-05-13T17:19:14+08:00">2013-05-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -489,14 +569,14 @@ MenuCss="ms-breadcrumb-menu ms-noList"></li>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-05-08 16:10:00" itemprop="dateCreated datePublished" datetime="2013-05-08T16:10:00+00:00">2013-05-08</time>
+              <time title="Created: 2013-05-08 16:10:00" itemprop="dateCreated datePublished" datetime="2013-05-08T16:10:00+08:00">2013-05-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -584,14 +664,14 @@ MenuCss="ms-breadcrumb-menu ms-noList"></li>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-05-07 23:13:00" itemprop="dateCreated datePublished" datetime="2013-05-07T23:13:00+00:00">2013-05-07</time>
+              <time title="Created: 2013-05-07 23:13:00" itemprop="dateCreated datePublished" datetime="2013-05-07T23:13:00+08:00">2013-05-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -664,14 +744,14 @@ MenuCss="ms-breadcrumb-menu ms-noList"></li>
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-05-07 15:28:00" itemprop="dateCreated datePublished" datetime="2013-05-07T15:28:00+00:00">2013-05-07</time>
+              <time title="Created: 2013-05-07 15:28:00" itemprop="dateCreated datePublished" datetime="2013-05-07T15:28:00+08:00">2013-05-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -771,14 +851,14 @@ End Sub
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-05-02 17:42:00" itemprop="dateCreated datePublished" datetime="2013-05-02T17:42:00+00:00">2013-05-02</time>
+              <time title="Created: 2013-05-02 17:42:00" itemprop="dateCreated datePublished" datetime="2013-05-02T17:42:00+08:00">2013-05-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -850,14 +930,14 @@ End Sub
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-05-01 15:55:00" itemprop="dateCreated datePublished" datetime="2013-05-01T15:55:00+00:00">2013-05-01</time>
+              <time title="Created: 2013-05-01 15:55:00" itemprop="dateCreated datePublished" datetime="2013-05-01T15:55:00+08:00">2013-05-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -967,14 +1047,14 @@ public static string deCrypt(string strSource)
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2013-05-01 15:44:00" itemprop="dateCreated datePublished" datetime="2013-05-01T15:44:00+00:00">2013-05-01</time>
+              <time title="Created: 2013-05-01 15:44:00" itemprop="dateCreated datePublished" datetime="2013-05-01T15:44:00+08:00">2013-05-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -1006,103 +1086,6 @@ public static string deCrypt(string strSource)
 <p>**<span style="color: red;">Q:</span>**無法更新 EntitySet ‘xxxx’，因為它有 DefiningQuery，但是在 <modificationfunctionmapping> 項目中沒有 <insertfunction> 項目來支援目前的作業。<br>**<span style="color: red;">A：</span>**這是因為 Table 沒有 PK 的關係，所以 EF 就認定這是唯讀的 Table ，在 EDMX 的 Model 中的 Table 的欄位，加上 pk 後就正常了 </p>
 <p>**<span style="color: red;">Q:</span>**在設計資料庫時明明有指定欄位的預設值，可是每次透過 EF 新增資料時，該欄位的值卻是 null？<br>**<span style="color: red;">A:</span>**這是因為 DB 該欄位有 Default Value 而且又不允許 null，在 Visual Studio 中開啟 .edmx 檔案，在模型編輯器中點選 entity 的屬性，然後到屬性視窗中設定其 Default Value 屬性。參考下圖： </p>
 <p><a target="_blank" rel="noopener" href="http://1.bp.blogspot.com/-TJvtcnfcdUU/UYDGF1mXiGI/AAAAAAAAC6M/TAGlBEJAgm8/s1600/11.png"><img src="http://1.bp.blogspot.com/-TJvtcnfcdUU/UYDGF1mXiGI/AAAAAAAAC6M/TAGlBEJAgm8/s1600/11.png"></a></insertfunction></modificationfunctionmapping><br>參考自:<br><a target="_blank" rel="noopener" href="http://www.dotblogs.com.tw/franma/archive/2010/12/20/20263.aspx">Entity Framework 4 的錯誤訊息排除</a><br><a target="_blank" rel="noopener" href="http://huan-lin.blogspot.tw/2012/12/entity-framework-column-default-value.html">Entity Framework 欄位預設值相關問題</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2013/04/29/%E3%80%90MVC%E3%80%91Client-Side-Validate-in-Partial-View-with-unobtrusive/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2013/04/29/%E3%80%90MVC%E3%80%91Client-Side-Validate-in-Partial-View-with-unobtrusive/" class="post-title-link" itemprop="url">【MVC】Client Side Validate in Partial View  with unobtrusive</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2013-04-29 16:23:00" itemprop="dateCreated datePublished" datetime="2013-04-29T16:23:00+00:00">2013-04-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2013/04/29/%E3%80%90MVC%E3%80%91Client-Side-Validate-in-Partial-View-with-unobtrusive/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2013/04/29/【MVC】Client-Side-Validate-in-Partial-View-with-unobtrusive/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>MVC中很好用的一種驗證方式就是在model寫attribute </p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">Required(ErrorMessage=<span class="meta-string">&quot;展覽名稱為必填&quot;</span>)</span>]</span><br><span class="line">[<span class="meta">MaxLength(50)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">string</span> ExhibitionName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>接著在View中用HtmlHelp方式建立Textbox </p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@Html.TextBoxFor(m =&gt; m.ExhibitionName)</span><br><span class="line">@Html.ValidationMessageFor(m =&gt; m.ExhibitionName)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>MVC就會很貼心的把你的Client端驗證做好了。 </p>
-<p>但今天遇到的問題是，用同樣的方法寫在Partial View裡面卻沒有用<br>狀況如下：<br>在_layout Page中一樣載入了必備的MVC4提供的Jquery驗證檔案</p>
-<pre class="brush: html">&lt;script src="/Scripts/jquery.unobtrusive-ajax.js"&gt;&lt;/script&gt;
-&lt;script src="/Scripts/jquery.validate.js"&gt;&lt;/script&gt;
-&lt;script src="/Scripts/jquery.validate.unobtrusive.js"&gt;&lt;/script&gt;
-</pre>網站頁面長成這樣
-<div class="separator" style="clear: both; text-align: center;">[![](http://4.bp.blogspot.com/-WiQ8PRLsFG0/UX4vwwOgvvI/AAAAAAAACq8/ifNZBq9JUEs/s640/1.png)](http://4.bp.blogspot.com/-WiQ8PRLsFG0/UX4vwwOgvvI/AAAAAAAACq8/ifNZBq9JUEs/s1600/1.png)</div>當按下紅色框框內的功能列表，用Ajax的方式return Partial View放到藍色框框中。
-[![](http://1.bp.blogspot.com/-h-0y5VY6FgE/UX4wNNMxGiI/AAAAAAAACrE/IzSGeMXQhQo/s640/1.png)](http://1.bp.blogspot.com/-h-0y5VY6FgE/UX4wNNMxGiI/AAAAAAAACrE/IzSGeMXQhQo/s1600/1.png)
-但用Ajax載入的Partial View用上述的方式就不會自動驗證了，研判應該是動態產生的DOM元件沒有跟JQuery繫結到，這跟以前Asp.Net的UpdatePanel有異曲同工之妙。
-
-<p>所以在Partial View中的Script block中加入這行 <span style="color: red;">註:#ajaxForm為Partial View中Form ID </span></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&#x27;body&#x27;</span>).on(<span class="string">&quot;click&quot;</span>, <span class="string">&#x27;.addNewExihition&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        $.validator.unobtrusive.parse(<span class="string">&#x27;.ajaxForm&#x27;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>這樣JQuery的驗證就又重新繫結上了，讚!!</p>
 
       
     </div>
@@ -1187,7 +1170,7 @@ public static string deCrypt(string strSource)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1200,7 +1183,7 @@ public static string deCrypt(string strSource)
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -189,6 +189,129 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/07/24/%E3%80%90Entity%20Framework%E3%80%91The_connection_was_not_closed_The_connection_s_current_state_is_connecting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/24/%E3%80%90Entity%20Framework%E3%80%91The_connection_was_not_closed_The_connection_s_current_state_is_connecting/" class="post-title-link" itemprop="url">【Entity Framework】The connection was not closed. The connection's current state is connecting</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-24 11:28:00" itemprop="dateCreated datePublished" datetime="2018-07-24T11:28:00+08:00">2018-07-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2018/07/24/%E3%80%90Entity%20Framework%E3%80%91The_connection_was_not_closed_The_connection_s_current_state_is_connecting/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/07/24/【Entity Framework】The_connection_was_not_closed_The_connection_s_current_state_is_connecting/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前情提要"><a href="#前情提要" class="headerlink" title="#前情提要"></a>#前情提要</h1><p>不定時、不定量、不特定API跳出**【System.InvalidOperationException】  - The connection was not closed. The connection’s current state is connecting.**錯誤，這個錯誤以前公司也遇到過，當時研判是Entity Framework與Unity套件生命週期的問題，當時專案不算太大又一直找不到確切解決方案，所以索性將Repository Layer整個用Dapper改寫讓問題得以解決了。</p>
+<div class="note info">
+            <p>當時的筆記</p><p><a href="https://toyo0103.github.io/2016/12/19/%E3%80%90EntityFramework%E3%80%91DBContext-Dispose%E8%88%87%E5%90%A6%EF%BC%8C%E8%88%87DB%E7%9A%84%E9%80%A3%E7%B7%9A%E6%95%B8%E6%98%AF%E5%90%A6%E6%9C%89%E9%97%9C%E4%BF%82/">【Entity Framework】DBContext Dispose與否，與DB的連線數是否有關係</a></p>
+          </div>
+
+
+
+<p>但這次退無可退，再次印證了一句話</p>
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>你不解決問題，問題就會解決你</p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<p>&nbsp; &nbsp;  </p>
+<h1 id="分析"><a href="#分析" class="headerlink" title="#分析"></a>#分析</h1><p>透過Elmah的Log分析，發現共同點都壞在一支Token驗證的DelegatingHandler裡面，因為呼叫每支API都會經過這，可以解釋為何壞在不特定API。</p>
+<p>而關鍵在其中的一行</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Service = AutofacConfig.Container.Resolve&lt;ISupplierApiProfileService&gt;();</span><br><span class="line"><span class="keyword">var</span> Profile = Service.GetSupplierApiProfileByToken(token);</span><br></pre></td></tr></table></figure>
+
+<p>透過Autofac Container取得ISupplierApiProfileService，猜測當時這樣撰寫是希望每次產生新的Service的實體來使用，在這之前先一下看一下整體的架構</p>
+<p><img src="/images/20180724/1.gif" alt="/images/20180724/1.gif"></p>
+<p>而每個實體分別Autofac註冊的生命週期為</p>
+<p><img src="/images/20180724/2.jpg" alt="/images/20180724/2.jpg"></p>
+<p>這導致了一個結果，因為Actofac Container為Singleton的實體，透過他Resolve出來的DBContext (<strong>InstancePerLifetimeScope</strong>)也會變成Singleton的生命週期。</p>
+<p>而Entity Framework非Thread Safe的設計，所以如果不同Thread共用同一個DBContext時，如果前一個交易尚未完成，撞在一起時就會有機率產生這個錯誤</p>
+<p><img src="/images/20180724/3.jpg" alt="/images/20180724/3.jpg"></p>
+<div class="note info">
+            <p>相關討論 </p><p><a target="_blank" rel="noopener" href="https://github.com/aspnet/EntityFrameworkCore/issues/3887">https://github.com/aspnet/EntityFrameworkCore/issues/3887</a></p>
+          </div>
+
+
+
+<h1 id="解法"><a href="#解法" class="headerlink" title="#解法"></a>#解法</h1><p>而DBContext會設定為<strong>InstancePerLifetimeScope</strong>的生命週期是希望DBContext隨著每次Request產生與消滅(亦即每個Request只會產生一次DBContext實體)，如果後續應用Transaction才不會發生問題，但在DelegatingHandler這邊的應用情境卻導致了Singleton的情況。</p>
+<h2 id="BeginLifetimeScope"><a href="#BeginLifetimeScope" class="headerlink" title="BeginLifetimeScope"></a>BeginLifetimeScope</h2><div class="note info">
+            <p>官方文件 - <a target="_blank" rel="noopener" href="https://autofaccn.readthedocs.io/en/latest/lifetime/working-with-scopes.html">Working with Lifetime Scopes</a></p>
+          </div>
+
+<p>Autofac提供給使用者產生一個動態的生命週期的方法，所有透過這個生命週期產生的實體會隨著它的消滅一併被Disposed掉，使用方式如下</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (<span class="keyword">var</span> scope = AutofacConfig.Container.BeginLifetimeScope())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> Service = scope.Resolve&lt;ISupplierApiProfileService&gt;();</span><br><span class="line">    <span class="keyword">var</span> Profile = Service.GetSupplierApiProfileByToken(token);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>這樣可以確保在DelegatingHandler裡面產生的DBContext不會變成Singleton，也不用動到最基底DBContext <strong>InstancePerLifetimeScope</strong>的生命週期，確保了每次Request共用同一個DBContext。</p>
+<p>上線後觀察Elmah，確認這個伴隨著我將近三年的問題終於徹底消滅了，可喜可賀 可喜可賀。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/07/12/%E3%80%90Autofac%E3%80%91%E7%94%9F%E5%91%BD%E9%80%B1%E6%9C%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,14 +336,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-07-12 16:06:00" itemprop="dateCreated datePublished" datetime="2018-07-12T16:06:00+00:00">2018-07-12</time>
+              <time title="Created: 2018-07-12 16:06:00" itemprop="dateCreated datePublished" datetime="2018-07-12T16:06:00+08:00">2018-07-12</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -396,14 +519,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-07-11 10:03:00" itemprop="dateCreated datePublished" datetime="2018-07-11T10:03:00+00:00">2018-07-11</time>
+              <time title="Created: 2018-07-11 10:03:00" itemprop="dateCreated datePublished" datetime="2018-07-11T10:03:00+08:00">2018-07-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
 
           
@@ -503,14 +626,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-06-27 14:41:00" itemprop="dateCreated datePublished" datetime="2018-06-27T14:41:00+00:00">2018-06-27</time>
+              <time title="Created: 2018-06-27 14:41:00" itemprop="dateCreated datePublished" datetime="2018-06-27T14:41:00+08:00">2018-06-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -651,14 +774,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-06-27 09:28:00" itemprop="dateCreated datePublished" datetime="2018-06-27T09:28:00+00:00">2018-06-27</time>
+              <time title="Created: 2018-06-27 09:28:00" itemprop="dateCreated datePublished" datetime="2018-06-27T09:28:00+08:00">2018-06-27</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -894,14 +1017,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-06-19 15:00:00" itemprop="dateCreated datePublished" datetime="2018-06-19T15:00:00+00:00">2018-06-19</time>
+              <time title="Created: 2018-06-19 15:00:00" itemprop="dateCreated datePublished" datetime="2018-06-19T15:00:00+08:00">2018-06-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1057,14 +1180,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-06-13 00:44:00" itemprop="dateCreated datePublished" datetime="2018-06-13T00:44:00+00:00">2018-06-13</time>
+              <time title="Created: 2018-06-13 00:44:00" itemprop="dateCreated datePublished" datetime="2018-06-13T00:44:00+08:00">2018-06-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1282,14 +1405,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-06-09 20:00:00" itemprop="dateCreated datePublished" datetime="2018-06-09T20:00:00+00:00">2018-06-09</time>
+              <time title="Created: 2018-06-09 20:00:00" itemprop="dateCreated datePublished" datetime="2018-06-09T20:00:00+08:00">2018-06-09</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1417,14 +1540,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-06-07 13:00:00" itemprop="dateCreated datePublished" datetime="2018-06-07T13:00:00+00:00">2018-06-07</time>
+              <time title="Created: 2018-06-07 13:00:00" itemprop="dateCreated datePublished" datetime="2018-06-07T13:00:00+08:00">2018-06-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1561,14 +1684,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-06-06 18:53:00" itemprop="dateCreated datePublished" datetime="2018-06-06T18:53:00+00:00">2018-06-06</time>
+              <time title="Created: 2018-06-06 18:53:00" itemprop="dateCreated datePublished" datetime="2018-06-06T18:53:00+08:00">2018-06-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1696,150 +1819,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2018/06/05/%E3%80%90LeetCode%E3%80%91Add%20Two%20Numbers/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Toyo">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="程式隨筆">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/05/%E3%80%90LeetCode%E3%80%91Add%20Two%20Numbers/" class="post-title-link" itemprop="url">【LeetCode】Add Two Numbers</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-06-05 21:10:00" itemprop="dateCreated datePublished" datetime="2018-06-05T21:10:00+00:00">2018-06-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2022-08-09 13:36:17" itemprop="dateModified" datetime="2022-08-09T13:36:17+00:00">2022-08-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2018/06/05/%E3%80%90LeetCode%E3%80%91Add%20Two%20Numbers/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/06/05/【LeetCode】Add Two Numbers/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>有感於自己是個廢物工程師，開了LeetCode帳號好幾個月一題都還沒刷，所以決定寫一系列紀錄自己刷LeetCode的過程跟解題方法，希望幾年後回頭能看見自己的進步，廢話不多說直接進入題目。</p>
-<h1 id="題目"><a href="#題目" class="headerlink" title="#題目"></a>#題目</h1><p>You are given two <strong>non-empty</strong> linked lists representing two non-negative integers. The digits are stored in <strong>reverse order</strong> and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p>
-<p>You may assume the two numbers do not contain any leading zero, except the number 0 itself.</p>
-<p><strong>Example</strong> </p>
-<div class="note info">
-            <p>Input: (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)<br>Output: 7 -&gt; 0 -&gt; 8<br>Explanation: 342 + 465 = 807</p>
-          </div>
-
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     public int val;</span></span><br><span class="line"><span class="comment"> *     public ListNode next;</span></span><br><span class="line"><span class="comment"> *     public ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Solution</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">AddTwoNumbers</span>(<span class="params">ListNode l1, ListNode l2</span>)</span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="解題"><a href="#解題" class="headerlink" title="#解題"></a>#解題</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Solution</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="function"><span class="keyword">public</span> ListNode <span class="title">AddTwoNumbers</span>(<span class="params">ListNode l1, ListNode l2</span>)</span></span><br><span class="line"><span class="function"></span>       &#123;</span><br><span class="line">           ListNode Result = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">           ListNode CN1 = l1;</span><br><span class="line">           ListNode CN2 = l2;</span><br><span class="line"></span><br><span class="line">           ListNode RCN = Result;</span><br><span class="line">           <span class="built_in">bool</span> Flag = <span class="literal">true</span>;</span><br><span class="line">           <span class="keyword">while</span> (Flag)</span><br><span class="line">           &#123;</span><br><span class="line">               <span class="keyword">var</span> Sum = RCN.val +  GetNodeValue(CN1) + GetNodeValue(CN2);</span><br><span class="line"></span><br><span class="line">               RCN.val = Sum % <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">if</span> (Sum &gt; <span class="number">9</span>)</span><br><span class="line">                   RCN.next = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">               CN1 = CN1 == <span class="literal">null</span> ? <span class="literal">null</span> : CN1.next;</span><br><span class="line">               CN2 = CN2 == <span class="literal">null</span> ? <span class="literal">null</span> : CN2.next;</span><br><span class="line">               </span><br><span class="line"></span><br><span class="line">               Flag = (CN1 != <span class="literal">null</span> || CN2 != <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">               <span class="keyword">if</span> (Flag &amp;&amp; RCN.next == <span class="literal">null</span>)</span><br><span class="line">                   RCN.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">               RCN = RCN.next;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="keyword">return</span> Result;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="function"><span class="keyword">private</span> <span class="built_in">int</span> <span class="title">GetNodeValue</span>(<span class="params">ListNode node</span>)</span></span><br><span class="line"><span class="function"></span>       &#123;</span><br><span class="line">           <span class="keyword">return</span> node == <span class="literal">null</span> ?  <span class="number">0</span> : node.val;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="Unit-Testing"><a href="#Unit-Testing" class="headerlink" title="Unit Testing"></a>Unit Testing</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestClass</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SolutionTests</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">TestMethod</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> AddTwoNumbersTest_輸入L1為<span class="number">342</span>_L2為<span class="number">456</span>_應得到<span class="number">807</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//arrange</span></span><br><span class="line">        <span class="keyword">var</span> l1 = <span class="keyword">new</span> ListNode(<span class="number">2</span>);</span><br><span class="line">        l1.next = <span class="keyword">new</span> ListNode(<span class="number">4</span>);</span><br><span class="line">        l1.next.next = <span class="keyword">new</span> ListNode(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> l2 = <span class="keyword">new</span> ListNode(<span class="number">5</span>);</span><br><span class="line">        l2.next = <span class="keyword">new</span> ListNode(<span class="number">6</span>);</span><br><span class="line">        l2.next.next = <span class="keyword">new</span> ListNode(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> expected = <span class="keyword">new</span> ListNode(<span class="number">7</span>);</span><br><span class="line">        expected.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        expected.next.next = <span class="keyword">new</span> ListNode(<span class="number">8</span>);</span><br><span class="line">        <span class="comment">//act</span></span><br><span class="line">        <span class="keyword">var</span> actual = sut.AddTwoNumbers(l1,l2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//assert</span></span><br><span class="line">        actual.Should().BeEquivalentTo(expected);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">TestMethod</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> AddTwoNumbersTest_輸入L1為<span class="number">42</span>_L2為<span class="number">708</span>_應得到<span class="number">750</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//arrange</span></span><br><span class="line">        <span class="keyword">var</span> l1 = <span class="keyword">new</span> ListNode(<span class="number">2</span>);</span><br><span class="line">        l1.next = <span class="keyword">new</span> ListNode(<span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> l2 = <span class="keyword">new</span> ListNode(<span class="number">8</span>);</span><br><span class="line">        l2.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        l2.next.next = <span class="keyword">new</span> ListNode(<span class="number">7</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> expected = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        expected.next = <span class="keyword">new</span> ListNode(<span class="number">5</span>);</span><br><span class="line">        expected.next.next = <span class="keyword">new</span> ListNode(<span class="number">7</span>);</span><br><span class="line">        <span class="comment">//act</span></span><br><span class="line">        <span class="keyword">var</span> actual = sut.AddTwoNumbers(l1, l2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//assert</span></span><br><span class="line">        actual.Should().BeEquivalentTo(expected);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">TestMethod</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> AddTwoNumbersTest_輸入L1為<span class="number">1</span>_L2為<span class="number">99</span>_應得到<span class="number">100</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//arrange</span></span><br><span class="line">        <span class="keyword">var</span> l1 = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> l2 = <span class="keyword">new</span> ListNode(<span class="number">9</span>);</span><br><span class="line">        l2.next = <span class="keyword">new</span> ListNode(<span class="number">9</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> sut = <span class="keyword">new</span> Solution();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> expected = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        expected.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        expected.next.next = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">//act</span></span><br><span class="line">        <span class="keyword">var</span> actual = sut.AddTwoNumbers(l1, l2);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//assert</span></span><br><span class="line">        actual.Should().BeEquivalentTo(expected);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="分析結果"><a href="#分析結果" class="headerlink" title="#分析結果"></a>#分析結果</h1><p>雖然過了但是效率不佳，執行完LeetCode全部的測試總共花費 <strong>176 ms</strong>只贏過38.84%的提交範例，所以試試看優化它</p>
-<p><img src="/images/20180615/leetcode/1.jpg" alt="/images/20180615/leetcode/1.jpg"></p>
-<h2 id="移除三元運算子"><a href="#移除三元運算子" class="headerlink" title="移除三元運算子"></a>移除三元運算子</h2><p>基本上三元運算子比較耗效能，所以優先改進它</p>
-<p><strong>原本</strong></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="built_in">int</span> <span class="title">GetNodeValue</span>(<span class="params">ListNode node</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> node == <span class="literal">null</span> ?  <span class="number">0</span> : node.val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>修改後</strong></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="built_in">int</span> <span class="title">GetNodeValue</span>(<span class="params">ListNode node</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (node == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> node.val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<hr>
-<p><strong>原本</strong></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CN1 = CN1 == <span class="literal">null</span> ? <span class="literal">null</span> : CN1.next;</span><br><span class="line">CN2 = CN2 == <span class="literal">null</span> ? <span class="literal">null</span> : CN2.next;</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>修改後</strong></p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (Node1Cursor != <span class="literal">null</span>)</span><br><span class="line">    Node1Cursor = Node1Cursor.next;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (Node2Cursor != <span class="literal">null</span>)</span><br><span class="line">    Node2Cursor = Node2Cursor.next;</span><br></pre></td></tr></table></figure>
-
-
-
-<p><strong>測試結果</strong></p>
-<p><img src="/images/20180615/leetcode/2.jpg" alt="/images/20180615/leetcode/2.jpg"></p>
-<p>簡直是三元運算子定生死….</p>
-<h2 id="優化可讀性"><a href="#優化可讀性" class="headerlink" title="優化可讀性"></a>優化可讀性</h2><blockquote class="blockquote-center">
-            <i class="fa fa-quote-left"></i>
-            <p>乾淨的程式碼，閱讀起來應該像是幾何證明般</p>
-<p>Uncle Bob</p>
-
-            <i class="fa fa-quote-right"></i>
-          </blockquote>
-
-<p>所以試著讓變數命名更貼近意義一點</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Solution</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">AddTwoNumbers</span>(<span class="params">ListNode l1, ListNode l2</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        ListNode Result = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        ListNode Node1Cursor = l1;</span><br><span class="line">        ListNode Node2Cursor = l2;</span><br><span class="line"></span><br><span class="line">        ListNode Head = Result;</span><br><span class="line">        <span class="built_in">bool</span> NeedNextRun = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">while</span> (NeedNextRun)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> Sum = Head.val + GetNodeValue(Node1Cursor) + GetNodeValue(Node2Cursor);</span><br><span class="line"></span><br><span class="line">            Head.val = Sum % <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Sum &gt; <span class="number">9</span>)</span><br><span class="line">                Head.next = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Node1Cursor != <span class="literal">null</span>)</span><br><span class="line">                Node1Cursor = Node1Cursor.next;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Node2Cursor != <span class="literal">null</span>)</span><br><span class="line">                Node2Cursor = Node2Cursor.next;</span><br><span class="line"></span><br><span class="line">            NeedNextRun = (Node1Cursor != <span class="literal">null</span> || Node2Cursor != <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (NeedNextRun &amp;&amp; Head.next == <span class="literal">null</span>)</span><br><span class="line">                Head.next = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">            Head = Head.next;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="built_in">int</span> <span class="title">GetNodeValue</span>(<span class="params">ListNode node</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (node == <span class="literal">null</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> node.val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>也因為有寫單元測試的關係，上述的調整過程中都沒讓程式壞掉，最後希望藉由這樣的練習能讓自己TDD與重構的技巧再更純熟一些</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1909,7 +1888,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">202</span>
+          <span class="site-state-item-count">203</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1922,7 +1901,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">74</span>
+        <span class="site-state-item-count">75</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

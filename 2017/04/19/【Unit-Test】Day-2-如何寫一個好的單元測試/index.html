@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"toyo0103.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="接著來討論一下單元測試究竟該怎麼寫，你可能也會有這樣的疑問，如果今天我的程式是要呼叫資料庫來取得資料，那是否真要接上一個資料庫去做單元測試呢？又公司的資料庫如果對外是連不到的，悲苦的工程師回家怎麼做單元測試呢？ 那如果是外部API呢？網路不通時單元測試是不是就都壞掉了？ 那該怎麼知道現在單元測試是真正的邏輯錯誤還是只是因為網路或是資料庫連不上導致的錯誤？是不是寫了單元測試後反而我要花大量的時間常常">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Unit Test】Day 2 - 如何寫一個好的單元測試">
+<meta property="og:url" content="https://toyo0103.github.io/2017/04/19/%E3%80%90Unit-Test%E3%80%91Day-2-%E5%A6%82%E4%BD%95%E5%AF%AB%E4%B8%80%E5%80%8B%E5%A5%BD%E7%9A%84%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/index.html">
+<meta property="og:site_name" content="程式隨筆">
+<meta property="og:description" content="接著來討論一下單元測試究竟該怎麼寫，你可能也會有這樣的疑問，如果今天我的程式是要呼叫資料庫來取得資料，那是否真要接上一個資料庫去做單元測試呢？又公司的資料庫如果對外是連不到的，悲苦的工程師回家怎麼做單元測試呢？ 那如果是外部API呢？網路不通時單元測試是不是就都壞掉了？ 那該怎麼知道現在單元測試是真正的邏輯錯誤還是只是因為網路或是資料庫連不上導致的錯誤？是不是寫了單元測試後反而我要花大量的時間常常">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-04-18T17:52:00.000Z">
+<meta property="article:modified_time" content="2022-08-09T13:36:17.093Z">
+<meta property="article:author" content="Toyo">
+<meta property="article:tag" content="Unit Test">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://toyo0103.github.io/2017/04/19/%E3%80%90Unit-Test%E3%80%91Day-2-%E5%A6%82%E4%BD%95%E5%AF%AB%E4%B8%80%E5%80%8B%E5%A5%BD%E7%9A%84%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>【Unit Test】Day 2 - 如何寫一個好的單元測試 | 程式隨筆</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="程式隨筆" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">程式隨筆</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://toyo0103.github.io/2017/04/19/%E3%80%90Unit-Test%E3%80%91Day-2-%E5%A6%82%E4%BD%95%E5%AF%AB%E4%B8%80%E5%80%8B%E5%A5%BD%E7%9A%84%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Toyo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="程式隨筆">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Unit Test】Day 2 - 如何寫一個好的單元測試
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-04-19 01:52:00" itemprop="dateCreated datePublished" datetime="2017-04-19T01:52:00+08:00">2017-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-08-09 21:36:17" itemprop="dateModified" datetime="2022-08-09T21:36:17+08:00">2022-08-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%B8%E7%BF%92%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/" itemprop="url" rel="index"><span itemprop="name">學習單元測試</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/04/19/%E3%80%90Unit-Test%E3%80%91Day-2-%E5%A6%82%E4%BD%95%E5%AF%AB%E4%B8%80%E5%80%8B%E5%A5%BD%E7%9A%84%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/19/【Unit-Test】Day-2-如何寫一個好的單元測試/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>接著來討論一下單元測試究竟該怎麼寫，你可能也會有這樣的疑問，如果今天我的程式是要呼叫資料庫來取得資料，那是否真要接上一個資料庫去做單元測試呢？又公司的資料庫如果對外是連不到的，悲苦的工程師回家怎麼做單元測試呢？ 那如果是外部API呢？網路不通時單元測試是不是就都壞掉了？ 那該怎麼知道現在單元測試是真正的邏輯錯誤還是只是因為網路或是資料庫連不上導致的錯誤？是不是寫了單元測試後反而我要花大量的時間常常在檢查到底現在是錯哪邊啊…..。</p>
+<p>其實我剛開始接觸單元測試的時候上面的問題也都想過一輪，但這也點出了單元測試一個很重要的特性</p>
+<div class="note info">
+            <p><span style="color: red;">單元測試應該是隨時隨地都要能正確執行，只要它本身的邏輯是正確的！！</span></p>
+          </div>
+<p>看完這句話你可能會默默響起ＯＳ，「阿鬼，你還是說中文吧～」。不過這段容我之後另外篇幅再做詳盡的解說，現在只要有這樣的觀念就好，單元測試不應該隨著你在的環境不同而有結果的落差，他關注的是<strong>邏輯</strong>而<strong>不是與外部的關聯。</strong><br>**<br>**<br>那好，假設我們做到了單元測試跟外部的關聯都斷開了，只專注在自己的邏輯上，這樣就稱得上是好的單元測試了嗎？ 當然不是！ 單元測試的命名也是一個很重要的課題</p>
+<div class="note info">
+            <p><span style="color: red;">單元測試的標題需要具備好的可讀性、明確、標題與測試的內容精確吻合</span></p>
+          </div>
+<p>還記得上一篇文章提到，撰寫良好的單元測試應該像是規格書一般，不僅要讓專案品質提高，更是要充當新接觸專案人員能透過閱讀單元測試對程式有基本認識的工具。</p>
+<p>舉例來說：有一個單元測試標題這樣寫「public void GetTest_呼叫得到True()」，對於一個不看單元測試內容的人來說，這個標題一點意義都沒有，首先他不知道這個方法裡面是在幹嘛的，再來他究竟會做什麼事情導致他得到True，帶入的參數意義是什麼…等，這樣的單元測試反而是造成專案難以維護的幫兇。</p>
+<p>所以比較好的單元測試標題應該詳盡，例：「public void GetTest_帶入會員ID＿應回該ID搜尋到的會員資料DTO」，盡量符合</p>
+<div class="note info">
+            <p>受測方法＿傳入參數意義＿期望得到的結果</p>
+          </div>
+<p>比起第一種命名方式是否明確易懂多了。</p>
+<p>你可能又會冒出一個問題，如果這個方法帶進的ID查不到會員時，我會回傳Null，但怎麼在一個單元測試表示？這邊點出另一個重點</p>
+<div class="note info">
+            <p><span style="color: red;">一個測試只應該關注一件事情，如果受測目標有多種狀況，應該分成好幾個測試去涵蓋所有邏輯</span></p>
+          </div>
+<p>順著上面的邏輯，這個方法應該就會有另一個測試為「public void GetTest_帶入會員ID＿如搜尋不到該ID的會員＿回傳Null」。</p>
+<p>所以如果一個方法裡面的IF ELSE很多，導致程式邏輯複雜度提高，則單元測試可能就會有對應的很多方法來涵蓋所有可能，所以如果有寫單元測試，則<strong>職責分離就是一個重要的課題</strong>，如果你把很多職責都放在同一段程式中，你的單元測試可能是倍數成長之外，測試也會變得很難撰寫。</p>
+<p>從上面的舉例也可以看出，每個單元測試都只關注一種邏輯，一個方法難免包含多種邏輯狀況，但當修改程式時如果單元測試錯誤，也能幫助你快速鎖定可能是哪一段邏輯錯了，減少除錯的時間。再者，因為每個單元測試名稱都很明確，執行的方法帶入的參數也都明確的情況下，讓人閱讀時可以很容易進入狀況，符合一開始提到的<strong>可以執行的規格書</strong>，對專案是非常有幫助的。</p>
+<p>接著來探討單元測試的內文該如何撰寫，首先應該符合所謂的<strong>3A原則</strong></p>
+<div class="note info">
+            <p>Arrange = 準備受測物件、參數、預期結果<br>Act = 執行受測方法<br>Assert = 驗證執行結果與預測結果是否一致</p>
+          </div>
+
+<p>拿昨天的單元測試來說明</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">TestMethod()</span>]</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">void</span> Method1Test_呼叫時應回傳結果為<span class="number">7</span>()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//arrange</span></span><br><span class="line">            <span class="keyword">var</span> Sut = <span class="keyword">new</span> EasyMethod();</span><br><span class="line">            <span class="keyword">var</span> expected = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//act</span></span><br><span class="line">            <span class="keyword">var</span> actual = Sut.Method1();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//assert</span></span><br><span class="line">            Assert.AreEqual(expected, actual);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Arrange中Sut(<span style="background-color: white; color: #242729; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 15px;">System Under Test</span><span style="background-color: white; color: #242729; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 15px;">&nbsp;</span>),受測的目標為EasyMethod這跟Class,而這個單元測試預期的結果為7。</p>
+<p>Act中actual是EasyMethod執行Method1這個方法得到的結果。</p>
+<p>Assert中用MsTest提供的Assert.AreEqual方法驗證得到的結果與預期的結果是否一致。</p>
+<p>如果每個單元測試都照著這樣的風格撰寫，則對於閱讀的人來說會很清楚歸類出每個區段各自的職責。</p>
+<p>那今天就談到這邊，之後應該就會有比較多的實作了(擦汗)</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Unit-Test/" rel="tag"># Unit Test</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/17/%E3%80%90Unit-Test%E3%80%91Day-1-%E7%82%BA%E4%BD%95%E8%A6%81%E5%AF%AB%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/" rel="prev" title="【Unit Test】Day 1 - 為何要寫單元測試">
+      <i class="fa fa-chevron-left"></i> 【Unit Test】Day 1 - 為何要寫單元測試
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/19/%E3%80%90Unit-Test%E3%80%91Day-3-%E5%B0%88%E6%B3%A8%E6%96%BC%E9%82%8F%E8%BC%AF%EF%BC%8C%E9%9A%94%E9%9B%A2%E8%88%87%E5%A4%96%E9%83%A8%E7%9A%84%E9%97%9C%E8%81%AF/" rel="next" title="【Unit Test】Day 3 - 專注於邏輯，隔離與外部的關聯">
+      【Unit Test】Day 3 - 專注於邏輯，隔離與外部的關聯 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Toyo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">203</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Toyo</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toyo0103.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://toyo0103.github.io/2017/04/19/%E3%80%90Unit-Test%E3%80%91Day-2-%E5%A6%82%E4%BD%95%E5%AF%AB%E4%B8%80%E5%80%8B%E5%A5%BD%E7%9A%84%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6/";
+    this.page.identifier = "2017/04/19/【Unit-Test】Day-2-如何寫一個好的單元測試/";
+    this.page.title = "【Unit Test】Day 2 - 如何寫一個好的單元測試";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://toyo0103.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+</body>
+</html>
