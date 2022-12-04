@@ -1125,8 +1125,8 @@ return cell;
   <entry>
     <title>How cache-control directives affect caching?</title>
     <url>/2022/12/03/cache_control_directives/</url>
-    <content><![CDATA[<p>I’m curios how <code>cache-control</code> directives affect caching, so I make a small experiment to see the interaction between browser, reverse proxy and server.</p>
-<p>I introduce 6 APIs that respond different cache-control value in response header and current time only.</p>
+    <content><![CDATA[<p>I’m curious how <code>cache-control</code> directives affect caching, so I made a small experiment to see the interaction between browser, reverse proxy and server.</p>
+<p>First of all, I introduced 6 APIs that respond different cache-control value in response header and current time only.</p>
 <table>
 <thead>
 <tr>
@@ -1159,13 +1159,17 @@ return cell;
 <td align="left">max-age=120</td>
 </tr>
 </tbody></table>
-<p>Create a simple web page for test<br><img src="/images/20221103/0.png" alt="/images/20221103/0.png"></p>
-<p>Clicking the buttons will call the APIs and show the response data on page. At the same time I monitor the developer tool to record the results.</p>
-<p>Whether the browsers cache the response? (tested on safari, chrome and edge)</p>
+<p>Then I created a simple web page for test<br><img src="/images/20221103/0.png" alt="/images/20221103/0.png"></p>
+<p>By clicking the buttons, APIs were called and showed the response data on page. Meanwhile, I monitored the developer tool and record the results.</p>
+<p>The results of browsers reaction. (on safari, chrome and edge)</p>
+<ul>
+<li>(v) : cached</li>
+<li>(X) : none-cached</li>
+</ul>
 <table>
 <thead>
 <tr>
-<th align="center"></th>
+<th align="center">Http Method \ Cache Directive</th>
 <th align="center">Public</th>
 <th align="center">Private</th>
 <th align="center">Unset</th>
@@ -1184,11 +1188,11 @@ return cell;
 <td align="center">X</td>
 </tr>
 </tbody></table>
-<p>Whether the reverse proxy(I use nginx) caches the response?</p>
+<p>The results of reverse proxy reaction.</p>
 <table>
 <thead>
 <tr>
-<th align="center"></th>
+<th align="center">Http Method \ Cache Directive</th>
 <th align="center">Public</th>
 <th align="center">Private</th>
 <th align="center">Unset</th>
@@ -1207,7 +1211,7 @@ return cell;
 <td align="center">X</td>
 </tr>
 </tbody></table>
-<p>According to the results, we know the modern browsers would not break the rule of <code>cacheable</code> and reverse proxy may not store the response when you don’t set public/private directives.</p>
+<p>According to the results, we know that the browsers would not break the rule of <code>cacheable</code>, and reverse proxy may not store the response when you don’t set public/private directives.</p>
 <div class="note info">
             <p>References</p><p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control">Cache-Control - HTTP | MDN (mozilla.org)</a></p><p><a href="https://developer.mozilla.org/en-US/docs/Glossary/cacheable">Cacheable - MDN Web Docs Glossary: Definitions of Web-related terms | MDN (mozilla.org)</a></p>
           </div>]]></content>
